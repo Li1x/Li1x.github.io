@@ -154,6 +154,10 @@
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
   </nav>
 </div>
 
@@ -195,7 +199,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/CTF/Web/BUU-ZJCTF,%E4%B8%8D%E8%BF%87%E5%A6%82%E6%AD%A4/" class="post-title-link" itemprop="url">BUU-ZJCTF,不过如此 - Wp</a>
+          <a href="/CTF/Web/BUU-ZJCTF,%E4%B8%8D%E8%BF%87%E5%A6%82%E6%AD%A4/" class="post-title-link" itemprop="url">BUU-ZJCTF,buguoruci - Wp</a>
         </h2>
 
         <div class="post-meta-container">
@@ -207,7 +211,16 @@
       <span class="post-meta-item-text">Posted on</span>
       
 
-      <time title="Created: 2024-01-30 06:23:42 / Modified: 06:27:31" itemprop="dateCreated datePublished" datetime="2024-01-30T06:23:42+08:00">2024-01-30</time>
+      <time title="Created: 2024-01-30 06:23:42 / Modified: 06:34:03" itemprop="dateCreated datePublished" datetime="2024-01-30T06:23:42+08:00">2024-01-30</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Web/" itemprop="url" rel="index"><span itemprop="name">Web</span></a>
+        </span>
     </span>
 
   
@@ -249,7 +262,7 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <p><img src="/CTF/WEB/BUU-easy_web-Wp/00%E6%BA%90%E7%A0%81.png" alt="00"></p>
+          <p><img src="/CTF/WEB/BUU-ZJCTF,%E4%B8%8D%E8%BF%87%E5%A6%82%E6%AD%A4/00.png" alt="00"></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">file_get_contents($text,&#x27;r&#x27;)===&quot;I have a dream&quot;</span><br></pre></td></tr></table></figure>
 
 <blockquote>
@@ -257,12 +270,12 @@
 <p><strong>php:&#x2F;&#x2F;input</strong>可以访问请求的原始数据的只读流，将post请求的数据当作php代码执行。<strong>当传入的参数作为文件名打开时，可以将参数设为php:&#x2F;&#x2F;input,同时post想设置的文件内容，php执行时会将post内容当作文件内容。从而导致任意代码执行。</strong></p>
 <p><strong>遇到file_get_contents()要想到用php:&#x2F;&#x2F;input绕过。</strong></p>
 </blockquote>
-<p><img src="/CTF/WEB/BUU-easy_web-Wp/01.png" alt="01"></p>
+<p><img src="/CTF/WEB/BUU-ZJCTF,%E4%B8%8D%E8%BF%87%E5%A6%82%E6%AD%A4/01.png" alt="01"></p>
 <blockquote>
 <p>2.使用data协议</p>
 <p>数据流封装器，以传递相应格式的数据。可以让用户来控制输入流，<strong>当它与包含函数结合时，用户输入的data:&#x2F;&#x2F;流会被当作php文件执行</strong></p>
 </blockquote>
-<p><img src="/CTF/WEB/BUU-easy_web-Wp/02.png" alt="02"></p>
+<p><img src="/CTF/WEB/BUU-ZJCTF,%E4%B8%8D%E8%BF%87%E5%A6%82%E6%AD%A4/02.png" alt="02"></p>
 <p>next.php的内容</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$id</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;id&#x27;</span>];</span><br><span class="line"><span class="variable">$_SESSION</span>[<span class="string">&#x27;id&#x27;</span>] = <span class="variable">$id</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">complex</span>(<span class="params"><span class="variable">$re</span>, <span class="variable">$str</span></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="title function_ invoke__">preg_replace</span>(</span><br><span class="line">        <span class="string">&#x27;/(&#x27;</span> . <span class="variable">$re</span> . <span class="string">&#x27;)/ei&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;strtolower(&quot;\\1&quot;)&#x27;</span>,</span><br><span class="line">        <span class="variable">$str</span></span><br><span class="line">    );</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">foreach</span>(<span class="variable">$_GET</span> <span class="keyword">as</span> <span class="variable">$re</span> =&gt; <span class="variable">$str</span>) &#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="title function_ invoke__">complex</span>(<span class="variable">$re</span>, <span class="variable">$str</span>). <span class="string">&quot;\n&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getFlag</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	@<span class="keyword">eval</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;cmd&#x27;</span>]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -350,7 +363,16 @@
       <span class="post-meta-item-text">Posted on</span>
       
 
-      <time title="Created: 2024-01-30 06:20:41 / Modified: 06:27:27" itemprop="dateCreated datePublished" datetime="2024-01-30T06:20:41+08:00">2024-01-30</time>
+      <time title="Created: 2024-01-30 06:20:41 / Modified: 06:33:32" itemprop="dateCreated datePublished" datetime="2024-01-30T06:20:41+08:00">2024-01-30</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Web/" itemprop="url" rel="index"><span itemprop="name">Web</span></a>
+        </span>
     </span>
 
   
@@ -374,7 +396,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>1.4k</span>
+      <span>1.7k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
@@ -401,20 +423,20 @@
 
 
 
-<h3 id="解题"><a href="#解题" class="headerlink" title="解题:"></a>解题:</h3><p><img src="/CTF/WEB/BUU-easy_web-Wp/00.png" alt="00"></p>
+<h3 id="解题"><a href="#解题" class="headerlink" title="解题:"></a>解题:</h3><p>![00](CTF&#x2F;WEB&#x2F;BUU-Easy Java&#x2F;00.png)</p>
 <p>弱口令，在Bp的Intruder模块下破解密码</p>
-<p><img src="/CTF/WEB/BUU-easy_web-Wp/01.png" alt="01"></p>
+<p>![01](CTF&#x2F;WEB&#x2F;BUU-Easy Java&#x2F;01.png)</p>
 <p>进入之后发现并没有flag -&gt; 注意到login页面下面的help可以点,里面有</p>
-<p><img src="/CTF/WEB/BUU-easy_web-Wp/02.png" alt="02"></p>
+<p>![02](CTF&#x2F;WEB&#x2F;BUU-Easy Java&#x2F;02.png)</p>
 <blockquote>
 <p><code>java.io.FileNotFoundException</code> 表示在 Java 中尝试打开或读取文件时，未找到指定路径的文件。在你提供的例子中，文件路径是 <code>&#123;help.docx&#125;</code>。</p>
 </blockquote>
 <p>此时可以注意到url中是有这个filename参数的，且前面是Download -&gt; 下面对应的文件呗?</p>
 <p>但是并没有跳转下载链接, -&gt; 看别人的Wp说，将get方法改为post方法就能跳转下载链接了（不知道为什么）</p>
-<p><img src="/CTF/WEB/BUU-easy_web-Wp/03.png" alt="03"></p>
+<p>![03](CTF&#x2F;WEB&#x2F;BUU-Easy Java&#x2F;03.png)</p>
 <p>下载打开help.docx中并没有flag</p>
 <p><strong>结合题目信息 Java 以及上面的知识点</strong>  访问下载WEB-INF&#x2F;web.xml -&gt; </p>
-<p><img src="/CTF/WEB/BUU-easy_web-Wp/04.png" alt="04"></p>
+<p>![04](CTF&#x2F;WEB&#x2F;BUU-Easy Java&#x2F;04.png)</p>
 <p>再访问下载WEB-INF&#x2F;classes&#x2F;com&#x2F;vm&#x2F;ctf&#x2F;FlagController.class</p>
 <p>打开之后发现一串base64编码的字符串，解码得到flag.</p>
 
@@ -473,7 +495,16 @@
       <span class="post-meta-item-text">Posted on</span>
       
 
-      <time title="Created: 2024-01-30 05:23:15 / Modified: 06:19:11" itemprop="dateCreated datePublished" datetime="2024-01-30T05:23:15+08:00">2024-01-30</time>
+      <time title="Created: 2024-01-30 05:23:15 / Modified: 06:33:58" itemprop="dateCreated datePublished" datetime="2024-01-30T05:23:15+08:00">2024-01-30</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Web/" itemprop="url" rel="index"><span itemprop="name">Web</span></a>
+        </span>
     </span>
 
   
