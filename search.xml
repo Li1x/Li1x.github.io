@@ -20,7 +20,7 @@
   </entry>
   <entry>
     <title></title>
-    <url>/CTF/Web/BUU-%5B%E5%AE%89%E6%B4%B5%E6%9D%AF%202019%5Deasy_web/Wp/</url>
+    <url>/CTF/Web/BUU-easy_web-Wp/</url>
     <content><![CDATA[<p>打开题目，先抓包看看 -&gt; 两个参数img(base64编码) cmd 图片通过base64编码的格式进行传输.</p>
 <p><img src="/.io//00.png"></p>
 <p>看别人的Wp 第一次知道Bp中的Decoder模块（挺好用），不过Bp中base64解码不会主动补齐位数，导致数据上有偏差</p>
