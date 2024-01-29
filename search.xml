@@ -19,8 +19,39 @@
 ]]></content>
   </entry>
   <entry>
+    <title></title>
+    <url>/CTF/Web/BUU-Easy%20Java/</url>
+    <content><![CDATA[<hr>
+<h2 id="title-BUU-RoarCTF-2019-Easy-Java的Wp"><a href="#title-BUU-RoarCTF-2019-Easy-Java的Wp" class="headerlink" title="title:BUU-[RoarCTF 2019]Easy Java的Wp"></a>title:BUU-[RoarCTF 2019]Easy Java的Wp</h2><h3 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h3><p><strong>WEB-INF是Java的WEB应用的安全目录,此外想在页面访问WEB-INF应用里面的文件,必须要通过web.xml进行相应的映射才能访问</strong></p>
+<blockquote>
+<p>&#x2F;WEB-INF&#x2F;web.xml：Web应用程序配置文件，描述了 servlet 和其他的应用组件配置及命名规则<br>&#x2F;WEB-INF&#x2F;classes&#x2F;：含了站点所有用的 class 文件，包括 servlet class 和非servlet class，他们不能包含在.jar文件中<br>&#x2F;WEB-INF&#x2F;lib&#x2F;：存放web应用需要的各种JAR文件，放置仅在这个应用中要求使用的jar文件,如数据库驱动jar文件<br>&#x2F;WEB-INF&#x2F;src&#x2F;：源码目录，按照包名结构放置各个java文件<br>&#x2F;WEB-INF&#x2F;database.properties：数据库配置文件</p>
+</blockquote>
+<p><strong>简单来说，java web是基于Tomcat服务器搭建的，通过servlet来开发。狭义来说，servlet是指Java语言实现的一个接口。</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;servlet-class&gt;  这个就是指向我们要注册的servlet 的类地址, 要带包路径</span><br><span class="line">&lt;servlet-mapping&gt;  是用来配置我们注册的组件的访问路径,里面包括两个节点</span><br><span class="line">一个是&lt;servlet-name&gt;，这个要与前面写的servlet一致</span><br><span class="line">另一个是&lt;url-pattern&gt;，配置这个组件的访问路径</span><br><span class="line">&lt;servlet-name&gt; 这个是我们要注册servlet的名字,一般跟Servlet类名有关</span><br><span class="line">举个例子</span><br><span class="line">&lt;servlet&gt;</span><br><span class="line">    &lt;servlet-name&gt;FlagController&lt;/servlet-name&gt;</span><br><span class="line">    &lt;servlet-class&gt;com.wm.ctf.FlagController&lt;/servlet-class&gt;</span><br><span class="line">&lt;/servlet&gt;</span><br><span class="line">	//servlet包含了路径信息，我们尝试包含一下FlagController所在路径，不过这次要在前面加上classes来访问class文件目录（详见上面的目录结构），且文件后缀为.class</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="解题"><a href="#解题" class="headerlink" title="解题:"></a>解题:</h3><p><img src="/CTF/WEB/BUU-easy_web-Wp/00.png"></p>
+<p>弱口令，在Bp的Intruder模块下破解密码</p>
+<p><img src="/CTF/WEB/BUU-easy_web-Wp/01.png"></p>
+<p>进入之后发现并没有flag -&gt; 注意到login页面下面的help可以点,里面有</p>
+<p><img src="/CTF/WEB/BUU-easy_web-Wp/02.png"></p>
+<blockquote>
+<p><code>java.io.FileNotFoundException</code> 表示在 Java 中尝试打开或读取文件时，未找到指定路径的文件。在你提供的例子中，文件路径是 <code>&#123;help.docx&#125;</code>。</p>
+</blockquote>
+<p>此时可以注意到url中是有这个filename参数的，且前面是Download -&gt; 下面对应的文件呗?</p>
+<p>但是并没有跳转下载链接, -&gt; 看别人的Wp说，将get方法改为post方法就能跳转下载链接了（不知道为什么）</p>
+<p><img src="/CTF/WEB/BUU-easy_web-Wp/03.png"></p>
+<p>下载打开help.docx中并没有flag</p>
+<p><strong>结合题目信息 Java 以及上面的知识点</strong>  访问下载WEB-INF&#x2F;web.xml -&gt; </p>
+<p><img src="/CTF/WEB/BUU-easy_web-Wp/04.png"></p>
+<p>再访问下载WEB-INF&#x2F;classes&#x2F;com&#x2F;vm&#x2F;ctf&#x2F;FlagController.class</p>
+<p>打开之后发现一串base64编码的字符串，解码得到flag.</p>
+]]></content>
+  </entry>
+  <entry>
     <title>BUU-easy_web-Wp</title>
-    <url>/CTF/Web/BUU-easy_web-Wp/</url>
+    <url>/CTF/Web/BUU-easy_web/</url>
     <content><![CDATA[<p>打开题目，先抓包看看 -&gt; 两个参数img(base64编码) cmd 图片通过base64编码的格式进行传输.</p>
 <p><img src="/CTF/WEB/BUU-easy_web-Wp/00.png" alt="00"></p>
 <p>看别人的Wp 第一次知道Bp中的Decoder模块（挺好用），不过Bp中base64解码不会主动补齐位数，导致数据上有偏差</p>
@@ -73,6 +104,117 @@
 <p><strong>2.传参为什么要将空格表示为%20（url编码）      直接用空格是不对的。</strong> </p>
 <p>3.php中对于\的输出 -&gt; 可以得到 奇数个报错，偶数个输出一半</p>
 <p><img src="/CTF/WEB/BUU-easy_web-Wp/05.png" alt="05"></p>
+]]></content>
+  </entry>
+  <entry>
+    <title></title>
+    <url>/CTF/Web/BUU-ZJCTF%EF%BC%8C%E4%B8%8D%E8%BF%87%E5%A6%82%E6%AD%A4/</url>
+    <content><![CDATA[<hr>
+<h2 id="title-BUU-ZJCTF-不过如此-Wp"><a href="#title-BUU-ZJCTF-不过如此-Wp" class="headerlink" title="title:BUU-ZJCTF,不过如此 - Wp"></a>title:BUU-ZJCTF,不过如此 - Wp</h2><p><img src="/CTF/WEB/BUU-easy_web-Wp/00%E6%BA%90%E7%A0%81.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">file_get_contents($text,&#x27;r&#x27;)===&quot;I have a dream&quot;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>1.使用php:&#x2F;&#x2F;input</p>
+<p><strong>php:&#x2F;&#x2F;input</strong>可以访问请求的原始数据的只读流，将post请求的数据当作php代码执行。<strong>当传入的参数作为文件名打开时，可以将参数设为php:&#x2F;&#x2F;input,同时post想设置的文件内容，php执行时会将post内容当作文件内容。从而导致任意代码执行。</strong></p>
+<p><strong>遇到file_get_contents()要想到用php:&#x2F;&#x2F;input绕过。</strong></p>
+</blockquote>
+<p><img src="/CTF/WEB/BUU-easy_web-Wp/01.png"></p>
+<blockquote>
+<p>2.使用data协议</p>
+<p>数据流封装器，以传递相应格式的数据。可以让用户来控制输入流，<strong>当它与包含函数结合时，用户输入的data:&#x2F;&#x2F;流会被当作php文件执行</strong></p>
+</blockquote>
+<p><img src="/CTF/WEB/BUU-easy_web-Wp/02.png"></p>
+<p>next.php的内容</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$id</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;id&#x27;</span>];</span><br><span class="line"><span class="variable">$_SESSION</span>[<span class="string">&#x27;id&#x27;</span>] = <span class="variable">$id</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">complex</span>(<span class="params"><span class="variable">$re</span>, <span class="variable">$str</span></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="title function_ invoke__">preg_replace</span>(</span><br><span class="line">        <span class="string">&#x27;/(&#x27;</span> . <span class="variable">$re</span> . <span class="string">&#x27;)/ei&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;strtolower(&quot;\\1&quot;)&#x27;</span>,</span><br><span class="line">        <span class="variable">$str</span></span><br><span class="line">    );</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">foreach</span>(<span class="variable">$_GET</span> <span class="keyword">as</span> <span class="variable">$re</span> =&gt; <span class="variable">$str</span>) &#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="title function_ invoke__">complex</span>(<span class="variable">$re</span>, <span class="variable">$str</span>). <span class="string">&quot;\n&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getFlag</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	@<span class="keyword">eval</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;cmd&#x27;</span>]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<p><strong>1.preg_replace()的&#x2F;e模式存在命令执行漏洞		&#x2F;e -&gt; 可执行模式，此为PHP专有参数，例如preg_replace函数.</strong></p>
+<p><strong>知识学习</strong>（低版本php存在，新版本的php已经启用&#x2F;e）</p>
+<p><a href="https://xz.aliyun.com/t/2557">https://xz.aliyun.com/t/2557</a></p>
+<p><a href="https://blog.csdn.net/qq_20408491/article/details/75095055">https://blog.csdn.net/qq_20408491/article/details/75095055</a></p>
+<blockquote>
+<p> <strong>preg_replace</strong> 函数在匹配到符号正则的字符串时，会将替换字符串（也就是上图 <strong>preg_replace</strong> 函数的第二个参数）当做代码来执行，然而这里的第二个参数却固定为 <strong>‘strtolower(“\1”)’</strong> 字符串，那这样要如何执行代码呢？</p>
+<p><strong>replacement</strong>可以包含\n形式或$n形式的逆向引用，n可以为0到99，\n表示匹配pattern第n个子模式的文本，\0表示匹配整个pattern的文本</p>
+</blockquote>
+<p><strong><code>\1</code> 在正则表达式中有自己的含义，</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">反向引用</span><br><span class="line"></span><br><span class="line">对一个正则表达式模式或部分模式 两边添加圆括号 将导致相关 匹配存储到一个临时缓冲区 中，所捕获的每个子匹配都按照在正则表达式模式中从左到右出现的顺序存储。缓冲区编号从 1 开始，最多可存储 99 个捕获的子表达式。每个缓冲区都可以使用 &#x27;\n&#x27; 访问，其中 n 为一个标识特定缓冲区的一位或两位十进制数</span><br><span class="line"></span><br><span class="line">这里的 \1 实际上是匹配第一个子匹配项,我们拿 ripstech 官方给的 payload 进行分析，方便大家理解。官方 payload 为： /?.*=&#123;$&#123;phpinfo()&#125;&#125; ，即 GET 方式传入的参数名为 /?.* ，值为 &#123;$&#123;phpinfo()&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">原先的语句： preg_replace(&#x27;/(&#x27; . $re . &#x27;)/ei&#x27;, &#x27;strtolower(&quot;\\1&quot;)&#x27;, $str);</span><br><span class="line">变成了语句： preg_replace(&#x27;/(.*)/ei&#x27;, &#x27;strtolower(&quot;\\1&quot;)&#x27;, &#123;$&#123;phpinfo()&#125;&#125;);</span><br></pre></td></tr></table></figure>
+
+<p><strong>2.此处由GET方法传入值，而GET方法传参时 -&gt; 当首字母为点号时，会被替换为下划线.</strong></p>
+<blockquote>
+<p><strong>\S*&#x3D;${phpinfo()}</strong></p>
+<p>\S 匹配任何非空白字符</p>
+</blockquote>
+<p><strong>3.PHP可变变量</strong></p>
+<p><code>payload \S\*=$&#123;phpinfo()&#125;</code></p>
+<blockquote>
+<p>在PHP中双引号包裹的字符串中可以解析变量，而单引号则不行。 <strong>${phpinfo()}</strong> 中的 <strong>phpinfo()</strong> 会被当做变量先执行，执行后，即变成 <strong>${1}</strong> (phpinfo()成功执行返回true)</p>
+</blockquote>
+<p>payload: <code>/?text=data://text/pain,I have a dream&amp;file=next.php&amp;\S*=$&#123;getFlag()&#125;&amp;cmd=system(&#39;cat /flag&#39;);</code></p>
+]]></content>
+  </entry>
+  <entry>
+    <title></title>
+    <url>/CTF/Web/BUU-Easy%20Java/Wp%20-%20%E5%89%AF%E6%9C%AC/</url>
+    <content><![CDATA[<h3 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h3><p><strong>WEB-INF是Java的WEB应用的安全目录,此外想在页面访问WEB-INF应用里面的文件,必须要通过web.xml进行相应的映射才能访问</strong></p>
+<blockquote>
+<p>&#x2F;WEB-INF&#x2F;web.xml：Web应用程序配置文件，描述了 servlet 和其他的应用组件配置及命名规则<br>&#x2F;WEB-INF&#x2F;classes&#x2F;：含了站点所有用的 class 文件，包括 servlet class 和非servlet class，他们不能包含在.jar文件中<br>&#x2F;WEB-INF&#x2F;lib&#x2F;：存放web应用需要的各种JAR文件，放置仅在这个应用中要求使用的jar文件,如数据库驱动jar文件<br>&#x2F;WEB-INF&#x2F;src&#x2F;：源码目录，按照包名结构放置各个java文件<br>&#x2F;WEB-INF&#x2F;database.properties：数据库配置文件</p>
+</blockquote>
+<p><strong>简单来说，java web是基于Tomcat服务器搭建的，通过servlet来开发。狭义来说，servlet是指Java语言实现的一个接口。</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;servlet-class&gt;  这个就是指向我们要注册的servlet 的类地址, 要带包路径</span><br><span class="line">&lt;servlet-mapping&gt;  是用来配置我们注册的组件的访问路径,里面包括两个节点</span><br><span class="line">一个是&lt;servlet-name&gt;，这个要与前面写的servlet一致</span><br><span class="line">另一个是&lt;url-pattern&gt;，配置这个组件的访问路径</span><br><span class="line">&lt;servlet-name&gt; 这个是我们要注册servlet的名字,一般跟Servlet类名有关</span><br><span class="line">举个例子</span><br><span class="line">&lt;servlet&gt;</span><br><span class="line">    &lt;servlet-name&gt;FlagController&lt;/servlet-name&gt;</span><br><span class="line">    &lt;servlet-class&gt;com.wm.ctf.FlagController&lt;/servlet-class&gt;</span><br><span class="line">&lt;/servlet&gt;</span><br><span class="line">	//servlet包含了路径信息，我们尝试包含一下FlagController所在路径，不过这次要在前面加上classes来访问class文件目录（详见上面的目录结构），且文件后缀为.class</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="解题"><a href="#解题" class="headerlink" title="解题:"></a>解题:</h3><p>![](E:\OneDrive\桌面\Typora\CTF\Wp\BUU-[RoarCTF 2019]Easy Java\00.png)</p>
+<p>弱口令，在Bp的Intruder模块下破解密码</p>
+<p>![](E:\OneDrive\桌面\Typora\CTF\Wp\BUU-[RoarCTF 2019]Easy Java\01.png)</p>
+<p>进入之后发现并没有flag -&gt; 注意到login页面下面的help可以点,里面有</p>
+<p>![](E:\OneDrive\桌面\Typora\CTF\Wp\BUU-[RoarCTF 2019]Easy Java\02.png)</p>
+<blockquote>
+<p><code>java.io.FileNotFoundException</code> 表示在 Java 中尝试打开或读取文件时，未找到指定路径的文件。在你提供的例子中，文件路径是 <code>&#123;help.docx&#125;</code>。</p>
+</blockquote>
+<p>此时可以注意到url中是有这个filename参数的，且前面是Download -&gt; 下面对应的文件呗?</p>
+<p>但是并没有跳转下载链接, -&gt; 看别人的Wp说，将get方法改为post方法就能跳转下载链接了（不知道为什么）</p>
+<p>![](E:\OneDrive\桌面\Typora\CTF\Wp\BUU-[RoarCTF 2019]Easy Java\03.png)</p>
+<p>下载打开help.docx中并没有flag</p>
+<p><strong>结合题目信息 Java 以及上面的知识点</strong>  访问下载WEB-INF&#x2F;web.xml -&gt; </p>
+<p>![](E:\OneDrive\桌面\Typora\CTF\Wp\BUU-[RoarCTF 2019]Easy Java\04.png)</p>
+<p>再访问下载WEB-INF&#x2F;classes&#x2F;com&#x2F;vm&#x2F;ctf&#x2F;FlagController.class</p>
+<p>打开之后发现一串base64编码的字符串，解码得到flag.</p>
+]]></content>
+  </entry>
+  <entry>
+    <title></title>
+    <url>/CTF/Web/BUU-Easy%20Java/Wp/</url>
+    <content><![CDATA[<h3 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h3><p><strong>WEB-INF是Java的WEB应用的安全目录,此外想在页面访问WEB-INF应用里面的文件,必须要通过web.xml进行相应的映射才能访问</strong></p>
+<blockquote>
+<p>&#x2F;WEB-INF&#x2F;web.xml：Web应用程序配置文件，描述了 servlet 和其他的应用组件配置及命名规则<br>&#x2F;WEB-INF&#x2F;classes&#x2F;：含了站点所有用的 class 文件，包括 servlet class 和非servlet class，他们不能包含在.jar文件中<br>&#x2F;WEB-INF&#x2F;lib&#x2F;：存放web应用需要的各种JAR文件，放置仅在这个应用中要求使用的jar文件,如数据库驱动jar文件<br>&#x2F;WEB-INF&#x2F;src&#x2F;：源码目录，按照包名结构放置各个java文件<br>&#x2F;WEB-INF&#x2F;database.properties：数据库配置文件</p>
+</blockquote>
+<p><strong>简单来说，java web是基于Tomcat服务器搭建的，通过servlet来开发。狭义来说，servlet是指Java语言实现的一个接口。</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;servlet-class&gt;  这个就是指向我们要注册的servlet 的类地址, 要带包路径</span><br><span class="line">&lt;servlet-mapping&gt;  是用来配置我们注册的组件的访问路径,里面包括两个节点</span><br><span class="line">一个是&lt;servlet-name&gt;，这个要与前面写的servlet一致</span><br><span class="line">另一个是&lt;url-pattern&gt;，配置这个组件的访问路径</span><br><span class="line">&lt;servlet-name&gt; 这个是我们要注册servlet的名字,一般跟Servlet类名有关</span><br><span class="line">举个例子</span><br><span class="line">&lt;servlet&gt;</span><br><span class="line">    &lt;servlet-name&gt;FlagController&lt;/servlet-name&gt;</span><br><span class="line">    &lt;servlet-class&gt;com.wm.ctf.FlagController&lt;/servlet-class&gt;</span><br><span class="line">&lt;/servlet&gt;</span><br><span class="line">	//servlet包含了路径信息，我们尝试包含一下FlagController所在路径，不过这次要在前面加上classes来访问class文件目录（详见上面的目录结构），且文件后缀为.class</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="解题"><a href="#解题" class="headerlink" title="解题:"></a>解题:</h3><p>![](E:\OneDrive\桌面\Typora\CTF\Wp\BUU-[RoarCTF 2019]Easy Java\00.png)</p>
+<p>弱口令，在Bp的Intruder模块下破解密码</p>
+<p>![](E:\OneDrive\桌面\Typora\CTF\Wp\BUU-[RoarCTF 2019]Easy Java\01.png)</p>
+<p>进入之后发现并没有flag -&gt; 注意到login页面下面的help可以点,里面有</p>
+<p>![](E:\OneDrive\桌面\Typora\CTF\Wp\BUU-[RoarCTF 2019]Easy Java\02.png)</p>
+<blockquote>
+<p><code>java.io.FileNotFoundException</code> 表示在 Java 中尝试打开或读取文件时，未找到指定路径的文件。在你提供的例子中，文件路径是 <code>&#123;help.docx&#125;</code>。</p>
+</blockquote>
+<p>此时可以注意到url中是有这个filename参数的，且前面是Download -&gt; 下面对应的文件呗?</p>
+<p>但是并没有跳转下载链接, -&gt; 看别人的Wp说，将get方法改为post方法就能跳转下载链接了（不知道为什么）</p>
+<p>![](E:\OneDrive\桌面\Typora\CTF\Wp\BUU-[RoarCTF 2019]Easy Java\03.png)</p>
+<p>下载打开help.docx中并没有flag</p>
+<p><strong>结合题目信息 Java 以及上面的知识点</strong>  访问下载WEB-INF&#x2F;web.xml -&gt; </p>
+<p>![](E:\OneDrive\桌面\Typora\CTF\Wp\BUU-[RoarCTF 2019]Easy Java\04.png)</p>
+<p>再访问下载WEB-INF&#x2F;classes&#x2F;com&#x2F;vm&#x2F;ctf&#x2F;FlagController.class</p>
+<p>打开之后发现一串base64编码的字符串，解码得到flag.</p>
 ]]></content>
   </entry>
 </search>

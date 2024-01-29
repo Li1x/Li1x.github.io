@@ -1,0 +1,33 @@
+<h3 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h3><p><strong>WEB-INF是Java的WEB应用的安全目录,此外想在页面访问WEB-INF应用里面的文件,必须要通过web.xml进行相应的映射才能访问</strong></p>
+<blockquote>
+<p>&#x2F;WEB-INF&#x2F;web.xml：Web应用程序配置文件，描述了 servlet 和其他的应用组件配置及命名规则<br>&#x2F;WEB-INF&#x2F;classes&#x2F;：含了站点所有用的 class 文件，包括 servlet class 和非servlet class，他们不能包含在.jar文件中<br>&#x2F;WEB-INF&#x2F;lib&#x2F;：存放web应用需要的各种JAR文件，放置仅在这个应用中要求使用的jar文件,如数据库驱动jar文件<br>&#x2F;WEB-INF&#x2F;src&#x2F;：源码目录，按照包名结构放置各个java文件<br>&#x2F;WEB-INF&#x2F;database.properties：数据库配置文件</p>
+</blockquote>
+<p><strong>简单来说，java web是基于Tomcat服务器搭建的，通过servlet来开发。狭义来说，servlet是指Java语言实现的一个接口。</strong></p>
+<pre><code class="php+HTML">&lt;servlet-class&gt;  这个就是指向我们要注册的servlet 的类地址, 要带包路径
+&lt;servlet-mapping&gt;  是用来配置我们注册的组件的访问路径,里面包括两个节点
+一个是&lt;servlet-name&gt;，这个要与前面写的servlet一致
+另一个是&lt;url-pattern&gt;，配置这个组件的访问路径
+&lt;servlet-name&gt; 这个是我们要注册servlet的名字,一般跟Servlet类名有关
+举个例子
+&lt;servlet&gt;
+    &lt;servlet-name&gt;FlagController&lt;/servlet-name&gt;
+    &lt;servlet-class&gt;com.wm.ctf.FlagController&lt;/servlet-class&gt;
+&lt;/servlet&gt;
+    //servlet包含了路径信息，我们尝试包含一下FlagController所在路径，不过这次要在前面加上classes来访问class文件目录（详见上面的目录结构），且文件后缀为.class
+</code></pre>
+<h3 id="解题"><a href="#解题" class="headerlink" title="解题:"></a>解题:</h3><p>![](E:\OneDrive\桌面\Typora\CTF\Wp\BUU-[RoarCTF 2019]Easy Java\00.png)</p>
+<p>弱口令，在Bp的Intruder模块下破解密码</p>
+<p>![](E:\OneDrive\桌面\Typora\CTF\Wp\BUU-[RoarCTF 2019]Easy Java\01.png)</p>
+<p>进入之后发现并没有flag -&gt; 注意到login页面下面的help可以点,里面有</p>
+<p>![](E:\OneDrive\桌面\Typora\CTF\Wp\BUU-[RoarCTF 2019]Easy Java\02.png)</p>
+<blockquote>
+<p><code>java.io.FileNotFoundException</code> 表示在 Java 中尝试打开或读取文件时，未找到指定路径的文件。在你提供的例子中，文件路径是 <code>{help.docx}</code>。</p>
+</blockquote>
+<p>此时可以注意到url中是有这个filename参数的，且前面是Download -&gt; 下面对应的文件呗?</p>
+<p>但是并没有跳转下载链接, -&gt; 看别人的Wp说，将get方法改为post方法就能跳转下载链接了（不知道为什么）</p>
+<p>![](E:\OneDrive\桌面\Typora\CTF\Wp\BUU-[RoarCTF 2019]Easy Java\03.png)</p>
+<p>下载打开help.docx中并没有flag</p>
+<p><strong>结合题目信息 Java 以及上面的知识点</strong>  访问下载WEB-INF&#x2F;web.xml -&gt; </p>
+<p>![](E:\OneDrive\桌面\Typora\CTF\Wp\BUU-[RoarCTF 2019]Easy Java\04.png)</p>
+<p>再访问下载WEB-INF&#x2F;classes&#x2F;com&#x2F;vm&#x2F;ctf&#x2F;FlagController.class</p>
+<p>打开之后发现一串base64编码的字符串，解码得到flag.</p>
