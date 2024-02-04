@@ -150,7 +150,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives">
-          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-count">4</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -172,136 +172,6 @@
     </div>
 
     <div class="main-inner index posts-expand">
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://li1x.github.io/CTF/Pwn/[HNCTF%202022%20Week1]fmtstrre/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Li1x">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Li1x's Blog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Li1x's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/CTF/Pwn/%5BHNCTF%202022%20Week1%5Dfmtstrre/" class="post-title-link" itemprop="url">Untitled</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-      
-
-      <time title="Created: 2024-02-05 01:44:31 / Modified: 01:47:02" itemprop="dateCreated datePublished" datetime="2024-02-05T01:44:31+08:00">2024-02-05</time>
-    </span>
-
-  
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/CTF/Pwn/%5BHNCTF%202022%20Week1%5Dfmtstrre/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="CTF/Pwn/[HNCTF 2022 Week1]fmtstrre/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>951</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>2 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <hr>
-<h2 id="title-HNCTF-2022-Week1-fmtstrre的Wpcategories-Pwn"><a href="#title-HNCTF-2022-Week1-fmtstrre的Wpcategories-Pwn" class="headerlink" title="title:[HNCTF 2022 Week1]fmtstrre的Wpcategories:Pwn"></a>title:[HNCTF 2022 Week1]fmtstrre的Wp<br>categories:Pwn</h2><p>先checksec一下</p>
-<p>![](CTF&#x2F;Pwn&#x2F;[HNCTF 2022 Week1]fmtstrre&#x2F;00.png)</p>
-<p>然后IDA(64)打开</p>
-<p>![](CTF&#x2F;Pwn&#x2F;[HNCTF 2022 Week1]fmtstrre&#x2F;01.png)</p>
-<blockquote>
-<p>open函数(成功打开文件返回非负整数，打开失败返回-1)</p>
-<p>read(fd, &amp;name, 48uLL)函数(向fd中读取48字节数据存放至name地址下)</p>
-<p>将name的地址赋值给v5</p>
-<p>再向buf中写入256字节数据</p>
-</blockquote>
-<p>格式化字符串漏洞点 <code>printf(buf)</code></p>
-<p>这段代码中需要打开flag这个文件 &#x3D;l&gt; 小技巧</p>
-<p>-&gt; 在当前目录下创建一个flag文件，并输入一些东西，可以帮助我们观察其在栈上的位置。</p>
-<p>-&gt;当然,这个文件不是必须的.</p>
-<p>该如何利用这个漏洞？根据这个题，flag这个文件的内容是存放在了栈中，那我们就要知道具体的位置。</p>
-<p>-&gt;偏移量的计算（看别人的Wp说是偏移了38）即flag 的内容是保存在第38个的位置上的</p>
-<p><strong>参考<a target="_blank" rel="noopener" href="https://www.cnblogs.com/falling-dusk/p/17858030.html">https://www.cnblogs.com/falling-dusk/p/17858030.html</a></strong></p>
-<p>![](CTF&#x2F;Pwn&#x2F;[HNCTF 2022 Week1]fmtstrre&#x2F;02.png)</p>
-<blockquote>
-<p>找 …4141… 类似的数据，看它是第几个地址（6）</p>
-</blockquote>
-<p>![](CTF&#x2F;Pwn&#x2F;[HNCTF 2022 Week1]fmtstrre&#x2F;03.png)</p>
-<blockquote>
-<p>name即flag的位置，0x20 &#x3D;32 &#x3D;&gt;偏移量.</p>
-<p>rsp到name的距离是 0x1d0 - 0x0d0 &#x3D; 256 &#x2F; 8 &#x3D;32</p>
-<p>​	对于这里要除以8 —&gt; 我理解的是（64位程序，栈中一个小格格是8字节数据，一共相差256字节，即32个小格子）</p>
-</blockquote>
-<p>32 + 6 &#x3D;38</p>
-<p><strong>exp:</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">io = remote()</span><br><span class="line">payload = <span class="string">&quot;%38$s&quot;</span></span><br><span class="line">io.sendline(payload)</span><br><span class="line">io.interactive()</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
 
     
 
@@ -895,13 +765,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Word count total">8k</span>
+    <span title="Word count total">7k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">15 mins.</span>
+    <span title="Reading time total">13 mins.</span>
   </span>
 </div>
 <div class="busuanzi-count">
