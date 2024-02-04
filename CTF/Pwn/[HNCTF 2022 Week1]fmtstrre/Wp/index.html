@@ -20,23 +20,32 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"li1x.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.19.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta property="og:type" content="website">
+    <meta name="description" content="先checksec一下  然后IDA(64)打开   open函数(成功打开文件返回非负整数，打开失败返回-1) read(fd, &amp;name, 48uLL)函数(向fd中读取48字节数据存放至name地址下) 将name的地址赋值给v5 再向buf中写入256字节数据  格式化字符串漏洞点 printf(buf) 这段代码中需要打开flag这个文件 &#x3D;l&gt; 小技巧 -&amp;g">
+<meta property="og:type" content="article">
 <meta property="og:title" content="Li1x&#39;s Blog">
-<meta property="og:url" content="https://li1x.github.io/archives/2024/index.html">
+<meta property="og:url" content="https://li1x.github.io/CTF/Pwn/[HNCTF%202022%20Week1]fmtstrre/Wp/index.html">
 <meta property="og:site_name" content="Li1x&#39;s Blog">
+<meta property="og:description" content="先checksec一下  然后IDA(64)打开   open函数(成功打开文件返回非负整数，打开失败返回-1) read(fd, &amp;name, 48uLL)函数(向fd中读取48字节数据存放至name地址下) 将name的地址赋值给v5 再向buf中写入256字节数据  格式化字符串漏洞点 printf(buf) 这段代码中需要打开flag这个文件 &#x3D;l&gt; 小技巧 -&amp;g">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://li1x.github.io/Wp/00.png">
+<meta property="og:image" content="https://li1x.github.io/Wp/01.png">
+<meta property="og:image" content="https://li1x.github.io/Wp/02.png">
+<meta property="og:image" content="https://li1x.github.io/Wp/03.png">
+<meta property="article:published_time" content="2024-02-04T17:44:35.727Z">
+<meta property="article:modified_time" content="2024-02-04T16:56:05.858Z">
 <meta property="article:author" content="Li1x">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://li1x.github.io/Wp/00.png">
 
 
-<link rel="canonical" href="https://li1x.github.io/archives/2024/">
+<link rel="canonical" href="https://li1x.github.io/CTF/Pwn/[HNCTF%202022%20Week1]fmtstrre/Wp/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":false,"lang":"en","comments":"","permalink":"","path":"archives/2024/index.html","title":""}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://li1x.github.io/CTF/Pwn/[HNCTF%202022%20Week1]fmtstrre/Wp/","path":"CTF/Pwn/[HNCTF 2022 Week1]fmtstrre/Wp/","title":""}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>Archive | Li1x's Blog</title>
+<title> | Li1x's Blog</title>
   
 
 
@@ -69,7 +78,7 @@
 
     <a href="/" class="brand" rel="start">
       <i class="logo-line"></i>
-      <h1 class="site-title">Li1x's Blog</h1>
+      <p class="site-title">Li1x's Blog</p>
       <i class="logo-line"></i>
     </a>
       <p class="site-subtitle" itemprop="description">Lifelong Learning</p>
@@ -171,150 +180,160 @@
 
     </div>
 
-    <div class="main-inner archive posts-collapse">
+    <div class="main-inner post posts-expand">
 
 
   
+
+
+<div class="post-block">
   
   
-  <div class="post-block">
-    <div class="post-content">
-      <div class="collection-title">
-        <span class="collection-header">Um..! 6 posts in total. Keep on posting.</span>
-      </div>
 
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://li1x.github.io/CTF/Pwn/[HNCTF%202022%20Week1]fmtstrre/Wp/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Li1x">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Li1x's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Li1x's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
       
-    <div class="collection-year">
-      <span class="collection-header">2024</span>
-    </div>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2024-02-05T01:44:35+08:00"
-              content="2024-02-05">
-          02-05
-        </time>
-      </div>
+      <time title="Created: 2024-02-05 01:44:35 / Modified: 00:56:05" itemprop="dateCreated datePublished" datetime="2024-02-05T01:44:35+08:00">2024-02-05</time>
+    </span>
 
-      <div class="post-title">
-        <a class="post-title-link" href="/CTF/Pwn/%5BHNCTF%202022%20Week1%5Dfmtstrre/Wp/" itemprop="url">
-          <span itemprop="name">Untitled</span>
-        </a>
-      </div>
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/CTF/Pwn/%5BHNCTF%202022%20Week1%5Dfmtstrre/Wp/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="CTF/Pwn/[HNCTF 2022 Week1]fmtstrre/Wp/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>668</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
 
-      
-    </header>
-  </article>
+        </div>
+      </header>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2024-02-05T01:44:31+08:00"
-              content="2024-02-05">
-          02-05
-        </time>
-      </div>
-
-      <div class="post-title">
-        <a class="post-title-link" href="/CTF/Pwn/%5BHNCTF%202022%20Week1%5Dfmtstrre/" itemprop="url">
-          <span itemprop="name">Untitled</span>
-        </a>
-      </div>
-
-      
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2024-01-30T06:23:42+08:00"
-              content="2024-01-30">
-          01-30
-        </time>
-      </div>
-
-      <div class="post-title">
-        <a class="post-title-link" href="/CTF/Web/BUU-ZJCTF,%E4%B8%8D%E8%BF%87%E5%A6%82%E6%AD%A4/" itemprop="url">
-          <span itemprop="name">BUU-ZJCTF,不过如此 - Wp</span>
-        </a>
-      </div>
-
-      
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2024-01-30T06:20:41+08:00"
-              content="2024-01-30">
-          01-30
-        </time>
-      </div>
-
-      <div class="post-title">
-        <a class="post-title-link" href="/CTF/Web/BUU-Easy%20Java/" itemprop="url">
-          <span itemprop="name">BUU-[RoarCTF 2019]Easy Java的Wp</span>
-        </a>
-      </div>
-
-      
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2024-01-30T05:23:15+08:00"
-              content="2024-01-30">
-          01-30
-        </time>
-      </div>
-
-      <div class="post-title">
-        <a class="post-title-link" href="/CTF/Web/BUU-easy_web/" itemprop="url">
-          <span itemprop="name">BUU-easy_web的Wp</span>
-        </a>
-      </div>
-
-      
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2024-01-18T00:39:55+08:00"
-              content="2024-01-18">
-          01-18
-        </time>
-      </div>
-
-      <div class="post-title">
-        <a class="post-title-link" href="/hello-world/" itemprop="url">
-          <span itemprop="name">Hello World</span>
-        </a>
-      </div>
-
-      
-    </header>
-  </article>
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>先checksec一下</p>
+<p><img src="/Wp/00.png"></p>
+<p>然后IDA(64)打开</p>
+<p><img src="/Wp/01.png"></p>
+<blockquote>
+<p>open函数(成功打开文件返回非负整数，打开失败返回-1)</p>
+<p>read(fd, &amp;name, 48uLL)函数(向fd中读取48字节数据存放至name地址下)</p>
+<p>将name的地址赋值给v5</p>
+<p>再向buf中写入256字节数据</p>
+</blockquote>
+<p>格式化字符串漏洞点 <code>printf(buf)</code></p>
+<p>这段代码中需要打开flag这个文件 &#x3D;l&gt; 小技巧</p>
+<p>-&gt; 在当前目录下创建一个flag文件，并输入一些东西，可以帮助我们观察其在栈上的位置。</p>
+<p>-&gt;当然,这个文件不是必须的.</p>
+<p>该如何利用这个漏洞？根据这个题，flag这个文件的内容是存放在了栈中，那我们就要知道具体的位置。</p>
+<p>-&gt;偏移量的计算（看别人的Wp说是偏移了38）即flag 的内容是保存在第38个的位置上的</p>
+<p><strong>参考<a target="_blank" rel="noopener" href="https://www.cnblogs.com/falling-dusk/p/17858030.html">https://www.cnblogs.com/falling-dusk/p/17858030.html</a></strong></p>
+<p><img src="/Wp/02.png"></p>
+<blockquote>
+<p>找 …4141… 类似的数据，看它是第几个地址（6）</p>
+</blockquote>
+<p><img src="/Wp/03.png"></p>
+<blockquote>
+<p>name即flag的位置，0x20 &#x3D;32 &#x3D;&gt;偏移量.</p>
+<p>rsp到name的距离是 0x1d0 - 0x0d0 &#x3D; 256 &#x2F; 8 &#x3D;32</p>
+<p>​	对于这里要除以8 —&gt; 我理解的是（64位程序，栈中一个小格格是8字节数据，一共相差256字节，即32个小格子）</p>
+</blockquote>
+<p>32 + 6 &#x3D;38</p>
+<p><strong>exp:</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">io = remote()</span><br><span class="line">payload = <span class="string">&quot;%38$s&quot;</span></span><br><span class="line">io.sendline(payload)</span><br><span class="line">io.interactive()</span><br></pre></td></tr></table></figure>
 
 
     </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/CTF/Pwn/%5BHNCTF%202022%20Week1%5Dfmtstrre/" rel="prev" title="">
+                  <i class="fa fa-angle-left"></i> 
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
   </div>
   
-  
-  
-
 </div>
   </main>
 
