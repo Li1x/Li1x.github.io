@@ -339,7 +339,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://li1x.github.io/CTF/Web/BUU-Easy%20Java/">
+    <link itemprop="mainEntityOfPage" href="https://li1x.github.io/CTF/Web/BUU-Easy_Java/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -357,7 +357,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/CTF/Web/BUU-Easy%20Java/" class="post-title-link" itemprop="url">BUU-[RoarCTF 2019]Easy Java的Wp</a>
+          <a href="/CTF/Web/BUU-Easy_Java/" class="post-title-link" itemprop="url">BUU-[RoarCTF 2019]Easy Java的Wp</a>
         </h2>
 
         <div class="post-meta-container">
@@ -375,7 +375,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2024-02-05 01:52:52" itemprop="dateModified" datetime="2024-02-05T01:52:52+08:00">2024-02-05</time>
+      <time title="Modified: 2024-02-05 02:06:19" itemprop="dateModified" datetime="2024-02-05T02:06:19+08:00">2024-02-05</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -396,8 +396,8 @@
       </span>
       <span class="post-meta-item-text">Disqus: </span>
     
-    <a title="disqus" href="/CTF/Web/BUU-Easy%20Java/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="CTF/Web/BUU-Easy Java/" itemprop="commentCount"></span>
+    <a title="disqus" href="/CTF/Web/BUU-Easy_Java/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="CTF/Web/BUU-Easy_Java/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -408,7 +408,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>1.7k</span>
+      <span>1.4k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
@@ -435,20 +435,20 @@
 
 
 
-<h3 id="解题"><a href="#解题" class="headerlink" title="解题:"></a>解题:</h3><p>![00](CTF&#x2F;Web&#x2F;BUU-Easy Java&#x2F;00.png)</p>
+<h3 id="解题"><a href="#解题" class="headerlink" title="解题:"></a>解题:</h3><p><img src="/CTF/Web/BUU-Easy_Java/00.png"></p>
 <p>弱口令，在Bp的Intruder模块下破解密码</p>
-<p>![01](CTF&#x2F;Web&#x2F;BUU-Easy Java&#x2F;01.png)</p>
+<p><img src="/CTF/Web/BUU-Easy_Java/01.png"></p>
 <p>进入之后发现并没有flag -&gt; 注意到login页面下面的help可以点,里面有</p>
-<p>![02](CTF&#x2F;Web&#x2F;BUU-Easy Java&#x2F;02.png)</p>
+<p><img src="/CTF/Web/BUU-Easy_Java/00.png"></p>
 <blockquote>
 <p><code>java.io.FileNotFoundException</code> 表示在 Java 中尝试打开或读取文件时，未找到指定路径的文件。在你提供的例子中，文件路径是 <code>&#123;help.docx&#125;</code>。</p>
 </blockquote>
 <p>此时可以注意到url中是有这个filename参数的，且前面是Download -&gt; 下面对应的文件呗?</p>
 <p>但是并没有跳转下载链接, -&gt; 看别人的Wp说，将get方法改为post方法就能跳转下载链接了（不知道为什么）</p>
-<p>![03](CTF&#x2F;Web&#x2F;BUU-Easy Java&#x2F;03.png)</p>
+<p><img src="/CTF/Web/BUU-Easy_Java/03.png"></p>
 <p>下载打开help.docx中并没有flag</p>
 <p><strong>结合题目信息 Java 以及上面的知识点</strong>  访问下载WEB-INF&#x2F;web.xml -&gt; </p>
-<p>![04](CTF&#x2F;Web&#x2F;BUU-Easy Java&#x2F;04.png)</p>
+<p><img src="/CTF/Web/BUU-Easy_Java/04.png"></p>
 <p>再访问下载WEB-INF&#x2F;classes&#x2F;com&#x2F;vm&#x2F;ctf&#x2F;FlagController.class</p>
 <p>打开之后发现一串base64编码的字符串，解码得到flag.</p>
 
