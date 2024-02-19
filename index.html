@@ -211,7 +211,7 @@
       <span class="post-meta-item-text">Posted on</span>
       
 
-      <time title="Created: 2024-02-19 08:14:36 / Modified: 08:16:30" itemprop="dateCreated datePublished" datetime="2024-02-19T08:14:36+08:00">2024-02-19</time>
+      <time title="Created: 2024-02-19 08:14:36 / Modified: 08:27:50" itemprop="dateCreated datePublished" datetime="2024-02-19T08:14:36+08:00">2024-02-19</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -244,7 +244,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>3.5k</span>
+      <span>3.4k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
@@ -282,7 +282,7 @@
 <p>-&gt; 以及serialize和unserialize两个序列化函数，想到键值对的逃逸</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_ invoke__">extract</span>(<span class="variable">$_POST</span>);</span><br><span class="line"><span class="comment">// 以POST方法传入参数 =&gt; extract函数的作用是将post方法传入的键值对，以变量的形式返回</span></span><br><span class="line"><span class="variable">$serialize_info</span> = <span class="title function_ invoke__">filter</span>(<span class="title function_ invoke__">serialize</span>(<span class="variable">$_SESSION</span>));</span><br><span class="line"><span class="comment">// 将$_SESSION序列化后进行filter进行过滤，然后赋值给 $serialize_info变量</span></span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span>(<span class="variable">$function</span> == <span class="string">&#x27;show_image&#x27;</span>)&#123;</span><br><span class="line">    <span class="variable">$userinfo</span> = <span class="title function_ invoke__">unserialize</span>(<span class="variable">$serialize_info</span>); <span class="comment">// 将$serialize_info变量进行反序列化</span></span><br><span class="line">    <span class="keyword">echo</span> <span class="title function_ invoke__">file_get_contents</span>(<span class="title function_ invoke__">base64_decode</span>(<span class="variable">$userinfo</span>[<span class="string">&#x27;img&#x27;</span>]));</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 将$userinfo变量数组中img的值进行base64解码后进行文件的读取</span></span><br></pre></td></tr></table></figure>
 
-<p>![]CTF&#x2F;Web&#x2F;BUU-easy_serialize_php&#x2F;test00.png)</p>
+<p><img src="/CTF/Web/BUU-easy_serialize_php/test00.png"></p>
 <hr>
 <p><strong>如何去构造一个字符串逃逸</strong></p>
 <hr>
