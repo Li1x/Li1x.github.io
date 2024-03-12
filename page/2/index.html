@@ -150,7 +150,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives">
-          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-count">12</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -178,6 +178,144 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://li1x.github.io/CTF/Web/BUU-Easy_Java/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Li1x">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Li1x's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Li1x's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/CTF/Web/BUU-Easy_Java/" class="post-title-link" itemprop="url">BUU-[RoarCTF 2019]Easy Java的Wp</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2024-01-30 06:20:41" itemprop="dateCreated datePublished" datetime="2024-01-30T06:20:41+08:00">2024-01-30</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2024-03-11 00:27:23" itemprop="dateModified" datetime="2024-03-11T00:27:23+08:00">2024-03-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Web/" itemprop="url" rel="index"><span itemprop="name">Web</span></a>
+        </span>
+    </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/CTF/Web/BUU-Easy_Java/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="CTF/Web/BUU-Easy_Java/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>1.4k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>3 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h3 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h3><p><strong>WEB-INF是Java的WEB应用的安全目录,此外想在页面访问WEB-INF应用里面的文件,必须要通过web.xml进行相应的映射才能访问</strong></p>
+<blockquote>
+<p>&#x2F;WEB-INF&#x2F;web.xml：Web应用程序配置文件，描述了 servlet 和其他的应用组件配置及命名规则<br>&#x2F;WEB-INF&#x2F;classes&#x2F;：含了站点所有用的 class 文件，包括 servlet class 和非servlet class，他们不能包含在.jar文件中<br>&#x2F;WEB-INF&#x2F;lib&#x2F;：存放web应用需要的各种JAR文件，放置仅在这个应用中要求使用的jar文件,如数据库驱动jar文件<br>&#x2F;WEB-INF&#x2F;src&#x2F;：源码目录，按照包名结构放置各个java文件<br>&#x2F;WEB-INF&#x2F;database.properties：数据库配置文件</p>
+</blockquote>
+<p><strong>简单来说，java web是基于Tomcat服务器搭建的，通过servlet来开发。狭义来说，servlet是指Java语言实现的一个接口。</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;servlet-class&gt;  这个就是指向我们要注册的servlet 的类地址, 要带包路径</span><br><span class="line">&lt;servlet-mapping&gt;  是用来配置我们注册的组件的访问路径,里面包括两个节点</span><br><span class="line">一个是&lt;servlet-name&gt;，这个要与前面写的servlet一致</span><br><span class="line">另一个是&lt;url-pattern&gt;，配置这个组件的访问路径</span><br><span class="line">&lt;servlet-name&gt; 这个是我们要注册servlet的名字,一般跟Servlet类名有关</span><br><span class="line">举个例子</span><br><span class="line">&lt;servlet&gt;</span><br><span class="line">    &lt;servlet-name&gt;FlagController&lt;/servlet-name&gt;</span><br><span class="line">    &lt;servlet-class&gt;com.wm.ctf.FlagController&lt;/servlet-class&gt;</span><br><span class="line">&lt;/servlet&gt;</span><br><span class="line">	//servlet包含了路径信息，我们尝试包含一下FlagController所在路径，不过这次要在前面加上classes来访问class文件目录（详见上面的目录结构），且文件后缀为.class</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="解题"><a href="#解题" class="headerlink" title="解题:"></a>解题:</h3><p><img src="/CTF/Web/BUU-Easy_Java/00.png"></p>
+<p>弱口令，在Bp的Intruder模块下破解密码</p>
+<p><img src="/CTF/Web/BUU-Easy_Java/01.png"></p>
+<p>进入之后发现并没有flag -&gt; 注意到login页面下面的help可以点,里面有</p>
+<p><img src="/CTF/Web/BUU-Easy_Java/00.png"></p>
+<blockquote>
+<p><code>java.io.FileNotFoundException</code> 表示在 Java 中尝试打开或读取文件时，未找到指定路径的文件。在你提供的例子中，文件路径是 <code>&#123;help.docx&#125;</code>。</p>
+</blockquote>
+<p>此时可以注意到url中是有这个filename参数的，且前面是Download -&gt; 下面对应的文件呗?</p>
+<p>但是并没有跳转下载链接, -&gt; 看别人的Wp说，将get方法改为post方法就能跳转下载链接了（不知道为什么）</p>
+<p><img src="/CTF/Web/BUU-Easy_Java/03.png"></p>
+<p>下载打开help.docx中并没有flag</p>
+<p><strong>结合题目信息 Java 以及上面的知识点</strong>  访问下载WEB-INF&#x2F;web.xml -&gt; </p>
+<p><img src="/CTF/Web/BUU-Easy_Java/04.png"></p>
+<p>再访问下载WEB-INF&#x2F;classes&#x2F;com&#x2F;vm&#x2F;ctf&#x2F;FlagController.class</p>
+<p>打开之后发现一串base64编码的字符串，解码得到flag.</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -367,13 +505,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Word count total">26k</span>
+    <span title="Word count total">28k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">47 mins.</span>
+    <span title="Reading time total">52 mins.</span>
   </span>
 </div>
 <div class="busuanzi-count">
