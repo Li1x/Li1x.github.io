@@ -433,7 +433,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://li1x.github.io/CTF/Web/XSS%20/">
+    <link itemprop="mainEntityOfPage" href="https://li1x.github.io/CTF/Web/XSS%E6%BC%8F%E6%B4%9E%20/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -451,7 +451,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/CTF/Web/XSS%20/" class="post-title-link" itemprop="url">XSS学习</a>
+          <a href="/CTF/Web/XSS%E6%BC%8F%E6%B4%9E%20/" class="post-title-link" itemprop="url">XSS学习</a>
         </h2>
 
         <div class="post-meta-container">
@@ -461,9 +461,15 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">Posted on</span>
-      
 
-      <time title="Created: 2024-03-26 01:53:47 / Modified: 02:16:09" itemprop="dateCreated datePublished" datetime="2024-03-26T01:53:47+08:00">2024-03-26</time>
+      <time title="Created: 2024-03-26 01:53:47" itemprop="dateCreated datePublished" datetime="2024-03-26T01:53:47+08:00">2024-03-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2024-03-28 01:27:59" itemprop="dateModified" datetime="2024-03-28T01:27:59+08:00">2024-03-28</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -484,8 +490,8 @@
       </span>
       <span class="post-meta-item-text">Disqus: </span>
     
-    <a title="disqus" href="/CTF/Web/XSS%20/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="CTF/Web/XSS /" itemprop="commentCount"></span>
+    <a title="disqus" href="/CTF/Web/XSS%E6%BC%8F%E6%B4%9E%20/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="CTF/Web/XSS漏洞 /" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -573,11 +579,11 @@
 <p>题目：用户管理页面有信息（需要是admin用户    才可以看到flag）</p>
 <p>思路：伪造SESSION admin用户</p>
 <p><strong>1. 获取admin的SESSION：监听端口，用户注册，收到的信息里面的SESSION应该是admin的</strong></p>
-<p><img src="/CTF/Web/XSS/328-00.png"></p>
-<p><img src="/CTF/Web/XSS/328-01.png"></p>
+<p><img src="/CTF/Web/XSS%E6%BC%8F%E6%B4%9E/328-00.png"></p>
+<p><img src="/CTF/Web/XSS%E6%BC%8F%E6%B4%9E/328-01.png"></p>
 <p><strong>2.抓包改SESSION 发包：这里面需要发两次包  每次收到的包都要改SESSION再发送</strong></p>
-<p><img src="/CTF/Web/XSS/328-02.png"></p>
-<p><img src="/CTF/Web/XSS/328-03.png"></p>
+<p><img src="/CTF/Web/XSS%E6%BC%8F%E6%B4%9E/328-02.png"></p>
+<p><img src="/CTF/Web/XSS%E6%BC%8F%E6%B4%9E/328-03.png"></p>
 <h4 id="对于登录Cookie就失效的，无法伪造cookie："><a href="#对于登录Cookie就失效的，无法伪造cookie：" class="headerlink" title="对于登录Cookie就失效的，无法伪造cookie："></a>对于登录Cookie就失效的，无法伪造cookie：</h4><p><strong>法一：外带信息payload：（监听端口）</strong></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1、innerHTML:从对象的起始位置到终止位置的全部内容,不包括Html标签。 innerText可替代innerHTML</span><br><span class="line">2、outerHTML:除了包含innerHTML的全部内容外, 还包含对象标签本身。</span><br></pre></td></tr></table></figure>
 
@@ -628,7 +634,7 @@
 <p><code>&lt;script&gt;window.location.href=&#39;http://127.0.0.1/api/change.php?p=1717&#39;;&lt;/script&gt;</code></p>
 <p>思路：这个题可以修改密码，让admin管理员自己修改密码.</p>
 <p>自己先注册号，在修改密码页面抓包，看是什么情况</p>
-<p><img src="/CTF/Web/XSS/330.01.png"></p>
+<p><img src="/CTF/Web/XSS%E6%BC%8F%E6%B4%9E/330.01.png"></p>
 <p>很明显，有了路径，且变量p就是我们修改密码的变量</p>
 <p>直接创建账号密码 都为 payload，让admin在点击我们的payload的时候，会自动修改密码为1717</p>
 <p>这个时候我们直接以admin账号 密码为1717登录即可，</p>
@@ -706,7 +712,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2024-03-28 01:17:28" itemprop="dateModified" datetime="2024-03-28T01:17:28+08:00">2024-03-28</time>
+      <time title="Modified: 2024-03-28 01:22:53" itemprop="dateModified" datetime="2024-03-28T01:22:53+08:00">2024-03-28</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -873,7 +879,7 @@
 <p>操作系统用来存储关于系统运行时信息的数据，这些信息可以被操作系统和执行的程序访问。PATH环境变量特别用于查找执行文件（例如程序或脚本）的位置。<strong>当你在Shell中输入一个命令时，操作系统会依次检查PATH变量中列出的目录，直到找到对应的执行文件。</strong></p>
 </blockquote>
 <p>法1： 用换行符（%0A）绕过正则匹配：</p>
-<p>&#96;?cmd&#x3D;</p>
+<p>&#96;</p>
 
       
     </div>
