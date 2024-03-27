@@ -20,19 +20,22 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"li1x.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.19.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="[Zer0pts2020]Can you guess it?知识点：  basenmae()函数的问题 正则匹配的绕过 代码审计 PHP预定义的超全局变量  12345678910111213141516171819202122&lt;?phpinclude &amp;#x27;config.php&amp;#x27;; &#x2F;&#x2F; FLAG is defined in config.phpif (preg_match">
+    <meta name="description" content="[Zer0pts2020]Can you guess it?知识点： basenmae()函数的问题 正则匹配的绕过 代码审计 PHP预定义的超全局变量  12345678910111213141516171819202122&lt;?phpinclude &amp;#x27;config.php&amp;#x27;; &#x2F;&#x2F; FLAG is defined in config.phpif (preg_match(">
 <meta property="og:type" content="article">
 <meta property="og:title" content="BUU平台的Web题记录">
 <meta property="og:url" content="https://li1x.github.io/CTF/Web/BUU-Web%E5%88%B7%E9%A2%98/index.html">
 <meta property="og:site_name" content="Li1x&#39;s Blog">
-<meta property="og:description" content="[Zer0pts2020]Can you guess it?知识点：  basenmae()函数的问题 正则匹配的绕过 代码审计 PHP预定义的超全局变量  12345678910111213141516171819202122&lt;?phpinclude &amp;#x27;config.php&amp;#x27;; &#x2F;&#x2F; FLAG is defined in config.phpif (preg_match">
+<meta property="og:description" content="[Zer0pts2020]Can you guess it?知识点： basenmae()函数的问题 正则匹配的绕过 代码审计 PHP预定义的超全局变量  12345678910111213141516171819202122&lt;?phpinclude &amp;#x27;config.php&amp;#x27;; &#x2F;&#x2F; FLAG is defined in config.phpif (preg_match(">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://li1x.github.io/CTF/Web/BUU-Web%E5%88%B7%E9%A2%98/%E5%A5%97%E5%A8%8300.png">
+<meta property="og:image" content="https://li1x.github.io/CTF/Web/BUU-Web%E5%88%B7%E9%A2%98/%E5%A5%97%E5%A8%8301.png">
 <meta property="article:published_time" content="2024-03-12T15:10:51.965Z">
-<meta property="article:modified_time" content="2024-03-25T18:28:47.526Z">
+<meta property="article:modified_time" content="2024-03-27T17:17:28.089Z">
 <meta property="article:author" content="Li1x">
 <meta property="article:tag" content="Web">
 <meta property="article:tag" content="Buu">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://li1x.github.io/CTF/Web/BUU-Web%E5%88%B7%E9%A2%98/%E5%A5%97%E5%A8%8300.png">
 
 
 <link rel="canonical" href="https://li1x.github.io/CTF/Web/BUU-Web%E5%88%B7%E9%A2%98/">
@@ -142,7 +145,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Zer0pts2020-Can-you-guess-it"><span class="nav-number">1.</span> <span class="nav-text">[Zer0pts2020]Can you guess it?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#watevrCTF-2019-Cookie-Store"><span class="nav-number">2.</span> <span class="nav-text">[watevrCTF-2019]Cookie Store</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FBCTF2019-RCEService"><span class="nav-number">3.</span> <span class="nav-text">[FBCTF2019]RCEService</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Zer0pts2020-Can-you-guess-it"><span class="nav-number">1.</span> <span class="nav-text">[Zer0pts2020]Can you guess it?</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9F%A5%E8%AF%86%E7%82%B9%EF%BC%9A"><span class="nav-number">1.1.</span> <span class="nav-text">知识点：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%9D%E8%B7%AF%EF%BC%9A"><span class="nav-number">1.2.</span> <span class="nav-text">思路：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#watevrCTF-2019-Cookie-Store"><span class="nav-number">2.</span> <span class="nav-text">[watevrCTF-2019]Cookie Store</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BUU-MRCTF2020-%E5%A5%97%E5%A8%83%E7%9A%84%E8%AE%B0%E5%BD%95"><span class="nav-number">3.</span> <span class="nav-text">BUU-[MRCTF2020]套娃的记录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0CTF-2016-piapiapia%E8%AE%B0%E5%BD%95"><span class="nav-number">4.</span> <span class="nav-text">[0CTF 2016]piapiapia记录</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%94%B6%E8%8E%B7%E7%9A%84%E7%9F%A5%E8%AF%86%E7%82%B9%EF%BC%9A"><span class="nav-number">4.0.1.</span> <span class="nav-text">收获的知识点：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FBCTF2019-RCEService"><span class="nav-number">5.</span> <span class="nav-text">[FBCTF2019]RCEService</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -157,7 +160,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives">
-          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-count">10</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -231,7 +234,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2024-03-26 02:28:47" itemprop="dateModified" datetime="2024-03-26T02:28:47+08:00">2024-03-26</time>
+      <time title="Modified: 2024-03-28 01:17:28" itemprop="dateModified" datetime="2024-03-28T01:17:28+08:00">2024-03-28</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -271,14 +274,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>2.9k</span>
+      <span>8.1k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>5 mins.</span>
+      <span>15 mins.</span>
     </span>
 </div>
 
@@ -288,8 +291,7 @@
     
     
     
-    <div class="post-body" itemprop="articleBody"><h2 id="Zer0pts2020-Can-you-guess-it"><a href="#Zer0pts2020-Can-you-guess-it" class="headerlink" title="[Zer0pts2020]Can you guess it?"></a>[Zer0pts2020]Can you guess it?</h2><p>知识点：</p>
-<ul>
+    <div class="post-body" itemprop="articleBody"><h2 id="Zer0pts2020-Can-you-guess-it"><a href="#Zer0pts2020-Can-you-guess-it" class="headerlink" title="[Zer0pts2020]Can you guess it?"></a>[Zer0pts2020]Can you guess it?</h2><h3 id="知识点："><a href="#知识点：" class="headerlink" title="知识点："></a>知识点：</h3><ul>
 <li>basenmae()函数的问题</li>
 <li>正则匹配的绕过</li>
 <li>代码审计</li>
@@ -302,8 +304,7 @@
 <p><code>preg_match(&#39;/config\.php\/*$/i&#39;, $_SERVER[&#39;PHP_SELF&#39;])</code></p>
 <p>-&gt; 正则匹配中 <code>./</code>有特殊含义，用<code>\</code> 来转义   </p>
 <p>&#x3D;&gt; 如果当前目录的最后的脚本的名字是以 <code>config.php/</code>就会匹配成功 返回True</p>
-<p><strong>思路：</strong></p>
-<p>源码中给出了 Flag在config.php，所以我们绕过这个正在匹配，来高亮显示config.php文件 读取flag</p>
+<h3 id="思路："><a href="#思路：" class="headerlink" title="思路："></a>思路：</h3><p>源码中给出了 Flag在config.php，所以我们绕过这个正在匹配，来高亮显示config.php文件 读取flag</p>
 <p>这个源码中下半部分是 </p>
 <p>-&gt; 64位二进制随机数转换成十六进制 后与 POST方法传入的参数  hash值比较</p>
 <p>-&gt; 不知道从这个角度能否下手。</p>
@@ -318,6 +319,82 @@
 <p>-&gt;这是Cookie的格式，钱数就是 买完之后还有多少钱</p>
 <p>-&gt; history指的是 你的购买记录</p>
 <p>&#x3D;&gt; 抓包修改 money 放包</p>
+<h2 id="BUU-MRCTF2020-套娃的记录"><a href="#BUU-MRCTF2020-套娃的记录" class="headerlink" title="BUU-[MRCTF2020]套娃的记录"></a>BUU-[MRCTF2020]套娃的记录</h2><p><strong>第一关：</strong></p>
+<ul>
+<li><input disabled type="checkbox"> 正则绕过 URL中特殊符号的转换</li>
+</ul>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$query</span> = <span class="variable">$_SERVER</span>[<span class="string">&#x27;QUERY_STRING&#x27;</span>];</span><br><span class="line"> <span class="keyword">if</span>( <span class="title function_ invoke__">substr_count</span>(<span class="variable">$query</span>, <span class="string">&#x27;_&#x27;</span>) !== <span class="number">0</span> || <span class="title function_ invoke__">substr_count</span>(<span class="variable">$query</span>, <span class="string">&#x27;%5f&#x27;</span>) != <span class="number">0</span> )&#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">&#x27;Y0u are So cutE!&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"> <span class="keyword">if</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;b_u_p_t&#x27;</span>] !== <span class="string">&#x27;23333&#x27;</span> &amp;&amp; <span class="title function_ invoke__">preg_match</span>(<span class="string">&#x27;/^23333$/&#x27;</span>, <span class="variable">$_GET</span>[<span class="string">&#x27;b_u_p_t&#x27;</span>]))&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;you are going to the next ~&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>substr_count($query, ‘_’) 计算在$query字符串中<code>_</code>出现的次数</p>
+<p>preg_match(‘&#x2F;^23333$&#x2F;‘, $_GET[‘b_u_p_t’]) 正则匹配中<code>^</code>是开始的意思, <code>$</code>是结束的意思</p>
+</blockquote>
+<p>我们传的参数中不能存在<code>_</code> 和<code>%5f</code>&#x3D;&gt; 用空格代替（空格 . [ 都会被转换成_）</p>
+<p>正则匹配的绕过，结尾加上换行符的url编码<code>%0A</code></p>
+<p>payload1：<code>/?b u p t=23333%0A</code></p>
+<p><strong>访问下一个页面：</strong></p>
+<ul>
+<li><input disabled type="checkbox"> 编码的特征认识</li>
+</ul>
+<p>源码中存在JSfuck编码，<a target="_blank" rel="noopener" href="http://www.hiencode.com/jsfuck.html">解码</a>&#x3D;&gt; alert(“post me Merak” </p>
+<p>看Wp说也可以将JSfuck编码在控制台运行一下，也能够弹出</p>
+<blockquote>
+<p>alert()是js中的弹出函数</p>
+</blockquote>
+<p><img src="/CTF/Web/BUU-Web%E5%88%B7%E9%A2%98/%E5%A5%97%E5%A8%8300.png" alt="./"></p>
+<p><strong>回显出第三个页面：</strong></p>
+<ul>
+<li><input disabled type="checkbox"> 代码审计</li>
+</ul>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">change</span>(<span class="params"><span class="variable">$v</span></span>)</span>&#123; </span><br><span class="line">    <span class="variable">$v</span> = <span class="title function_ invoke__">base64_decode</span>(<span class="variable">$v</span>); </span><br><span class="line">    <span class="variable">$re</span> = <span class="string">&#x27;&#x27;</span>; </span><br><span class="line">    <span class="keyword">for</span>(<span class="variable">$i</span>=<span class="number">0</span>;<span class="variable">$i</span>&lt;<span class="title function_ invoke__">strlen</span>(<span class="variable">$v</span>);<span class="variable">$i</span>++)&#123; </span><br><span class="line">        <span class="variable">$re</span> .= <span class="title function_ invoke__">chr</span> ( <span class="title function_ invoke__">ord</span> (<span class="variable">$v</span>[<span class="variable">$i</span>]) + <span class="variable">$i</span>*<span class="number">2</span> ); </span><br><span class="line">    &#125; </span><br><span class="line">    <span class="keyword">return</span> <span class="variable">$re</span>; </span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&#x27;Local access only!&#x27;</span>.<span class="string">&quot;&lt;br/&gt;&quot;</span>;</span><br><span class="line"><span class="variable">$ip</span> = <span class="title function_ invoke__">getIp</span>();	<span class="comment">// 这里没有getIp()函数，应该是在HTTP协议里面加一个头XFF头或者其他的（很多种）</span></span><br><span class="line"><span class="keyword">if</span>(<span class="variable">$ip</span>!=<span class="string">&#x27;127.0.0.1&#x27;</span>)</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;Sorry,you don&#x27;t have permission!  Your ip is :&quot;</span>.<span class="variable">$ip</span>;</span><br><span class="line"><span class="keyword">if</span>(<span class="variable">$ip</span> === <span class="string">&#x27;127.0.0.1&#x27;</span> &amp;&amp; <span class="title function_ invoke__">file_get_contents</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;2333&#x27;</span>]) === <span class="string">&#x27;todat is a happy day&#x27;</span> )&#123;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;Your REQUEST is:&quot;</span>.<span class="title function_ invoke__">change</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>]);</span><br><span class="line"><span class="keyword">echo</span> <span class="title function_ invoke__">file_get_contents</span>(<span class="title function_ invoke__">change</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>])); &#125; <span class="comment">// file_get_contents函数, 输出文件内容 flag.php</span></span><br></pre></td></tr></table></figure>
+
+<p>主要是根据<code>$re</code>的加密过程来反过来推出来</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">    $re = &quot;flag.php&quot;;</span><br><span class="line">    $string=&#x27;&#x27;;</span><br><span class="line">    for($i=0;$i&lt;strlen($re);$i++)</span><br><span class="line">    &#123;</span><br><span class="line">        $string.=chr(ord($re[$i]) - 2*$i);</span><br><span class="line">    &#125;</span><br><span class="line">    echo base64_encode($string);</span><br></pre></td></tr></table></figure>
+
+<p>payload:<code>/secrettw.php?2333=data:text/plain,todat is a happy day&amp;file=ZmpdYSZmXGI=</code></p>
+<p>抓包 在HTTP头加一个<code>Client-ip: 127.0.0.1</code></p>
+<p><img src="/CTF/Web/BUU-Web%E5%88%B7%E9%A2%98/%E5%A5%97%E5%A8%8301.png"></p>
+<h2 id="0CTF-2016-piapiapia记录"><a href="#0CTF-2016-piapiapia记录" class="headerlink" title="[0CTF 2016]piapiapia记录"></a>[0CTF 2016]piapiapia记录</h2><p>打开题目网址，登录页面，像是sql注入，但是没测试到注入，用sqlmap也没跑出来（post）。扫后面，我自己没扫到，看Wp说是有<a target="_blank" rel="noopener" href="http://www.zip文件/">www.zip文件</a> </p>
+<p>-&gt; 访问并下载源码文件 -&gt; 用审计工具进行审计</p>
+<p>-&gt; 首先是有一个 register.php文件 &#x3D;&gt; 注册页面，那自己随便注册一下 登录之后 跳转到了update.php 即 文件上传页面</p>
+<p>-&gt; 经过测试，好像并没有文件上传漏洞</p>
+<p>![](CTF&#x2F;Web&#x2F;BUU-Web刷题&#x2F;[0CTF 2016]piapiapia00.png)</p>
+<p>进行代码审计：config.php文件中有<code>$flag</code>   那我们的目标的应该是读取config.php文件（<strong>文件读取漏洞</strong>）</p>
+<p><strong>profile.php文件中存在：</strong></p>
+<p>1.<code>$photo = base64_encode(file_get_contents($profile[&#39;photo&#39;]));</code> 很明显的文件读取函数</p>
+<p>2.<code>$profile = unserialize($profile);</code>这里还有一个反序列化函数</p>
+<p><strong>update.php文件中存在：</strong></p>
+<p>![](CTF&#x2F;BUU-Web刷题&#x2F;[0CTF 2016]piapiapia01.png)</p>
+<p>而update.php文件是我们上传文件的页面，$profile中的一些参数刚好对应上传文件页面的东西，最后还会进行序列化这个$profile</p>
+<p>最后调用了 update_profile函数</p>
+<p><strong>class.php文件中存在：</strong></p>
+<p>![](CTF&#x2F;BUU-Web刷题&#x2F;[0CTF 2016]piapiapia02.png)</p>
+<p>![](CTF&#x2F;BUU-Web刷题&#x2F;[0CTF 2016]piapiapia03.png)</p>
+<p>我们在update.php文件内传参，然后可以跳转到profile.php文件内</p>
+<p>在update.php内：class.php中user类的<code>update_profile($username, serialize($profile))</code> -&gt; 多次过滤，&#x3D;&gt; 调用父类mysql类的<code>parent::update($this-&gt;table, &#39;profile&#39;, $new_profile, $where);</code>  -&gt; 更新数据库中的数据 </p>
+<p>在profile.php内：<code>$profile=$user-&gt;show_profile($username);</code> &#x3D;&gt; class.php中user类的 show_profile()函数 -&gt; 过滤 &#x3D;&gt; 回来profile.php内， 反序列化，然后进行读取$profile[‘photo’]的值，但photo在update.php文件内 后面有个md5 </p>
+<p><code>$profile[&#39;photo&#39;] = &#39;upload/&#39; . md5($file[&#39;name&#39;]);</code> 很明显无法直接传入</p>
+<p>-&gt; 有个过滤函数，还有序列化和反序列化，很容易想到 逃逸</p>
+<p>-&gt; 看一下过滤函数，有没有我们想要的 preg_match函数  </p>
+<blockquote>
+<p>$safe &#x3D; array(‘select’, ‘insert’, ‘update’, ‘delete’, ‘where’);<br>$safe &#x3D; ‘&#x2F;‘ . implode(‘|’, $safe) . ‘&#x2F;i’;<br>return preg_replace($safe, ‘hacker’, $string);</p>
+</blockquote>
+<p>where &#x3D;&gt; hacker   5 -&gt; 6 一个where可以换取一个字符，</p>
+<p>-&gt;很明显，我们可以将读取config.php的内容放在 photo前面的那个里面，通过preg_match函数来进行字符串逃逸.</p>
+<p>经过测试：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span>  </span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">filter</span>(<span class="params"><span class="variable">$string</span></span>)</span>&#123;</span><br><span class="line">        <span class="variable">$safe</span> = <span class="keyword">array</span>(<span class="string">&#x27;select&#x27;</span>, <span class="string">&#x27;insert&#x27;</span>, <span class="string">&#x27;update&#x27;</span>, <span class="string">&#x27;delete&#x27;</span>, <span class="string">&#x27;where&#x27;</span>);</span><br><span class="line">        <span class="variable">$safe</span> = <span class="string">&#x27;/&#x27;</span> . <span class="title function_ invoke__">implode</span>(<span class="string">&#x27;|&#x27;</span>, <span class="variable">$safe</span>) . <span class="string">&#x27;/i&#x27;</span>;</span><br><span class="line">        <span class="keyword">return</span> <span class="title function_ invoke__">preg_replace</span>(<span class="variable">$safe</span>, <span class="string">&#x27;hacker&#x27;</span>, <span class="variable">$string</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="variable">$profile</span> = <span class="keyword">array</span>(</span><br><span class="line">        <span class="string">&#x27;phone&#x27;</span> =&gt; <span class="string">&#x27;15839158474&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;email&#x27;</span> =&gt; <span class="string">&#x27;158@qq.com&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;nickname&#x27;</span> =&gt; <span class="string">&#x27;&lt;?php  </span></span><br><span class="line"><span class="string">    function filter($string)&#123;</span></span><br><span class="line"><span class="string">        $safe = array(&#x27;</span>select<span class="string">&#x27;, &#x27;</span>insert<span class="string">&#x27;, &#x27;</span>update<span class="string">&#x27;, &#x27;</span>delete<span class="string">&#x27;, &#x27;</span>where<span class="string">&#x27;);</span></span><br><span class="line"><span class="string">        $safe = &#x27;</span>/<span class="string">&#x27; . implode(&#x27;</span>|<span class="string">&#x27;, $safe) . &#x27;</span>/i<span class="string">&#x27;;</span></span><br><span class="line"><span class="string">        return preg_replace($safe, &#x27;</span>hacker<span class="string">&#x27;, $string);</span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string">    $profile = array(</span></span><br><span class="line"><span class="string">        &#x27;</span>phone<span class="string">&#x27; =&gt; &#x27;</span><span class="number">15839158474</span><span class="string">&#x27;,</span></span><br><span class="line"><span class="string">        &#x27;</span>email<span class="string">&#x27; =&gt; &#x27;</span><span class="number">158</span>@qq.com<span class="string">&#x27;,</span></span><br><span class="line"><span class="string">        &#x27;</span>nickname<span class="string">&#x27; =&gt; &#x27;</span>wherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewhere<span class="string">&quot;;&#125;s:5:&quot;</span>photo<span class="string">&quot;;s:10:&quot;</span>config.php<span class="string">&quot;;&#125;&#x27;,</span></span><br><span class="line"><span class="string">        &#x27;photo&#x27; =&gt; &#x27;upload/21232f297a57a5a743894a0e4a801fc3&#x27;</span></span><br><span class="line"><span class="string">    );</span></span><br><span class="line"><span class="string">    echo filter(serialize(<span class="subst">$profile</span>));&#x27;,</span></span><br><span class="line"><span class="string">        &#x27;photo&#x27; =&gt; &#x27;upload/21232f297a57a5a743894a0e4a801fc3&#x27;</span></span><br><span class="line"><span class="string">    );</span></span><br><span class="line"><span class="string">    echo filter(serialize(<span class="subst">$profile</span>));</span></span><br></pre></td></tr></table></figure>
+
+<p>payload：<code>wherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewhere&quot;;&#125;s:5:&quot;photo&quot;;s:10:&quot;config.php&quot;;&#125;</code></p>
+<p>![](CTF&#x2F;BUU-Web刷题&#x2F;[0CTF 2016]piapiapia05.png)</p>
+<p>![](CTF&#x2F;BUU-Web刷题&#x2F;[0CTF 2016]piapiapia06.png)</p>
+<p>![07](CTF&#x2F;BUU-Web刷题&#x2F;[0CTF 2016]piapiapia07.png)</p>
+<h4 id="收获的知识点："><a href="#收获的知识点：" class="headerlink" title="收获的知识点："></a>收获的知识点：</h4><p><strong>1.代码审计能力 初步会使用代码审计软件，将这么多的代码之间的关系理清了七七八八</strong></p>
+<p><strong>2.反序列化字符串逃逸的构造能力。（1.闭合 2.调试）</strong></p>
+<p><strong>3.文件上传漏洞：并不是能上传成功就说明有这个漏洞，</strong></p>
+<p><strong>-&gt;我们需要能够去访问那个上传之后在的路径，</strong></p>
+<p><strong>-&gt;并且上传的文件能够被Web容器解释执行（php被Aapche容器执行）,所以文件上传后所在的目录必须是Web容器能够覆盖到的</strong></p>
+<hr>
+<p>参考：<a target="_blank" rel="noopener" href="https://mayi077.gitee.io/2020/02/01/0CTF-2016-piapiapia/">https://mayi077.gitee.io/2020/02/01/0CTF-2016-piapiapia/</a></p>
 <h2 id="FBCTF2019-RCEService"><a href="#FBCTF2019-RCEService" class="headerlink" title="[FBCTF2019]RCEService"></a>[FBCTF2019]RCEService</h2><p>这个题看Wp说有源码泄露</p>
 <ul>
 <li><input disabled type="checkbox"> 代码审计</li>
@@ -348,8 +425,8 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/CTF/Web/BUU-%5BMRCTF2020%5D%E5%A5%97%E5%A8%83/" rel="prev" title="BUU-[MRCTF2020]套娃的Wp">
-                  <i class="fa fa-angle-left"></i> BUU-[MRCTF2020]套娃的Wp
+                <a href="/CTF/Web/BUU-%5BGYCTF2020%5DFlaskApp/" rel="prev" title="BUU-[GYCTF2020]FlaskApp的Wp">
+                  <i class="fa fa-angle-left"></i> BUU-[GYCTF2020]FlaskApp的Wp
                 </a>
             </div>
             <div class="post-nav-item">
@@ -391,13 +468,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Word count total">40k</span>
+    <span title="Word count total">41k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">1:13</span>
+    <span title="Reading time total">1:15</span>
   </span>
 </div>
 <div class="busuanzi-count">
