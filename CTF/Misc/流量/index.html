@@ -1,31 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width">
-<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="The Redefine Team">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
-  <link rel="mask-icon" href="/images/logo.svg" color="#222">
-
-<link rel="stylesheet" href="/css/main.css">
-
-
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha256-yIDrPSXHZdOZhAqiBP7CKzIwMQmRCJ8UeB8Jo17YC4o=" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
-
-<script class="next-config" data-name="main" type="application/json">{"hostname":"li1x.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.19.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
-
-    <meta name="description" content="Buu - 9.3.1 HTTP流量分析http流量分析下载附件，用wireshark打开，题目时http流量的分析 直接过滤搜索http  显而易见的shell.php  &#x3D;&gt; 后门文件吧？ 在你觉得可疑的流量包上 右键，追踪流 http流   过滤器知识点：http contains &#39;flag&#39; -&gt; 匹配http协议的 且 流量包中含有flag字符的">
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="https://li1x.github.io/ctf/misc/流量/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="Buu - 9.3.1 HTTP流量分析http流量分析下载附件 ，用wireshark打开，题目时http流量的分析 直接过滤搜索http  显而易见的shell.php  &#x3D;&gt; 后门文件吧？ 在你觉得可疑的流量包上 右键，追踪流 http流   过滤器知识点：http contains &#39;flag&#39; -&gt; 匹配http协议的 且 流量包中含有flag字符的">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Misc-流量题记录">
 <meta property="og:url" content="https://li1x.github.io/CTF/Misc/%E6%B5%81%E9%87%8F/index.html">
 <meta property="og:site_name" content="Li1x&#39;s Blog">
-<meta property="og:description" content="Buu - 9.3.1 HTTP流量分析http流量分析下载附件，用wireshark打开，题目时http流量的分析 直接过滤搜索http  显而易见的shell.php  &#x3D;&gt; 后门文件吧？ 在你觉得可疑的流量包上 右键，追踪流 http流   过滤器知识点：http contains &#39;flag&#39; -&gt; 匹配http协议的 且 流量包中含有flag字符的">
+<meta property="og:description" content="Buu - 9.3.1 HTTP流量分析http流量分析下载附件 ，用wireshark打开，题目时http流量的分析 直接过滤搜索http  显而易见的shell.php  &#x3D;&gt; 后门文件吧？ 在你觉得可疑的流量包上 右键，追踪流 http流   过滤器知识点：http contains &#39;flag&#39; -&gt; 匹配http协议的 且 流量包中含有flag字符的">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://li1x.github.io/CTF/Misc/%E6%B5%81%E9%87%8F/4-1-00.png">
 <meta property="og:image" content="https://li1x.github.io/CTF/Misc/%E6%B5%81%E9%87%8F/4-1-01.png">
@@ -60,288 +58,542 @@
 <meta property="og:image" content="https://li1x.github.io/CTF/Misc/%E6%B5%81%E9%87%8F/4-7-00.png">
 <meta property="og:image" content="https://li1x.github.io/CTF/Misc/%E6%B5%81%E9%87%8F/4-7-01.png">
 <meta property="og:image" content="https://li1x.github.io/%E6%B5%81%E9%87%8F/4-8-00.png">
-<meta property="og:image" content="https://li1x.github.io/">
 <meta property="og:image" content="https://li1x.github.io/%E6%B5%81%E9%87%8F/4-8-01.png">
 <meta property="og:image" content="https://li1x.github.io/%E6%B5%81%E9%87%8F/4-8-02.png">
 <meta property="og:image" content="https://li1x.github.io/%E6%B5%81%E9%87%8F/4-8-03.png">
+<meta property="og:image" content="https://li1x.github.io/%E6%B5%81%E9%87%8F/4-16-00.png">
 <meta property="article:published_time" content="2024-03-31T16:13:08.136Z">
-<meta property="article:modified_time" content="2024-04-08T04:44:24.928Z">
+<meta property="article:modified_time" content="2024-04-16T15:12:34.139Z">
 <meta property="article:author" content="Li1x">
 <meta property="article:tag" content="流量分析">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://li1x.github.io/CTF/Misc/%E6%B5%81%E9%87%8F/4-1-00.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/redefine-favicon.svg" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/redefine-favicon.svg">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/images/redefine-favicon.svg">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Misc-流量题记录 -
+        
+        Personal Blog
+    </title>
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
 
 
-<link rel="canonical" href="https://li1x.github.io/CTF/Misc/%E6%B5%81%E9%87%8F/">
+    <!--- Inject Part-->
+    
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/GeistMono/geist-mono.css">
+
+    
+<link rel="stylesheet" href="/fonts/Geist/geist.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+    
+
+    <script id="hexo-configurations">
+    window.config = {"hostname":"li1x.github.io","root":"/","language":"en","path":"search.xml"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":true,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null,"default_mode":"light"},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://cn.vercount.one/js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"preloader":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Personal Blog","subtitle":{"text":["Loading"],"hitokoto":{"enable":true,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"style":"default","links":{"github":"https://github.com","instagram":null,"zhihu":null,"twitter":null,"email":null},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null,"lrc":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.6.4","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"}},"search":{"enable":true,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":"Byself","show_on_mobile":true,"links":{"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags","icon":"fa-regular fa-tags"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2022/8/17 11:45:14"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+<!--        <span class="swup-progress-icon">-->
+<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+<!--        </span>-->
+    
+</div>
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://li1x.github.io/CTF/Misc/%E6%B5%81%E9%87%8F/","path":"CTF/Misc/流量/","title":"Misc-流量题记录"}</script>
+    <style>
+    :root {
+        --preloader-background-color: #fff;
+        --preloader-text-color: #000;
+    }
 
-<script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>Misc-流量题记录 | Li1x's Blog</title>
-  
+    @media (prefers-color-scheme: dark) {
+        :root {
+            --preloader-background-color: #202124;
+            --preloader-text-color: #fff;
+        }
+    }
+
+    @media (prefers-color-scheme: light) {
+        :root {
+            --preloader-background-color: #fff;
+            --preloader-text-color: #000;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .ml13 {
+            font-size: 2.6rem !important; /* Adjust this value as needed */
+        }
+    }
+
+    .preloader {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem; /* Tailwind 'gap-4' is 1rem */
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        padding: 12px;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh; /* 'h-screen' is 100% of the viewport height */
+        background-color: var(--preloader-background-color);
+        z-index: 1100; /* 'z-[1100]' sets the z-index */
+        transition: opacity 0.2s ease-in-out;
+    }
+
+    .ml13 {
+        font-size: 3.2rem;
+        /* text-transform: uppercase; */
+        color: var(--preloader-text-color);
+        letter-spacing: -1px;
+        font-weight: 500;
+        font-family: 'Chillax-Variable', sans-serif;
+        text-align: center;
+    }
+
+    .ml13 .word {
+        display: inline-flex;
+        flex-wrap: wrap;
+        white-space: nowrap;
+    }
+
+    .ml13 .letter {
+        display: inline-block;
+        line-height: 1em;
+    }
+</style>
+
+<div class="preloader">
+    <h2 class="ml13">
+        Personal Blog
+    </h2>
+    <script>
+        var textWrapper = document.querySelector('.ml13');
+        // Split text into words
+        var words = textWrapper.textContent.trim().split(' ');
+
+        // Clear the existing content
+        textWrapper.innerHTML = '';
+
+        // Wrap each word and its letters in spans
+        words.forEach(function(word) {
+            var wordSpan = document.createElement('span');
+            wordSpan.classList.add('word');
+            wordSpan.innerHTML = word.replace(/\S/g, "<span class='letter'>$&</span>");
+            textWrapper.appendChild(wordSpan);
+            textWrapper.appendChild(document.createTextNode(' ')); // Add space between words
+        });
+
+        var animation = anime.timeline({loop: true})
+            .add({
+                targets: '.ml13 .letter',
+                translateY: [40,0],
+                translateZ: 0,
+                opacity: [0,1],
+                filter: ['blur(5px)', 'blur(0px)'], // Starting from blurred to unblurred
+                easing: "easeOutExpo",
+                duration: 1400,
+                delay: (el, i) => 300 + 30 * i,
+            }).add({
+                targets: '.ml13 .letter',
+                translateY: [0,-40],
+                opacity: [1,0],
+                filter: ['blur(0px)', 'blur(5px)'], // Ending from unblurred to blurred
+                easing: "easeInExpo",
+                duration: 1200,
+                delay: (el, i) => 100 + 30 * i,
+                complete: function() {
+                    hidePreloader(); // Call hidePreloader after the animation completes
+                }
+            });
+
+        let themeStatus = JSON.parse(localStorage.getItem('REDEFINE-THEME-STATUS'))?.isDark;
+
+        // If the theme status is not found in local storage, check the preferred color scheme
+        if (themeStatus === undefined || themeStatus === null) {
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                themeStatus = 'dark';
+            } else {
+                themeStatus = 'light';
+            }
+        }
+
+        // Now you can use the themeStatus variable in your code
+        if (themeStatus) {
+            document.documentElement.style.setProperty('--preloader-background-color', '#202124');
+            document.documentElement.style.setProperty('--preloader-text-color', '#fff');
+        } else {
+            document.documentElement.style.setProperty('--preloader-background-color', '#fff');
+            document.documentElement.style.setProperty('--preloader-text-color', '#000');
+        }
+
+        window.addEventListener('load', function () {
+            setTimeout(hidePreloader, 5000); // Call hidePreloader after 5000 milliseconds if not already called by animation
+        });
+
+        function hidePreloader() {
+            var preloader = document.querySelector('.preloader');
+            preloader.style.opacity = '0';
+            setTimeout(function () {
+                preloader.style.display = 'none';
+            }, 200);
+        }
+    </script>
+</div>
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
 
 
+        <div class="main-content-header">
+            <header class="navbar-container px-6 md:px-12">
 
+    <div class="navbar-content ">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Personal Blog
+                
+            </a>
+        </div>
 
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            
 
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/"
+                                        >
+                                    <i class="fa-regular fa-house fa-fw"></i>
+                                    HOME
+                                    
+                                </a>
 
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
 
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/archives"
+                                        >
+                                    <i class="fa-regular fa-archive fa-fw"></i>
+                                    ARCHIVES
+                                    
+                                </a>
 
-  <noscript>
-    <link rel="stylesheet" href="/css/noscript.css">
-  </noscript>
-</head>
-
-<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
-  <div class="headband"></div>
-
-  <main class="main">
-    <div class="column">
-      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
-  <div class="site-nav-toggle">
-    <div class="toggle" aria-label="Toggle navigation bar" role="button">
-        <span class="toggle-line"></span>
-        <span class="toggle-line"></span>
-        <span class="toggle-line"></span>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                    
+                        <li class="navbar-item search search-popup-trigger">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
 
-  <div class="site-meta">
+    <!-- Mobile sheet -->
+    <div class="navbar-drawer h-screen w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                    
 
-    <a href="/" class="brand" rel="start">
-      <i class="logo-line"></i>
-      <p class="site-title">Li1x's Blog</p>
-      <i class="logo-line"></i>
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/"
+                        >
+                            <span>
+                                HOME
+                            </span>
+                            
+                                <i class="fa-regular fa-house fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/archives"
+                        >
+                            <span>
+                                ARCHIVES
+                            </span>
+                            
+                                <i class="fa-regular fa-archive fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+
+            
+            
+                
+                    
+                    
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full active"
+                           href="/tags"
+                        >
+                            <span>Tags</span>
+                            <i class="fa-regular fa-tags fa-sm fa-fw"></i>
+                        </a>
+                    </li>
+                
+                    
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full active"
+                           href="/categories"
+                        >
+                            <span>Categories</span>
+                            <i class="fa-regular fa-folder fa-sm fa-fw"></i>
+                        </a>
+                    </li>
+                
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">6</div>
+        <div class="label text-third-text-color text-sm">Tags</div>
     </a>
-      <p class="site-subtitle" itemprop="description">Lifelong Learning</p>
-  </div>
-
-  <div class="site-nav-right">
-    <div class="toggle popup-trigger" aria-label="Search" role="button">
-        <i class="fa fa-search fa-fw fa-lg"></i>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">4</div>
+        <div class="label text-third-text-color text-sm">Categories</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">11</div>
+        <div class="label text-third-text-color text-sm">Posts</div>
+    </a>
+</div>
     </div>
-  </div>
-</div>
 
-
-
-<nav class="site-nav">
-  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section">Home</a></li><li class="menu-item menu-item-tags"><a href="/tags" rel="section">Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories" rel="section">Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives" rel="section">Archives</a></li>
-      <li class="menu-item menu-item-search">
-        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
-        </a>
-      </li>
-  </ul>
-</nav>
-
-
-
-  <div class="search-pop-overlay">
-    <div class="popup search-popup"><div class="search-header">
-  <span class="search-icon">
-    <i class="fa fa-search"></i>
-  </span>
-  <div class="search-input-container">
-    <input autocomplete="off" autocapitalize="off" maxlength="80"
-           placeholder="Searching..." spellcheck="false"
-           type="search" class="search-input">
-  </div>
-  <span class="popup-btn-close" role="button">
-    <i class="fa fa-times-circle"></i>
-  </span>
-</div>
-<div class="search-result-container no-result">
-  <div class="search-result-icon">
-    <i class="fa fa-spinner fa-pulse fa-5x"></i>
-  </div>
-</div>
-
-    </div>
-  </div>
+    <div class="window-mask"></div>
 
 </header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container flex relative justify-between box-border w-full h-full">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">Misc-流量题记录</h1>
+                </div>
+            
+            </div>
+
         
-  
-  <aside class="sidebar">
-
-    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
-      <ul class="sidebar-nav">
-        <li class="sidebar-nav-toc">
-          Table of Contents
-        </li>
-        <li class="sidebar-nav-overview">
-          Overview
-        </li>
-      </ul>
-
-      <div class="sidebar-panel-container">
-        <!--noindex-->
-        <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Buu-9-3-1-HTTP%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90http%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90"><span class="nav-number">1.</span> <span class="nav-text">Buu - 9.3.1 HTTP流量分析http流量分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%87%E6%BB%A4%E5%99%A8%E7%9F%A5%E8%AF%86%E7%82%B9%EF%BC%9A"><span class="nav-number">1.1.</span> <span class="nav-text">过滤器知识点：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E6%B4%B5%E6%9D%AF-2019-Attack-%E5%8E%8B%E7%BC%A9%E5%8C%85"><span class="nav-number">2.</span> <span class="nav-text">[安洵杯 2019]Attack [ 压缩包 ]</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#NewStarCTF-%E5%85%AC%E5%BC%80%E8%B5%9B%E8%B5%9B%E9%81%93-%E6%9C%80%E5%90%8E%E7%9A%84%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90-tshark"><span class="nav-number">3.</span> <span class="nav-text">[NewStarCTF 公开赛赛道]最后的流量分析 [ tshark ]</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#NSS-%E9%B9%A4%E5%9F%8E%E6%9D%AF-2021-%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90"><span class="nav-number">4.</span> <span class="nav-text">NSS - [鹤城杯 2021]流量分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#USB%E6%B5%81%E9%87%8F-%E9%94%AE%E7%9B%98%E6%B5%81%E9%87%8F"><span class="nav-number">5.</span> <span class="nav-text">USB流量 - 键盘流量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#USB%E6%B5%81%E9%87%8F-%E9%BC%A0%E6%A0%87%E6%95%B0%E9%87%8F"><span class="nav-number">6.</span> <span class="nav-text">USB流量 - 鼠标数量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Buu-TLS%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90"><span class="nav-number">7.</span> <span class="nav-text">Buu - TLS流量分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Buu-%E7%A5%9E%E6%AF%94%E6%B5%81%E9%87%8F"><span class="nav-number">8.</span> <span class="nav-text">Buu - 神比流量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#NSSCTF-NISACTF-2022-%E6%B5%81%E9%87%8F%E5%8C%85%E9%87%8C%E6%9C%89%E4%B8%AA%E7%86%8A"><span class="nav-number">9.</span> <span class="nav-text">NSSCTF - [NISACTF 2022]流量包里有个熊</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#NSSCTF-CISCN-2023-%E5%88%9D%E8%B5%9B-%E8%A2%AB%E5%8A%A0%E5%AF%86%E7%9A%84%E7%94%9F%E4%BA%A7%E6%B5%81%E9%87%8F"><span class="nav-number">10.</span> <span class="nav-text">NSSCTF - [CISCN 2023 初赛]被加密的生产流量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#NSSCTF-HGAME-2022-week1-%E5%A5%BD%E5%BA%B7%E7%9A%84%E6%B5%81%E9%87%8F"><span class="nav-number">11.</span> <span class="nav-text">NSSCTF - [HGAME 2022 week1]好康的流量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C-%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%901"><span class="nav-number">12.</span> <span class="nav-text">攻防世界 - 流量分析1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C-%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%902"><span class="nav-number">13.</span> <span class="nav-text">攻防世界 - 流量分析2</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#23%E5%B9%B4%E8%93%9D%E6%A1%A5%E6%9D%AF%E7%9A%84%E4%B8%80%E4%B8%AA%E9%A2%98"><span class="nav-number">14.</span> <span class="nav-text">23年蓝桥杯的一个题</span></a></li></ol></div>
-        </div>
-        <!--/noindex-->
-
-        <div class="site-overview-wrap sidebar-panel">
-          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <img class="site-author-image" itemprop="image" alt="Li1x"
-      src="/images/avatar.gif">
-  <p class="site-author-name" itemprop="name">Li1x</p>
-  <div class="site-description" itemprop="description"></div>
-</div>
-<div class="site-state-wrap animated">
-  <nav class="site-state">
-      <div class="site-state-item site-state-posts">
-        <a href="/archives">
-          <span class="site-state-item-count">11</span>
-          <span class="site-state-item-name">posts</span>
-        </a>
-      </div>
-      <div class="site-state-item site-state-categories">
-          <a href="/categories">
-        <span class="site-state-item-count">4</span>
-        <span class="site-state-item-name">categories</span></a>
-      </div>
-      <div class="site-state-item site-state-tags">
-          <a href="/tags">
-        <span class="site-state-item-count">6</span>
-        <span class="site-state-item-name">tags</span></a>
-      </div>
-  </nav>
-</div>
-
-        </div>
-      </div>
-    </div>
-
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/redefine-avatar.svg">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">The Redefine Team</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv2</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2024-04-01 00:13:08</span>
+        <span class="mobile">2024-04-01 00:13:08</span>
+        <span class="hover-info">Created</span>
+    </span>
     
-  </aside>
-
-
-    </div>
-
-    <div class="main-inner post posts-expand">
-
-
-  
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://li1x.github.io/CTF/Misc/%E6%B5%81%E9%87%8F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Li1x">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Li1x's Blog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="Misc-流量题记录 | Li1x's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          Misc-流量题记录
-        </h1>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2024-04-01 00:13:08" itemprop="dateCreated datePublished" datetime="2024-04-01T00:13:08+08:00">2024-04-01</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2024-04-08 12:44:24" itemprop="dateModified" datetime="2024-04-08T12:44:24+08:00">2024-04-08</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Misc/" itemprop="url" rel="index"><span itemprop="name">Misc</span></a>
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2024-04-16 23:12:34</span>
+            <span class="mobile">2024-04-16 23:12:34</span>
+            <span class="hover-info">Updated</span>
         </span>
-    </span>
+    
 
-  
-    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">Views: </span>
-      <span id="busuanzi_value_page_pv"></span>
-    </span>
-  
-  <span class="post-meta-item">
     
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus: </span>
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/Misc/">Misc</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
     
-    <a title="disqus" href="/CTF/Misc/%E6%B5%81%E9%87%8F/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="CTF/Misc/流量/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>9.9k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>18 mins.</span>
-    </span>
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/">流量分析</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
 </div>
 
-        </div>
-      </header>
+                    </div>
+                </div>
+            </div>
+        
 
-    
-    
-    
-    <div class="post-body" itemprop="articleBody"><h2 id="Buu-9-3-1-HTTP流量分析http流量分析"><a href="#Buu-9-3-1-HTTP流量分析http流量分析" class="headerlink" title="Buu - 9.3.1 HTTP流量分析http流量分析"></a>Buu - 9.3.1 HTTP流量分析http流量分析</h2><p>下载<a target="_blank" rel="noopener" href="https://files.buuoj.cn/files/6d44d2b69c7a5941a25b713dde3d903f/atta.pcapng">附件</a>，用wireshark打开，题目时http流量的分析</p>
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h2 id="Buu-9-3-1-HTTP流量分析http流量分析"><a href="#Buu-9-3-1-HTTP流量分析http流量分析" class="headerlink" title="Buu - 9.3.1 HTTP流量分析http流量分析"></a>Buu - 9.3.1 HTTP流量分析http流量分析</h2><p>下载<a class="link" target="_blank" rel="noopener" href="https://files.buuoj.cn/files/6d44d2b69c7a5941a25b713dde3d903f/atta.pcapng">附件 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>，用wireshark打开，题目时http流量的分析</p>
 <p>直接过滤搜索http</p>
-<p><img src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-1-00.png"></p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-1-00.png"></p>
 <p>显而易见的shell.php  &#x3D;&gt; 后门文件吧？</p>
 <p>在你觉得可疑的流量包上 右键，追踪流 http流</p>
-<p><img src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-1-01.png"></p>
-<p><img src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-1-02.png"></p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-1-01.png"></p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-1-02.png"></p>
 <h3 id="过滤器知识点："><a href="#过滤器知识点：" class="headerlink" title="过滤器知识点："></a>过滤器知识点：</h3><p><code>http contains &#39;flag&#39;</code></p>
 <p>-&gt; 匹配http协议的 且 流量包中含有flag字符的</p>
 <hr>
 <h2 id="安洵杯-2019-Attack-压缩包"><a href="#安洵杯-2019-Attack-压缩包" class="headerlink" title="[安洵杯 2019]Attack [ 压缩包 ]"></a>[安洵杯 2019]Attack [ 压缩包 ]</h2><p>用wireshark打开，过滤器语句<code> http contains &quot;flag&quot;</code>看看有没有结果：</p>
-<p><img src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-2-00.png"></p>
-<p><img src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-2-01.png"></p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-2-00.png"></p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-2-01.png"></p>
 <p>有结果肯定要追踪http流，（我自己做的时候只关注到了flag.txt）却没关注到 PK（zip压缩包的标志）</p>
 <p><del>我的第一想法肯定要将它给拿出来进行分离zip获得flag.txt的</del></p>
 <p>但看了Wp：直接分离这个流量包（附件）即可：用kali中的工具<code>foremost -T Attack.pcap</code></p>
-<p><img src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-2-03.png"></p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-2-03.png"></p>
 <p>获得zip压缩包，但是有加密，这个压缩包的 属性 -&gt; 注释  中提示信息，指向了管理员的密码</p>
 <p>哪里获取管理员密码呢，看Wp说是 dmp文件</p>
 <blockquote>
@@ -349,19 +601,19 @@
 </blockquote>
 <p>经过过滤器，发现是有dmp的信息的 [ 之后感觉我这个过滤语句不太好，dmp只是三个字符而已，有可能出现偶尔情况，加个. ] [我不知道通配符是什么，我试了 <code>*.dmp</code> 没结果]</p>
 <p>发现有，就导出</p>
-<p><img src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-2-05.png"></p>
-<p><img src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-2-02.png"></p>
-<p><img src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-2-04.png"></p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-2-05.png"></p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-2-02.png"></p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-2-04.png"></p>
 <p>接下来需要用到工具 <code>mimikatz</code> 下载链接</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/gentilkiwi/mimikatz/releases/tag/2.2.0-20220919">https://github.com/gentilkiwi/mimikatz/releases/tag/2.2.0-20220919</a></p>
+<p><a class="link" target="_blank" rel="noopener" href="https://github.com/gentilkiwi/mimikatz/releases/tag/2.2.0-20220919">https://github.com/gentilkiwi/mimikatz/releases/tag/2.2.0-20220919 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
 <p>具体用法我也不知道。关于这个题：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">//提升权限</span><br><span class="line">privilege::debug</span><br><span class="line">//载入dmp文件</span><br><span class="line">sekurlsa::minidump lsass.dmp</span><br><span class="line">//读取登陆密码</span><br><span class="line">sekurlsa::logonpasswords full</span><br></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">//提升权限</span><br><span class="line">privilege::debug</span><br><span class="line">//载入dmp文件</span><br><span class="line">sekurlsa::minidump lsass.dmp</span><br><span class="line">//读取登陆密码</span><br><span class="line">sekurlsa::logonpasswords full</span><br></pre></td></tr></table></figure></div>
 
-<p><img src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-2-06.png" alt="4-2-06"></p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-2-06.png" alt="4-2-06"></p>
 <p>我不知道为什么 我输入提升权限的那句代码会报错，</p>
 <p>但是输入后面的代码正常运行。</p>
 <p>然后就会看到密码了。Password：</p>
-<h2 id="NewStarCTF-公开赛赛道-最后的流量分析-tshark"><a href="#NewStarCTF-公开赛赛道-最后的流量分析-tshark" class="headerlink" title="[NewStarCTF 公开赛赛道]最后的流量分析 [ tshark ]"></a>[NewStarCTF 公开赛赛道]最后的流量分析 [ tshark ]</h2><p><a target="_blank" rel="noopener" href="http://linux.51yip.com/search/tshark">tshark的使用</a></p>
+<h2 id="NewStarCTF-公开赛赛道-最后的流量分析-tshark"><a href="#NewStarCTF-公开赛赛道-最后的流量分析-tshark" class="headerlink" title="[NewStarCTF 公开赛赛道]最后的流量分析 [ tshark ]"></a>[NewStarCTF 公开赛赛道]最后的流量分析 [ tshark ]</h2><p><a class="link" target="_blank" rel="noopener" href="http://linux.51yip.com/search/tshark">tshark的使用 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
 <p><code>tshark -r sqli.pcap -T fields -Y &quot;http.request.method==GET or frame.len&gt;765&quot; -e &quot;frame.len&quot; -e &quot;http.request.uri.query.parameter&quot; &gt; data.txt</code></p>
 <blockquote>
 <p>-r 解析的流量文件</p>
@@ -371,13 +623,13 @@
 <p>&gt; 重定向，这里表示将输出的东西 重定向到一个data.txt文件内</p>
 </blockquote>
 <p>第一次用这个tshark 看手册吧.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> urllib.parse <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line">comment = <span class="string">&#x27;&#x27;</span></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;E:\OneDrive\桌面\CTF\data.txt&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">	lines = f.readlines() <span class="comment"># 读取txt文件中的每一行</span></span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(lines)):	<span class="comment"># len(lines)-&gt;读取的行数</span></span><br><span class="line">		<span class="comment"># print(lines[i])</span></span><br><span class="line">		<span class="keyword">if</span> <span class="built_in">int</span>(lines[i][:<span class="number">3</span>])&gt;<span class="number">765</span>:</span><br><span class="line">			comment += re.findall(<span class="string">r&#x27;&quot;(.)&quot;&#x27;</span>, unquote(lines[i-<span class="number">1</span>]))[<span class="number">0</span>]	<span class="comment"># 观察得到的txt文本，当出现&gt;768的行数，上一行双引号中的内容就是flag的值 =&gt; 正是因为我们观察到了这个，才通过python来得到这个内容</span></span><br><span class="line"><span class="comment"># unquote -&gt; 解码url编码的字符串</span></span><br><span class="line"><span class="comment"># r&#x27;&#x27; -&gt; 将转义字符当做普通字符</span></span><br><span class="line"><span class="comment"># . 通配符</span></span><br><span class="line"><span class="built_in">print</span>(comment)</span><br></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> urllib.parse <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line">comment = <span class="string">&#x27;&#x27;</span></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;E:\OneDrive\桌面\CTF\data.txt&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">	lines = f.readlines() <span class="comment"># 读取txt文件中的每一行</span></span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(lines)):	<span class="comment"># len(lines)-&gt;读取的行数</span></span><br><span class="line">		<span class="comment"># print(lines[i])</span></span><br><span class="line">		<span class="keyword">if</span> <span class="built_in">int</span>(lines[i][:<span class="number">3</span>])&gt;<span class="number">765</span>:</span><br><span class="line">			comment += re.findall(<span class="string">r&#x27;&quot;(.)&quot;&#x27;</span>, unquote(lines[i-<span class="number">1</span>]))[<span class="number">0</span>]	<span class="comment"># 观察得到的txt文本，当出现&gt;768的行数，上一行双引号中的内容就是flag的值 =&gt; 正是因为我们观察到了这个，才通过python来得到这个内容</span></span><br><span class="line"><span class="comment"># unquote -&gt; 解码url编码的字符串</span></span><br><span class="line"><span class="comment"># r&#x27;&#x27; -&gt; 将转义字符当做普通字符</span></span><br><span class="line"><span class="comment"># . 通配符</span></span><br><span class="line"><span class="built_in">print</span>(comment)</span><br></pre></td></tr></table></figure></div>
 
 <h2 id="NSS-鹤城杯-2021-流量分析"><a href="#NSS-鹤城杯-2021-流量分析" class="headerlink" title="NSS - [鹤城杯 2021]流量分析"></a>NSS - [鹤城杯 2021]流量分析</h2><p>打开wireshark，看到是sql注入的信息，这题我熟，刚做过。就去用tshark了，但是看了眼wp，直接在这个导出页面找就行！</p>
-<p><img src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-5-00.png"></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">flag = <span class="number">102</span>,<span class="number">108</span>,<span class="number">97</span>,<span class="number">103</span>,<span class="number">123</span>,<span class="number">119</span>,<span class="number">49</span>,<span class="number">114</span>,<span class="number">101</span>,<span class="number">115</span>,<span class="number">104</span>,<span class="number">65</span>,<span class="number">82</span>,<span class="number">75</span>,<span class="number">95</span>,<span class="number">101</span>,<span class="number">122</span>,<span class="number">95</span>,<span class="number">49</span>,<span class="number">115</span>,<span class="number">110</span>,<span class="number">116</span>,<span class="number">105</span>,<span class="number">116</span>,<span class="number">125</span>,<span class="number">126</span>,<span class="number">126</span>,<span class="number">126</span>,<span class="number">126</span>,<span class="number">59</span></span><br><span class="line">result = <span class="string">&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> flag:</span><br><span class="line">    result += <span class="built_in">chr</span>(i)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;flag : &quot;</span> + result)</span><br></pre></td></tr></table></figure>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-5-00.png"></p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">flag = <span class="number">102</span>,<span class="number">108</span>,<span class="number">97</span>,<span class="number">103</span>,<span class="number">123</span>,<span class="number">119</span>,<span class="number">49</span>,<span class="number">114</span>,<span class="number">101</span>,<span class="number">115</span>,<span class="number">104</span>,<span class="number">65</span>,<span class="number">82</span>,<span class="number">75</span>,<span class="number">95</span>,<span class="number">101</span>,<span class="number">122</span>,<span class="number">95</span>,<span class="number">49</span>,<span class="number">115</span>,<span class="number">110</span>,<span class="number">116</span>,<span class="number">105</span>,<span class="number">116</span>,<span class="number">125</span>,<span class="number">126</span>,<span class="number">126</span>,<span class="number">126</span>,<span class="number">126</span>,<span class="number">59</span></span><br><span class="line">result = <span class="string">&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> flag:</span><br><span class="line">    result += <span class="built_in">chr</span>(i)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;flag : &quot;</span> + result)</span><br></pre></td></tr></table></figure></div>
 
-<h2 id="USB流量-键盘流量"><a href="#USB流量-键盘流量" class="headerlink" title="USB流量 - 键盘流量"></a>USB流量 - 键盘流量</h2><p><a target="_blank" rel="noopener" href="https://wuyong.lanzout.com/ihBPQ0uug8id">附件</a>            <a target="_blank" rel="noopener" href="https://blog.csdn.net/ON_Zero/article/details/130528679">参考</a></p>
+<h2 id="USB流量-键盘流量"><a href="#USB流量-键盘流量" class="headerlink" title="USB流量 - 键盘流量"></a>USB流量 - 键盘流量</h2><p><a class="link" target="_blank" rel="noopener" href="https://wuyong.lanzout.com/ihBPQ0uug8id">附件 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>            <a class="link" target="_blank" rel="noopener" href="https://blog.csdn.net/ON_Zero/article/details/130528679">参考 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
 <p>用tshark获取其中的数据</p>
 <p><code>tshark -r usb.pcap -T fields -e usb.capdata | sed &#39;/^\s*$/d&#39; &gt; usbdata.txt</code></p>
 <p>-&gt; -r 是要解析的文件名</p>
@@ -385,254 +637,613 @@
 <p>-&gt; -e usb.capdata 告诉tshark输出与USB相关的数据，</p>
 <p>-&gt; | 这是一个管道符，它将tshark输出传递给 sed命令</p>
 <p>-&gt; sed是流编辑器，用于处理文本流，后面这个 &#x2F;^\s*$&#x2F;d 是正则表达式，删除所有空行</p>
-<p><img src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-3-00.png"></p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-3-00.png"></p>
 <p>将获取到的数据没两个之间用:隔开</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 给每一行的数据 俩俩 用冒号隔开</span></span><br><span class="line">f = <span class="built_in">open</span>(<span class="string">&quot;E:\\OneDrive\\桌面\\CTF\\Misc流量\\键盘\\usbdata.txt&quot;</span>, <span class="string">&#x27;r&#x27;</span>)</span><br><span class="line">f1 = <span class="built_in">open</span>(<span class="string">&quot;E:\\OneDrive\\桌面\CTF\\Misc流量\\键盘\\out.txt&quot;</span>, <span class="string">&#x27;w&#x27;</span>)</span><br><span class="line"><span class="comment"># 读取每一行 进行去空，</span></span><br><span class="line"><span class="keyword">while</span> <span class="number">1</span>:</span><br><span class="line">    a = f.readlines()</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(a)):</span><br><span class="line">        a[i] = a[i].strip()</span><br><span class="line">    <span class="comment"># print(a)</span></span><br><span class="line">        <span class="comment"># if a[i]:</span></span><br><span class="line">            <span class="comment"># print(len(a[i]))</span></span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(a[i]) == <span class="number">16</span>:</span><br><span class="line">            <span class="comment"># print(f&quot;[*] Success &#123;i&#125;&quot;)</span></span><br><span class="line">            out = <span class="string">&#x27;&#x27;</span></span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(a[i]), <span class="number">2</span>):</span><br><span class="line">                <span class="keyword">if</span> j+<span class="number">2</span> != <span class="built_in">len</span>(a[i]):</span><br><span class="line">                    out += a[i][j] + a[i][j+<span class="number">1</span>] + <span class="string">&quot;:&quot;</span></span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    out += a[i][j] + a[i][j+<span class="number">1</span>]</span><br><span class="line">            f1.write(out)</span><br><span class="line">            f1.write(<span class="string">&quot;\n&quot;</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">break</span></span><br></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 给每一行的数据 俩俩 用冒号隔开</span></span><br><span class="line">f = <span class="built_in">open</span>(<span class="string">&quot;E:\\OneDrive\\桌面\\CTF\\Misc流量\\键盘\\usbdata.txt&quot;</span>, <span class="string">&#x27;r&#x27;</span>)</span><br><span class="line">f1 = <span class="built_in">open</span>(<span class="string">&quot;E:\\OneDrive\\桌面\CTF\\Misc流量\\键盘\\out.txt&quot;</span>, <span class="string">&#x27;w&#x27;</span>)</span><br><span class="line"><span class="comment"># 读取每一行 进行去空，</span></span><br><span class="line"><span class="keyword">while</span> <span class="number">1</span>:</span><br><span class="line">    a = f.readlines()</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(a)):</span><br><span class="line">        a[i] = a[i].strip()</span><br><span class="line">    <span class="comment"># print(a)</span></span><br><span class="line">        <span class="comment"># if a[i]:</span></span><br><span class="line">            <span class="comment"># print(len(a[i]))</span></span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(a[i]) == <span class="number">16</span>:</span><br><span class="line">            <span class="comment"># print(f&quot;[*] Success &#123;i&#125;&quot;)</span></span><br><span class="line">            out = <span class="string">&#x27;&#x27;</span></span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(a[i]), <span class="number">2</span>):</span><br><span class="line">                <span class="keyword">if</span> j+<span class="number">2</span> != <span class="built_in">len</span>(a[i]):</span><br><span class="line">                    out += a[i][j] + a[i][j+<span class="number">1</span>] + <span class="string">&quot;:&quot;</span></span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    out += a[i][j] + a[i][j+<span class="number">1</span>]</span><br><span class="line">            f1.write(out)</span><br><span class="line">            f1.write(<span class="string">&quot;\n&quot;</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">break</span></span><br></pre></td></tr></table></figure></div>
 
 <p>将文中的数据还原成键位</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#最后用脚本提取  键盘数据 -&gt; 字符</span></span><br><span class="line">   <span class="comment"># print((line[6:8])) #输出6到8之间的值</span></span><br><span class="line">   <span class="comment">#取出6到8之间的值</span></span><br><span class="line">mappings = &#123; <span class="number">0x04</span>:<span class="string">&quot;A&quot;</span>,  <span class="number">0x05</span>:<span class="string">&quot;B&quot;</span>,  <span class="number">0x06</span>:<span class="string">&quot;C&quot;</span>, <span class="number">0x07</span>:<span class="string">&quot;D&quot;</span>, <span class="number">0x08</span>:<span class="string">&quot;E&quot;</span>, <span class="number">0x09</span>:<span class="string">&quot;F&quot;</span>, <span class="number">0x0A</span>:<span class="string">&quot;G&quot;</span>,  <span class="number">0x0B</span>:<span class="string">&quot;H&quot;</span>, <span class="number">0x0C</span>:<span class="string">&quot;I&quot;</span>,  <span class="number">0x0D</span>:<span class="string">&quot;J&quot;</span>, <span class="number">0x0E</span>:<span class="string">&quot;K&quot;</span>, <span class="number">0x0F</span>:<span class="string">&quot;L&quot;</span>, <span class="number">0x10</span>:<span class="string">&quot;M&quot;</span>, <span class="number">0x11</span>:<span class="string">&quot;N&quot;</span>,<span class="number">0x12</span>:<span class="string">&quot;O&quot;</span>,  <span class="number">0x13</span>:<span class="string">&quot;P&quot;</span>, <span class="number">0x14</span>:<span class="string">&quot;Q&quot;</span>, <span class="number">0x15</span>:<span class="string">&quot;R&quot;</span>, <span class="number">0x16</span>:<span class="string">&quot;S&quot;</span>, <span class="number">0x17</span>:<span class="string">&quot;T&quot;</span>, <span class="number">0x18</span>:<span class="string">&quot;U&quot;</span>,<span class="number">0x19</span>:<span class="string">&quot;V&quot;</span>, <span class="number">0x1A</span>:<span class="string">&quot;W&quot;</span>, <span class="number">0x1B</span>:<span class="string">&quot;X&quot;</span>, <span class="number">0x1C</span>:<span class="string">&quot;Y&quot;</span>, <span class="number">0x1D</span>:<span class="string">&quot;Z&quot;</span>, <span class="number">0x1E</span>:<span class="string">&quot;1&quot;</span>, <span class="number">0x1F</span>:<span class="string">&quot;2&quot;</span>, <span class="number">0x20</span>:<span class="string">&quot;3&quot;</span>, <span class="number">0x21</span>:<span class="string">&quot;4&quot;</span>, <span class="number">0x22</span>:<span class="string">&quot;5&quot;</span>,  <span class="number">0x23</span>:<span class="string">&quot;6&quot;</span>, <span class="number">0x24</span>:<span class="string">&quot;7&quot;</span>, <span class="number">0x25</span>:<span class="string">&quot;8&quot;</span>, <span class="number">0x26</span>:<span class="string">&quot;9&quot;</span>, <span class="number">0x27</span>:<span class="string">&quot;0&quot;</span>, <span class="number">0x28</span>:<span class="string">&quot;\n&quot;</span>, <span class="number">0x2a</span>:<span class="string">&quot;[DEL]&quot;</span>,  <span class="number">0X2B</span>:<span class="string">&quot;    &quot;</span>, <span class="number">0x2C</span>:<span class="string">&quot; &quot;</span>,  <span class="number">0x2D</span>:<span class="string">&quot;-&quot;</span>, <span class="number">0x2E</span>:<span class="string">&quot;=&quot;</span>, <span class="number">0x2F</span>:<span class="string">&quot;[&quot;</span>,  <span class="number">0x30</span>:<span class="string">&quot;]&quot;</span>,  <span class="number">0x31</span>:<span class="string">&quot;\\&quot;</span>, <span class="number">0x32</span>:<span class="string">&quot;~&quot;</span>, <span class="number">0x33</span>:<span class="string">&quot;;&quot;</span>,  <span class="number">0x34</span>:<span class="string">&quot;&#x27;&quot;</span>, <span class="number">0x36</span>:<span class="string">&quot;,&quot;</span>,  <span class="number">0x37</span>:<span class="string">&quot;.&quot;</span> &#125;</span><br><span class="line">nums = []</span><br><span class="line">keys = <span class="built_in">open</span>(<span class="string">&quot;E:\\OneDrive\\桌面\\CTF\\Misc流量\\键盘\\out.txt&quot;</span>)</span><br><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> keys:</span><br><span class="line">    <span class="keyword">if</span> line[<span class="number">0</span>]!=<span class="string">&#x27;0&#x27;</span> <span class="keyword">or</span> line[<span class="number">1</span>]!=<span class="string">&#x27;0&#x27;</span> <span class="keyword">or</span> line[<span class="number">3</span>]!=<span class="string">&#x27;0&#x27;</span> <span class="keyword">or</span> line[<span class="number">4</span>]!=<span class="string">&#x27;0&#x27;</span> <span class="keyword">or</span> line[<span class="number">9</span>]!=<span class="string">&#x27;0&#x27;</span> <span class="keyword">or</span> line[<span class="number">10</span>]!=<span class="string">&#x27;0&#x27;</span> <span class="keyword">or</span> line[<span class="number">12</span>]!=<span class="string">&#x27;0&#x27;</span> <span class="keyword">or</span> line[<span class="number">13</span>]!=<span class="string">&#x27;0&#x27;</span> <span class="keyword">or</span> line[<span class="number">15</span>]!=<span class="string">&#x27;0&#x27;</span> <span class="keyword">or</span> line[<span class="number">16</span>]!=<span class="string">&#x27;0&#x27;</span> <span class="keyword">or</span> line[<span class="number">18</span>]!=<span class="string">&#x27;0&#x27;</span> <span class="keyword">or</span> line[<span class="number">19</span>]!=<span class="string">&#x27;0&#x27;</span> <span class="keyword">or</span> line[<span class="number">21</span>]!=<span class="string">&#x27;0&#x27;</span> <span class="keyword">or</span> line[<span class="number">22</span>]!=<span class="string">&#x27;0&#x27;</span>:</span><br><span class="line">         <span class="keyword">continue</span></span><br><span class="line">    nums.append(<span class="built_in">int</span>(line[<span class="number">6</span>:<span class="number">8</span>],<span class="number">16</span>)) </span><br><span class="line">keys.close()</span><br><span class="line">output = <span class="string">&quot;&quot;</span></span><br><span class="line"><span class="keyword">for</span> n <span class="keyword">in</span> nums:</span><br><span class="line">    <span class="keyword">if</span> n == <span class="number">0</span> :</span><br><span class="line">        <span class="keyword">continue</span></span><br><span class="line">    <span class="keyword">if</span> n <span class="keyword">in</span> mappings:</span><br><span class="line">        output += mappings[n]</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        output += <span class="string">&#x27;[unknown]&#x27;</span></span><br><span class="line"><span class="built_in">print</span> (<span class="string">&#x27;output :\n&#x27;</span> + output)</span><br></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#最后用脚本提取  键盘数据 -&gt; 字符</span></span><br><span class="line">   <span class="comment"># print((line[6:8])) #输出6到8之间的值</span></span><br><span class="line">   <span class="comment">#取出6到8之间的值</span></span><br><span class="line">mappings = &#123; <span class="number">0x04</span>:<span class="string">&quot;A&quot;</span>,  <span class="number">0x05</span>:<span class="string">&quot;B&quot;</span>,  <span class="number">0x06</span>:<span class="string">&quot;C&quot;</span>, <span class="number">0x07</span>:<span class="string">&quot;D&quot;</span>, <span class="number">0x08</span>:<span class="string">&quot;E&quot;</span>, <span class="number">0x09</span>:<span class="string">&quot;F&quot;</span>, <span class="number">0x0A</span>:<span class="string">&quot;G&quot;</span>,  <span class="number">0x0B</span>:<span class="string">&quot;H&quot;</span>, <span class="number">0x0C</span>:<span class="string">&quot;I&quot;</span>,  <span class="number">0x0D</span>:<span class="string">&quot;J&quot;</span>, <span class="number">0x0E</span>:<span class="string">&quot;K&quot;</span>, <span class="number">0x0F</span>:<span class="string">&quot;L&quot;</span>, <span class="number">0x10</span>:<span class="string">&quot;M&quot;</span>, <span class="number">0x11</span>:<span class="string">&quot;N&quot;</span>,<span class="number">0x12</span>:<span class="string">&quot;O&quot;</span>,  <span class="number">0x13</span>:<span class="string">&quot;P&quot;</span>, <span class="number">0x14</span>:<span class="string">&quot;Q&quot;</span>, <span class="number">0x15</span>:<span class="string">&quot;R&quot;</span>, <span class="number">0x16</span>:<span class="string">&quot;S&quot;</span>, <span class="number">0x17</span>:<span class="string">&quot;T&quot;</span>, <span class="number">0x18</span>:<span class="string">&quot;U&quot;</span>,<span class="number">0x19</span>:<span class="string">&quot;V&quot;</span>, <span class="number">0x1A</span>:<span class="string">&quot;W&quot;</span>, <span class="number">0x1B</span>:<span class="string">&quot;X&quot;</span>, <span class="number">0x1C</span>:<span class="string">&quot;Y&quot;</span>, <span class="number">0x1D</span>:<span class="string">&quot;Z&quot;</span>, <span class="number">0x1E</span>:<span class="string">&quot;1&quot;</span>, <span class="number">0x1F</span>:<span class="string">&quot;2&quot;</span>, <span class="number">0x20</span>:<span class="string">&quot;3&quot;</span>, <span class="number">0x21</span>:<span class="string">&quot;4&quot;</span>, <span class="number">0x22</span>:<span class="string">&quot;5&quot;</span>,  <span class="number">0x23</span>:<span class="string">&quot;6&quot;</span>, <span class="number">0x24</span>:<span class="string">&quot;7&quot;</span>, <span class="number">0x25</span>:<span class="string">&quot;8&quot;</span>, <span class="number">0x26</span>:<span class="string">&quot;9&quot;</span>, <span class="number">0x27</span>:<span class="string">&quot;0&quot;</span>, <span class="number">0x28</span>:<span class="string">&quot;\n&quot;</span>, <span class="number">0x2a</span>:<span class="string">&quot;[DEL]&quot;</span>,  <span class="number">0X2B</span>:<span class="string">&quot;    &quot;</span>, <span class="number">0x2C</span>:<span class="string">&quot; &quot;</span>,  <span class="number">0x2D</span>:<span class="string">&quot;-&quot;</span>, <span class="number">0x2E</span>:<span class="string">&quot;=&quot;</span>, <span class="number">0x2F</span>:<span class="string">&quot;[&quot;</span>,  <span class="number">0x30</span>:<span class="string">&quot;]&quot;</span>,  <span class="number">0x31</span>:<span class="string">&quot;\\&quot;</span>, <span class="number">0x32</span>:<span class="string">&quot;~&quot;</span>, <span class="number">0x33</span>:<span class="string">&quot;;&quot;</span>,  <span class="number">0x34</span>:<span class="string">&quot;&#x27;&quot;</span>, <span class="number">0x36</span>:<span class="string">&quot;,&quot;</span>,  <span class="number">0x37</span>:<span class="string">&quot;.&quot;</span> &#125;</span><br><span class="line">nums = []</span><br><span class="line">keys = <span class="built_in">open</span>(<span class="string">&quot;E:\\OneDrive\\桌面\\CTF\\Misc流量\\键盘\\out.txt&quot;</span>)</span><br><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> keys:</span><br><span class="line">    <span class="keyword">if</span> line[<span class="number">0</span>]!=<span class="string">&#x27;0&#x27;</span> <span class="keyword">or</span> line[<span class="number">1</span>]!=<span class="string">&#x27;0&#x27;</span> <span class="keyword">or</span> line[<span class="number">3</span>]!=<span class="string">&#x27;0&#x27;</span> <span class="keyword">or</span> line[<span class="number">4</span>]!=<span class="string">&#x27;0&#x27;</span> <span class="keyword">or</span> line[<span class="number">9</span>]!=<span class="string">&#x27;0&#x27;</span> <span class="keyword">or</span> line[<span class="number">10</span>]!=<span class="string">&#x27;0&#x27;</span> <span class="keyword">or</span> line[<span class="number">12</span>]!=<span class="string">&#x27;0&#x27;</span> <span class="keyword">or</span> line[<span class="number">13</span>]!=<span class="string">&#x27;0&#x27;</span> <span class="keyword">or</span> line[<span class="number">15</span>]!=<span class="string">&#x27;0&#x27;</span> <span class="keyword">or</span> line[<span class="number">16</span>]!=<span class="string">&#x27;0&#x27;</span> <span class="keyword">or</span> line[<span class="number">18</span>]!=<span class="string">&#x27;0&#x27;</span> <span class="keyword">or</span> line[<span class="number">19</span>]!=<span class="string">&#x27;0&#x27;</span> <span class="keyword">or</span> line[<span class="number">21</span>]!=<span class="string">&#x27;0&#x27;</span> <span class="keyword">or</span> line[<span class="number">22</span>]!=<span class="string">&#x27;0&#x27;</span>:</span><br><span class="line">         <span class="keyword">continue</span></span><br><span class="line">    nums.append(<span class="built_in">int</span>(line[<span class="number">6</span>:<span class="number">8</span>],<span class="number">16</span>)) </span><br><span class="line">keys.close()</span><br><span class="line">output = <span class="string">&quot;&quot;</span></span><br><span class="line"><span class="keyword">for</span> n <span class="keyword">in</span> nums:</span><br><span class="line">    <span class="keyword">if</span> n == <span class="number">0</span> :</span><br><span class="line">        <span class="keyword">continue</span></span><br><span class="line">    <span class="keyword">if</span> n <span class="keyword">in</span> mappings:</span><br><span class="line">        output += mappings[n]</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        output += <span class="string">&#x27;[unknown]&#x27;</span></span><br><span class="line"><span class="built_in">print</span> (<span class="string">&#x27;output :\n&#x27;</span> + output)</span><br></pre></td></tr></table></figure></div>
 
-<p><img src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-3-01.png"></p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-3-01.png"></p>
 <blockquote>
 <p>flag{7200[DEL]53[DEL]93}</p>
 </blockquote>
 <h2 id="USB流量-鼠标数量"><a href="#USB流量-鼠标数量" class="headerlink" title="USB流量 - 鼠标数量"></a>USB流量 - 鼠标数量</h2><p>先用tshark获取</p>
 <p><code>tshark -r usb2.pcap -T fields -e usb.capdata | sed &#39;/^\s*$/d&#39; &gt; usbdata.txt</code></p>
 <p>将数据通过：分隔开</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 将上面的文件用脚本分隔，加上冒号；</span></span><br><span class="line">f = <span class="built_in">open</span>(<span class="string">&quot;E:\\OneDrive\桌面\\CTF\\Misc流量\\鼠标\\usbdata.txt&quot;</span>, <span class="string">&#x27;r&#x27;</span>)</span><br><span class="line">f1 = <span class="built_in">open</span>(<span class="string">&quot;E:\\OneDrive\桌面\\CTF\\Misc流量\\鼠标\\out.txt&quot;</span>, <span class="string">&#x27;w&#x27;</span>)</span><br><span class="line"><span class="keyword">while</span> <span class="number">1</span>:</span><br><span class="line">  a=f.readline().strip()</span><br><span class="line">  <span class="keyword">if</span> a:</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(a)==<span class="number">8</span>:<span class="comment">#键盘流量的话len为16鼠标为8 </span></span><br><span class="line">      out=<span class="string">&#x27;&#x27;</span></span><br><span class="line">      <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>,<span class="built_in">len</span>(a),<span class="number">2</span>):</span><br><span class="line">        <span class="keyword">if</span> i+<span class="number">2</span> != <span class="built_in">len</span>(a):</span><br><span class="line">          out+=a[i]+a[i+<span class="number">1</span>]+<span class="string">&quot;:&quot;</span> </span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">          out+=a[i]+a[i+<span class="number">1</span>] </span><br><span class="line">      f1.write(out) </span><br><span class="line">      f1.write(<span class="string">&#x27;\n&#x27;</span>) </span><br><span class="line">  <span class="keyword">else</span>: </span><br><span class="line">    <span class="keyword">break</span> </span><br><span class="line">f1.close()</span><br></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 将上面的文件用脚本分隔，加上冒号；</span></span><br><span class="line">f = <span class="built_in">open</span>(<span class="string">&quot;E:\\OneDrive\桌面\\CTF\\Misc流量\\鼠标\\usbdata.txt&quot;</span>, <span class="string">&#x27;r&#x27;</span>)</span><br><span class="line">f1 = <span class="built_in">open</span>(<span class="string">&quot;E:\\OneDrive\桌面\\CTF\\Misc流量\\鼠标\\out.txt&quot;</span>, <span class="string">&#x27;w&#x27;</span>)</span><br><span class="line"><span class="keyword">while</span> <span class="number">1</span>:</span><br><span class="line">  a=f.readline().strip()</span><br><span class="line">  <span class="keyword">if</span> a:</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(a)==<span class="number">8</span>:<span class="comment">#键盘流量的话len为16鼠标为8 </span></span><br><span class="line">      out=<span class="string">&#x27;&#x27;</span></span><br><span class="line">      <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>,<span class="built_in">len</span>(a),<span class="number">2</span>):</span><br><span class="line">        <span class="keyword">if</span> i+<span class="number">2</span> != <span class="built_in">len</span>(a):</span><br><span class="line">          out+=a[i]+a[i+<span class="number">1</span>]+<span class="string">&quot;:&quot;</span> </span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">          out+=a[i]+a[i+<span class="number">1</span>] </span><br><span class="line">      f1.write(out) </span><br><span class="line">      f1.write(<span class="string">&#x27;\n&#x27;</span>) </span><br><span class="line">  <span class="keyword">else</span>: </span><br><span class="line">    <span class="keyword">break</span> </span><br><span class="line">f1.close()</span><br></pre></td></tr></table></figure></div>
 
 <p>通过脚本转换成图片</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line">img = Image.new(<span class="string">&#x27;RGB&#x27;</span>,(<span class="number">2000</span>,<span class="number">2000</span>),(<span class="number">255</span>,<span class="number">255</span>,<span class="number">255</span>))<span class="comment">#创建Image对象</span></span><br><span class="line">f =<span class="built_in">open</span>(<span class="string">&quot;E:\OneDrive\桌面\CTF\Misc流量\鼠标\out1.txt&quot;</span>)<span class="comment">#xy.txt文件 </span></span><br><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> f.readlines():</span><br><span class="line">    point =line.split()</span><br><span class="line">    img.putpixel((<span class="built_in">int</span>(point[<span class="number">0</span>]),<span class="built_in">int</span>(point[<span class="number">1</span>])),(<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>))<span class="comment">#读取文件中的每一行，并修改像素 </span></span><br><span class="line">f.close() </span><br><span class="line">img.show()</span><br></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line">img = Image.new(<span class="string">&#x27;RGB&#x27;</span>,(<span class="number">2000</span>,<span class="number">2000</span>),(<span class="number">255</span>,<span class="number">255</span>,<span class="number">255</span>))<span class="comment">#创建Image对象</span></span><br><span class="line">f =<span class="built_in">open</span>(<span class="string">&quot;E:\OneDrive\桌面\CTF\Misc流量\鼠标\out1.txt&quot;</span>)<span class="comment">#xy.txt文件 </span></span><br><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> f.readlines():</span><br><span class="line">    point =line.split()</span><br><span class="line">    img.putpixel((<span class="built_in">int</span>(point[<span class="number">0</span>]),<span class="built_in">int</span>(point[<span class="number">1</span>])),(<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>))<span class="comment">#读取文件中的每一行，并修改像素 </span></span><br><span class="line">f.close() </span><br><span class="line">img.show()</span><br></pre></td></tr></table></figure></div>
 
-<p><img src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-3-02.png"></p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-3-02.png"></p>
 <p>还可以通过gnuplot软件来生成图形，（windows和linux均可，都可以下载）</p>
 <p>我是在windows下安装的，是个 exe软件，打开之后 </p>
 <p>plot ‘filepath’</p>
 <p>我是直接放在当前目录了 </p>
 <p>生成之后用画图软件翻转一下即可</p>
-<p><img src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-3-03.png"></p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-3-03.png"></p>
 <hr>
-<h2 id="Buu-TLS流量分析"><a href="#Buu-TLS流量分析" class="headerlink" title="Buu - TLS流量分析"></a>Buu - TLS流量分析</h2><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/32059190">了解学习OSI模型TCP&#x2F;IP模型</a>      <a target="_blank" rel="noopener" href="https://www.jianshu.com/p/c793a279f698">了解学习OSI模型TCP&#x2F;IP模型</a></p>
+<h2 id="Buu-TLS流量分析"><a href="#Buu-TLS流量分析" class="headerlink" title="Buu - TLS流量分析"></a>Buu - TLS流量分析</h2><p><a class="link" target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/32059190">了解学习OSI模型TCP&#x2F;IP模型 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>      <a class="link" target="_blank" rel="noopener" href="https://www.jianshu.com/p/c793a279f698">了解学习OSI模型TCP&#x2F;IP模型 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
 <p><a href="SSL/TLS%E4%BC%9A%E8%AF%9D%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90">学习 SSL&#x2F;TLS会话流量分析</a></p>
 <p>过滤http流量</p>
 <p>发现有个数据包中有个log文件</p>
-<p><img src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-4-00.png"></p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-4-00.png"></p>
 <p>保存到本地为1.log，然后导入TLS的秘钥中</p>
-<p><img src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-4-01.png"></p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-4-01.png"></p>
 <p>再过滤http流量，发现多了一些流量，然后其中有一个保存有flag</p>
 <h2 id="Buu-神比流量"><a href="#Buu-神比流量" class="headerlink" title="Buu - 神比流量"></a>Buu - 神比流量</h2><p>用Wireshark打开发现是USB数据；其中有一个数据包隐藏了7z文件</p>
-<p><img src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-4-03.png"></p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-4-03.png"></p>
 <p>选中 as a Hex Stream &#x3D;&gt; 在记事本中粘贴看看有没有问题</p>
 <p>从37 7a开始选中，用脚本写入到.7z文件中</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> binascii <span class="keyword">import</span> *</span><br><span class="line">hexdata = <span class="string">&#x27;377abcaf271c00044aaed88750000000000000006a000000000000002d108d3939dc5abb57f2606b99b18fb7518aa378d2dcfed3f7a197d4e752b6156b026bf975d5fa5c37618bdfe2c567592e7128e139c1a6ac4e9eed598dd3398c03c16a35502e827004852aae6a7342214fa901c30104060001095000070b0100022406f107010a5307ef3e981518c6bd122121010001000c4a4600080a011a4cdb8a00000501190900000000000000000011130066006c00610067002e0074007800740000001900140a010066629f3bc46cd801150601002000000000000600313233343536&#x27;</span></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;E:\\OneDrive\\桌面\\flag.7z&quot;</span>,<span class="string">&quot;wb&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    f.write(unhexlify(hexdata))</span><br></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> binascii <span class="keyword">import</span> *</span><br><span class="line">hexdata = <span class="string">&#x27;377abcaf271c00044aaed88750000000000000006a000000000000002d108d3939dc5abb57f2606b99b18fb7518aa378d2dcfed3f7a197d4e752b6156b026bf975d5fa5c37618bdfe2c567592e7128e139c1a6ac4e9eed598dd3398c03c16a35502e827004852aae6a7342214fa901c30104060001095000070b0100022406f107010a5307ef3e981518c6bd122121010001000c4a4600080a011a4cdb8a00000501190900000000000000000011130066006c00610067002e0074007800740000001900140a010066629f3bc46cd801150601002000000000000600313233343536&#x27;</span></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;E:\\OneDrive\\桌面\\flag.7z&quot;</span>,<span class="string">&quot;wb&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    f.write(unhexlify(hexdata))</span><br></pre></td></tr></table></figure></div>
 
 <p>得到7z文件，发现其中的文件需要解密，用010打开7z文件，文末藏有密码123456</p>
-<p><img src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-4-02.png"></p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-4-02.png"></p>
 <p>打开flag.txt文件，是一个谷歌云盘的下载地址，下载下来之后，依然是一个压缩包（main.exe文件 和 out.txt文件），密码尝试一下123456成功</p>
 <p>接下来不会了。看官方Wp（需要逆向分析exe文件 是进行了Xor运算）</p>
-<p><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/2088394">官方Wp</a></p>
+<p><a class="link" target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/2088394">官方Wp <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
 <h2 id="NSSCTF-NISACTF-2022-流量包里有个熊"><a href="#NSSCTF-NISACTF-2022-流量包里有个熊" class="headerlink" title="NSSCTF - [NISACTF 2022]流量包里有个熊"></a>NSSCTF - [NISACTF 2022]流量包里有个熊</h2><p>用wireshark打开，发现有个jpg图片</p>
-<p><img src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-5-02.png"></p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-5-02.png"></p>
 <p>将值弄出来放在文本中，用脚本写到图片中 [ 我不会直接将其复制在010中 ]</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> binascii <span class="keyword">import</span> *</span><br><span class="line">hexdata =<span class="string">&quot;&quot;</span></span><br><span class="line"><span class="comment">#这里的hexdata太长了，就不粘贴了</span></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;E:\\OneDrive\\桌面\\test.jpg&#x27;</span>,<span class="string">&quot;wb&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">	f.write(unhexlify(hexdata)) <span class="comment"># unhexlify将十六进制数据转换为二进制数据</span></span><br></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> binascii <span class="keyword">import</span> *</span><br><span class="line">hexdata =<span class="string">&quot;&quot;</span></span><br><span class="line"><span class="comment">#这里的hexdata太长了，就不粘贴了</span></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;E:\\OneDrive\\桌面\\test.jpg&#x27;</span>,<span class="string">&quot;wb&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">	f.write(unhexlify(hexdata)) <span class="comment"># unhexlify将十六进制数据转换为二进制数据</span></span><br></pre></td></tr></table></figure></div>
 
 <p>然后对图片binwalk分离一下</p>
-<p><img src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-5-03.png"></p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-5-03.png"></p>
 <p>一个压缩包，一个flag.txt，一个图片</p>
 <p>肯定先看flag，是base64加密，解密一下发现是假的</p>
 <p>然后打开压缩包</p>
 <p>最后发现了最后一个flag.txt文件，但是里面的数据看不懂，</p>
 <p>看Wp说是加密，移位的加密 rot位移密码（rot5 rot13 rot18 rot47）</p>
-<p><img src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-5-04.png"></p>
-<p><a target="_blank" rel="noopener" href="https://lzltool.cn/Tools/Rot13">先将txt文本中的内容进行rot13解密</a></p>
-<p><img src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-5-05.png"></p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-5-04.png"></p>
+<p><a class="link" target="_blank" rel="noopener" href="https://lzltool.cn/Tools/Rot13">先将txt文本中的内容进行rot13解密 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-5-05.png"></p>
 <p>然后就是使用刚开始的脚本将这段数据写在jpg中 [ 开头是ff d8 ff ]</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> binascii <span class="keyword">import</span> *</span><br><span class="line">hexdata = <span class="string">&quot;&quot;</span></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;filepath&quot;</span>,<span class="string">&quot;wb&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">	f.write(unhexlify(hexdata))</span><br></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> binascii <span class="keyword">import</span> *</span><br><span class="line">hexdata = <span class="string">&quot;&quot;</span></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;filepath&quot;</span>,<span class="string">&quot;wb&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">	f.write(unhexlify(hexdata))</span><br></pre></td></tr></table></figure></div>
 
 <p>得到的图片是有盲水印的</p>
-<p><img src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-5-06.png"></p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-5-06.png"></p>
 <p>看不清.</p>
 <h2 id="NSSCTF-CISCN-2023-初赛-被加密的生产流量"><a href="#NSSCTF-CISCN-2023-初赛-被加密的生产流量" class="headerlink" title="NSSCTF - [CISCN 2023 初赛]被加密的生产流量"></a>NSSCTF - [CISCN 2023 初赛]被加密的生产流量</h2><p>用wireshark打开之后，发现有很多的modbus流量，且文件名就是modbus，很显然，追踪一下这个，看到了一些两个为一组的字符，题目中也提醒了是被加密的。想到了base加密</p>
 <p>这个题的加密部分不多，手动复制粘贴即可，下面这个脚本（看Wp看到的）算是一个模板，如果以后碰到了特别多的，无法手动的，分析一下加密字符所在位置，用脚本提取</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pyshark</span><br><span class="line"></span><br><span class="line">flag = <span class="string">&#x27;&#x27;</span></span><br><span class="line">tmp = <span class="number">0</span></span><br><span class="line">cap = pyshark.FileCapture(input_file=<span class="string">&quot;E:\\OneDrive\\桌面\\CTF\\Misc流量\\modbus.pcap&quot;</span>,tshark_path=<span class="string">&#x27;F:\\ctf\wireshark\\tshark&#x27;</span>,display_filter=<span class="string">&#x27;modbus  &amp;&amp; frame.len == 66&#x27;</span>)</span><br><span class="line"><span class="comment"># input_file 是流量的文件路径，tshark_path是tshark软件在的位置，一般是在WireShark命令下</span></span><br><span class="line"><span class="comment"># 后面的 display_filter 把它看做是wireshark中的过滤器。</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">hex2str</span>(<span class="params"><span class="built_in">id</span>:<span class="built_in">str</span></span>) -&gt; <span class="built_in">str</span>:</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">str</span>(<span class="built_in">bytes</span>.fromhex(<span class="built_in">id</span>)).replace(<span class="string">&quot;b&quot;</span>,<span class="string">&quot;&quot;</span>).replace(<span class="string">&quot;\&#x27;&quot;</span>,<span class="string">&quot;&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> p <span class="keyword">in</span> cap:</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(p.modbus.word_cnt) == <span class="number">5</span>: <span class="comment"># 我起初也没懂这个 word_cnt 打开流量包，发现是一个参数，为什么要等于5？ 因为加密的字符显示出来的十六进制数据是5位</span></span><br><span class="line">            tmp = p.modbus.word_cnt</span><br><span class="line">            tmp = <span class="built_in">str</span>(<span class="built_in">hex</span>(<span class="built_in">int</span>(p.modbus.word_cnt))).replace(<span class="string">&quot;0x&quot;</span>,<span class="string">&quot;&quot;</span>)</span><br><span class="line">            flag = flag + tmp</span><br><span class="line">    <span class="keyword">except</span>:</span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">flag = hex2str(flag)</span><br><span class="line"><span class="built_in">print</span>(flag)</span><br></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pyshark</span><br><span class="line"></span><br><span class="line">flag = <span class="string">&#x27;&#x27;</span></span><br><span class="line">tmp = <span class="number">0</span></span><br><span class="line">cap = pyshark.FileCapture(input_file=<span class="string">&quot;E:\\OneDrive\\桌面\\CTF\\Misc流量\\modbus.pcap&quot;</span>,tshark_path=<span class="string">&#x27;F:\\ctf\wireshark\\tshark&#x27;</span>,display_filter=<span class="string">&#x27;modbus  &amp;&amp; frame.len == 66&#x27;</span>)</span><br><span class="line"><span class="comment"># input_file 是流量的文件路径，tshark_path是tshark软件在的位置，一般是在WireShark命令下</span></span><br><span class="line"><span class="comment"># 后面的 display_filter 把它看做是wireshark中的过滤器。</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">hex2str</span>(<span class="params"><span class="built_in">id</span>:<span class="built_in">str</span></span>) -&gt; <span class="built_in">str</span>:</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">str</span>(<span class="built_in">bytes</span>.fromhex(<span class="built_in">id</span>)).replace(<span class="string">&quot;b&quot;</span>,<span class="string">&quot;&quot;</span>).replace(<span class="string">&quot;\&#x27;&quot;</span>,<span class="string">&quot;&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> p <span class="keyword">in</span> cap:</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(p.modbus.word_cnt) == <span class="number">5</span>: <span class="comment"># 我起初也没懂这个 word_cnt 打开流量包，发现是一个参数，为什么要等于5？ 因为加密的字符显示出来的十六进制数据是5位</span></span><br><span class="line">            tmp = p.modbus.word_cnt</span><br><span class="line">            tmp = <span class="built_in">str</span>(<span class="built_in">hex</span>(<span class="built_in">int</span>(p.modbus.word_cnt))).replace(<span class="string">&quot;0x&quot;</span>,<span class="string">&quot;&quot;</span>)</span><br><span class="line">            flag = flag + tmp</span><br><span class="line">    <span class="keyword">except</span>:</span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">flag = hex2str(flag)</span><br><span class="line"><span class="built_in">print</span>(flag)</span><br></pre></td></tr></table></figure></div>
 
-<p><img src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-5-01.png"></p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-5-01.png"></p>
 <h2 id="NSSCTF-HGAME-2022-week1-好康的流量"><a href="#NSSCTF-HGAME-2022-week1-好康的流量" class="headerlink" title="NSSCTF - [HGAME 2022 week1]好康的流量"></a>NSSCTF - [HGAME 2022 week1]好康的流量</h2><p>wireshark打开，发现是SMTP和TCP协议，百度了一下啊</p>
-<p><img src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-6-00.png"></p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-6-00.png"></p>
 <blockquote>
 <p>说明是发送了邮件</p>
 </blockquote>
 <p>就随便找，追踪TCP流时发现有base64加密的特征。</p>
-<p><img src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-6-01.png"></p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-6-01.png"></p>
 <blockquote>
 <p>为什么会发现是base64加密？</p>
 </blockquote>
 <p>-&gt; 自己做的时候就直觉，写payload复现的时候发现有告诉是base64加密（追踪TCP流的页面）</p>
-<p><img src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-6-02.png"></p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-6-02.png"></p>
 <p>告诉我们了这是png图片， &#x3D;&gt; base64解码成图片</p>
-<p><a target="_blank" rel="noopener" href="https://www.toolnb.com/tools/base64ToImages.html">在线解码网站</a></p>
+<p><a class="link" target="_blank" rel="noopener" href="https://www.toolnb.com/tools/base64ToImages.html">在线解码网站 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
 <p>接下来就是对图片的分析，我是先用虚拟机进行了foremost和binwalk 无果</p>
 <p>然后就是用了StegSolve，但是我没发现什么（就几个选项过了一遍，没发现）</p>
 <p>-&gt; 然后去看Wp了，一个是 Green通道2有条码</p>
 <p>-&gt;LSB其实在base64解码的时候算是提醒了（但是我不会调参数）</p>
-<p><img src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-6-03.png"></p>
-<p><a target="_blank" rel="noopener" href="https://tuzim.net/decode/">解条码网站</a></p>
-<p><img src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-6-04.png"></p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-6-03.png"></p>
+<p><a class="link" target="_blank" rel="noopener" href="https://tuzim.net/decode/">解条码网站 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-6-04.png"></p>
 <p>两半flag拼接 <code>hgame&#123;ez_1mg_Steg4n0graphy&#125;</code></p>
-<h2 id="攻防世界-流量分析1"><a href="#攻防世界-流量分析1" class="headerlink" title="攻防世界 - 流量分析1"></a>攻防世界 - 流量分析1</h2><p>下载<a target="_blank" rel="noopener" href="https://adworld.xctf.org.cn/media/file/task/52ca22d3-4482-47ec-b6ae-7b702d1594e9.zip">附件</a>，用wireshark打开，发现是关于gopher协议配合上的sql注入（gopher应该是ssrf，我光知道这个打redis什么的，没见过利用它写sql注入的），sql语句经过了两次url编码，解码之后发现是 时间盲注（sleep）</p>
+<h2 id="攻防世界-流量分析1"><a href="#攻防世界-流量分析1" class="headerlink" title="攻防世界 - 流量分析1"></a>攻防世界 - 流量分析1</h2><p>下载<a class="link" target="_blank" rel="noopener" href="https://adworld.xctf.org.cn/media/file/task/52ca22d3-4482-47ec-b6ae-7b702d1594e9.zip">附件 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>，用wireshark打开，发现是关于gopher协议配合上的sql注入（gopher应该是ssrf，我光知道这个打redis什么的，没见过利用它写sql注入的），sql语句经过了两次url编码，解码之后发现是 时间盲注（sleep）</p>
 <p>用tshark提取sql语句</p>
 <p><code>tshark -r challenge.pcapng -T fields -Y &quot;http.request.method==GET&quot; -e &quot;frame.len&quot; -e &quot;http.request.uri.query.parameter&quot; &gt; data.txt</code></p>
 <p>-&gt; 前面两三个跟这个有关的，改一下就能直接提取</p>
 <p>-&gt; 写多了，发现了 如果想要自己独立提取信息，逐级的 跟上面的<code> -e &quot;http.request.uri.query.parameter&quot;</code>我自己没独立试过，但是发现这是有技巧的，也算是记住了</p>
-<p><img src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-7-00.png"></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># data.txt的信息是经过二次url编码的，通过这个脚本提取解码后的信息</span></span><br><span class="line"><span class="keyword">from</span> urllib.parse <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line">f1 = <span class="built_in">open</span>(<span class="string">&quot;E:\OneDrive\桌面\data.txt&quot;</span>, <span class="string">&quot;r&quot;</span>)</span><br><span class="line">f = <span class="built_in">open</span>(<span class="string">&quot;E:\OneDrive\桌面\out.txt&quot;</span>, <span class="string">&quot;wb&quot;</span>)</span><br><span class="line"></span><br><span class="line">lines = f1.readlines()</span><br><span class="line"><span class="built_in">print</span>(lines)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(lines)):</span><br><span class="line">    <span class="built_in">print</span>(lines[i])</span><br><span class="line">    <span class="built_in">str</span> = unquote(unquote(lines[i],<span class="string">&#x27;utf-8&#x27;</span>), <span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line">    f.write(<span class="built_in">str</span>.encode(<span class="string">&#x27;utf-8&#x27;</span>))</span><br></pre></td></tr></table></figure>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-7-00.png"></p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># data.txt的信息是经过二次url编码的，通过这个脚本提取解码后的信息</span></span><br><span class="line"><span class="keyword">from</span> urllib.parse <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line">f1 = <span class="built_in">open</span>(<span class="string">&quot;E:\OneDrive\桌面\data.txt&quot;</span>, <span class="string">&quot;r&quot;</span>)</span><br><span class="line">f = <span class="built_in">open</span>(<span class="string">&quot;E:\OneDrive\桌面\out.txt&quot;</span>, <span class="string">&quot;wb&quot;</span>)</span><br><span class="line"></span><br><span class="line">lines = f1.readlines()</span><br><span class="line"><span class="built_in">print</span>(lines)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(lines)):</span><br><span class="line">    <span class="built_in">print</span>(lines[i])</span><br><span class="line">    <span class="built_in">str</span> = unquote(unquote(lines[i],<span class="string">&#x27;utf-8&#x27;</span>), <span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line">    f.write(<span class="built_in">str</span>.encode(<span class="string">&#x27;utf-8&#x27;</span>))</span><br></pre></td></tr></table></figure></div>
 
 <blockquote>
 <p>out.txt</p>
 <p>能力有限，我无法直接光提取sql语句了，但是我想到通过 搜索功能、</p>
 </blockquote>
 <p>(select flag from flag),15,1)，第一条的结果上方就是(select flag from flag),14,1)的最后一位，即第14位的Ascii码值了</p>
-<p><img src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-7-01.png"></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">result = <span class="number">102</span>, <span class="number">108</span>, <span class="number">97</span>, <span class="number">103</span>, <span class="number">123</span>, <span class="number">49</span>, <span class="number">113</span>, <span class="number">119</span>, <span class="number">121</span>, <span class="number">50</span>, <span class="number">55</span>, <span class="number">56</span>, <span class="number">49</span>, <span class="number">125</span></span><br><span class="line">flag = <span class="string">&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(result)):</span><br><span class="line">    flag += <span class="built_in">chr</span>(result[i])</span><br><span class="line"><span class="built_in">print</span>(flag)</span><br></pre></td></tr></table></figure>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-7-01.png"></p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">result = <span class="number">102</span>, <span class="number">108</span>, <span class="number">97</span>, <span class="number">103</span>, <span class="number">123</span>, <span class="number">49</span>, <span class="number">113</span>, <span class="number">119</span>, <span class="number">121</span>, <span class="number">50</span>, <span class="number">55</span>, <span class="number">56</span>, <span class="number">49</span>, <span class="number">125</span></span><br><span class="line">flag = <span class="string">&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(result)):</span><br><span class="line">    flag += <span class="built_in">chr</span>(result[i])</span><br><span class="line"><span class="built_in">print</span>(flag)</span><br></pre></td></tr></table></figure></div>
 
 <h2 id="攻防世界-流量分析2"><a href="#攻防世界-流量分析2" class="headerlink" title="攻防世界 - 流量分析2"></a>攻防世界 - 流量分析2</h2><p>导出Http对象，发现每个包中都有几个字符，观察发现拼接起来就是flag</p>
 <p>我做的时候没看到ag只有fl，手动加上ag 提交成功</p>
 <h2 id="23年蓝桥杯的一个题"><a href="#23年蓝桥杯的一个题" class="headerlink" title="23年蓝桥杯的一个题"></a>23年蓝桥杯的一个题</h2><p>用WireShark打开文件，看到了flag.zip &#x3D;&gt;zip的标志PK</p>
 <p>那么过滤一下 <code>http contains &quot;PK&quot;</code>  直接包含flag也可以</p>
-<p><img src="/%E6%B5%81%E9%87%8F/4-8-00.png"></p>
+<p><img lazyload src="/images/loading.svg" data-src="/%E6%B5%81%E9%87%8F/4-8-00.png"></p>
 <p>&#x3D;&gt; 用kali中的 foremost分离出来 <code>foremost -T filename</code></p>
-<p><img src="/"><img src="/%E6%B5%81%E9%87%8F/4-8-01.png" alt="4-8-01"></p>
+<p><img lazyload src="/images/loading.svg" data-src="/%E6%B5%81%E9%87%8F/4-8-01.png" alt="4-8-01"></p>
 <p>打开flag.zip文件，发现有个flag.txt，但是有密码，有注释<code>密码的正则：ChunQiu\d&#123;4&#125;</code></p>
-<p><img src="/%E6%B5%81%E9%87%8F/4-8-02.png"></p>
+<p><img lazyload src="/images/loading.svg" data-src="/%E6%B5%81%E9%87%8F/4-8-02.png"></p>
 <p>\d &#x3D;&gt; 正则匹配，表示一个数字 {4} 匹配四次</p>
 <p>&#x3D;&gt; ChunQiu???? 四个数字</p>
 <p>&#x3D;&gt; 想到掩码破解</p>
-<p><img src="/%E6%B5%81%E9%87%8F/4-8-03.png"></p>
+<p><img lazyload src="/images/loading.svg" data-src="/%E6%B5%81%E9%87%8F/4-8-03.png"></p>
 <p>打开flag.txt 得到flag</p>
+<h2 id="2021陇剑杯-webshell-—-Webshell流量分析"><a href="#2021陇剑杯-webshell-—-Webshell流量分析" class="headerlink" title="2021陇剑杯 - webshell — Webshell流量分析"></a>2021陇剑杯 - webshell — Webshell流量分析</h2><p><a class="link" target="_blank" rel="noopener" href="https://pan.baidu.com/s/1X4Ujko8SQshNpnqyZq4C0w?pwd=1234">附件 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p><code>第一问：找到黑客登录系统使用的密码</code></p>
+<p>-&gt; 用wireshark打开，随便找一找，因为是密码 第一想法是post方法（隐蔽安全）</p>
+<p>-&gt; 在<code>http.request.method == &quot;POST&quot; &amp;&amp; http contains &quot;login&quot;</code>可以找到</p>
+<p><code>第二问：黑客修改了一个日志文件，日志文件的绝对路径</code></p>
+<p>-&gt; 日志文件的内容，是通过TCP流传输的。我们要追踪TCP流</p>
+<p>-&gt; 第一下肯定先直接过滤tcp流，直接对第一个流量包追踪tcp流 能看到明显特征</p>
+<p>**-&gt; 我第一时间没想到tcp流 [ 看Wp说到的，且要与之前的1.php相联系 ]  **</p>
+<p><img lazyload src="/images/loading.svg" data-src="/%E6%B5%81%E9%87%8F/4-16-00.png"></p>
+<p><code>第三问：黑客获取webshell后，权限是？</code></p>
+<p>-&gt; 想到之前看到了有whami，<code>tcp contains &quot;whami&quot;</code> 无果</p>
+<p>-&gt; 最后在流量包中看到了www-data 但我不知道这是一种权限的名称（我只知道root和普通用户）</p>
+<p>-&gt; 结果就是 www-data</p>
+<p><code>第四问：webshell文件名</code></p>
+<p>-&gt; 我们之前看到有<code>ini_set</code> &#x3D;&gt; 1.php</p>
+<p>-&gt; ini_set 是蚁剑webshell的流量特征</p>
+<p><code>第五问：黑客上传的代理工具客户端名字</code></p>
+<p>-&gt; </p>
+<p><code>第六问：黑客代理工具的回连服务端IP是</code></p>
+<p><code>第七问：黑客的socks5的连接账号、密码是</code></p>
+<hr>
+<h4 id="参考："><a href="#参考：" class="headerlink" title="参考："></a>参考：</h4><p><a class="link" target="_blank" rel="noopener" href="https://blog.csdn.net/m0_51198141/article/details/132643738">Wp <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p><a class="link" target="_blank" rel="noopener" href="https://www.cnblogs.com/B0like/p/17486657.html">webshell流量特征01 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p><a class="link" target="_blank" rel="noopener" href="https://www.clementi.top/2023/06/21/%E5%B8%B8%E8%A7%81webshell%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/index.html">webshell流量特征02 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<blockquote>
+<p>编码器：对发送的流量进行编码，服务端再对流量进行解码</p>
+<p>解码器：服务端对返回流量编码，需要客户端通过解码器解码还原流量接收 </p>
+</blockquote>
+<blockquote>
+<p>蚁剑的webshell来自菜刀，流量特征与菜刀相似</p>
+</blockquote>
+<blockquote>
+<p>蚁剑流量特征：默认UA头是antswordxxx（可改） 正文内容用URL加密，解密后流量中最明显的是ini_set(“display_errors”,”0”)</p>
+<p>这段代码基本上所有webshell工具都有，不过大部分都进行了编码，而蚁剑是明文</p>
+<p>参数名：0x……&#x3D;</p>
+</blockquote>
+<blockquote>
+<p>冰蝎：使用AES 128位对称加密的加密webshell ； Accept字段（存在于冰蝎任何一个通信阶段）</p>
+</blockquote>
+<blockquote>
+<p>哥斯拉：cookie最后一个值后面跟有;分号</p>
+</blockquote>
 
-    </div>
+        </div>
 
-    
-    
-    
+        
+            <div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> Misc-流量题记录</li>
+        <li><strong>Author:</strong> The Redefine Team</li>
+        <li><strong>Created at
+                :</strong> 2024-04-01 00:13:08</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2024-04-16 23:12:34
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://redefine.ohevan.com/CTF/Misc/流量/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
 
-    <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/tags/%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/" rel="tag"># 流量分析</a>
-          </div>
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/">#流量分析</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
 
         
 
-          <div class="post-nav">
-            <div class="post-nav-item">
-                <a href="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/" rel="prev" title="BUU平台的Pwn题记录">
-                  <i class="fa fa-angle-left"></i> BUU平台的Pwn题记录
-                </a>
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                    <div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="prev"
+                        rel="prev"
+                        href="/CTF/Re/Re%E8%AE%B0%E5%BD%95/"
+                        >
+                            <span class="left arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Re刷题记录</span>
+                                <span class="post-nav-item">Prev posts</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">BUU平台的Pwn题记录</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
             </div>
-            <div class="post-nav-item">
-                <a href="/CTF/Re/Re%E8%AE%B0%E5%BD%95/" rel="next" title="Re刷题记录">
-                  Re刷题记录 <i class="fa fa-angle-right"></i>
-                </a>
+        
+
+
+        
+            <div class="comment-container px-2 sm:px-6 md:px-8 pb-8">
+                <div class="comments-container mt-10 w-full ">
+    <div id="comment-anchor" class="w-full h-2.5"></div>
+    <div class="comment-area-title w-full my-1.5 md:my-2.5 text-xl md:text-3xl font-bold">
+        Comments
+    </div>
+    
+
+        
+            
+    <div id="waline"></div>
+    <script type="module" data-swup-reload-script>
+      import { init } from '/js/libs/waline.mjs';
+
+      function loadWaline() {
+        init({
+          el: '#waline',
+          serverURL: 'https://example.example.com',
+          lang: 'zh-CN',
+          dark: 'body[class~="dark-mode"]',
+          reaction: false,
+          requiredMeta: ['nick', 'mail'],
+          emoji: [],
+          recaptchaV3Key: "wasd",
+          
+        });
+      }
+
+      if (typeof swup !== 'undefined') {
+        loadWaline();
+      } else {
+        window.addEventListener('DOMContentLoaded', loadWaline);
+      }
+    </script>
+
+
+
+        
+    
+</div>
+
             </div>
-          </div>
-    </footer>
-  </article>
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">Misc-流量题记录</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Buu-9-3-1-HTTP%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90http%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90"><span class="nav-number">1.</span> <span class="nav-text">Buu - 9.3.1 HTTP流量分析http流量分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%87%E6%BB%A4%E5%99%A8%E7%9F%A5%E8%AF%86%E7%82%B9%EF%BC%9A"><span class="nav-number">1.1.</span> <span class="nav-text">过滤器知识点：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E6%B4%B5%E6%9D%AF-2019-Attack-%E5%8E%8B%E7%BC%A9%E5%8C%85"><span class="nav-number">2.</span> <span class="nav-text">[安洵杯 2019]Attack [ 压缩包 ]</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#NewStarCTF-%E5%85%AC%E5%BC%80%E8%B5%9B%E8%B5%9B%E9%81%93-%E6%9C%80%E5%90%8E%E7%9A%84%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90-tshark"><span class="nav-number">3.</span> <span class="nav-text">[NewStarCTF 公开赛赛道]最后的流量分析 [ tshark ]</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#NSS-%E9%B9%A4%E5%9F%8E%E6%9D%AF-2021-%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90"><span class="nav-number">4.</span> <span class="nav-text">NSS - [鹤城杯 2021]流量分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#USB%E6%B5%81%E9%87%8F-%E9%94%AE%E7%9B%98%E6%B5%81%E9%87%8F"><span class="nav-number">5.</span> <span class="nav-text">USB流量 - 键盘流量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#USB%E6%B5%81%E9%87%8F-%E9%BC%A0%E6%A0%87%E6%95%B0%E9%87%8F"><span class="nav-number">6.</span> <span class="nav-text">USB流量 - 鼠标数量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Buu-TLS%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90"><span class="nav-number">7.</span> <span class="nav-text">Buu - TLS流量分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Buu-%E7%A5%9E%E6%AF%94%E6%B5%81%E9%87%8F"><span class="nav-number">8.</span> <span class="nav-text">Buu - 神比流量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#NSSCTF-NISACTF-2022-%E6%B5%81%E9%87%8F%E5%8C%85%E9%87%8C%E6%9C%89%E4%B8%AA%E7%86%8A"><span class="nav-number">9.</span> <span class="nav-text">NSSCTF - [NISACTF 2022]流量包里有个熊</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#NSSCTF-CISCN-2023-%E5%88%9D%E8%B5%9B-%E8%A2%AB%E5%8A%A0%E5%AF%86%E7%9A%84%E7%94%9F%E4%BA%A7%E6%B5%81%E9%87%8F"><span class="nav-number">10.</span> <span class="nav-text">NSSCTF - [CISCN 2023 初赛]被加密的生产流量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#NSSCTF-HGAME-2022-week1-%E5%A5%BD%E5%BA%B7%E7%9A%84%E6%B5%81%E9%87%8F"><span class="nav-number">11.</span> <span class="nav-text">NSSCTF - [HGAME 2022 week1]好康的流量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C-%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%901"><span class="nav-number">12.</span> <span class="nav-text">攻防世界 - 流量分析1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C-%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%902"><span class="nav-number">13.</span> <span class="nav-text">攻防世界 - 流量分析2</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#23%E5%B9%B4%E8%93%9D%E6%A1%A5%E6%9D%AF%E7%9A%84%E4%B8%80%E4%B8%AA%E9%A2%98"><span class="nav-number">14.</span> <span class="nav-text">23年蓝桥杯的一个题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2021%E9%99%87%E5%89%91%E6%9D%AF-webshell-%E2%80%94-Webshell%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90"><span class="nav-number">15.</span> <span class="nav-text">2021陇剑杯 - webshell — Webshell流量分析</span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
 </div>
 
 
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2024&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">The Redefine Team</a>
+            
+                
+                <p class="post-count space-x-0.5">
+                    <span>
+                        11 posts in total
+                    </span>
+                    
+                </p>
+            
+        </div>
+        
+            <script data-swup-reload-script src="https://cn.vercount.one/js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.6.4</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+            <li class="go-comment">
+                <i class="fa-regular fa-comments"></i>
+            </li>
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fa-solid fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="Search..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fa-solid fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fa-solid fa-spinner fa-spin-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+    
+<script src="/js/tools/localSearch.js" type="module"></script>
 
 
 
 
     
-  <div class="comments" id="disqus_thread">
-    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
-  </div>
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
   
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
 </div>
-  </main>
 
-  <footer class="footer">
-    <div class="footer-inner">
-
-  <div class="copyright">
-    &copy; 
-    <span itemprop="copyrightYear">2024</span>
-    <span class="with-love">
-      <i class="fa fa-heart"></i>
-    </span>
-    <span class="author" itemprop="copyrightHolder">Li1x</span>
-  </div>
-<div class="wordcount">
-  <span class="post-meta-item">
-    <span class="post-meta-item-icon">
-      <i class="fa fa-chart-line"></i>
-    </span>
-    <span title="Word count total">70k</span>
-  </span>
-  <span class="post-meta-item">
-    <span class="post-meta-item-icon">
-      <i class="fa fa-coffee"></i>
-    </span>
-    <span title="Reading time total">2:08</span>
-  </span>
-</div>
-<div class="busuanzi-count">
-    <span class="post-meta-item" id="busuanzi_container_site_uv">
-      <span class="post-meta-item-icon">
-        <i class="fa fa-user"></i>
-      </span>
-      <span class="site-uv" title="Total Visitors">
-        <span id="busuanzi_value_site_uv"></span>
-      </span>
-    </span>
-    <span class="post-meta-item" id="busuanzi_container_site_pv">
-      <span class="post-meta-item-icon">
-        <i class="fa fa-eye"></i>
-      </span>
-      <span class="site-pv" title="Total Views">
-        <span id="busuanzi_value_site_pv"></span>
-      </span>
-    </span>
-</div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
-  </div>
-
-    </div>
-  </footer>
-
-  
-  <div class="back-to-top" role="button" aria-label="Back to top">
-    <i class="fa fa-arrow-up fa-lg"></i>
-    <span>0%</span>
-  </div>
-
-<noscript>
-  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
-</noscript>
-
-
-  
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
-<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
-<script src="/js/third-party/search/local-search.js"></script>
-
-
-
-
-
-
-
-  
-  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-
-
-
-
-<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"li1x","count":true,"i18n":{"disqus":"disqus"}}</script>
-<script src="/js/third-party/comments/disqus.js"></script>
 
 </body>
 </html>
