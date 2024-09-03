@@ -13,18 +13,26 @@
     
     <!--- Seo Part-->
     
-    <link rel="canonical" href="https://li1x.github.io/archives/2024/02/"/>
+    <link rel="canonical" href="https://li1x.github.io/learning/工具杂记/"/>
     <meta name="robots" content="index,follow">
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
     
-        <meta property="og:type" content="website">
-<meta property="og:title" content="Li1x&#39;s Blog">
-<meta property="og:url" content="https://li1x.github.io/archives/2024/02/index.html">
+        <meta name="description" content="wfuzz爆破渗透测试工具，对目标不同参数进行模糊测试 基本语法1wfuzz -c -z payload,range_start-range_end http:&#x2F;&#x2F;target.com&#x2F;FUZZ   -c: 隐藏无效的响应。 -z payload,range_start-range_end: 指定文件类型和fuzz字典和范围。 --hc 404,403 用来隐藏特定的状态码  Kali自带，输入w">
+<meta property="og:type" content="article">
+<meta property="og:title" content="工具杂记">
+<meta property="og:url" content="https://li1x.github.io/Learning/%E5%B7%A5%E5%85%B7%E6%9D%82%E8%AE%B0/index.html">
 <meta property="og:site_name" content="Li1x&#39;s Blog">
+<meta property="og:description" content="wfuzz爆破渗透测试工具，对目标不同参数进行模糊测试 基本语法1wfuzz -c -z payload,range_start-range_end http:&#x2F;&#x2F;target.com&#x2F;FUZZ   -c: 隐藏无效的响应。 -z payload,range_start-range_end: 指定文件类型和fuzz字典和范围。 --hc 404,403 用来隐藏特定的状态码  Kali自带，输入w">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://li1x.github.io/images/wfuzz00.png">
+<meta property="og:image" content="https://li1x.github.io/images/wfuzz01.png">
+<meta property="article:published_time" content="2024-09-03T17:42:14.834Z">
+<meta property="article:modified_time" content="2024-09-03T17:42:35.536Z">
 <meta property="article:author" content="Li1x">
+<meta property="article:tag" content="杂记">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://li1x.github.io/images/wfuzz00.png">
     
     
     <!--- Icon Part-->
@@ -36,7 +44,7 @@
     
     <title>
         
-            Archive: 2024/2 -
+            工具杂记 -
         
         Personal Blog
     </title>
@@ -311,7 +319,7 @@
 
                             <li class="navbar-item">
                                 <!-- Menu -->
-                                <a class="active"
+                                <a class=""
                                    href="/archives"
                                         >
                                     <i class="fa-regular fa-archive fa-fw"></i>
@@ -372,7 +380,7 @@
 
                     <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
                         
-                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full active"
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
                            href="/archives"
                         >
                             <span>
@@ -445,150 +453,273 @@
             <div class="main-content">
 
                 
-                    <div class="archive-container shadow-none hover:shadow-none sm:shadow-redefine sm:hover:shadow-redefine-hover">
-    
-<div class="archive-list-container">
-    
-        <section class="archive-item mb-spacing-unit last:mb-0">
-            <div class="archive-item-header flex flex-row items-center mb-2">
-                <span class="archive-year font-semibold text-3xl mr-2">2024</span>
-                <span class="archive-year-post-count text-xs md:text-sm font-bold rounded-small bg-third-background-color py-[2px] px-[10px] border border-border-color">11</span>
-            </div>
+                    <div class="post-page-container flex relative justify-between box-border w-full h-full">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
             
-            <ul class="article-list pl-0 md:pl-8 text-lg leading-[1.5]">
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">工具杂记</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/redefine-avatar.svg">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">The Redefine Team</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv2</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2024-09-04 01:42:14</span>
+        <span class="mobile">2024-09-04 01:42:14</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2024-09-04 01:42:35</span>
+            <span class="mobile">2024-09-04 01:42:35</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
                 
-                    
-                    
-                         <!-- Close the previous LI if not the first item -->
-                        <li class="article-item space-y-2 px-6 pt-10 pb-2 text-xl relative border-l-2 border-border-color" date-is='09-04'>
-                    
-                    <a href="/Learning/%E5%B7%A5%E5%85%B7%E6%9D%82%E8%AE%B0/" class="block overflow-hidden w-fit">
-                        <span class="article-title my-0.5 text-2xl">工具杂记</span>
-                    </a>
-                    
                 
-                    
                     
                         
-                            </li>
-                         <!-- Close the previous LI if not the first item -->
-                        <li class="article-item space-y-2 px-6 pt-10 pb-2 text-xl relative border-l-2 border-border-color" date-is='04-15'>
+                        <li>
+                            <a href="/categories/%E6%9D%82%E8%AE%B0/">杂记</a>&nbsp;
+                        </li>
                     
-                    <a href="/CTF/Web/%E4%BA%8C%E6%AC%A1%E6%B3%A8%E5%85%A5/" class="block overflow-hidden w-fit">
-                        <span class="article-title my-0.5 text-2xl">二次注入</span>
-                    </a>
                     
                 
-                    
-                    
-                        
-                            </li>
-                         <!-- Close the previous LI if not the first item -->
-                        <li class="article-item space-y-2 px-6 pt-10 pb-2 text-xl relative border-l-2 border-border-color" date-is='04-04'>
-                    
-                    <a href="/CTF/Re/Re%E8%AE%B0%E5%BD%95/" class="block overflow-hidden w-fit">
-                        <span class="article-title my-0.5 text-2xl">Re刷题记录</span>
-                    </a>
-                    
-                
-                    
-                    
-                        
-                            </li>
-                         <!-- Close the previous LI if not the first item -->
-                        <li class="article-item space-y-2 px-6 pt-10 pb-2 text-xl relative border-l-2 border-border-color" date-is='04-01'>
-                    
-                    <a href="/CTF/Misc/%E6%B5%81%E9%87%8F/" class="block overflow-hidden w-fit">
-                        <span class="article-title my-0.5 text-2xl">Misc-流量题记录</span>
-                    </a>
-                    
-                
-                    
-                    
-                        
-                            </li>
-                         <!-- Close the previous LI if not the first item -->
-                        <li class="article-item space-y-2 px-6 pt-10 pb-2 text-xl relative border-l-2 border-border-color" date-is='03-26'>
-                    
-                    <a href="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/" class="block overflow-hidden w-fit">
-                        <span class="article-title my-0.5 text-2xl">BUU平台的Pwn题记录</span>
-                    </a>
-                    
-                
-                    
-                    
-                    <a href="/CTF/Web/XSS%E6%BC%8F%E6%B4%9E/" class="block overflow-hidden w-fit">
-                        <span class="article-title my-0.5 text-2xl">XSS学习</span>
-                    </a>
-                    
-                
-                    
-                    
-                        
-                            </li>
-                         <!-- Close the previous LI if not the first item -->
-                        <li class="article-item space-y-2 px-6 pt-10 pb-2 text-xl relative border-l-2 border-border-color" date-is='03-12'>
-                    
-                    <a href="/CTF/Web/BUU-Web%E5%88%B7%E9%A2%98/" class="block overflow-hidden w-fit">
-                        <span class="article-title my-0.5 text-2xl">BUU平台的Web题记录</span>
-                    </a>
-                    
-                
-                    
-                    
-                        
-                            </li>
-                         <!-- Close the previous LI if not the first item -->
-                        <li class="article-item space-y-2 px-6 pt-10 pb-2 text-xl relative border-l-2 border-border-color" date-is='03-04'>
-                    
-                    <a href="/CTF/Web/BUU-%5BGYCTF2020%5DFlaskApp/" class="block overflow-hidden w-fit">
-                        <span class="article-title my-0.5 text-2xl">BUU-[GYCTF2020]FlaskApp的Wp</span>
-                    </a>
-                    
-                
-                    
-                    
-                        
-                            </li>
-                         <!-- Close the previous LI if not the first item -->
-                        <li class="article-item space-y-2 px-6 pt-10 pb-2 text-xl relative border-l-2 border-border-color" date-is='03-01'>
-                    
-                    <a href="/CTF/Web/BUU-%5BBJDCTF2020%5DEasySearch/" class="block overflow-hidden w-fit">
-                        <span class="article-title my-0.5 text-2xl">BUU-[BJDCTF2020]EasySearch的Wp</span>
-                    </a>
-                    
-                
-                    
-                    
-                        
-                            </li>
-                         <!-- Close the previous LI if not the first item -->
-                        <li class="article-item space-y-2 px-6 pt-10 pb-2 text-xl relative border-l-2 border-border-color" date-is='02-19'>
-                    
-                    <a href="/CTF/Web/BUU-easy_serialize_php/" class="block overflow-hidden w-fit">
-                        <span class="article-title my-0.5 text-2xl">BUU-easy_serialize_php的Wp</span>
-                    </a>
-                    
-                
-                    
-                    
-                        
-                            </li>
-                         <!-- Close the previous LI if not the first item -->
-                        <li class="article-item space-y-2 px-6 pt-10 pb-2 text-xl relative border-l-2 border-border-color" date-is='01-30'>
-                    
-                    <a href="/CTF/Web/BUU-Easy_Java/" class="block overflow-hidden w-fit">
-                        <span class="article-title my-0.5 text-2xl">BUU-[RoarCTF 2019]Easy Java的Wp</span>
-                    </a>
-                    
-                
-                </li> <!-- Ensure the last item is properly closed -->
             </ul>
-        </section>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/%E6%9D%82%E8%AE%B0/">杂记</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
     
 </div>
 
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h1 id="wfuzz爆破"><a href="#wfuzz爆破" class="headerlink" title="wfuzz爆破"></a>wfuzz爆破</h1><p>渗透测试工具，对目标不同参数进行模糊测试</p>
+<h4 id="基本语法"><a href="#基本语法" class="headerlink" title="基本语法"></a>基本语法</h4><div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wfuzz -c -z payload,range_start-range_end http://target.com/FUZZ</span><br></pre></td></tr></table></figure></div>
+
+<ul>
+<li><code>-c</code>: 隐藏无效的响应。</li>
+<li><code>-z payload,range_start-range_end</code>: 指定文件类型和fuzz字典和范围。</li>
+<li><code>--hc 404,403</code> 用来隐藏特定的状态码</li>
+</ul>
+<p><strong>Kali自带，输入wfuzz有使用方法</strong></p>
+<p><img lazyload src="/images/loading.svg" data-src="/images/wfuzz00.png"></p>
+<p><code>wfuzz -c -z file,/usr/share/wordlists/wfuzz/general/common.txt --hc 404,403 http://192.168.47.157/~FUZZ</code></p>
+<p><img lazyload src="/images/loading.svg" data-src="/images/wfuzz01.png"></p>
+<h4 id="参考资料："><a href="#参考资料：" class="headerlink" title="参考资料："></a>参考资料：</h4><p><a class="link" target="_blank" rel="noopener" href="https://blog.csdn.net/Amoy6228/article/details/134570129">https://blog.csdn.net/Amoy6228/article/details/134570129 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h1 id="fuff爆破"><a href="#fuff爆破" class="headerlink" title="fuff爆破"></a>fuff爆破</h1><h4 id="基本语法："><a href="#基本语法：" class="headerlink" title="基本语法："></a>基本语法：</h4><div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">格式：ffuf -u 目标地址/FUZZ -w 字典</span><br><span class="line">举例：ffuf -u http://192.168.111.131/FUZZ -w /usr/share/SecLists-2022.2/Discovery/Web-Content/common.txt</span><br></pre></td></tr></table></figure></div>
+
+<ul>
+<li><code>-mc</code>：匹配http状态码</li>
+<li><code>-e</code>：增加扩展名</li>
+</ul>
+<h4 id="参考资料：-1"><a href="#参考资料：-1" class="headerlink" title="参考资料："></a>参考资料：</h4><p><a class="link" target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_44288604/article/details/128444485">https://blog.csdn.net/weixin_44288604/article/details/128444485 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h1 id="Gobuster扫描神器"><a href="#Gobuster扫描神器" class="headerlink" title="Gobuster扫描神器"></a>Gobuster扫描神器</h1><h4 id="1-安装"><a href="#1-安装" class="headerlink" title="1.安装"></a>1.安装</h4><div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt-get install gobuster</span><br></pre></td></tr></table></figure></div>
+
+<h4 id="2-基本使用"><a href="#2-基本使用" class="headerlink" title="2.基本使用"></a>2.基本使用</h4><div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gobuster dir -u http://192.168.56.118/site/ -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -x .php,.html,.js,.sh,.txt </span><br></pre></td></tr></table></figure></div>
+
+<h4 id="3-1全局参数"><a href="#3-1全局参数" class="headerlink" title="3.1全局参数"></a>3.1全局参数</h4><div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">--debug                                              打开debug模式(调试模式)</span><br><span class="line">--delay duration          每个线程在请求之间等待的时间（举例：--delay 1500ms）</span><br><span class="line">--no-color                                                      禁用颜色输出</span><br><span class="line">--no-error                                                        不显示错误</span><br><span class="line">-z，--no-progress                                                 不显示进度</span><br><span class="line">-o，-output string                                             输出结果到文件</span><br><span class="line">-p，--pattern string                                        包含替换模式的文件</span><br><span class="line">-q，--quiet                                      不打印banner信息和其他无用信息</span><br><span class="line">-t，--threads int                                        指定线程数量（默认10）</span><br><span class="line">-v，--verbose                                    详细输出日志（错误信息也会展示）</span><br><span class="line">-w，--wordlist string                   指定字典路径，指定-可以通过标准输入中读取</span><br><span class="line">--wordlist-offset int           从字典的指定位置继续（默认偏移量为0，从第一个开始）</span><br></pre></td></tr></table></figure></div>
+
+<h4 id="3-2模式"><a href="#3-2模式" class="headerlink" title="3.2模式"></a>3.2模式</h4><div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">dir         经典目录暴力破解模式</span><br><span class="line">dns        DNS子域暴力破解模式</span><br><span class="line">s3         枚举打开的 S3 存储桶并查找是否存在和存储桶列表</span><br><span class="line">gcs        枚举打开的谷歌云存储桶</span><br><span class="line">vhost     虚拟主机暴力破解模式（与DNS不同！）</span><br><span class="line">fuzz        使用模糊测试模式。替换URL、Headers和请求体中的关键词FUZZ</span><br><span class="line">tftp          暴力破解 tftp 文件</span><br></pre></td></tr></table></figure></div>
+
+<h4 id="参考资料：-2"><a href="#参考资料：-2" class="headerlink" title="参考资料："></a>参考资料：</h4><p><a class="link" target="_blank" rel="noopener" href="https://blog.csdn.net/2302_82189125/article/details/135999920">Web 扫描神器：Gobuster 保姆级教程（附链接）_gobuster 使用方法-CSDN博客 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p><a class="link" target="_blank" rel="noopener" href="https://blog.csdn.net/B_l_a_nk/article/details/135109164">Gobuster工具详解-CSDN博客 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h1 id="dig命令"><a href="#dig命令" class="headerlink" title="dig命令"></a>dig命令</h1><h4 id="基本使用："><a href="#基本使用：" class="headerlink" title="基本使用："></a>基本使用：</h4><div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dig [域名] [OPTIONS]</span><br></pre></td></tr></table></figure></div>
+
+
+
+<h3 id="参考资料：-3"><a href="#参考资料：-3" class="headerlink" title="参考资料："></a>参考资料：</h3><p><a class="link" target="_blank" rel="noopener" href="https://www.cnblogs.com/machangwei-8/p/10353216.html">https://www.cnblogs.com/machangwei-8/p/10353216.html <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h1 id="fastcoll"><a href="#fastcoll" class="headerlink" title="fastcoll"></a>fastcoll</h1><p>快速MD5碰撞生成器</p>
+<h4 id="基本使用：-1"><a href="#基本使用：-1" class="headerlink" title="基本使用："></a>基本使用：</h4><p>新建一个txt文件，随便输入内容</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fastcoll_v1.0.0.5.exe -p 1.txt -o 2.txt 3.txt</span><br></pre></td></tr></table></figure></div>
+
+<p>-&gt; <code>-p</code> 源文件</p>
+<p>-&gt;<code>-o</code>指定生成文件名</p>
+<p><strong>配合PHP检查的代码一起使用</strong></p>
+<div class="highlight-container" data-rel="Php"><figure class="iseeu highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">read_file</span>(<span class="params"><span class="variable">$filename</span></span>) </span>&#123;</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">fopen</span>(<span class="variable">$filename</span>,<span class="string">&#x27;rb&#x27;</span>);</span><br><span class="line">    <span class="variable">$content</span> = <span class="title function_ invoke__">fread</span>(<span class="variable">$file</span>,<span class="title function_ invoke__">filesize</span>(<span class="variable">$filename</span>));</span><br><span class="line">    <span class="keyword">return</span> <span class="variable">$content</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="variable">$file1</span> = <span class="title function_ invoke__">urlencode</span>(<span class="title function_ invoke__">read_file</span>(<span class="string">&#x27;./2.txt&#x27;</span>));</span><br><span class="line"><span class="variable">$file2</span> = <span class="title function_ invoke__">urlencode</span>(<span class="title function_ invoke__">read_file</span>(<span class="string">&#x27;./3.txt&#x27;</span>));</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$file1</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;\n&quot;</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$file2</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;\n&quot;</span>;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>在当前目录下的终端出<code>php test.php</code></p>
+<p>会生成经过url编码的文件内容</p>
+
+        </div>
+
+        
+            <div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> 工具杂记</li>
+        <li><strong>Author:</strong> The Redefine Team</li>
+        <li><strong>Created at
+                :</strong> 2024-09-04 01:42:14</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2024-09-04 01:42:35
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://redefine.ohevan.com/Learning/工具杂记/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
 </div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/%E6%9D%82%E8%AE%B0/">#杂记</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/CTF/Web/%E4%BA%8C%E6%AC%A1%E6%B3%A8%E5%85%A5/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">二次注入</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+            <div class="comment-container px-2 sm:px-6 md:px-8 pb-8">
+                <div class="comments-container mt-10 w-full ">
+    <div id="comment-anchor" class="w-full h-2.5"></div>
+    <div class="comment-area-title w-full my-1.5 md:my-2.5 text-xl md:text-3xl font-bold">
+        Comments
+    </div>
+    
+
+        
+            
+    <div id="waline"></div>
+    <script type="module" data-swup-reload-script>
+      import { init } from '/js/libs/waline.mjs';
+
+      function loadWaline() {
+        init({
+          el: '#waline',
+          serverURL: 'https://example.example.com',
+          lang: 'zh-CN',
+          dark: 'body[class~="dark-mode"]',
+          reaction: false,
+          requiredMeta: ['nick', 'mail'],
+          emoji: [],
+          recaptchaV3Key: "wasd",
+          
+        });
+      }
+
+      if (typeof swup !== 'undefined') {
+        loadWaline();
+      } else {
+        window.addEventListener('DOMContentLoaded', loadWaline);
+      }
+    </script>
+
+
+
+        
+    
+</div>
+
+            </div>
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">工具杂记</div>
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#wfuzz%E7%88%86%E7%A0%B4"><span class="nav-number">1.</span> <span class="nav-text">wfuzz爆破</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#fuff%E7%88%86%E7%A0%B4"><span class="nav-number">2.</span> <span class="nav-text">fuff爆破</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Gobuster%E6%89%AB%E6%8F%8F%E7%A5%9E%E5%99%A8"><span class="nav-number">3.</span> <span class="nav-text">Gobuster扫描神器</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#dig%E5%91%BD%E4%BB%A4"><span class="nav-number">4.</span> <span class="nav-text">dig命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99%EF%BC%9A-3"><span class="nav-number">4.0.1.</span> <span class="nav-text">参考资料：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#fastcoll"><span class="nav-number">5.</span> <span class="nav-text">fastcoll</span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
 
                 
 
@@ -670,6 +801,27 @@
         </div>
     </div>
 
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+            <li class="go-comment">
+                <i class="fa-regular fa-comments"></i>
+            </li>
+        
+    </ul>
+</div>
+
+        </div>
     
 
     <div class="right-side-tools-container">
