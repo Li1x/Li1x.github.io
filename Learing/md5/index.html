@@ -13,18 +13,30 @@
     
     <!--- Seo Part-->
     
-    <link rel="canonical" href="https://li1x.github.io/categories/misc/"/>
+    <link rel="canonical" href="https://li1x.github.io/learing/md5/"/>
     <meta name="robots" content="index,follow">
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
     
-        <meta property="og:type" content="website">
-<meta property="og:title" content="Li1x&#39;s Blog">
-<meta property="og:url" content="https://li1x.github.io/categories/Misc/index.html">
+        <meta name="description" content="MD5：小端方式填充第一步: 填充(单位为bit)1保证 长度 % 512 &#x3D; 448，填充1或n个0    第二步: 记录信息长度12用64位来存储填充前信息长度。这64位加在第一步结果的后面，这样信息长度就变为N*512+448+64&#x3D;(N+1)*512位。    第三步: 装入标准的幻数(四个整数)1234标准的幻数(物理顺序)是:（A&#x3D;(01234567)16，B&#x3D;(89ABCDEF)16">
+<meta property="og:type" content="article">
+<meta property="og:title" content="md5">
+<meta property="og:url" content="https://li1x.github.io/Learing/md5/index.html">
 <meta property="og:site_name" content="Li1x&#39;s Blog">
+<meta property="og:description" content="MD5：小端方式填充第一步: 填充(单位为bit)1保证 长度 % 512 &#x3D; 448，填充1或n个0    第二步: 记录信息长度12用64位来存储填充前信息长度。这64位加在第一步结果的后面，这样信息长度就变为N*512+448+64&#x3D;(N+1)*512位。    第三步: 装入标准的幻数(四个整数)1234标准的幻数(物理顺序)是:（A&#x3D;(01234567)16，B&#x3D;(89ABCDEF)16">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://li1x.github.io/Learing/md5/00.png">
+<meta property="og:image" content="https://li1x.github.io/Learing/md5/01.png">
+<meta property="og:image" content="https://li1x.github.io/Learing/md5/02.png">
+<meta property="og:image" content="https://li1x.github.io/Learing/md5/03.png">
+<meta property="og:image" content="https://li1x.github.io/Learing/md5/05.png">
+<meta property="og:image" content="https://li1x.github.io/Learing/md5/04.png">
+<meta property="article:published_time" content="2024-09-04T16:41:36.675Z">
+<meta property="article:modified_time" content="2024-09-04T16:44:25.487Z">
 <meta property="article:author" content="Li1x">
+<meta property="article:tag" content="漏洞">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://li1x.github.io/Learing/md5/00.png">
     
     
     <!--- Icon Part-->
@@ -36,7 +48,7 @@
     
     <title>
         
-            Category: Misc -
+            md5 -
         
         Personal Blog
     </title>
@@ -345,7 +357,7 @@
 
                             <li class="navbar-item">
                                 <!-- Menu -->
-                                <a class="active"
+                                <a class=""
                                    href="/categories"
                                         >
                                     <i class="fa-regular fa-folder icon-space fa-fw"></i>
@@ -444,7 +456,7 @@
 
                     <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
                         
-                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full active"
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
                            href="/categories"
                         >
                             <span>
@@ -508,45 +520,339 @@
             <div class="main-content">
 
                 
-                    <div class="category-container">
-    <div class="category-name">
-        <i class="fa-solid fa-folder"></i>&nbsp;Misc
-    </div>
-    <div class="category-post-list">
-        
-<div class="archive-list-container">
-    
-        <section class="archive-item mb-spacing-unit last:mb-0">
-            <div class="archive-item-header flex flex-row items-center mb-2">
-                <span class="archive-year font-semibold text-3xl mr-2">2024</span>
-                <span class="archive-year-post-count text-xs md:text-sm font-bold rounded-small bg-third-background-color py-[2px] px-[10px] border border-border-color">1</span>
-            </div>
+                    <div class="post-page-container flex relative justify-between box-border w-full h-full">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
             
-            <ul class="article-list pl-0 md:pl-8 text-lg leading-[1.5]">
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">md5</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/redefine-avatar.svg">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">The Redefine Team</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv2</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2024-09-05 00:41:36</span>
+        <span class="mobile">2024-09-05 00:41:36</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2024-09-05 00:44:25</span>
+            <span class="mobile">2024-09-05 00:44:25</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
                 
                     
+                        
+                        <li>
+                            <a href="/categories/Learing/">Learing</a>&nbsp;
+                        </li>
                     
-                         <!-- Close the previous LI if not the first item -->
-                        <li class="article-item space-y-2 px-6 pt-10 pb-2 text-xl relative border-l-2 border-border-color" date-is='04-01'>
-                    
-                    <a href="/CTF/Misc/%E6%B5%81%E9%87%8F/" class="block overflow-hidden w-fit">
-                        <span class="article-title my-0.5 text-2xl">Misc-流量题记录</span>
-                    </a>
                     
                 
-                </li> <!-- Ensure the last item is properly closed -->
             </ul>
-        </section>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/%E6%BC%8F%E6%B4%9E/">漏洞</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
     
 </div>
 
-    </div>
-</div>
-<div class="category-paginator">
-    <div class="paginator">
-    <span class="page-number current">1</span>
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h2 id="MD5：小端方式填充"><a href="#MD5：小端方式填充" class="headerlink" title="MD5：小端方式填充"></a>MD5：小端方式填充</h2><h3 id="第一步-填充-单位为bit"><a href="#第一步-填充-单位为bit" class="headerlink" title="第一步: 填充(单位为bit)"></a>第一步: 填充(单位为bit)</h3><div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">保证 长度 % 512 = 448，填充1或n个0</span><br></pre></td></tr></table></figure></div>
+
+
+
+<h3 id="第二步-记录信息长度"><a href="#第二步-记录信息长度" class="headerlink" title="第二步: 记录信息长度"></a>第二步: 记录信息长度</h3><div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">用64位来存储填充前信息长度。</span><br><span class="line">这64位加在第一步结果的后面，这样信息长度就变为N*512+448+64=(N+1)*512位。</span><br></pre></td></tr></table></figure></div>
+
+
+
+<h3 id="第三步-装入标准的幻数-四个整数"><a href="#第三步-装入标准的幻数-四个整数" class="headerlink" title="第三步: 装入标准的幻数(四个整数)"></a>第三步: 装入标准的幻数(四个整数)</h3><div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">标准的幻数(物理顺序)是:</span><br><span class="line">（A=(01234567)16，B=(89ABCDEF)16，C=(FEDCBA98)16，D=(76543210)16）。</span><br><span class="line">如果在程序中定义应该是（A=0X67452301L，B=0XEFCDAB89L，C=0X98BADCFEL，D=0X10325476L）</span><br><span class="line">标准的初幻数是Md5算法固定的，不会变化，但是幻数本身是随着每一轮计算不断变动的。</span><br></pre></td></tr></table></figure></div>
+
+
+
+<h3 id="第四步-四轮循环计算-每一轮是十六步"><a href="#第四步-四轮循环计算-每一轮是十六步" class="headerlink" title="第四步: 四轮循环计算[ 每一轮是十六步 ]"></a>第四步: 四轮循环计算[ 每一轮是十六步 ]</h3><div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">以512bit为单位分组(Y0,Y1...Yn), 有一个128bit初值(iv),</span><br><span class="line">第一个分组Y0与初值iv经过哈希函数得到128bit结果(cv1)</span><br><span class="line">cv1与T2继续经过哈希函数得到128bit结果(cv2)</span><br><span class="line">......反复</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="总结-个人理解-："><a href="#总结-个人理解-：" class="headerlink" title="总结(个人理解)："></a>总结(个人理解)：</h3><blockquote>
+<p>长度的计算是对于二进制位数，比如test的长度位: （每位十六进制数是4位二进制数，通过ASCII码转换十六进制）</p>
+</blockquote>
+<p>-&gt; 二进制长度4*2*4&#x3D;32,</p>
+<p><strong>最后64位长度信息：</strong><code>200000000000000000000000000000000(64位)</code> &#x3D;&#x3D;&#x3D; 0x20 &#x3D; 32后面填充0</p>
+<blockquote>
+<p>对于长度扩展的理解, md5值由($secret + $v1)组成  $v1可控, md5可知,</p>
+</blockquote>
+<p>-&gt;  先随便弄一个字符串,  可得到<strong>最后一块(512位的组成)</strong>         <strong>此时得到的md5值, 可推得A B C D四个向量</strong></p>
+<p>-&gt; 我们<strong>可以构造出来一块 上面所谓的最后一组</strong>, 且此时得到的四个向量结果我们通过上一步得到, 此时再往后填充数据来组成真正的最后一块,即扩展攻击</p>
+<blockquote>
+<p>什么叫构造出来一块?</p>
+</blockquote>
+<p>-&gt; 熟悉md5算法基本流程</p>
+<h2 id="MD5值的绕过"><a href="#MD5值的绕过" class="headerlink" title="MD5值的绕过"></a>MD5值的绕过</h2><h3 id="前置知识："><a href="#前置知识：" class="headerlink" title="前置知识："></a>前置知识：</h3><ul>
+<li><a class="link" target="_blank" rel="noopener" href="https://www.w3school.com.cn/php/func_string_md5.asp">md5函数 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+</ul>
+<blockquote>
+<p>在 php 程序中，md5($string,bool): 得到一个<a class="link" target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=%E5%AD%97%E7%AC%A6%E4%B8%B2&spm=1001.2101.3001.7020">字符串 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>散列值。其中第二个参数默认为false,表示该函数返回值是32个字符的十六进制数。若指定为true,则表示函数返回的是16字节的二进制格式（这样通过浏览器解析会出现乱码）。</p>
+</blockquote>
+<ul>
+<li>弱比较(&#x3D;&#x3D;)和强比较(===  和  !==)</li>
+</ul>
+<blockquote>
+<p>弱比较：只比较值，不比较数据类型 — 先把两者转换为相同类型，再看值一样不一样</p>
+<p>强比较：既比较值，也比较数据类型 — 先看数据类型一样不一样，再看值一样不一样</p>
+</blockquote>
+<h3 id="类型及举例："><a href="#类型及举例：" class="headerlink" title="类型及举例："></a>类型及举例：</h3><h4 id="一、MD5弱比较绕过"><a href="#一、MD5弱比较绕过" class="headerlink" title="一、MD5弱比较绕过(==)"></a>一、MD5弱比较绕过(==)</h4><p><img lazyload src="/images/loading.svg" data-src="/Learing/md5/00.png"></p>
+<h5 id="绕过原理："><a href="#绕过原理：" class="headerlink" title="绕过原理："></a>绕过原理：</h5><blockquote>
+<p>以0e开头的字符串在PHP中均被认为是科学计数法，即为0，当两个0e开头的字符串相比较时，无论后面的字符串是什么，都为True</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th align="center">字符串</th>
+<th align="center">MD5值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">QNKCDZO</td>
+<td align="center">0e830400451993494058024219903391</td>
+</tr>
+<tr>
+<td align="center">s878926199a</td>
+<td align="center">0e545993274517709034328855841020</td>
+</tr>
+<tr>
+<td align="center">s155964671a</td>
+<td align="center">0e342768416822451524974117254469</td>
+</tr>
+<tr>
+<td align="center">s214587387a</td>
+<td align="center">0e848240448830537924465865611904</td>
+</tr>
+<tr>
+<td align="center">s214587387a</td>
+<td align="center">0e848240448830537924465865611904</td>
+</tr>
+<tr>
+<td align="center">s878926199a</td>
+<td align="center">0e545993274517709034328855841020</td>
+</tr>
+<tr>
+<td align="center">s1091221200a</td>
+<td align="center">0e940624217856561557816327384675</td>
+</tr>
+</tbody></table>
+<h4 id="二、MD5强比较绕过"><a href="#二、MD5强比较绕过" class="headerlink" title="二、MD5强比较绕过(&#x3D;&#x3D;&#x3D;)"></a>二、MD5强比较绕过(&#x3D;&#x3D;&#x3D;)</h4><p><img lazyload src="/images/loading.svg" data-src="/Learing/md5/01.png"></p>
+<h5 id="绕过原理：-1"><a href="#绕过原理：-1" class="headerlink" title="绕过原理："></a>绕过原理：</h5><blockquote>
+<p>在md5()函数中传入数组，不但md5()函数不会报错，结果还会返回null，在强比较中 null&#x3D;&#x3D;&#x3D;null，所以传入两个数组即可</p>
+</blockquote>
+<h4 id="三、MD5碰撞"><a href="#三、MD5碰撞" class="headerlink" title="三、MD5碰撞"></a>三、MD5碰撞</h4><p><img lazyload src="/images/loading.svg" data-src="/Learing/md5/02.png"></p>
+<h5 id="绕过原理：-2"><a href="#绕过原理：-2" class="headerlink" title="绕过原理："></a>绕过原理：</h5><blockquote>
+<p>强制转换为字符串再进行比较，所以数组的方法不可行了；利用的是MD5值算法本身的缺陷 — 存在散列冲突，必会有两个内容不一样但是MD5值一样的序列</p>
+</blockquote>
+<h5 id="使用fastcoll工具自己快速生成"><a href="#使用fastcoll工具自己快速生成" class="headerlink" title="使用fastcoll工具自己快速生成:"></a>使用fastcoll工具自己快速生成:</h5><p>可以看我的博客中的另外一篇 工具杂记 中记录有</p>
+<p><img lazyload src="/images/loading.svg" data-src="/Learing/md5/03.png"></p>
+<p><strong>贴一组：</strong></p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">aaa=a%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%003%B1%7E%14T%B5S%DB%7E%23%7B%E8u%0D%15%A1%9D%C8%1E%81%F8%8FJ%AE%1Br9Y%8A%87%88%03%09%0B%01%E7N%05L%A3k%28%C9%03%22p%05n0t%3E1%3B%3FE%E2%1B%1D%DC1x%E0%C4%22%25%22w%5E%10U%EC%CA%9F%F2%B0.%EC%ECB%83%FDq%DF%A6%C9%FE%80%EC%F4%E4%ABWQx%9D%DFm%073%2A%BB%BF%AFF6%90U%0A%99%1C%BE%9C%01Y%22%CD%9D%B9c%D4%A3%959%5E9%F4k2</span><br><span class="line"></span><br><span class="line">bbb=a%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%003%B1%7E%14T%B5S%DB%7E%23%7B%E8u%0D%15%A1%9D%C8%1E%01%F8%8FJ%AE%1Br9Y%8A%87%88%03%09%0B%01%E7N%05L%A3k%28%C9%03%22%F0%05n0t%3E1%3B%3FE%E2%1B%1D%DC%B1x%E0%C4%22%25%22w%5E%10U%EC%CA%9F%F2%B0.%EC%ECB%83%FDq%DF%26%C9%FE%80%EC%F4%E4%ABWQx%9D%DFm%073%2A%BB%BF%AFF6%90U%0A%99%9C%BD%9C%01Y%22%CD%9D%B9c%D4%A3%959%DE9%F4k2</span><br></pre></td></tr></table></figure></div>
+
+<h4 id="四、MD5长度扩展攻击"><a href="#四、MD5长度扩展攻击" class="headerlink" title="四、MD5长度扩展攻击"></a>四、MD5长度扩展攻击</h4><p><strong>例题链接</strong></p>
+<p>实验吧ctf—web-让我进入：<a class="link" target="_blank" rel="noopener" href="http://ctf5.shiyanbar.com/web/kzhan.php">http://ctf5.shiyanbar.com/web/kzhan.php <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p><img lazyload src="/images/loading.svg" data-src="/Learing/md5/05.png"></p>
+<p><strong>信息：</strong></p>
+<p>1.已知md5值，且明文长度可知 — $secret + admin &#x3D;&#x3D;&#x3D; 20</p>
+<p>2.用户名为admin，输入password后，保证Cookie中<code>getmein === md5($secret.urldecode(username.password))</code></p>
+<p>**以这个题解释下我对MD5长度扩展攻击的理解: **</p>
+<p>哈希值由四个幻数组成<code>(可以得到)</code>, 最后一块是需要填充的<code>(可得到)</code>,</p>
+<p>如果我们以填充好的作为数据传过去，<strong>再加一段数据，那么md5值会变成什么样子？</strong></p>
+<p><strong>-&gt; 以已知的md5值得到四个幻数，接着与加的数据接着进行md5加密 — 那我们就是可以得到了</strong></p>
+<p>用Hashpump工具生成:</p>
+<p><img lazyload src="/images/loading.svg" data-src="/Learing/md5/04.png"></p>
+<blockquote>
+<p>Signature：已知的md5值</p>
+<p>Input Data：我没找到定义，我感觉是自己输入的数据（具体看题）</p>
+<p>Key Length：已知的md5值的 明文长度—<code>md5(\$secret)</code> — <code>len($secret)</code></p>
+<p>Add：这个随便填(扩展的那一部分)</p>
+</blockquote>
+<h3 id="参考资料："><a href="#参考资料：" class="headerlink" title="参考资料："></a>参考资料：</h3><p>CSDN博客：<a class="link" target="_blank" rel="noopener" href="https://blog.csdn.net/qq_43580193/article/details/117432689">https://blog.csdn.net/qq_43580193/article/details/117432689 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p><a class="link" target="_blank" rel="noopener" href="https://zu1k.com/posts/security/crypto/md5-hash-length-extension-attack/#%E8%A7%A3%E5%86%B3%E7%9A%84%E9%97%AE%E9%A2%98">md5哈希扩展长度攻击 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p><a class="link" target="_blank" rel="noopener" href="https://www.0x002.com/2020/%E6%B5%85%E8%B0%88HASH%E9%95%BF%E5%BA%A6%E6%8B%93%E5%B1%95%E6%94%BB%E5%87%BB/">md5哈希扩展长度攻击(个人看完清晰的) <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+
+        </div>
+
+        
+            <div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> md5</li>
+        <li><strong>Author:</strong> The Redefine Team</li>
+        <li><strong>Created at
+                :</strong> 2024-09-05 00:41:36</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2024-09-05 00:44:25
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://redefine.ohevan.com/Learing/md5/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
 </div>
 
+            </div>
+        
+
+        
+            <ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/%E6%BC%8F%E6%B4%9E/">#漏洞</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/CTF/%E5%B7%A5%E5%85%B7%E6%9D%82%E8%AE%B0/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">工具杂记</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+            <div class="comment-container px-2 sm:px-6 md:px-8 pb-8">
+                <div class="comments-container mt-10 w-full ">
+    <div id="comment-anchor" class="w-full h-2.5"></div>
+    <div class="comment-area-title w-full my-1.5 md:my-2.5 text-xl md:text-3xl font-bold">
+        Comments
+    </div>
+    
+
+        
+            
+    <div id="waline"></div>
+    <script type="module" data-swup-reload-script>
+      import { init } from '/js/libs/waline.mjs';
+
+      function loadWaline() {
+        init({
+          el: '#waline',
+          serverURL: 'https://example.example.com',
+          lang: 'zh-CN',
+          dark: 'body[class~="dark-mode"]',
+          reaction: false,
+          requiredMeta: ['nick', 'mail'],
+          emoji: [],
+          recaptchaV3Key: "wasd",
+          
+        });
+      }
+
+      if (typeof swup !== 'undefined') {
+        loadWaline();
+      } else {
+        window.addEventListener('DOMContentLoaded', loadWaline);
+      }
+    </script>
+
+
+
+        
+    
+</div>
+
+            </div>
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">md5</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#MD5%EF%BC%9A%E5%B0%8F%E7%AB%AF%E6%96%B9%E5%BC%8F%E5%A1%AB%E5%85%85"><span class="nav-number">1.</span> <span class="nav-text">MD5：小端方式填充</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E6%AD%A5-%E5%A1%AB%E5%85%85-%E5%8D%95%E4%BD%8D%E4%B8%BAbit"><span class="nav-number">1.1.</span> <span class="nav-text">第一步: 填充(单位为bit)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E6%AD%A5-%E8%AE%B0%E5%BD%95%E4%BF%A1%E6%81%AF%E9%95%BF%E5%BA%A6"><span class="nav-number">1.2.</span> <span class="nav-text">第二步: 记录信息长度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%B8%89%E6%AD%A5-%E8%A3%85%E5%85%A5%E6%A0%87%E5%87%86%E7%9A%84%E5%B9%BB%E6%95%B0-%E5%9B%9B%E4%B8%AA%E6%95%B4%E6%95%B0"><span class="nav-number">1.3.</span> <span class="nav-text">第三步: 装入标准的幻数(四个整数)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E5%9B%9B%E6%AD%A5-%E5%9B%9B%E8%BD%AE%E5%BE%AA%E7%8E%AF%E8%AE%A1%E7%AE%97-%E6%AF%8F%E4%B8%80%E8%BD%AE%E6%98%AF%E5%8D%81%E5%85%AD%E6%AD%A5"><span class="nav-number">1.4.</span> <span class="nav-text">第四步: 四轮循环计算[ 每一轮是十六步 ]</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93-%E4%B8%AA%E4%BA%BA%E7%90%86%E8%A7%A3-%EF%BC%9A"><span class="nav-number">1.5.</span> <span class="nav-text">总结(个人理解)：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MD5%E5%80%BC%E7%9A%84%E7%BB%95%E8%BF%87"><span class="nav-number">2.</span> <span class="nav-text">MD5值的绕过</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86%EF%BC%9A"><span class="nav-number">2.1.</span> <span class="nav-text">前置知识：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B1%BB%E5%9E%8B%E5%8F%8A%E4%B8%BE%E4%BE%8B%EF%BC%9A"><span class="nav-number">2.2.</span> <span class="nav-text">类型及举例：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%80%E3%80%81MD5%E5%BC%B1%E6%AF%94%E8%BE%83%E7%BB%95%E8%BF%87"><span class="nav-number">2.2.1.</span> <span class="nav-text">一、MD5弱比较绕过(&#x3D;&#x3D;)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%8C%E3%80%81MD5%E5%BC%BA%E6%AF%94%E8%BE%83%E7%BB%95%E8%BF%87"><span class="nav-number">2.2.2.</span> <span class="nav-text">二、MD5强比较绕过(&#x3D;&#x3D;&#x3D;)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%89%E3%80%81MD5%E7%A2%B0%E6%92%9E"><span class="nav-number">2.2.3.</span> <span class="nav-text">三、MD5碰撞</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9B%9B%E3%80%81MD5%E9%95%BF%E5%BA%A6%E6%89%A9%E5%B1%95%E6%94%BB%E5%87%BB"><span class="nav-number">2.2.4.</span> <span class="nav-text">四、MD5长度扩展攻击</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99%EF%BC%9A"><span class="nav-number">2.3.</span> <span class="nav-text">参考资料：</span></a></li></ol></li></ol>
+
+    </div>
+</div>
+        </div>
+    
 </div>
 
 
@@ -631,6 +937,27 @@
         </div>
     </div>
 
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+            <li class="go-comment">
+                <i class="fa-regular fa-comments"></i>
+            </li>
+        
+    </ul>
+</div>
+
+        </div>
     
 
     <div class="right-side-tools-container">
